@@ -1,0 +1,243 @@
+{
+  "schema": "vict.actual-checkpoint-source-review@1",
+  "reviewedRootHead": "fd27911029864d5618ea04d8c9814df7df865494",
+  "ancestors": [
+    {
+      "sha": "102267977e783898905d6aa846fd16e158b37ee1",
+      "ancestorOf": "fd27911029864d5618ea04d8c9814df7df865494",
+      "ancestor": true
+    },
+    {
+      "sha": "7200902952bf2829b29dbafd52d482d68d6bf61e",
+      "ancestorOf": "fd27911029864d5618ea04d8c9814df7df865494",
+      "ancestor": true
+    }
+  ],
+  "files": [
+    {
+      "name": "15-review-merge-saved-source.json",
+      "sha256": "5731648776274f079ec173e91b55dbe2c0a6fcbcf88894af4fee3d5089d2b6eb",
+      "characters": 165403
+    },
+    {
+      "name": "15-review-merge-supported-export.json",
+      "sha256": "76ee81dc42ec8941acd8303bae452d55c5fc29e62d45656c2c16d11d6e247164",
+      "characters": 212070
+    },
+    {
+      "name": "16-export-model-saved-source.json",
+      "sha256": "1f201f9a8d7402b0e875dd30307216fca814cd859db5e787fcdabecc2818e963",
+      "characters": 197097
+    },
+    {
+      "name": "16-export-model-supported-export.json",
+      "sha256": "3394a5f7b63c6d8a7bc37943abd41819324601a9962147ca1bcc32bbae2069dc",
+      "characters": 253046
+    }
+  ],
+  "documentId": "screen-a8690ffa-1e90-4b72-909c-66141d372773",
+  "revisions": [
+    "r1.r4",
+    "r1.r5"
+  ],
+  "sourceNodeCounts": [
+    180,
+    226
+  ],
+  "addedNodes": [
+    "lm-model",
+    "lm-model-t",
+    "ls-steps",
+    "ls-steps-t",
+    "lg-guid",
+    "lg-guid-t",
+    "c-guid",
+    "rw-help-m",
+    "c-help-m",
+    "rw-help-m-t",
+    "bt-model",
+    "bt-model-t",
+    "wb-model",
+    "bp-model",
+    "p-mod-o",
+    "br-exp",
+    "w-exp",
+    "bh-exp",
+    "bl-exp",
+    "bl-exp-t",
+    "bf-exp",
+    "rf-exp-l",
+    "rf-exp-l-t",
+    "lb-exp-d",
+    "lb-exp-d-t",
+    "c-dest",
+    "lb-exp-f",
+    "lb-exp-f-t",
+    "c-fmt",
+    "o-f1",
+    "o-f1-t",
+    "o-f2",
+    "o-f2-t",
+    "o-f3",
+    "o-f3-t",
+    "bt-exp",
+    "bt-exp-t",
+    "rw-help-e",
+    "c-help-e",
+    "rw-help-e-t",
+    "bt-exp-h",
+    "bt-exp-h-t",
+    "wb-exp",
+    "bp-exp",
+    "p-exp-i",
+    "p-exp-o"
+  ],
+  "changedNodes": [
+    "ws-main",
+    "br-model",
+    "bf-model"
+  ],
+  "removedNodes": [],
+  "graphRevisions": [
+    19,
+    20
+  ],
+  "graphNodeCount": 14,
+  "graphEdgeCount": 20,
+  "graphFamilyCount": 10,
+  "nodeValuesAndPositionsPreserved": true,
+  "edgesPreserved": true,
+  "changedFamilies": [
+    "check"
+  ],
+  "controlledMergeParameters": {
+    "checkAA": {
+      "default": false,
+      "type": "boolean"
+    },
+    "checkCaption": {
+      "default": false,
+      "type": "boolean"
+    },
+    "checkCrop": {
+      "default": false,
+      "type": "boolean"
+    },
+    "items": {
+      "default": [],
+      "type": "stringList"
+    },
+    "ready": {
+      "default": false,
+      "type": "boolean"
+    }
+  },
+  "controlWiring": [
+    {
+      "id": "c-msel",
+      "key": "model",
+      "tag": "select",
+      "label": "Model",
+      "controlled": true,
+      "wired": true
+    },
+    {
+      "id": "c-steps",
+      "key": "steps",
+      "tag": "input",
+      "label": "Steps",
+      "controlled": true,
+      "wired": true
+    },
+    {
+      "id": "c-guid",
+      "key": "guidance",
+      "tag": "input",
+      "label": "Guidance",
+      "controlled": true,
+      "wired": true
+    },
+    {
+      "id": "c-dest",
+      "key": "destination",
+      "tag": "input",
+      "label": "Delivery destination",
+      "controlled": true,
+      "wired": true
+    },
+    {
+      "id": "c-fmt",
+      "key": "format",
+      "tag": "select",
+      "label": "Package format",
+      "controlled": true,
+      "wired": true
+    },
+    {
+      "id": "c-chk1",
+      "key": "checkCrop",
+      "tag": "input",
+      "label": "Verified: Crop 1:1 social",
+      "controlled": true,
+      "wired": true
+    },
+    {
+      "id": "c-chk2",
+      "key": "checkCaption",
+      "tag": "input",
+      "label": "Verified: Caption 90 chars or fewer",
+      "controlled": true,
+      "wired": true
+    },
+    {
+      "id": "c-chk3",
+      "key": "checkAA",
+      "tag": "input",
+      "label": "Verified: Contrast AA",
+      "controlled": true,
+      "wired": true
+    },
+    {
+      "id": "c-ready",
+      "key": "ready",
+      "tag": "input",
+      "label": "Mark package ready for delivery (manual sign-off)",
+      "controlled": true,
+      "wired": true
+    }
+  ],
+  "helpScope": {
+    "key": "helpOpen",
+    "type": "boolean",
+    "initial": false
+  },
+  "bodyBranches": [
+    "w-brief",
+    "w-prompt",
+    "w-model",
+    "w-style",
+    "w-seed",
+    "w-draft",
+    "w-review",
+    "w-check",
+    "w-exp"
+  ],
+  "inputPortsWithAuthoredCapacity": [],
+  "finishingOccurrences": [
+    {
+      "id": "finS",
+      "mode": "social",
+      "subgraph": ""
+    },
+    {
+      "id": "finP",
+      "mode": "poster",
+      "subgraph": ""
+    }
+  ],
+  "exportDocumentEqual": true,
+  "nativeBehaviorVerified": false,
+  "sourceExportReviewOnly": true,
+  "errors": [],
+  "status": "PASS: checkpoint preservation and declared wiring only"
+}

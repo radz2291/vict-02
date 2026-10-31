@@ -1,0 +1,19 @@
+{
+  "status": "PASS: checkpoint preservation and declared wiring only",
+  "sourceNodes": [
+    180,
+    226
+  ],
+  "graphNodes": 14,
+  "edges": 20,
+  "changedFamilies": [
+    "check"
+  ],
+  "changedNodes": [
+    "ws-main",
+    "br-model",
+    "bf-model"
+  ],
+  "addedNodes": 46,
+  "errors": []
+}

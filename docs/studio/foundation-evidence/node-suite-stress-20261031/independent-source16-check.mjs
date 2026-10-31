@@ -1,0 +1,27 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+import {join} from 'node:path';
+import {createHash} from 'node:crypto';
+import {isDeepStrictEqual as equal} from 'node:util';
+import {execFileSync} from 'node:child_process';
+const root='C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030',path='docs/studio/foundation-evidence/node-suite-stress-20261031';
+const names=['15-review-merge-saved-source.json','15-review-merge-supported-export.json','16-export-model-saved-source.json','16-export-model-supported-export.json'];
+const texts=names.map(name=>readFileSync(join(root,path,name),'utf8')), [before,beforeExport,after,afterExport]=texts.map(text=>JSON.parse(text));
+const oldGraph=JSON.parse(before.localState.campaignGraph.initial),graph=JSON.parse(after.localState.campaignGraph.initial),scope=after.nodes['ws-main'].slots.body.scope;
+const errors=[],check=(pass,label)=>{if(!pass)errors.push(label);};
+check(equal(beforeExport.uiDocuments[0].document,before),'Prior export attachment');check(equal(afterExport.uiDocuments[0].document,after),'Current export attachment');
+check(before.id===after.id,'Document identity');check(equal(oldGraph.nodes,graph.nodes),'Graph node identity/position/values preservation');check(equal(oldGraph.edges,graph.edges),'Graph edge preservation');
+check(graph.nodes.length===14&&graph.edges.length===20&&graph.nodeTypes.length===10,'Expected topology');
+check(equal(oldGraph.nodeTypes.map(type=>({id:type.id,ports:type.ports})),graph.nodeTypes.map(type=>({id:type.id,ports:type.ports}))),'Ports/family identity preservation');
+const gate=graph.nodeTypes.find(type=>type.id==='check'),oldGate=oldGraph.nodeTypes.find(type=>type.id==='check');
+for(const key of ['checkCrop','checkCaption','checkAA'])check(equal(gate.parameters[key],{type:'boolean',default:false})&&scope.state[key]?.controlled===true&&scope.state[key]?.type==='boolean','Controlled gate '+key);
+check(equal(gate.parameters.items,oldGate.parameters.items)&&equal(gate.parameters.ready,oldGate.parameters.ready),'Existing gate parameters');
+const controls=[['c-msel','model'],['c-steps','steps'],['c-guid','guidance'],['c-dest','destination'],['c-fmt','format'],['c-chk1','checkCrop'],['c-chk2','checkCaption'],['c-chk3','checkAA'],['c-ready','ready']].map(([id,key])=>{
+  const node=after.nodes[id],binding=node?.attributes?.[node.attributes.type==='checkbox'?'checked':'value'];
+  const wired=binding?.type==='ref'&&binding.path==='state.'+key&&node.interactions?.some(item=>item.on==='change'&&item.action==='setState'&&item.key===key);
+  check(wired&&scope.state[key]?.controlled===true,'Control binding '+id);return {id,key,tag:node.tag,label:node.attributes['aria-label'],controlled:scope.state[key]?.controlled,wired};
+});
+const git=(...args)=>execFileSync('git',args,{cwd:root,encoding:'utf8'}).trim();
+const ancestors=['10226797','72009029'].map(commit=>{const sha=git('rev-parse',commit);let ancestor=true;try{git('merge-base','--is-ancestor',sha,'fd27911029864d5618ea04d8c9814df7df865494');}catch{ancestor=false;}check(ancestor,'Expected ancestry '+commit);return {sha,ancestorOf:'fd27911029864d5618ea04d8c9814df7df865494',ancestor};});
+const changedNodes=Object.keys(before.nodes).filter(id=>!equal(before.nodes[id],after.nodes[id])),addedNodes=Object.keys(after.nodes).filter(id=>!before.nodes[id]),removedNodes=Object.keys(before.nodes).filter(id=>!after.nodes[id]);
+const report={schema:'vict.actual-checkpoint-source-review@1',reviewedRootHead:'fd27911029864d5618ea04d8c9814df7df865494',ancestors,files:names.map((name,index)=>({name,sha256:createHash('sha256').update(texts[index]).digest('hex'),characters:texts[index].length})),documentId:after.id,revisions:[before.revision,after.revision],sourceNodeCounts:[Object.keys(before.nodes).length,Object.keys(after.nodes).length],addedNodes,changedNodes,removedNodes,graphRevisions:[oldGraph.revision,graph.revision],graphNodeCount:graph.nodes.length,graphEdgeCount:graph.edges.length,graphFamilyCount:graph.nodeTypes.length,nodeValuesAndPositionsPreserved:equal(oldGraph.nodes,graph.nodes),edgesPreserved:equal(oldGraph.edges,graph.edges),changedFamilies:graph.nodeTypes.filter(type=>!equal(oldGraph.nodeTypes.find(previous=>previous.id===type.id),type)).map(type=>type.id),controlledMergeParameters:gate.parameters,controlWiring:controls,helpScope:scope.state.helpOpen,bodyBranches:after.nodes['ws-main'].slots.body.children,inputPortsWithAuthoredCapacity:graph.nodeTypes.flatMap(type=>type.ports.filter(port=>port.direction==='input'&&port.maxConnections!==undefined).map(port=>({family:type.id,id:port.id,maxConnections:port.maxConnections}))),finishingOccurrences:graph.nodes.filter(node=>node.type==='finish').map(node=>({id:node.id,mode:node.values.mode,subgraph:node.values.subgraph})),exportDocumentEqual:equal(afterExport.uiDocuments[0].document,after),nativeBehaviorVerified:false,sourceExportReviewOnly:true,errors,status:errors.length?'FAIL':'PASS: checkpoint preservation and declared wiring only'};
+writeFileSync(join(process.cwd(),path,'independent-source16-review.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({status:report.status,sourceNodes:report.sourceNodeCounts,graphNodes:report.graphNodeCount,edges:report.graphEdgeCount,changedFamilies:report.changedFamilies,changedNodes:report.changedNodes,addedNodes:report.addedNodes.length,errors},null,2));if(errors.length)process.exitCode=1;
