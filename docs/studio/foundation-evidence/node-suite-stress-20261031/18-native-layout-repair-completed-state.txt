@@ -1,0 +1,96 @@
+I'll start by reading the focused Finishing layout facts, the current outer graph, and the versioned graph data contract for the capacity field.
+
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+
+The Finishing width collapse is confirmed: fin-ws has no width inside bf-fin (align-items:center, width:100% of a shrink-to-fit card), and the viewport heights are literal props (cf-vp 540, fin-vp 150). The contract confirms maxConnections (integer ≥1) on ports. Now I need the rest of the graph (finS/finP subgraphs, positions, links), the unlabeled help rows, and the header meta block.
+
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+
+Header meta is a single styled paragraph; five early help checkboxes (brief/prompt/style/seed/draft) lack the visible "Node help" text the later cards have. Now I'll get the header text contents, the five early card roots (to locate each checkbox's row), and the final graph page (remaining links).
+
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+
+All facts are in: every input port has at most one existing link (so capacity 1 keeps all 20 edges valid), the five early help checkboxes sit bare in their card bodies, and the header stacks title/subtitle/counter vertically. Preflighting the four transactions now — Finishing/canvas layout, visible help labels, port capacity (outer families), and card arrangement.
+
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+
+All four transactions preflight cleanly. Applying them one at a time, starting with the Finishing/canvas layout repair.
+
+Edit screen
+completed
+
+Layout batch acknowledged (r1.r6#32). Now the visible help labels.
+
+Edit screen
+completed
+
+Labels in (r1.r6#33). Now the outer port-capacity transaction (graph revision 23).
+
+Edit screen
+completed
+
+Capacity in (r1.r6#34). Now the arrangement move at graph revision 24.
+
+Edit screen
+completed
+
+Arrangement in (r1.r6#35). Now the Social occurrence's inner capacities (route ws-main/finS, graph rev 25).
+
+Edit screen
+completed
+
+finS capacities in (r1.r6#36). Preflighting the Poster occurrence at the expected post-edit outer revision (26).
+
+Read screen
+completed
+
+Valid — applying the Poster occurrence.
+
+Edit screen
+completed
+
+All six transactions acknowledged through r1.r6#37. Verifying from source: layout facts and the graph state (capacities, positions, links, occurrence values).
+
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+
+Layout, capacities, positions and the 20 links verify so far. Two focused checks left: the middle graph page (finS/finP subgraphs + remaining positions) and the new label structures.
+
+Read screen
+completed
+Read screen
+completed
+
+All six repairs are acknowledged through r1.r6#37: the Finishing card is 760px with a stretched nested workspace and 380px viewport, the main canvas is 720px with the header counters/hints compacted onto one wrapped baseline row (configuration-only explanation untouched), the five early Help checkboxes now sit inside visible, associated "Node help" labels, and positions moved (finS/finP to x=1120, y=40/720; reviews, Merge and Export pushed right) so the widened cards clear Review/Merge/Export with separated Social/Poster branches. Source verification at graph revision 27 confirms maxConnections:1 on every semantically single-value input port across the seven outer families and the inner Grade/Caption families of both occurrences (outputs keep fanout), while all 20 outer links e01–e20, both inner graphs (now revision 2, same f-crop/f-grade/f-caption IDs, both links) and every distinct value — 1:1/35/social caption vs 2:3/70/poster caption, approved/pending reviews, gates, items, seed, destination/format — are preserved unchanged. Per your instruction I skipped image assessment, and with no click/type/scroll tools I could not exercise the new capacity refusals or label toggling — that verification is yours.

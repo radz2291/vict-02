@@ -1,0 +1,9 @@
+{
+  "action": "Pointer click697,389 on visibly rendered Node help text in Negative prompt after semantic text locator reportedzero visible rect",
+  "result": {
+    "positive": true,
+    "negative": false
+  },
+  "sourceFinding": "Shared body repeats literal id=c-help-p with explicit label for=c-help-p",
+  "classification": "Actual native sibling-label failure ifPositive true andNegativefalse"
+}

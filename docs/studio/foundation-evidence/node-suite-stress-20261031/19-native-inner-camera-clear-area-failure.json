@@ -1,0 +1,50 @@
+{
+  "scope": "Fresh screenshot-grounded gestures in empty Social nested canvas, belowallcards",
+  "drag": {
+    "from": [
+      500,
+      560
+    ],
+    "to": [
+      550,
+      580
+    ]
+  },
+  "wheel": {
+    "at": [
+      500,
+      560
+    ],
+    "direction": "up",
+    "pages": 1
+  },
+  "before": [
+    {
+      "label": "Campaign workflow canvas",
+      "view": "transform: translate(-734.278px, -10.9784px) scale(0.71279);"
+    },
+    {
+      "label": "Finishing steps canvas",
+      "view": "transform: translate(0px, 0px) scale(1);"
+    },
+    {
+      "label": "Finishing steps canvas",
+      "view": "transform: translate(0px, 0px) scale(1);"
+    }
+  ],
+  "after": [
+    {
+      "label": "Campaign workflow canvas",
+      "view": "transform: translate(-734.278px, -10.9784px) scale(0.71279);"
+    },
+    {
+      "label": "Finishing steps canvas",
+      "view": "transform: translate(0px, 0px) scale(1);"
+    },
+    {
+      "label": "Finishing steps canvas",
+      "view": "transform: translate(0px, 0px) scale(1);"
+    }
+  ],
+  "result": "No camera changed; remains nativefailure, notpass"
+}

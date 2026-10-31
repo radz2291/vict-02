@@ -1,0 +1,31 @@
+{
+  "before": [
+    {
+      "label": "Campaign workflow canvas",
+      "view": "transform: translate(-734.278px, -10.9784px) scale(0.71279);"
+    },
+    {
+      "label": "Finishing steps canvas",
+      "view": "transform: translate(0px, 0px) scale(1);"
+    },
+    {
+      "label": "Finishing steps canvas",
+      "view": "transform: translate(0px, 0px) scale(1);"
+    }
+  ],
+  "after": [
+    {
+      "label": "Campaign workflow canvas",
+      "view": "transform: translate(-734.278px, -10.9784px) scale(0.71279);"
+    },
+    {
+      "label": "Finishing steps canvas",
+      "view": "transform: translate(0px, 0px) scale(1);"
+    },
+    {
+      "label": "Finishing steps canvas",
+      "view": "transform: translate(0px, 0px) scale(1);"
+    }
+  ],
+  "sourceUnchanged": true
+}
