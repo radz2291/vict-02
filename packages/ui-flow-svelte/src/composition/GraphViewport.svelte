@@ -4,6 +4,7 @@
   import type { UiSvelteComponentProps } from '@victframework/ui-svelte';
   import { flowGestureClasses, guardFlowGestures } from '../flow-gesture-boundary.js';
   import {resolveGraphEdgeAppearance} from '../editor/model-v3.js';
+  import {createHandleProjection} from '../handle-projection.js';
   import FlowNavigation from '../FlowNavigation.svelte';
   import FlowCoordinateFrame from '../FlowCoordinateFrame.svelte';
   import FlowCoordinateSync from '../FlowCoordinateSync.svelte';
@@ -14,6 +15,7 @@
   let {props,presentation,occurrenceKey}:UiSvelteComponentProps=$props();
   const gestureId = $props.id();
   const gestureClasses = flowGestureClasses(gestureId);
+  const handles=createHandleProjection(gestureId);
   const workspace=getContext<GraphWorkspaceContext|undefined>(GRAPH_WORKSPACE);
   const initial=untrack(()=>workspace?.viewFor(occurrenceKey));
   let viewport=$state(initial?.viewport??{x:0,y:0,zoom:1});
@@ -27,11 +29,13 @@
   onDestroy(()=>{mounted=false;keyboardTicket++;connectionGesture.cancel();});
   $effect(()=>{
     if(!workspace)return;
-    nodes=workspace.graph.nodes.map(node=>({id:node.id,type:'composed',ariaLabel:node.label,position:{...node.position},data:{node,workspace,projectionKey:occurrenceKey},dragHandle:'.vict-graph-drag-handle',selected:workspace.selection.nodes.includes(node.id),draggable:!workspace.readOnly,connectable:!workspace.readOnly,deletable:false}));
-    edges=workspace.graph.edges.map(edge=>({...edge,type:'composed',data:{readOnly:workspace.readOnly,...(workspace.modelVersion===3?{appearance:resolveGraphEdgeAppearance(workspace.graph,edge)}:{})},sourceHandle:edge.sourcePort,targetHandle:edge.targetPort,reconnectable:!workspace.readOnly,deletable:false,selected:workspace.selection.edges.includes(edge.id)}));
+    nodes=workspace.graph.nodes.map(node=>({id:node.id,type:'composed',ariaLabel:node.label,position:{...node.position},data:{node,workspace,projectionKey:occurrenceKey,projectHandle:handles.id},dragHandle:'.vict-graph-drag-handle',selected:workspace.selection.nodes.includes(node.id),draggable:!workspace.readOnly,connectable:!workspace.readOnly,deletable:false}));
+    edges=workspace.graph.edges.map(edge=>({...edge,type:'composed',data:{readOnly:workspace.readOnly,...(workspace.modelVersion===3?{appearance:resolveGraphEdgeAppearance(workspace.graph,edge)}:{})},sourceHandle:handles.id(edge.source,edge.sourcePort),targetHandle:handles.id(edge.target,edge.targetPort),reconnectable:!workspace.readOnly,deletable:false,selected:workspace.selection.edges.includes(edge.id)}));
   });
   $effect(()=>{if(workspace)workspace.remember(occurrenceKey,{...viewport});});
-  function connection(value:Connection|Edge){return {source:value.source,sourcePort:value.sourceHandle??'',target:value.target,targetPort:value.targetHandle??''};}
+  function connection(value:Connection|Edge){
+    return handles.connection(value,id=>{const node=workspace?.graph.nodes.find(node=>node.id===id);return node?workspace!.ports(node):undefined;});
+  }
   function restorePositions(){
     if(workspace)nodes=nodes.map(node=>({...node,position:{...(workspace.graph.nodes.find(item=>item.id===node.id)?.position??node.position)}}));
   }
@@ -82,9 +86,9 @@
       onconnectstart={event=>connectionGesture.beginConnect(event)} onconnectend={()=>connectionGesture.cancel()}
       onclickconnectstart={event=>connectionGesture.beginConnect(event)} onclickconnectend={()=>connectionGesture.cancel()}
       onreconnectstart={(event,edge)=>connectionGesture.beginReconnect(edge.id,event)} onreconnectend={()=>connectionGesture.cancel()}
-      isValidConnection={candidate=>connectionGesture.valid(connection(candidate))}
-      onbeforeconnect={candidate=>{connectionGesture.connect(connection(candidate));return false;}}
-      onbeforereconnect={(next,old)=>{connectionGesture.reconnect(old.id,connection(next));return false;}}>
+      isValidConnection={candidate=>{const own=connection(candidate);return !!own&&connectionGesture.valid(own);}}
+      onbeforeconnect={candidate=>{const own=connection(candidate);if(own)connectionGesture.connect(own);else connectionGesture.cancel();return false;}}
+      onbeforereconnect={(next,old)=>{const own=connection(next);if(own)connectionGesture.reconnect(old.id,own);else connectionGesture.cancel();return false;}}>
       <FlowCoordinateSync {frame}/><Background/><FlowNavigation initialFit={!initial?.viewport&&workspace.graph.nodes.length>0} initialNodeIds={workspace.graph.nodes.map(n=>n.id)}/>
     </SvelteFlow></SvelteFlowProvider>
     {/snippet}</FlowCoordinateFrame>

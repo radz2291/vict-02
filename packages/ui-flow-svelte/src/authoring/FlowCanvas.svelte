@@ -3,6 +3,8 @@
   const gestureId = $props.id();
   const gestureClasses = flowGestureClasses(gestureId);
   import { setContext } from 'svelte';
+  import {createHandleProjection} from '../handle-projection.js';
+  const handles=createHandleProjection(gestureId);
   import { SvelteFlow, SvelteFlowProvider, Background, Controls, MiniMap, type Node, type Edge } from '@xyflow/svelte';
   import type { UiSvelteComponentProps } from '@victframework/ui-svelte';
   import { FLOW_AUTHORING_CONTEXT, createFlowAuthoringContext, type FlowProjection } from './context.js';
@@ -16,8 +18,8 @@
   setContext(FLOW_AUTHORING_CONTEXT, createFlowAuthoringContext(value => { projection = value; }));
   const nodeTypes = { authored: FlowVisibleNode };
   const edgeTypes = { authored: FlowVisibleEdge };
-  const nodes = $derived<Node[]>(projection.nodes.map(entry => ({ id: entry.id, type: 'authored', position: { x: entry.x!, y: entry.y! }, data: { declaration: entry }, draggable: false, connectable: false, deletable: false })));
-  const edges = $derived<Edge[]>(projection.edges.map(entry => ({ id: entry.id, type: 'authored', source: entry.source!, target: entry.destination!, data: { declaration: entry }, deletable: false })));
+  const nodes = $derived<Node[]>(projection.nodes.map(entry => ({ id: entry.id, type: 'authored', position: { x: entry.x!, y: entry.y! }, data: { declaration: entry,projectHandle:handles.id }, draggable: false, connectable: false, deletable: false })));
+  const edges = $derived<Edge[]>(projection.edges.map(entry => ({ id: entry.id, type: 'authored', source: entry.source!, target: entry.destination!,sourceHandle:handles.id(entry.source!,'output'),targetHandle:handles.id(entry.destination!,'input'), data: { declaration: entry }, deletable: false })));
   const height = $derived(typeof props.height === 'number' && Number.isFinite(props.height) ? Math.max(160, props.height) : 360);
 </script>
 <section use:guardFlowGestures={gestureClasses} {...presentation?.target('root')} aria-label={String(props.label ?? 'Flow diagram')}>

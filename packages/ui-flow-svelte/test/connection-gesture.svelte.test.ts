@@ -6,6 +6,7 @@ import {createWorkspaceSession,workspacePorts,workspaceConnectionIssue,type Work
 import {migrateGraphV1ToV2} from '../src/editor/model-v2.js';
 import {graphFixture} from './editor-fixture.js';
 import ReconnectEdgeFixture from './ReconnectEdgeFixture.svelte';
+import {createHandleProjection} from '../src/handle-projection.js';
 
 function harness(version:1|2=2){
   const legacy=graphFixture();legacy.nodeTypes[0]!.ports.find(port=>port.id==='out')!.maxConnections=1;
@@ -24,6 +25,16 @@ const candidate=(source='a',target='b')=>({source,sourcePort:'out',target,target
 const copy=<T>(value:T):T=>JSON.parse(JSON.stringify(value));
 
 describe('public geometry reconnect ownership',()=>{
+  for(const version of [1,2] as const)it(`translates only owning physical IDs into canonical reconnect/history in graph${version}`,()=>{
+    const h=harness(version),controller=new GraphConnectionGesture(()=>h.workspace),own=createHandleProjection('view'),foreign=createHandleProjection('nested'),before=copy(h.graph);
+    const lookup=(id:string)=>h.graph.nodes.some(node=>node.id===id)?workspacePorts(h.graph,id):undefined;
+    const physical={source:'c',sourceHandle:own.id('c','out'),target:'b',targetHandle:own.id('b','in')};
+    expect(own.connection({...physical,sourceHandle:foreign.id('c','out')},lookup)).toBeUndefined();
+    expect(own.connection({...physical,targetHandle:own.id('a','in')},lookup)).toBeUndefined();expect(h.calls).toEqual([]);
+    const semantic=own.connection(physical,lookup);expect(semantic).toEqual(candidate('c','b'));if(!semantic)throw Error('Own projection refused');
+    controller.beginReconnect('ab');controller.reconnect('ab',semantic);expect(h.graph.edges).toEqual([{id:'ab',...candidate('c','b')}]);expect(JSON.stringify(h.calls)).not.toContain('vict-h:');
+    h.workspace.undo();expect(h.graph.edges).toEqual(before.edges);expect(h.graph.nodes.map(node=>node.values)).toEqual(before.nodes.map(node=>node.values));
+  });
   for(const version of [1,2] as const)it(`reconnects source and target atomically with the same edge ID and history in graph${version}`,()=>{
     const h=harness(version),controller=new GraphConnectionGesture(()=>h.workspace,()=>h.mounted),before=copy(h.graph);
     controller.beginReconnect('ab');

@@ -84,12 +84,19 @@ socket row in workspace bodies @1/@2/@3. It derives the visible label, data type
 and input-left/output-right direction from the exact graph port ID. Compose one
 full-width row per port at the unpadded card boundary, and pad ordinary settings
 separately. This prevents several unrelated inputs becoming anonymous footer
-dots. The 10px visual socket has a transparent 28px hit area; rows grow with
+dots. The measured socket and visual dot are 10px; a separate transparent 28px
+pointer halo enlarges the hit area without moving the wire endpoint. Rows grow with
 content. Choose consistent hex or semantic-token colours by data type and keep
 the labels visible. The root/handle/socket/label/type parts are authorable, and
 optional content remains ordinary UI. This changes presentation only: graph
 types, capacity, connection history and ownership stay authoritative. Existing
 bare-port identities retain their original behavior.
+
+Canvas/node/port ownership is projected into opaque renderer handle IDs. Saved
+port IDs, body props, graph edges and operations remain semantic IDs. Connections
+translate back only through ports currently owned by that viewport and node;
+nested or sibling handles cannot alias an enclosing socket. Applications should
+author semantic port IDs and style the socket/halo rather than engine ID strings.
 
 A newly registered ordinary VICT component can be authored inside a body without
 a flow-specific variant or allowlist. Its ordinary placement, required context,

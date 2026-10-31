@@ -47,6 +47,8 @@ export interface GraphBodyContext {
   readonly nodeId: string;
   readonly ports: readonly GraphPort[];
   readonly readOnly: boolean;
+  /** Ephemeral renderer ID; canonical port IDs never change. Optional for legacy hosts. */
+  projectHandle?(portId:string):string;
   registerPort(id: string, token: symbol): () => void;
   uniquePort(id: string): boolean;
 }

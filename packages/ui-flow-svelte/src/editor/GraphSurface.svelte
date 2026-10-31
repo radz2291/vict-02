@@ -3,6 +3,8 @@
   const gestureId = $props.id();
   const gestureClasses = flowGestureClasses(gestureId);
   import { untrack } from 'svelte';
+  import {createHandleProjection} from '../handle-projection.js';
+  const handles=createHandleProjection(gestureId);
   import FlowCoordinateFrame from '../FlowCoordinateFrame.svelte';
   import FlowCoordinateSync from '../FlowCoordinateSync.svelte';
   import { type UiComponentPresentation } from '@victframework/ui-svelte';
@@ -159,6 +161,7 @@
         presentation,
         family: graphType(current, node),
         ports: graphPorts(current, node),
+        projectHandle:handles.id,
         readOnly,
         onField: (nodeId: string, fieldId: string, value: GraphValue) =>
           apply([{ type: 'setField', nodeId, fieldId, value }]),
@@ -171,8 +174,8 @@
       id: edge.id,
       source: edge.source,
       target: edge.target,
-      sourceHandle: edge.sourcePort,
-      targetHandle: edge.targetPort,
+      sourceHandle: handles.id(edge.source,edge.sourcePort),
+      targetHandle: handles.id(edge.target,edge.targetPort),
       reconnectable: !readOnly,
       deletable: false,
       selected: selection.edges.includes(edge.id),
@@ -214,12 +217,7 @@
     onselectionchange?.({ nodes: [...next.nodes], edges: [...next.edges] });
   }
   function connection(value: Connection | Edge) {
-    return {
-      source: value.source,
-      sourcePort: value.sourceHandle ?? '',
-      target: value.target,
-      targetPort: value.targetHandle ?? '',
-    };
+    return handles.connection(value,id=>{const node=current.nodes.find(node=>node.id===id);return node?graphPorts(current,node):undefined;});
   }
   function copy() {
     clipboard = copyGraphSelection(current, selection);
@@ -299,9 +297,9 @@
         onselectionchange={({nodes:selectedNodes,edges:selectedEdges})=>select({nodes:selectedNodes.map(node=>node.id),edges:selectedEdges.map(edge=>edge.id)})}
         onnodedragstart={()=>{dragging=true;dragCancelled=false;dragRevision=current.revision;}}
         onnodedragstop={({nodes:moved})=>{dragging=false;if(dragCancelled||current.revision!==dragRevision){sync();return;}apply([{type:'moveNodes',positions:Object.fromEntries(moved.map(node=>[node.id,{...node.position}]))}]);}}
-        isValidConnection={candidate=>!readOnly&&!connectionIssue(current,{id:'pending',...connection(candidate)})}
-        onbeforeconnect={candidate=>{apply([{type:'connect',edge:connection(candidate)}]);return false;}}
-        onbeforereconnect={(next,old)=>{apply([{type:'reconnect',edgeId:old.id,connection:{source:next.source,sourcePort:next.sourceHandle??'',target:next.target,targetPort:next.targetHandle??''}}]);return false;}}>
+        isValidConnection={candidate=>{const own=connection(candidate);return !readOnly&&!!own&&!connectionIssue(current,{id:'pending',...own});}}
+        onbeforeconnect={candidate=>{const own=connection(candidate);if(own)apply([{type:'connect',edge:own}]);return false;}}
+        onbeforereconnect={(next,old)=>{const own=connection(next);if(own)apply([{type:'reconnect',edgeId:old.id,connection:own}]);return false;}}>
         <FlowCoordinateSync {frame}/><Background /><FlowNavigation initialFit={fitInitially&&initialized} initialNodeIds={current.nodes.map(node=>node.id)} onInitialFit={()=>{cameraReady=true;}}/>
       </SvelteFlow></SvelteFlowProvider>
       {/snippet}</FlowCoordinateFrame>

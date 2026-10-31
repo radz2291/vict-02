@@ -21,7 +21,7 @@
 </script>
 {#if body&&port&&body.uniquePort(port.id)}
   <div {...presentation?.target('root')} class={`graph-port-row nodrag nopan nowheel ${presentation?.target('root').class??''}`} data-direction={port.direction} data-port={port.id} data-node-port={`${body.nodeId}/${port.id}`} style:--vict-port-row-color={socketColor??'var(--vict-color-accent,#167d72)'}>
-    <Handle {...presentation?.target('handle')} id={port.id} type={port.direction==='input'?'target':'source'} position={port.direction==='input'?Position.Left:Position.Right} isConnectable={!body.readOnly} aria-label={`${port.direction} ${port.label}: ${port.type}`} title={`${port.direction} ${port.label} · ${port.type}`} class={`port-row-hit ${presentation?.target('handle').class??''}`}>
+    <Handle {...presentation?.target('handle')} id={body.projectHandle?.(port.id)??port.id} type={port.direction==='input'?'target':'source'} position={port.direction==='input'?Position.Left:Position.Right} isConnectable={!body.readOnly} aria-label={`${port.direction} ${port.label}: ${port.type}`} title={`${port.direction} ${port.label} · ${port.type}`} class={`port-row-hit ${presentation?.target('handle').class??''}`}>
       <span {...presentation?.target('socket')} aria-hidden="true" class={`port-row-dot ${presentation?.target('socket').class??''}`}></span>
     </Handle>
     <span {...presentation?.target('label')} class={`port-row-label ${presentation?.target('label').class??''}`}>{port.label}</span>
@@ -33,7 +33,9 @@
 <style>
   .graph-port-row{position:relative;box-sizing:border-box;display:flex;align-items:center;gap:8px;width:100%;min-width:0;min-height:32px;padding:4px 20px;color:inherit}
   .graph-port-row[data-direction=output]{justify-content:flex-end}
-  .graph-port-row :global(.port-row-hit){display:grid;place-items:center;width:28px;height:28px;top:50%;border:0;background:transparent}
+  .graph-port-row :global(.port-row-hit){display:grid;place-items:center;width:10px;height:10px;top:50%;border:0;background:transparent}
+  /* The halo receives pointer hits without inflating XYFlow's measured socket. */
+  .graph-port-row :global(.port-row-hit)::before{content:'';position:absolute;width:28px;height:28px;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;pointer-events:inherit}
   .port-row-dot{box-sizing:border-box;width:10px;height:10px;flex:none;border:1px solid var(--vict-color-border,#dce5e5);border-radius:50%;background:var(--vict-port-row-color);pointer-events:none}
   .port-row-label{min-width:0;overflow-wrap:anywhere;font-size:12px}
   .port-row-type{flex:0 1 auto;min-width:0;max-width:45%;overflow-wrap:anywhere;border:1px solid var(--vict-color-border,#3b4b60);border-radius:4px;padding:1px 4px;font-size:10px;color:var(--vict-color-textMuted,inherit)}

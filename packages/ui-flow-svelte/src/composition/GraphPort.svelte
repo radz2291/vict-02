@@ -15,7 +15,7 @@
 </script>
 {#if body&&port&&body.uniquePort(port.id)}
   <div {...presentation?.target('root')} class={`graph-port-anchor nodrag nopan nowheel ${presentation?.target('root').class??''}`} data-port={port.id} data-node-port={`${body.nodeId}/${port.id}`}>
-    <Handle id={port.id} type={port.direction==='input'?'target':'source'} position={port.direction==='input'?Position.Left:Position.Right} isConnectable={!body.readOnly} aria-label={`${port.direction} ${port.label}: ${port.type}`}/>
+    <Handle id={body.projectHandle?.(port.id)??port.id} type={port.direction==='input'?'target':'source'} position={port.direction==='input'?Position.Left:Position.Right} isConnectable={!body.readOnly} aria-label={`${port.direction} ${port.label}: ${port.type}`}/>
     {#if io?.slots?.content}{@render io.slots!.content!()}{/if}
   </div>
 {:else}<span role="alert">Graph port unavailable or duplicated: {String(props.id??'')}</span>{/if}

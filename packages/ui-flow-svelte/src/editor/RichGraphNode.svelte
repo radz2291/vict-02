@@ -32,7 +32,7 @@
   <div class="port-list">
     {#each ports as port (port.id)}
       <div {...presentation?.target('port')} class:output={port.direction==='output'} class={`port-row ${presentation?.target('port').class ?? ''}`} data-port={port.id}>
-        <Handle id={port.id} type={port.direction==='input'?'target':'source'} position={port.direction==='input'?Position.Left:Position.Right} isConnectable={data.readOnly!==true} aria-label={`${port.direction} ${port.label}: ${port.type}`} />
+        <Handle id={(data.projectHandle as ((nodeId:string,portId:string)=>string)|undefined)?.(id,port.id)??port.id} type={port.direction==='input'?'target':'source'} position={port.direction==='input'?Position.Left:Position.Right} isConnectable={data.readOnly!==true} aria-label={`${port.direction} ${port.label}: ${port.type}`} />
         <Button variant="secondary" label={port.label} presentation={actionPresentation(`Trace ${node.label} ${port.label} connections`)} onclick={event=>{event.stopPropagation();trace(id,port.id);}}/><small>{port.type}</small>
       </div>
     {/each}

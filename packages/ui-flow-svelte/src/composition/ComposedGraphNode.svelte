@@ -26,6 +26,7 @@
     get nodeId(){return id;},
     get ports(){return workspace.ports(node);},
     get readOnly(){return workspace.readOnly;},
+    projectHandle(portId){return (data.projectHandle as ((nodeId:string,portId:string)=>string)|undefined)?.(id,portId)??portId;},
     registerPort(id,token){anchors={...anchors,[id]:[...(anchors[id]??[]),token]};remeasure();return()=>{anchors={...anchors,[id]:(anchors[id]??[]).filter(item=>item!==token)};remeasure();};},
     uniquePort(id){return anchors[id]?.length===1;},
   });
