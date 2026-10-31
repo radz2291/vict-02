@@ -10,7 +10,6 @@ const root=process.cwd(),input=resolve(inputArg),destination=resolve(destination
 const inventoryPath=resolve(inventoryArg??'docs/studio/foundation-evidence/architecture-realignment-20261030/vict-realignment-consumer-F0YKQr.json');
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const bytes=readFileSync(input),bundle=JSON.parse(bytes.toString('utf8'));
-if(bytes.length>96*1024*1024)throw Error('Export exceeds supported JSON byte budget.');
 if(!bundle||Object.keys(bundle).some(key=>!['application','uiDocuments','mediaArchive'].includes(key))||bundle.application?.schema!=='vict.application@3'||bundle.uiDocuments?.length!==1||bundle.uiDocuments[0]?.document?.schema!=='vict.ui-document@1')throw Error('Expected supported one-screen application export, not bare source or an arbitrary bundle.');
 const source=bundle.uiDocuments[0].document;
 if(bundle.mediaArchive&&(bundle.mediaArchive.schema!=='vict.media-archive@1'||!Array.isArray(bundle.mediaArchive.assets)||bundle.mediaArchive.assets.length))throw Error('This preview supports only absent or empty media archives; managed media validation is not bypassed.');
