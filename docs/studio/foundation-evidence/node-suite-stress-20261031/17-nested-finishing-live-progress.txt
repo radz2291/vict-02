@@ -1,0 +1,49 @@
+Picking up Campaign Foundry at r1.r5#24 — reading the current workspace scope, outer graph (finishing type/ports/occurrence values), body inventory, and the versioned graph data contracts before composing the nested Finishing body.
+
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+Read screen
+failed
+Input
+{"section":"state","offset":0,"limit":12,"stateKey":"graph"}
+Result
+{"expectedRevision":"r1.r5#24","cursor":{"documentId":"screen-a8690ffa-1e90-4b72-909c-66141d372773","revision":"r1.r5#24","digest":"51f3022500134ba5b84e1095f532913621f841aee3b46da9a5e86294c0caa4e9","epoch":"42d6cc79-bcaa-4f84-a34a-7d5d54685af2"},"section":"state","ok":false,"code":"STUDIO_AGENT_STATE_NOT_FOUND","message":"Use an existing stateKey from the state inventory.","turnProgress":{"applied":0,"metrics":{"toolCalls":5,"completedCalls":1,"refusedCalls":1,"recoveryAttempts":0,"toolElapsedMs":36,"providerRequests":1,"visionRequests":0,"acknowledgementMs":0,"confirmedEdits":0,"usage":{"inputTokens":22531,"outputTokens":14144,"totalTokens":36675},"categories":{"knowledge":0,"source":5,"edit":0,"observe":0,"other":0},"elapsedMs":343833,"toolActiveMs":26,"outsideToolMs":343806,"modelSteps":null,"cost":null},"retainedKnowledge":{"scope":"Complete contract bodies delivered in this turn only; reuse still requires their content to remain available in model context. Source facts are never cached knowledge.","complete":[],"partialCount":0},"visualEvidence":{"regions":[],"currentSourceObservations":0,"scope":"Captured regions only; source freshness does not establish current runtime/viewport freshness or offscreen/interaction coverage.","interactionsVerified":false},"evidence":"Host receipt-derived totals include all acknowledged transactions, including cleanup. Outside-tool time is waiting/generation/transport/host overhead, not measured provider latency. Captured regions do not establish full-page or interaction coverage."}}
+Read screen
+completed
+
+The body scope already declares subgraph (controlled string) and the isFinish condition — so the scope is ready and I only need the Finishing body itself. Now reading the graph value/operations contracts, the ws-main graph wiring tail, state inventory, and the viewport/card composition to mirror.
+
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+
+Confirmed: the outer graph lives in document state campaignGraph (serialized vict.flow-graph@2, revision 20), ws-main binds graph ← state.campaignGraph with graphChange → setState — the exact pattern to replicate per Finishing occurrence through state.subgraph. Now finishing the operations contract, reading the full graph (finish type + finS/finP values), and the Export card leaves to mirror.
+
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+Read screen
+completed
+
+The finish type already carries the subgraph string parameter and its i/o image ports — no type change needed. Now reading the graph tail (finS/finP node ids and current values) and the Export card tail (select, help wrapper, ports row) to mirror exactly.
+
+Read screen
+completed
+Read screen
+completed

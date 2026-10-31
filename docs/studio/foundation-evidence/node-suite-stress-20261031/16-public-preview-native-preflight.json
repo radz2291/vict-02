@@ -1,0 +1,32 @@
+{
+  "scope": "Partial r1.r5 public-package standalone checkpoint; not final suite verification",
+  "url": "http://127.0.0.25:5632/",
+  "preparationReportSha256": "5d549d11117bac341c395337a7721b89528af3913ed4078d2b2efb014bf72e1b",
+  "observations": [
+    {
+      "action": "Filled Positive prompt through ordinary textarea with5572characters",
+      "result": "Positive value length5572, Negative length62 and original full value unchanged"
+    },
+    {
+      "action": "Filled Guidance spinbutton7.25",
+      "result": "Rendered value7.25"
+    },
+    {
+      "action": "Set Merge ContrastAA checkbox twice through checkbox pointer control",
+      "result": "Browser mapping could not locate target at interaction location; refreshed DOM reported unchecked. Screenshot showed other focused cards while Merge was outside clipped canvas. Not counted as application failure or success."
+    },
+    {
+      "action": "Focused Merge ContrastAA checkbox and pressed Space through ordinary keyboard input",
+      "result": "DOM checkedtrue; other observed values unchanged"
+    },
+    {
+      "action": "Normal background drag1080,360→400,360 panned outer graph to Review/Merge; normal checkbox pointer uncheck after it became reachable",
+      "result": "Screenshot shows delivery branch; ContrastAA DOM checkedfalse after pointeruncheck. Initial pointer failure localized to clipped/off-canvas target, not reproduced on visible checkbox."
+    }
+  ],
+  "limitations": [
+    "Runtime DOM preflight only; no final source/save/reload proof",
+    "Finishing bodies remain absent in this snapshot",
+    "Pointer activation proved after normal pan brought Merge onto the visible canvas; complete final app still requires its own tests."
+  ]
+}
