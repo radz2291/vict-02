@@ -1,0 +1,2297 @@
+{
+  "original": "C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-independent-20261031",
+  "dist": [
+    {
+      "path": "packages\\appdata-sqlite\\dist\\adapter.d.ts",
+      "sha256": "1af086badd46a05ba6ba988f510890d732deddb463c41cf025d69659bbc23806"
+    },
+    {
+      "path": "packages\\appdata-sqlite\\dist\\adapter.js",
+      "sha256": "0f9b54c3240a71ae0e3b1b865a86b263cac3cbff9f6608c2ac371d3fa850f3e2"
+    },
+    {
+      "path": "packages\\appdata-sqlite\\dist\\adapter.js.map",
+      "sha256": "78788f6b750161289acd891f0546fba3aaabc99db6f413731c455d3b75a371f0"
+    },
+    {
+      "path": "packages\\appdata-sqlite\\dist\\driver.d.ts",
+      "sha256": "6054ed8c6f9ed24eaa0bf31b585249cd7811ac06f654bf7a458ff59ffa4c8a4b"
+    },
+    {
+      "path": "packages\\appdata-sqlite\\dist\\driver.js",
+      "sha256": "fe4334b6c8d9873cf96e815a907ce37e94cca43447f2b8a946e13527e34a373d"
+    },
+    {
+      "path": "packages\\appdata-sqlite\\dist\\driver.js.map",
+      "sha256": "e662fe0dfec35b3a3a524e315def53f928d5bd2f1891c826de7078a6092f435a"
+    },
+    {
+      "path": "packages\\appdata-sqlite\\dist\\index.d.ts",
+      "sha256": "02de3a6dcdfbf94c0fd725d28888d324d45f96e8c7c0d472f405fd6e3440f324"
+    },
+    {
+      "path": "packages\\appdata-sqlite\\dist\\index.js",
+      "sha256": "ad24a93609fa4566ffa5fd1f0f34cb5d1b464cffaf92001d98d78c7ea6829351"
+    },
+    {
+      "path": "packages\\appdata-sqlite\\dist\\index.js.map",
+      "sha256": "86140014cbba346b5d9b6cbf78807c4a867769f45e417740d91673a6af908ab6"
+    },
+    {
+      "path": "packages\\appdata-sqlite\\dist\\migrations.d.ts",
+      "sha256": "081cabda62c93535dfbbbc9c6d85ccf208b683f1bea6ec4e7445c39571fbf581"
+    },
+    {
+      "path": "packages\\appdata-sqlite\\dist\\migrations.js",
+      "sha256": "bad336956e1b63137d327293b54724327f55de3c2489a439f8b826ab6ff4e5b3"
+    },
+    {
+      "path": "packages\\appdata-sqlite\\dist\\migrations.js.map",
+      "sha256": "f86e4feec735c78b06074e65cd6298c378f37151f1fd0cec434d8b73ed2c15c3"
+    },
+    {
+      "path": "packages\\application\\dist\\compile.d.ts",
+      "sha256": "cd3fcb1a8d59eb3aff717ffd12a3136236b51d27c318b6add61ba01696063dde"
+    },
+    {
+      "path": "packages\\application\\dist\\compile.js",
+      "sha256": "828ed8493e8bf6e7eb1fdaf5b70a3687097093f7756f91775bbca8a4d9264387"
+    },
+    {
+      "path": "packages\\application\\dist\\compile.js.map",
+      "sha256": "478ab89d5c837536d18f0dd058407890f3242a2b7a9cbc189c34ee183af3fe32"
+    },
+    {
+      "path": "packages\\application\\dist\\data-conformance.d.ts",
+      "sha256": "12051ba4611242898baeaf8f6ac19452380c7bd4f3ebae3e0122aabb7b05e331"
+    },
+    {
+      "path": "packages\\application\\dist\\data-conformance.js",
+      "sha256": "9636164e3307e0160a880003827fff14677bef69991fad3fbb2625968f156551"
+    },
+    {
+      "path": "packages\\application\\dist\\data-conformance.js.map",
+      "sha256": "afe4dd0cbe95d176f93f15c3447232d575ba27a43cdc1d2741f6e76a3c6eee90"
+    },
+    {
+      "path": "packages\\application\\dist\\data.d.ts",
+      "sha256": "40b36b67c6b87a9b23a523b7caa75effb2a60db085a46cf63c4922fe1308b02a"
+    },
+    {
+      "path": "packages\\application\\dist\\data.js",
+      "sha256": "965054e084d28f897183f5d37fd860d33bb77a0d54d6efffd8c6bd21d81c639d"
+    },
+    {
+      "path": "packages\\application\\dist\\data.js.map",
+      "sha256": "59131d12ee14aa2b52c9bf9b5005299037bbba79e95d1060a01c8d445ac2f4d7"
+    },
+    {
+      "path": "packages\\application\\dist\\index.d.ts",
+      "sha256": "19dedd1b1f13517cd5c3d7176c136e3b00034514fca47991c4399344c24bdd6b"
+    },
+    {
+      "path": "packages\\application\\dist\\index.js",
+      "sha256": "72c88db211042a55a64d3547078806741035332ff22f4577a47e7fda57c6da06"
+    },
+    {
+      "path": "packages\\application\\dist\\index.js.map",
+      "sha256": "35bf4f4a088cd6a28aae3184a9d47166ddbc4c38533f94a0c2ccc9f5f6ecfd4b"
+    },
+    {
+      "path": "packages\\application\\dist\\release.d.ts",
+      "sha256": "f7288aafbe26ccf31deb467ce47429b87adb998b01a8d44fdbb2e8d971d9ce23"
+    },
+    {
+      "path": "packages\\application\\dist\\release.js",
+      "sha256": "849d2acc1826d54511456ef3d24ee6db32c084279c7c526b3462d3fc1c454736"
+    },
+    {
+      "path": "packages\\application\\dist\\release.js.map",
+      "sha256": "4e24196ae92ff85a88f376d11d5ed394774065561f4d8143425e9c38525914a0"
+    },
+    {
+      "path": "packages\\application\\dist\\renderer-conformance.d.ts",
+      "sha256": "434463ac8de72577d293c8933d0a0d7ce3110e4cf5d549c67f5e62627d8ffa5e"
+    },
+    {
+      "path": "packages\\application\\dist\\renderer-conformance.js",
+      "sha256": "5a3d0788aef3a585e59653036e70aa89ddd75dbccfbd1d9bf366bef77370fc17"
+    },
+    {
+      "path": "packages\\application\\dist\\renderer-conformance.js.map",
+      "sha256": "5ccf2bcf26f11414cde77dcded670b7a6c5fe26806b92961b9560206be93c21b"
+    },
+    {
+      "path": "packages\\application\\dist\\renderer.d.ts",
+      "sha256": "953418b13c9a0bd4fc808dbfe41a84a12914702fcc1fe388cc6409cbbd724bc8"
+    },
+    {
+      "path": "packages\\application\\dist\\renderer.js",
+      "sha256": "f605f93f3ffd903323d818dff092063752f3b226b84d39cfc1c807c00f02f712"
+    },
+    {
+      "path": "packages\\application\\dist\\renderer.js.map",
+      "sha256": "4bfb0f1372f80596f81a6e3e9acf75caf4c7baa418e43b84f8fd971796943f1e"
+    },
+    {
+      "path": "packages\\application\\dist\\sha256.d.ts",
+      "sha256": "7d85afe71610b11eccf56c3481f2fe12cf6a847020c305b411f625b851a20e30"
+    },
+    {
+      "path": "packages\\application\\dist\\sha256.js",
+      "sha256": "e348daa7bbabd20ccd1b3bffff561f3fd12292b57e1c30d37d0eedd87d789d25"
+    },
+    {
+      "path": "packages\\application\\dist\\sha256.js.map",
+      "sha256": "5fb5eab78f8a29f224cc49e644e9d5c597ff37e6e4c254d6220c118d129db1dd"
+    },
+    {
+      "path": "packages\\application\\dist\\testing.d.ts",
+      "sha256": "92eb75e6a60335727ce3dd2a6ae54c9add8c5b76772f7adbc2e6d12272a90ec3"
+    },
+    {
+      "path": "packages\\application\\dist\\testing.js",
+      "sha256": "7b12ce4e326490e10cca147af4585211643b6536d28dbf4cfdb4188e17c269ed"
+    },
+    {
+      "path": "packages\\application\\dist\\testing.js.map",
+      "sha256": "3e9628132a453b7cb1fd7ec61e64cbd019a5366ce2bbb8583bc3a9759fba4ab4"
+    },
+    {
+      "path": "packages\\application\\dist\\ui-attach.d.ts",
+      "sha256": "005e3a5d2752d4849302d5b007718e3610dbc52d601a2b93865d055851f40dc7"
+    },
+    {
+      "path": "packages\\application\\dist\\ui-attach.js",
+      "sha256": "35bda8dd7967519c38c089a103034d3caa02e2bf74d674def0adbbbf1b706ab6"
+    },
+    {
+      "path": "packages\\application\\dist\\ui-attach.js.map",
+      "sha256": "63c96811cc2a33919a2d6879f2fe92cd6f6b3f578b71f6e83e52b2649f77abf8"
+    },
+    {
+      "path": "packages\\application\\dist\\vocabulary.d.ts",
+      "sha256": "4cb8e3b6947d46529e45bd507d3c64aeb74dc806a24bd7829e01f94886908de4"
+    },
+    {
+      "path": "packages\\application\\dist\\vocabulary.js",
+      "sha256": "f26d572f26c57b3f576133de1506435a6085179044f89cb5bb7a7e7ff2c8236b"
+    },
+    {
+      "path": "packages\\application\\dist\\vocabulary.js.map",
+      "sha256": "fd1a863b77f5ecf726453d0911da91b87bf69a712960947b9abe5df0b7e816b2"
+    },
+    {
+      "path": "packages\\cli\\dist\\check.d.ts",
+      "sha256": "b29813cfed23f8f305ab9cfa7fb9c95a9492fd30b65dab899233280ebda6f43a"
+    },
+    {
+      "path": "packages\\cli\\dist\\check.js",
+      "sha256": "1b0ee26fcdef903fb5540a927c31d3271b21af0310ff8dba7d75ddcf11588fa1"
+    },
+    {
+      "path": "packages\\cli\\dist\\check.js.map",
+      "sha256": "b8548e4b53c7129f5c898530ead0b754278956eff306c357090cc200cd368e54"
+    },
+    {
+      "path": "packages\\cli\\dist\\cli.d.ts",
+      "sha256": "fa0c68ae87b55c04dd517d8b8bc1b4f832af15ad9ba6cb0bca76f8bb5a982443"
+    },
+    {
+      "path": "packages\\cli\\dist\\cli.js",
+      "sha256": "2f52875ca500d4c4c5eacff53d39e5df2a3fd75cd5918395abb6ef6506bb75c8"
+    },
+    {
+      "path": "packages\\cli\\dist\\cli.js.map",
+      "sha256": "4b1a2469278dbe2eeb1ebe6cfecbb955eb82bb48c1e23df0b5d6570c67d99881"
+    },
+    {
+      "path": "packages\\cli\\dist\\client.d.ts",
+      "sha256": "76079d8e37bf5fbf541859a591c6b2c5b0ea167692ffa32df37f57f843d5dbd3"
+    },
+    {
+      "path": "packages\\cli\\dist\\client.js",
+      "sha256": "95cf68bc06cb7d2a53974934a8bba04d801d5916d9087526e7290f05ad8fc474"
+    },
+    {
+      "path": "packages\\cli\\dist\\client.js.map",
+      "sha256": "9af1ebb8de10930a51fae85cb129045cc39f36beebb4f7ced477e4fcaa9258a0"
+    },
+    {
+      "path": "packages\\cli\\dist\\commands.d.ts",
+      "sha256": "a665456d12f3672c4703a23089b75f5d8c8b18f1559c21a7fa7014059e9e85d3"
+    },
+    {
+      "path": "packages\\cli\\dist\\commands.js",
+      "sha256": "c09ee43432396f1b6e0803cfd4a6b39200147f0e616b1c3ac9dd011a8fbbec60"
+    },
+    {
+      "path": "packages\\cli\\dist\\commands.js.map",
+      "sha256": "91a325472c32c5949a1b4ef3407ebed03180b068c8d139c3a2f026d01766d5fb"
+    },
+    {
+      "path": "packages\\cli\\dist\\index.d.ts",
+      "sha256": "94d4d0e6a480ded3d74076d3a016aecb67bafe8bdbb6258fac4555cda1231a89"
+    },
+    {
+      "path": "packages\\cli\\dist\\index.js",
+      "sha256": "b6ef685cfe4c5a7a5ed2db4d8e77a5f8ff06ca777b7872032abd74ab2c70d220"
+    },
+    {
+      "path": "packages\\cli\\dist\\index.js.map",
+      "sha256": "50c8a27f2b429dec9ee02d95c9c25787de60c3b4fdd89149036774bd542b1393"
+    },
+    {
+      "path": "packages\\contracts\\dist\\agent-stream.d.ts",
+      "sha256": "07ecb035588a9f9c523a689b2b24d54b7faab56bbba420f3c448d1a7ed0beccc"
+    },
+    {
+      "path": "packages\\contracts\\dist\\agent-stream.js",
+      "sha256": "de18bc1f1dd6e7d44582c246dd8163309ef02392eb0dcaf5c1ad292b6d1a36e0"
+    },
+    {
+      "path": "packages\\contracts\\dist\\agent-stream.js.map",
+      "sha256": "aacf617b1384662e4f4ab8e92fb5942b37cab67611c7805fa13911c3dee27c08"
+    },
+    {
+      "path": "packages\\contracts\\dist\\define-contract.d.ts",
+      "sha256": "88a32e862a5fe37af92d8c3fb297aadfd938140a82f17f5fb1f5dd9cd965fae3"
+    },
+    {
+      "path": "packages\\contracts\\dist\\define-contract.js",
+      "sha256": "c0fc360a27039b5cea87dd7bca40b566296d4b3eeda0f8413bb47fa1a854413b"
+    },
+    {
+      "path": "packages\\contracts\\dist\\define-contract.js.map",
+      "sha256": "facfafd6065e39569fc38e079b13f548b66031cc45a69118a4ac91ee5d571215"
+    },
+    {
+      "path": "packages\\contracts\\dist\\error.d.ts",
+      "sha256": "a190387fd065c9ef280de88bd754a7f2f26c74331f7d16744a5a0fc03a18d2bc"
+    },
+    {
+      "path": "packages\\contracts\\dist\\error.js",
+      "sha256": "9aa1ef98878ca549c9596ae05bd0254c9f3f8153c694bb5910ab9801df5bc13c"
+    },
+    {
+      "path": "packages\\contracts\\dist\\error.js.map",
+      "sha256": "708490a0a3ea5c6437ed74f5cd9457632ee3b03aa380ae9b6579102c9c06fc73"
+    },
+    {
+      "path": "packages\\contracts\\dist\\errors.d.ts",
+      "sha256": "47a73de344b92f42b5e7a16129b339b20038c17b65f3890b007a05352c0abdfe"
+    },
+    {
+      "path": "packages\\contracts\\dist\\errors.js",
+      "sha256": "32afe19f83f2ff3df1dcfd12143a3f3f3253adc3e0ddaf4fe7608fff7ed7d877"
+    },
+    {
+      "path": "packages\\contracts\\dist\\errors.js.map",
+      "sha256": "6e7ca7cec2a814c915ef550451f7713d227c9adf8df7aef6ccf83b1412b0ccdc"
+    },
+    {
+      "path": "packages\\contracts\\dist\\index.d.ts",
+      "sha256": "2859b96d0325f0d4a9b732fe1b1ceaf014e58d84e26db2d1a6c723e1b040e718"
+    },
+    {
+      "path": "packages\\contracts\\dist\\index.js",
+      "sha256": "0308271d3a7a0c9c3a6b648d75d3ce3e7fd325ebae6c4d6807a787ff24ffdad1"
+    },
+    {
+      "path": "packages\\contracts\\dist\\index.js.map",
+      "sha256": "71dcd024796149d99f3e214ee2c08c67241710e0cdb1dc5acb28c60aa4edb532"
+    },
+    {
+      "path": "packages\\contracts\\dist\\issue-mapping.d.ts",
+      "sha256": "590dca4ccd33b45bfa7d093face697a59e133086d4b957eed91ee8ab963fe2eb"
+    },
+    {
+      "path": "packages\\contracts\\dist\\issue-mapping.js",
+      "sha256": "7215cf822dd35ecd9b99ba05cae403eb659aec4387996d4287da2735a98c9ca3"
+    },
+    {
+      "path": "packages\\contracts\\dist\\issue-mapping.js.map",
+      "sha256": "04b5867226850643dc53630b398a9b47ed0c9731f5d1c53097b45a6085b425ca"
+    },
+    {
+      "path": "packages\\contracts\\dist\\neutral.d.ts",
+      "sha256": "8d24e32864546cdbe1c19ba2d73dae7a063653d5477ff096970dd32503ee2cb8"
+    },
+    {
+      "path": "packages\\contracts\\dist\\neutral.js",
+      "sha256": "757e5a38576de88767c9b17103a4063dd35db63fea6ba7acd35df41fa0b6c8b3"
+    },
+    {
+      "path": "packages\\contracts\\dist\\neutral.js.map",
+      "sha256": "4847cd5fe73de8752d1857583560686d035abdf416738bea6de63f93addc1e3a"
+    },
+    {
+      "path": "packages\\contracts\\dist\\types.d.ts",
+      "sha256": "0d6c004d23454b19ee9505e6a4bd8669219a18dbefebd30eff0628028acb4c6c"
+    },
+    {
+      "path": "packages\\contracts\\dist\\types.js",
+      "sha256": "17ed4f3e0fee700d1e33392e6920cb89ca06729102d04175b1e4535b4cc3677a"
+    },
+    {
+      "path": "packages\\contracts\\dist\\types.js.map",
+      "sha256": "ee0c544565913c6ac5bec9d0e9c0ec291aec64bb990377767a12cebe3c85fc5f"
+    },
+    {
+      "path": "packages\\contracts\\dist\\zod\\define-zod-contract.d.ts",
+      "sha256": "b03db050b52b1438a1c424d3010e4790433e6c57f8823569e4df7f8bfe11e6a3"
+    },
+    {
+      "path": "packages\\contracts\\dist\\zod\\define-zod-contract.js",
+      "sha256": "ccfa23a089113e93665468e3be6a02f7540b9c4dad7039e91ac9c77c9ed0db7b"
+    },
+    {
+      "path": "packages\\contracts\\dist\\zod\\define-zod-contract.js.map",
+      "sha256": "ce11d85b67929e9d0afff6f80d3bacb6546b59a5c20b780a1acf6a0efbd4c595"
+    },
+    {
+      "path": "packages\\contracts\\dist\\zod\\index.d.ts",
+      "sha256": "b03791c7b32164cc7f1177a5977aed61d96223044cc38ea31ab327a7bfb4f1a2"
+    },
+    {
+      "path": "packages\\contracts\\dist\\zod\\index.js",
+      "sha256": "7c7b1fdccdbfa5c8bc1ab8d72fa03aeacdd4b5cc50de72bf20d057b8ea6f5e63"
+    },
+    {
+      "path": "packages\\contracts\\dist\\zod\\index.js.map",
+      "sha256": "95028d4e904bf785f9fb4685603ddd622380f68245f4a7e9ad5d9643f7103a13"
+    },
+    {
+      "path": "packages\\control\\dist\\agent-turns.d.ts",
+      "sha256": "4b65eb0c303dea4654d3779fc1d4d3dd04efbbf142b8d20d507bd1398038bce7"
+    },
+    {
+      "path": "packages\\control\\dist\\agent-turns.js",
+      "sha256": "8969bb116827c3b95483a20a7bb25c47128dbb88925f791c5922db9b84db0aa0"
+    },
+    {
+      "path": "packages\\control\\dist\\agent-turns.js.map",
+      "sha256": "116cb998230d958243249e8e34378efdcd40c07a4de82ee795a9337a2b792350"
+    },
+    {
+      "path": "packages\\control\\dist\\control-plane-simulation.d.ts",
+      "sha256": "0c9d553c0c8f94b6f8d02304d6626ad563a757718c0c3040dbdabaecf3bc4252"
+    },
+    {
+      "path": "packages\\control\\dist\\control-plane-simulation.js",
+      "sha256": "2fb6fd158dba311eb894e37daade2a823aa2a386f7775fdc165044b9c4850733"
+    },
+    {
+      "path": "packages\\control\\dist\\control-plane-simulation.js.map",
+      "sha256": "1ad482515c4ad9111a589082fca7a9f31a856884d689489ec685d6ac9c822a00"
+    },
+    {
+      "path": "packages\\control\\dist\\control-plane.d.ts",
+      "sha256": "d16e8a6b2fcc24294047fe2bfd13a641aed77fc984cb71000bcea87e3563c120"
+    },
+    {
+      "path": "packages\\control\\dist\\control-plane.js",
+      "sha256": "9d4d5ff5de097edbda938087709abeeed9bfa6dec14caa575c9de1ce272fa9f8"
+    },
+    {
+      "path": "packages\\control\\dist\\control-plane.js.map",
+      "sha256": "c1335015b102b67bd8268bf57183e274b28653f0b1dff353c418e9548194f913"
+    },
+    {
+      "path": "packages\\control\\dist\\index.d.ts",
+      "sha256": "7b473742147c51763668a23cd70226a72d4ce1e3053bfb34171141963a33cc75"
+    },
+    {
+      "path": "packages\\control\\dist\\index.js",
+      "sha256": "ef021209739fa707f0bd2ce31707c9681bb4e6a206d16656813a5357e22efccb"
+    },
+    {
+      "path": "packages\\control\\dist\\index.js.map",
+      "sha256": "1d18ef5b4552bef32c3016a27d7bbc299fa251f6011e06abb76d4b9d290e1885"
+    },
+    {
+      "path": "packages\\kernel\\dist\\agent-profile.d.ts",
+      "sha256": "bf22e513296bd16c555482a00a404efd8908833da755749f7494dc806effcecf"
+    },
+    {
+      "path": "packages\\kernel\\dist\\agent-profile.js",
+      "sha256": "29eae495e305430ba61affeb3e7c53d889de0945d0cc2d06033522ca57dd2970"
+    },
+    {
+      "path": "packages\\kernel\\dist\\agent-profile.js.map",
+      "sha256": "2a878186020bc7b0d6ba2ea73ee4e008e5a3769322d6e479054a9b133fcd551c"
+    },
+    {
+      "path": "packages\\kernel\\dist\\canonical.d.ts",
+      "sha256": "8787949c8a1da06adf2f70d6235f12f07c1c65a3cee5db5f3253e864bf3d82ac"
+    },
+    {
+      "path": "packages\\kernel\\dist\\canonical.js",
+      "sha256": "fadb897af1decd3e76f8cd6b6f14d2f4dfe111ae6b7daf9c73691d65f2303df8"
+    },
+    {
+      "path": "packages\\kernel\\dist\\canonical.js.map",
+      "sha256": "f36b01e435f6d822d930ec31856f1c0f08b972b23203ce0c10df4cd59740d021"
+    },
+    {
+      "path": "packages\\kernel\\dist\\compile.d.ts",
+      "sha256": "ce8057ba4eaacf8f9bae0d70e82718c0d53606f8f826475a20cd2508cfb4e03a"
+    },
+    {
+      "path": "packages\\kernel\\dist\\compile.js",
+      "sha256": "368d39d770b23f90001b47114a6fb1ec302086cd78ff12ea47154d164d5af0a7"
+    },
+    {
+      "path": "packages\\kernel\\dist\\compile.js.map",
+      "sha256": "dc3be09f4cfe31a9c87ad5b5ea251bb4a012f9df70d34f64be757855d16dbe92"
+    },
+    {
+      "path": "packages\\kernel\\dist\\errors.d.ts",
+      "sha256": "7fa8c80382c1bf0bfa35bc4771dcfc696a1b59e3ea7672763a16501d577c7559"
+    },
+    {
+      "path": "packages\\kernel\\dist\\errors.js",
+      "sha256": "26bd0ab9d047844bf4721c6f222955f24e7585be6f1731ddd3cd994a1c156e01"
+    },
+    {
+      "path": "packages\\kernel\\dist\\errors.js.map",
+      "sha256": "6681788282e447e8419798d7cc558506eb64b8899dd84ea85f111b2ef7f9c932"
+    },
+    {
+      "path": "packages\\kernel\\dist\\execute.d.ts",
+      "sha256": "d4e348abdaa4f9055059edbf34753f6b239d6de3cfc2a94dcfefa1bf1ad152e1"
+    },
+    {
+      "path": "packages\\kernel\\dist\\execute.js",
+      "sha256": "56247b7434ef19207cdd242e066faf2885062ed7f096133ed8cc8ea7609489f4"
+    },
+    {
+      "path": "packages\\kernel\\dist\\execute.js.map",
+      "sha256": "a3eff4d427d68e200b6b2ef515b27e8439d07c265bfae7ad5bc6f37d411a7b45"
+    },
+    {
+      "path": "packages\\kernel\\dist\\index.d.ts",
+      "sha256": "80417cca81d63bc428c34333f7734a4ad0cc9987c27915e96e0d77a4fd7271c0"
+    },
+    {
+      "path": "packages\\kernel\\dist\\index.js",
+      "sha256": "2f883eba040af6efb5e3196eec35907a4699e545802a26b601a6e445fe269f3a"
+    },
+    {
+      "path": "packages\\kernel\\dist\\index.js.map",
+      "sha256": "2c5e5661d23a9cd5c12bd1b11999903030a12979aeb435c2d8f3d70b7cdab1a5"
+    },
+    {
+      "path": "packages\\kernel\\dist\\orchestration-state.d.ts",
+      "sha256": "6958ee268259fd7a1d6232be23a4ffeaf9f95788c3d6c5704322a098c91a1bca"
+    },
+    {
+      "path": "packages\\kernel\\dist\\orchestration-state.js",
+      "sha256": "97d8ed68e21c8cf7ea4172190cf2c1c7bac99ac89bfe45d8c63fe44d1a2a8421"
+    },
+    {
+      "path": "packages\\kernel\\dist\\orchestration-state.js.map",
+      "sha256": "cf8c12ba469abf9013964662c25ecbb5bf182599a5f9fa6b132823b0cc358fb0"
+    },
+    {
+      "path": "packages\\kernel\\dist\\summarize.d.ts",
+      "sha256": "9a0225cdf21e23ed6a253271490d465beb16c5c034b6f3ed177947bb20b9e4d2"
+    },
+    {
+      "path": "packages\\kernel\\dist\\summarize.js",
+      "sha256": "d512186e45624709638c81fbbeda00a9df4119350267f736334b4409b498ca0d"
+    },
+    {
+      "path": "packages\\kernel\\dist\\summarize.js.map",
+      "sha256": "8cacbc0616811d67d098ec201590c19eec79a3097b059f9ee765b465f705ed4d"
+    },
+    {
+      "path": "packages\\kernel\\dist\\testing.d.ts",
+      "sha256": "8085b50d69872d00e51c2c46d89018660868b131511f8509d309952e4f3c6e4e"
+    },
+    {
+      "path": "packages\\kernel\\dist\\testing.js",
+      "sha256": "af5d44e1f46ac4a5ba7d76926ddf6a246bc79716708b14bdc503b1f6d79bfaff"
+    },
+    {
+      "path": "packages\\kernel\\dist\\testing.js.map",
+      "sha256": "8a19c894a1a9c26190843e882c9c0da3b5498112ea7d7a7175215ade0bb51649"
+    },
+    {
+      "path": "packages\\kernel\\dist\\types.d.ts",
+      "sha256": "b95e4e1f6d8e797e192ce9c983ab2fb1d35cdb68f98ed5545321735801f540c2"
+    },
+    {
+      "path": "packages\\kernel\\dist\\types.js",
+      "sha256": "3e7f8510f4fd97e8c94b80aad44c1efc0a25bbc875c43719159dfe4e5c9ed09e"
+    },
+    {
+      "path": "packages\\kernel\\dist\\types.js.map",
+      "sha256": "3d452ee4acb83a4468b1fb58119a738c1e9f182bd07fa0a51bfe51b774ffcf1a"
+    },
+    {
+      "path": "packages\\mastra\\dist\\adapter.d.ts",
+      "sha256": "ad02c26d59819e73371ee819fe14477d4e987d11fc5be2e98a308df4b9dbc8b8"
+    },
+    {
+      "path": "packages\\mastra\\dist\\adapter.js",
+      "sha256": "017878944dd50e78703db1bcbd4de707b70a672503d52d60410b4ec127b38394"
+    },
+    {
+      "path": "packages\\mastra\\dist\\adapter.js.map",
+      "sha256": "f1e051b81aa9ccc568930229f410c3c0d1c3367b0536d55c9059d807ca84aeb4"
+    },
+    {
+      "path": "packages\\mastra\\dist\\compatibility.d.ts",
+      "sha256": "17fb9b76f63d5f2acec1df49ae4a892026a4e8d3a682ad991956bf92d3eedd10"
+    },
+    {
+      "path": "packages\\mastra\\dist\\compatibility.js",
+      "sha256": "19dc7153b55770c23a1dc5837a85435b7aefcf80e119442dc7d2d51829a7db36"
+    },
+    {
+      "path": "packages\\mastra\\dist\\compatibility.js.map",
+      "sha256": "260cba1028ddd2cd61884bff42e87cbbe5750cebcb26b2c373a0081962b56ba0"
+    },
+    {
+      "path": "packages\\mastra\\dist\\control-envelope.d.ts",
+      "sha256": "09afdcaa0e0580baf451b9ab60ca4fa54921c4704022e89283f89c6e9142fe40"
+    },
+    {
+      "path": "packages\\mastra\\dist\\control-envelope.js",
+      "sha256": "321ca6d0cef1c324f1db77bd8e188d1cc0f8f71f3375a1aa7fd9cd1b806aaf67"
+    },
+    {
+      "path": "packages\\mastra\\dist\\control-envelope.js.map",
+      "sha256": "70056715bded511fe234eddeaea115dbf0973dea72389e03b730bbf743b9e1f4"
+    },
+    {
+      "path": "packages\\mastra\\dist\\delivery-snapshot.d.ts",
+      "sha256": "962c46e91fa18e78eac826f823ac07217f5a14b10352bc9f5a262ace5fca89bf"
+    },
+    {
+      "path": "packages\\mastra\\dist\\delivery-snapshot.js",
+      "sha256": "d0f5feaac2f754a82140b42ffe801e2633e01e2fd40a4f9eb8fd7c5b19e6f460"
+    },
+    {
+      "path": "packages\\mastra\\dist\\delivery-snapshot.js.map",
+      "sha256": "7ea2b2b6df58607b545033c3a4fa3c8adcdb1ae3fb66f32e71c263ac5a73ccae"
+    },
+    {
+      "path": "packages\\mastra\\dist\\helper-tools.d.ts",
+      "sha256": "7537988b01c5f27360690108d3c17a5168e7bdf08f7fa5e507befd2cc0551889"
+    },
+    {
+      "path": "packages\\mastra\\dist\\helper-tools.js",
+      "sha256": "6a8963d7a0d5d3a1246372d8bafd3d326d544ff6ca8ae5e67700ccbe2e6184e8"
+    },
+    {
+      "path": "packages\\mastra\\dist\\helper-tools.js.map",
+      "sha256": "b08e3bcea31e87f200fc28a7f1e6ede8065029ca0db40ec455562c8d2818d993"
+    },
+    {
+      "path": "packages\\mastra\\dist\\index.d.ts",
+      "sha256": "6e925b67c88b7ff297305f7211ea46dda6fda9b7eb5e57b420829fb282aa8095"
+    },
+    {
+      "path": "packages\\mastra\\dist\\index.js",
+      "sha256": "52aa9aaa47d7c117b05d8b016a24d9208b8a2a9919ffbcfa448c75cec05b3ce1"
+    },
+    {
+      "path": "packages\\mastra\\dist\\index.js.map",
+      "sha256": "bda90d6e22845d4deba9727fef43456a62d26400166f64f8a4649230377bb4f5"
+    },
+    {
+      "path": "packages\\mastra\\dist\\input-validation-feedback.d.ts",
+      "sha256": "634c4baecc0fa50a4866aa8b9cec7aead71eb313f2634bde0a8414640753f467"
+    },
+    {
+      "path": "packages\\mastra\\dist\\input-validation-feedback.js",
+      "sha256": "3ed8e7d118e52753747e39b200725c9ae76cca9a007053907fe7d48ceda44794"
+    },
+    {
+      "path": "packages\\mastra\\dist\\input-validation-feedback.js.map",
+      "sha256": "2cad988dd4577dee775721043bb77735b0b703de9aa7c3147b45c875372fecf2"
+    },
+    {
+      "path": "packages\\mastra\\dist\\memory.d.ts",
+      "sha256": "e61073207892ef2239eb1c399dbf9fe859dcbea9d184656ca0b03a1825a9dbf8"
+    },
+    {
+      "path": "packages\\mastra\\dist\\memory.js",
+      "sha256": "6707993e1dba61b8bcb55c4cb5a12d3d79f30c750f3a7964edddd5465c2cc259"
+    },
+    {
+      "path": "packages\\mastra\\dist\\memory.js.map",
+      "sha256": "714f6ca015c902460bbfa575ff384107fec7cd63fe34c638a7bda31c5e796449"
+    },
+    {
+      "path": "packages\\mastra\\dist\\offline-model.d.ts",
+      "sha256": "aa69226956ae364bc2914befd287aed5b096c909f5dae947b1555112ec7702a3"
+    },
+    {
+      "path": "packages\\mastra\\dist\\offline-model.js",
+      "sha256": "c83d9d99bf9b031d882fcab5d1614243b702f63c45fdbc4c1d64adbba41febe5"
+    },
+    {
+      "path": "packages\\mastra\\dist\\offline-model.js.map",
+      "sha256": "c8c6a0160ebd186fbe8a71cf0ee9bafa9a2e5021e5d1ab6d9cb49316fa600760"
+    },
+    {
+      "path": "packages\\mastra\\dist\\presentation.d.ts",
+      "sha256": "d9094204ce9667d2c6594b698256d81fb446aaee2965085ed069ad8462ddb621"
+    },
+    {
+      "path": "packages\\mastra\\dist\\presentation.js",
+      "sha256": "b4bd61174fe860d075cbb9ea398114a7318776a4ab48109e5a2796fefb0b4b27"
+    },
+    {
+      "path": "packages\\mastra\\dist\\presentation.js.map",
+      "sha256": "6e742ae163463e27cdb7d6b945ac5ebfe1a252d29903b6c1eb36221262d522fd"
+    },
+    {
+      "path": "packages\\mastra\\dist\\raw-argument-guard.d.ts",
+      "sha256": "2db853aa3de6f1eb2e268ad714bd499ff7dcb6a5b71322926d102613d9335910"
+    },
+    {
+      "path": "packages\\mastra\\dist\\raw-argument-guard.js",
+      "sha256": "d51b1bc81db0af357951e22591e97f4aa076c20201861a1c84b6563a4e87b032"
+    },
+    {
+      "path": "packages\\mastra\\dist\\raw-argument-guard.js.map",
+      "sha256": "7a3353dddad5cf4c67d72b312f21d95dde8b7a9ddfd05bd497d87b0aeb0e1e75"
+    },
+    {
+      "path": "packages\\mastra\\dist\\storage.d.ts",
+      "sha256": "d25ca0d6bbaf8baa0f1422652796063f0ca8bb1a46902803d4c4c527adc8d0d2"
+    },
+    {
+      "path": "packages\\mastra\\dist\\storage.js",
+      "sha256": "0f70d435867cfd757a777a1eae19034912e9ee53f15f4885ad9abfb07f7a6be1"
+    },
+    {
+      "path": "packages\\mastra\\dist\\storage.js.map",
+      "sha256": "cab342e940791b579337248f51f316eae0379fa246be6c4f6c55f08bf97f64b2"
+    },
+    {
+      "path": "packages\\mastra\\dist\\tool-bridge.d.ts",
+      "sha256": "93aa5f3b9e93110c1ab16524f14295052b9dccdb7c6f1f96cdfed5a5ed31935e"
+    },
+    {
+      "path": "packages\\mastra\\dist\\tool-bridge.js",
+      "sha256": "c2abbc9cf93663dba96bd0c09c0dc0d8edbcabcdae8fc4ef8235f0e038c4fc7a"
+    },
+    {
+      "path": "packages\\mastra\\dist\\tool-bridge.js.map",
+      "sha256": "612eb03be0349c459b0bb4699637afef08a10d1ec26cfb1bf3fea89f9eca79aa"
+    },
+    {
+      "path": "packages\\mastra\\dist\\turn-executor.d.ts",
+      "sha256": "d200f24d38e395d0d9fdcba0a5c37acb4f32332265faed3633d6b9822f1dcca5"
+    },
+    {
+      "path": "packages\\mastra\\dist\\turn-executor.js",
+      "sha256": "2f4048a8b4a62b3ea96b0b483c117930ee7861deb7295e3d25a4350b257f4aff"
+    },
+    {
+      "path": "packages\\mastra\\dist\\turn-executor.js.map",
+      "sha256": "2751bff64d468d240f522e3ad33e3d34e8a116e67cc2c466253e62eb96d7334f"
+    },
+    {
+      "path": "packages\\runtime\\dist\\agent-delivery.d.ts",
+      "sha256": "7cac39cbf44f074f57dc2ab9e7874aad68f426eb129ac533837ea37e69ee7fa2"
+    },
+    {
+      "path": "packages\\runtime\\dist\\agent-delivery.js",
+      "sha256": "7db1b3c791303b6c7aab767bcf6f93e0a5b50a67e7aa90c8bbdc130e1feab617"
+    },
+    {
+      "path": "packages\\runtime\\dist\\agent-delivery.js.map",
+      "sha256": "dc6fee1a6c35f99972841f830bf16b635281e2ed577d70149de1d0c01bd4532c"
+    },
+    {
+      "path": "packages\\runtime\\dist\\agent-governance.d.ts",
+      "sha256": "7a45c7c44ee02861123cdc1b8e7e810abcc72cb51acf01611d83cad5563314fe"
+    },
+    {
+      "path": "packages\\runtime\\dist\\agent-governance.js",
+      "sha256": "7ef49e35312dbcc43fae63f26bb12d21662fc1df7fee26fce35ebb8be60e3868"
+    },
+    {
+      "path": "packages\\runtime\\dist\\agent-governance.js.map",
+      "sha256": "10f6abd861d41feeb068c719eeff84e08c9a2bc65be21f4fee553a744dc8894f"
+    },
+    {
+      "path": "packages\\runtime\\dist\\agent-registry.d.ts",
+      "sha256": "40410f801d0d7e01680ea29d2a5c777cabf35bf7b4e5abbb7a5bc666bc424e3c"
+    },
+    {
+      "path": "packages\\runtime\\dist\\agent-registry.js",
+      "sha256": "fc45e1a2098a636d4c425bace7f0d6648994f6e6adb24527cc60fb1405edee87"
+    },
+    {
+      "path": "packages\\runtime\\dist\\agent-registry.js.map",
+      "sha256": "4d032ce81da8cdca118f66e4a19f399b0a423353b5faba9e0a0048b914926f11"
+    },
+    {
+      "path": "packages\\runtime\\dist\\agent-types.d.ts",
+      "sha256": "71c6f1826bee14f91037dada1e17a5b1a32c734a340cf5a327f4ab25c068a254"
+    },
+    {
+      "path": "packages\\runtime\\dist\\agent-types.js",
+      "sha256": "524029ffb7ef772b37f832144077d88a58446f35deb05e66645a561fec18a20c"
+    },
+    {
+      "path": "packages\\runtime\\dist\\agent-types.js.map",
+      "sha256": "5ef0a944f7059658633ae535ca70a6866b57d4bc4813d35b933ef3e6ad6ebdcb"
+    },
+    {
+      "path": "packages\\runtime\\dist\\authority.d.ts",
+      "sha256": "4291ce38e6f435e71995ec0d09a19b45b2e9b518f505aa90de7986c3a51e9a9b"
+    },
+    {
+      "path": "packages\\runtime\\dist\\authority.js",
+      "sha256": "9340f3599529b03302b853cd5b80f08a0d58555e01b7747a381c5a303b5fe877"
+    },
+    {
+      "path": "packages\\runtime\\dist\\authority.js.map",
+      "sha256": "fd8a3364184898efbd5263d9ec2547c7259a8e5bfedc59b9a7a8c1e4eba77e1c"
+    },
+    {
+      "path": "packages\\runtime\\dist\\boundary-conformance.d.ts",
+      "sha256": "fd30a9ca3d2f3b527a554783b7b71857bb1be88784e73dde604f89baeda4af29"
+    },
+    {
+      "path": "packages\\runtime\\dist\\boundary-conformance.js",
+      "sha256": "5efda947ef4afed8c292c63b6f9b519b39023371d96e87b3fbe1ff6be35ea9b5"
+    },
+    {
+      "path": "packages\\runtime\\dist\\boundary-conformance.js.map",
+      "sha256": "2428fefa7dd6dfb9bcb94ad814281dbb4c26443ef176592fdee7f87b2e149683"
+    },
+    {
+      "path": "packages\\runtime\\dist\\control-conformance.d.ts",
+      "sha256": "092827d117437a6b34a79b474333973349f0cacd95dd68fea67dbead95b4126d"
+    },
+    {
+      "path": "packages\\runtime\\dist\\control-conformance.js",
+      "sha256": "2a089b1010c790e0ed3077b7d02811f465ffb83ddf1083640a26faefc21e8efc"
+    },
+    {
+      "path": "packages\\runtime\\dist\\control-conformance.js.map",
+      "sha256": "5d700cd6e4bbf70d08ff41513b50df42e95c59cbfbc9971bdac45488000ecb97"
+    },
+    {
+      "path": "packages\\runtime\\dist\\control-in-memory.d.ts",
+      "sha256": "ee84ec7cda054fe4687ccc1d56feef0a3a99064ced1ff214c36ddcfcd3f8cfed"
+    },
+    {
+      "path": "packages\\runtime\\dist\\control-in-memory.js",
+      "sha256": "df80398100d8c442dcd7ca6d3279ac99bc2a3d80b1c47c3e6f814dfb1dffc431"
+    },
+    {
+      "path": "packages\\runtime\\dist\\control-in-memory.js.map",
+      "sha256": "a0a1b617429e196fbbe669b893a7c4d18dbe23f333302579c18b4f5ee563340b"
+    },
+    {
+      "path": "packages\\runtime\\dist\\control-types.d.ts",
+      "sha256": "3954b1177a57891fbba96c7f5f471c7ac55b7a8fcd2a342a843b48a6761c8b36"
+    },
+    {
+      "path": "packages\\runtime\\dist\\control-types.js",
+      "sha256": "dfbf771683f5795ea0ef8374d90a8b5e71b2a6b939732c439892d71fe057aff2"
+    },
+    {
+      "path": "packages\\runtime\\dist\\control-types.js.map",
+      "sha256": "639bd9a2020413ff3659b434e7fda83241f173c55650e8ca2913e03d1d4f60aa"
+    },
+    {
+      "path": "packages\\runtime\\dist\\durable-run.d.ts",
+      "sha256": "e9a4d5dfae69142373ec0935f94b452908aa80dfb6e4009d650c0306c0606e0a"
+    },
+    {
+      "path": "packages\\runtime\\dist\\durable-run.js",
+      "sha256": "d555934f1b4d529ba81e73187c96022e328fb28bec21e4d9f7ed8d66e5a6fe51"
+    },
+    {
+      "path": "packages\\runtime\\dist\\durable-run.js.map",
+      "sha256": "a90bb78834fc0ebef029b61b2929869939dbcfe9e7bd8cb4a34075254e909dfd"
+    },
+    {
+      "path": "packages\\runtime\\dist\\effect-policy.d.ts",
+      "sha256": "01f5868af17c19202302310360be0a81a14754e085ee903b1cff1f36b00b7035"
+    },
+    {
+      "path": "packages\\runtime\\dist\\effect-policy.js",
+      "sha256": "c2382be0050392d13023dfd87bef4319b6abc8fff487ef92f5b7183180772918"
+    },
+    {
+      "path": "packages\\runtime\\dist\\effect-policy.js.map",
+      "sha256": "df47d6e2c3fd707118f607ac68ca5ff6c2dc3e079f9b4c9f5ffb7823098ad3c5"
+    },
+    {
+      "path": "packages\\runtime\\dist\\errors.d.ts",
+      "sha256": "0b3f53cbf7a49ce52fdd64a127315c9eb21d8d39983adf2a81d4abb9603d5a57"
+    },
+    {
+      "path": "packages\\runtime\\dist\\errors.js",
+      "sha256": "3ae4be6ad15c9cdf669d14b0d17cdeb7e4db9d301d66ce3c48f773920af23312"
+    },
+    {
+      "path": "packages\\runtime\\dist\\errors.js.map",
+      "sha256": "5103d9076207a4d007676dbb708672481661f6ac499735d1da7aee211a6e071d"
+    },
+    {
+      "path": "packages\\runtime\\dist\\in-memory-stores.d.ts",
+      "sha256": "b77677699ec19c0326760097b0ad59d07e630b86817eb0fe4fabeaa3b0be2800"
+    },
+    {
+      "path": "packages\\runtime\\dist\\in-memory-stores.js",
+      "sha256": "ba08c1cbfff97c53a608d9c8be49e23da02270fd08448ddca67694c696b30091"
+    },
+    {
+      "path": "packages\\runtime\\dist\\in-memory-stores.js.map",
+      "sha256": "d1c1c31d0c6ebb765226edb3823c99c17d0971965738839273b7e4072b66d3e8"
+    },
+    {
+      "path": "packages\\runtime\\dist\\index.d.ts",
+      "sha256": "000d6fc5f38800bc99d18dac5d207443cf2b4b900f672618103fc565c60c6ab2"
+    },
+    {
+      "path": "packages\\runtime\\dist\\index.js",
+      "sha256": "46b5e61b73da32c1ef891b3745db1db76f8b6f4138f0a54b4a2021cc039c95d4"
+    },
+    {
+      "path": "packages\\runtime\\dist\\index.js.map",
+      "sha256": "966cb643b6d63da63b9f7d89c54cd1b5741dc83762352cdaf4d870fec4dfccc4"
+    },
+    {
+      "path": "packages\\runtime\\dist\\operator-config.d.ts",
+      "sha256": "4cb198c1fb728dadfa1c0397cfb83957e146a72a167ee9c902d4de58a21abacb"
+    },
+    {
+      "path": "packages\\runtime\\dist\\operator-config.js",
+      "sha256": "1bfba966bccd1b24604da9a0a2833a97ec6460b8818186f6c71c8b6a4136ea6d"
+    },
+    {
+      "path": "packages\\runtime\\dist\\operator-config.js.map",
+      "sha256": "11578d1e607c0b9bbfe6116628402f05f7555498a66e1601415e6ab788889d3b"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-activation.d.ts",
+      "sha256": "b98613102ce247ea6b8947511aafcc40cd4268de96c448ec87b7568c1f462e1e"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-activation.js",
+      "sha256": "5489113de5063506f4beab4593658705953fbc6543e19c0926727269efc9d69a"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-activation.js.map",
+      "sha256": "922da6b0bf4849602567a08ce57354c999cdff052151406dd04b478fbe22df95"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-canary-conformance.d.ts",
+      "sha256": "dd1b9c4dd2a582fe607a2c0f6d5577274305cf661b9ce988279b5d8d8811b176"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-canary-conformance.js",
+      "sha256": "074f5c18854435d0787b58717d0aa52da15173f2e413e62f6192f65a4ed52334"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-canary-conformance.js.map",
+      "sha256": "cb6a770c515e8ab7f85eb4bb58da27eccc3b8f66049427fcafba1ca03b0f4e72"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-commands.d.ts",
+      "sha256": "a06eadbec31adce83d45ea16ca62032f2725a09e5c1f8daf933ef9ae0b860c9c"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-commands.js",
+      "sha256": "a7bd55c13df10ae52ba7ad941cf3ae283fdd16611c40ecc0d4433350d86992e2"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-commands.js.map",
+      "sha256": "64450593726e2d9e33b887df9a47b3e6d8327add8c8cf02df76f19d4c4fff3da"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-conformance.d.ts",
+      "sha256": "b709d00ba2b3c3656ac1c61f1278c10b48f868b931bbf621421c942fc0fc74c5"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-conformance.js",
+      "sha256": "1dc351f4b81d50431ba347bd22f4ee6daae1b0e857cc77ba30b3a093b322bfe2"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-conformance.js.map",
+      "sha256": "64b2690bf09992e88ecf913917bfc2346c110630490da9ad11baa3be14e05ccc"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-driver-types.d.ts",
+      "sha256": "be307bec309e55eb0d7b799c5fc764708b1488653506d86bfde4d8fd85b1ec64"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-driver-types.js",
+      "sha256": "a779198a37e870fe801a85018528a63a6b780e3a2b5e219501100ee18fc2f81c"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-driver-types.js.map",
+      "sha256": "794448bdff6a1e235c0cbffa83b4197d55bcb93fb7b9cb686a8c57994343b956"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-driver.d.ts",
+      "sha256": "dd0ac27e868b5e8e234e74420fb4af0947302a4dfa94f5de97b4c7e76be70dbe"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-driver.js",
+      "sha256": "2646df76b93de7e6aada7273cbc237814590ef64a9655cdad629ff98973e74a2"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-driver.js.map",
+      "sha256": "af6f064da91deb15e7034788e226b73893980db11dc3e4b76355f85fe5e242f3"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-in-memory.d.ts",
+      "sha256": "244d2cf569fca1fa2fc85bff6a421f3a29a8f171398d9fbf269a1179f633039e"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-in-memory.js",
+      "sha256": "b37073bd53d4b1843f9178bab5638504dd5c353ceccc246f168a95b90d5bd181"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-in-memory.js.map",
+      "sha256": "44d19c60afc2ef63e5d9c3716a8c6bad59392f8aed9ed4e72080d32eb3104c4e"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-join-conformance.d.ts",
+      "sha256": "176104325850594b478996882f3cb295c7a6432263176c58cbf519579ec17329"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-join-conformance.js",
+      "sha256": "05b77be9348f1d00c936adbea6a8e97cc577ca1d5cb79c8e6f66b6c29a3d10f7"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-join-conformance.js.map",
+      "sha256": "9af86192f2850f1f64bd8ebfc4580cccb8611677726f29e6c32aba16e358f9f3"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-plan.d.ts",
+      "sha256": "e4fbd8767bcde40de9b76bec5ac5b5595a94178edf33a9fd6d1eb42119aa289c"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-plan.js",
+      "sha256": "e50eec436069ce6d11152ba25c993b49e5387064d0ed57736a40def63716d194"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-plan.js.map",
+      "sha256": "200d706b1ccbfe890ac4205955fbb24b65e3d4a2f9962946f832dffc4f01e179"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-race-conformance.d.ts",
+      "sha256": "0831bcb2cbbd170c7b085d240278e2e241a6b0c513bf8fd1f29ac3d5ddf548e2"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-race-conformance.js",
+      "sha256": "69df19a553f27efaf05507bb1a0b19e288f4a5435ac828050692c77f33ba1fb1"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-race-conformance.js.map",
+      "sha256": "e492541947a6e62ec5f8e395dc1dbbb242454677bfe9476dee82a9889754a622"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-remediation-conformance.d.ts",
+      "sha256": "4a03d9bbfb9f7ef0f28e8481fb36bce65ee237d4134f2201a699b47acc0e77ae"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-remediation-conformance.js",
+      "sha256": "688ef93a8d46cece51103542dee5342465908ecce28176da823f10c5cca231c2"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-remediation-conformance.js.map",
+      "sha256": "da7356f432451e961178998f164785dbba15566ca58b63bae56d76a16fd597d0"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-store-types.d.ts",
+      "sha256": "2cc59ae1a2abe42c2aae7f5ca29f9613b0a67921fb46c7e3f10092c1f6ff3f14"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-store-types.js",
+      "sha256": "37c65da4432b1cc2d606637b7f9f4a9af24530a5188b01d66629a0d8b35f64d7"
+    },
+    {
+      "path": "packages\\runtime\\dist\\orchestration-store-types.js.map",
+      "sha256": "ef3601a414134b77a539a44da573f7e89f26f52d774e0a95e92f852c78443f80"
+    },
+    {
+      "path": "packages\\runtime\\dist\\pack-conformance.d.ts",
+      "sha256": "ea6623ffe62e755f9b9fc30608c6547dea61b380da070fa7688e73673181d902"
+    },
+    {
+      "path": "packages\\runtime\\dist\\pack-conformance.js",
+      "sha256": "278dd1f741d2cba888b5fffdc79ea378ba601657860a8d0c39db212841590232"
+    },
+    {
+      "path": "packages\\runtime\\dist\\pack-conformance.js.map",
+      "sha256": "df680bbd52386050a80dcae9b864a7510f5371000b823463fa1184bf691e9aae"
+    },
+    {
+      "path": "packages\\runtime\\dist\\pack-install.d.ts",
+      "sha256": "e258539ee02843e45820c9e02e7b9dfb468925769c0ede228bce10d1dff9b014"
+    },
+    {
+      "path": "packages\\runtime\\dist\\pack-install.js",
+      "sha256": "219e0bf18a06e77f2a791295378ac0a9a139152500e1589c81ef9afdc2a3b1b9"
+    },
+    {
+      "path": "packages\\runtime\\dist\\pack-install.js.map",
+      "sha256": "a6c48ac6743795077383bb99db5b32753b183d8dabcf2615bac6009c771c3151"
+    },
+    {
+      "path": "packages\\runtime\\dist\\registry.d.ts",
+      "sha256": "4789a9c6f65163c5aebcff78f971cef3dc0084b3c63db5c508d7fc7139740a62"
+    },
+    {
+      "path": "packages\\runtime\\dist\\registry.js",
+      "sha256": "6799297f2acad7f63dd3b50fc6cb9539a14d80b665c12690a39dce96e39a99eb"
+    },
+    {
+      "path": "packages\\runtime\\dist\\registry.js.map",
+      "sha256": "abca1a10645ac267f1d492d0fd50a14d301c09975c0de113ffe7f03d85ca6867"
+    },
+    {
+      "path": "packages\\runtime\\dist\\runtime.d.ts",
+      "sha256": "4a41040712adffd86215292d0ed32efc0e4d6d48bc50013a267fc2c9d58bde29"
+    },
+    {
+      "path": "packages\\runtime\\dist\\runtime.js",
+      "sha256": "1f868af757ce503b3cf63af1b605f9396efb02ea1edfe9db1e838b8b791c2538"
+    },
+    {
+      "path": "packages\\runtime\\dist\\runtime.js.map",
+      "sha256": "7e42c4d168ada700e42e30a501c6307f213ed280f9317ca29da06ec4e6759838"
+    },
+    {
+      "path": "packages\\runtime\\dist\\serialization.d.ts",
+      "sha256": "c5400b9f80f0425aac44bd498f79be685a2ac263c51ce9fbdc009e01555d01e5"
+    },
+    {
+      "path": "packages\\runtime\\dist\\serialization.js",
+      "sha256": "e910d4ee2a920c1ec5811b34cb711b7e17d279e56471201430431335de0410c9"
+    },
+    {
+      "path": "packages\\runtime\\dist\\serialization.js.map",
+      "sha256": "3079f4fcfb708f9cad65fb25a79213db945c36377bb15cd6b39d7a16d62c3750"
+    },
+    {
+      "path": "packages\\runtime\\dist\\store-conformance.d.ts",
+      "sha256": "1ddf2001bca667b3652b949de5cc766393bcf44a1312d0a8997f5a93f270a497"
+    },
+    {
+      "path": "packages\\runtime\\dist\\store-conformance.js",
+      "sha256": "2f91105c1a7b5b3800346943f42fc55fff524d242bb012743fcec47ec3cca337"
+    },
+    {
+      "path": "packages\\runtime\\dist\\store-conformance.js.map",
+      "sha256": "e4e1fe81ec4ad67720be5314526c947464e9da1388d34fea761057f5939df8f4"
+    },
+    {
+      "path": "packages\\runtime\\dist\\store-errors.d.ts",
+      "sha256": "61993eef99ef7d8edca0603894a9f6c895c4b98afec74b38ffc8626544091d16"
+    },
+    {
+      "path": "packages\\runtime\\dist\\store-errors.js",
+      "sha256": "4a8c2cc2915be89596e6a869f590c42b4635df7da1c4e2795309a2d705d740a9"
+    },
+    {
+      "path": "packages\\runtime\\dist\\store-errors.js.map",
+      "sha256": "ade399b79c08aef28e9fefa980183590a355bb0b59322e3938afd7c35edadab5"
+    },
+    {
+      "path": "packages\\runtime\\dist\\store-types.d.ts",
+      "sha256": "3b3d916b3bd7e5104deab49dffff806740c6c898242c01a4cb103e222aa15102"
+    },
+    {
+      "path": "packages\\runtime\\dist\\store-types.js",
+      "sha256": "19b2111189bb9a6695ab8173a6415b1093a07e43791765ab1de63a65fd9b553d"
+    },
+    {
+      "path": "packages\\runtime\\dist\\store-types.js.map",
+      "sha256": "4cc814a8ace89a7f59067ec9e85a86d2ba88117069c8d2a342fb6340bddb1df9"
+    },
+    {
+      "path": "packages\\runtime\\dist\\store-validation.d.ts",
+      "sha256": "82212a5b27266676c149a64f3e683b2027da46f26a77f0fb952bef7829e2de32"
+    },
+    {
+      "path": "packages\\runtime\\dist\\store-validation.js",
+      "sha256": "dae68a5e8cb898f716a632ca7d41d58ebb294c38bbf9da65db65e09404f49470"
+    },
+    {
+      "path": "packages\\runtime\\dist\\store-validation.js.map",
+      "sha256": "c79dbce3a332216497037ed2e91277c81db5e05950ce4e7f5806968e65e678be"
+    },
+    {
+      "path": "packages\\runtime\\dist\\stream-hub.d.ts",
+      "sha256": "53fec68d7ea7daff665407de869cc0888701b673acc093024ed9d2f42adf371e"
+    },
+    {
+      "path": "packages\\runtime\\dist\\stream-hub.js",
+      "sha256": "d06a2e8c04705aa89542a30a4061604152d08e41b207c80a61b24c397a79579b"
+    },
+    {
+      "path": "packages\\runtime\\dist\\stream-hub.js.map",
+      "sha256": "b0de706c26e9654c6d1495380b57733a3f252a8785f103feccbbbebc3e6b81de"
+    },
+    {
+      "path": "packages\\runtime\\dist\\testing.d.ts",
+      "sha256": "d0ee117eb01557e332d978bf8fe4e3a68effaf01899ca9f1ab0892005dc808f1"
+    },
+    {
+      "path": "packages\\runtime\\dist\\testing.js",
+      "sha256": "08fe13d698b4107819888656b8a9e29b10b37bb301d8144af96bd88fba972312"
+    },
+    {
+      "path": "packages\\runtime\\dist\\testing.js.map",
+      "sha256": "895074c0a75b6fce8d7306ae13b2781498fbfd53b3da0617fa403a5ef35547f0"
+    },
+    {
+      "path": "packages\\runtime\\dist\\types.d.ts",
+      "sha256": "13bd5fbfadb6537aba28e63f1e530997fbc4d4e9674846c1cc55f7be5e4cb4cd"
+    },
+    {
+      "path": "packages\\runtime\\dist\\types.js",
+      "sha256": "01ae2a5b120382f9a648ced7ee8507493a134f216d100fc61600c6c9738235d2"
+    },
+    {
+      "path": "packages\\runtime\\dist\\types.js.map",
+      "sha256": "a7de897b48fe57bf54d6f84169135ff2e89e2fc95ea0a0a815761cc29a41efee"
+    },
+    {
+      "path": "packages\\scaffolder\\dist\\cli.d.ts",
+      "sha256": "43e818adf60173644896298637f47b01d5819b17eda46eaa32d0c7d64724d012"
+    },
+    {
+      "path": "packages\\scaffolder\\dist\\cli.js",
+      "sha256": "0787d6c52d12e7e37d43c06736b69e7d9f62bd4bf54496f7d5aca68cfe3e60a9"
+    },
+    {
+      "path": "packages\\scaffolder\\dist\\cli.js.map",
+      "sha256": "88258c91b4ccd70e0c970ac18674759df2b08b58412d25beb247164fbc283851"
+    },
+    {
+      "path": "packages\\scaffolder\\dist\\index.d.ts",
+      "sha256": "b26712ab3ca044a9af041bbbe2c5d17164bd828cb82091458a12bab526cf6591"
+    },
+    {
+      "path": "packages\\scaffolder\\dist\\index.js",
+      "sha256": "41f768cfcae0126a56ad7eda28dec4646133bed77bce85890cc3200e6f8b3557"
+    },
+    {
+      "path": "packages\\scaffolder\\dist\\index.js.map",
+      "sha256": "57ef89c73f3862bfce3fc9ab874031c434500f9d0d70c4c11418ff391a89d051"
+    },
+    {
+      "path": "packages\\sdk\\dist\\agent.d.ts",
+      "sha256": "cd623a21542c3f6434288cc0cfa513ebf7d23d7b7259a2b0ce03dac2ed4db751"
+    },
+    {
+      "path": "packages\\sdk\\dist\\agent.js",
+      "sha256": "2530533b4723c4aeacb96940aa71e9d89a805dc45b1e186c0be683f2e85d12f1"
+    },
+    {
+      "path": "packages\\sdk\\dist\\agent.js.map",
+      "sha256": "1860592bd159c50ed05d36f29f0e9ba7007deab8b5599717bdfd8c89435fa541"
+    },
+    {
+      "path": "packages\\sdk\\dist\\application-v3.d.ts",
+      "sha256": "bbb61fe43a2644d1d9851342ccb74dd3f8a123389ad4eaec44d6c712c9857801"
+    },
+    {
+      "path": "packages\\sdk\\dist\\application-v3.js",
+      "sha256": "70fac5a39931e82f91c6050f5291eabe32bd526fe313a11d425384b1b1f6089b"
+    },
+    {
+      "path": "packages\\sdk\\dist\\application-v3.js.map",
+      "sha256": "d7fc6a271ef1d8f046eb157317fccb638c3c1faae661025ba78e12c422a86379"
+    },
+    {
+      "path": "packages\\sdk\\dist\\application.d.ts",
+      "sha256": "833f9eb923d202a851ecad0f9c11dcab8e8265c0acb23974b4a35a3052d71114"
+    },
+    {
+      "path": "packages\\sdk\\dist\\application.js",
+      "sha256": "cd7040b75ff4c9650ad9eb54117b09e0ed4d8a3ab24a6fe14790822b9927fddf"
+    },
+    {
+      "path": "packages\\sdk\\dist\\application.js.map",
+      "sha256": "4ecf7834b4b73108d591bbe0b2a740598b4ed37db2db3aedbafcca1235ac25cc"
+    },
+    {
+      "path": "packages\\sdk\\dist\\authoring.d.ts",
+      "sha256": "cec7557a894c6af9e9b755f8e9d606c6ac7bb4f4bbf708473ace61184dc42d1c"
+    },
+    {
+      "path": "packages\\sdk\\dist\\authoring.js",
+      "sha256": "ac1a6bdb81b6e24392458bf991b6ca2fe3dcb418e6922828c451ec9e73ccbd41"
+    },
+    {
+      "path": "packages\\sdk\\dist\\authoring.js.map",
+      "sha256": "2da469c5084d626c7c7d8565ce3a8d7760c1a15b441875675e7ab2f7b4a1e51e"
+    },
+    {
+      "path": "packages\\sdk\\dist\\capability.d.ts",
+      "sha256": "c23a524b724aa15abcb63c5a918567a8b194de28cbaecc51ba056135c0a270bb"
+    },
+    {
+      "path": "packages\\sdk\\dist\\capability.js",
+      "sha256": "0b10ca04ae1947ab7cb961c1c951743e96b20be466c2c661e8089747d486175f"
+    },
+    {
+      "path": "packages\\sdk\\dist\\capability.js.map",
+      "sha256": "d0dd302d6b51375ba70d0130a1f50da1452a7537c113901d1aac841fcc98ac93"
+    },
+    {
+      "path": "packages\\sdk\\dist\\graph.d.ts",
+      "sha256": "cc402baa63eab09d60b1f980edf16814204b73d8e7cab40fb53757906d386da6"
+    },
+    {
+      "path": "packages\\sdk\\dist\\graph.js",
+      "sha256": "7f91ccab7ee776c040112f657df88f2a1b238c85c0a7af15cba926c0befdf0f1"
+    },
+    {
+      "path": "packages\\sdk\\dist\\graph.js.map",
+      "sha256": "5416baa89e9d30d794572ba1d6d31a7aa8a25ed320963349b34f9ec9d9a33d90"
+    },
+    {
+      "path": "packages\\sdk\\dist\\index.d.ts",
+      "sha256": "008ed9d2070e00dd5d417daef86766727ba0cad466ad3c98f27f56dd1f8a9f3b"
+    },
+    {
+      "path": "packages\\sdk\\dist\\index.js",
+      "sha256": "33923b1a5686ef04f5847f43f7af0d3e81fa139f00602a7dbe9c23f24fc5d717"
+    },
+    {
+      "path": "packages\\sdk\\dist\\index.js.map",
+      "sha256": "71babb0fd3531465c40cac72c7acef78d9230ab3a22302140a42f79ce4d77899"
+    },
+    {
+      "path": "packages\\sdk\\dist\\pack.d.ts",
+      "sha256": "35aced5649fe8f605fdb6c979f87a41872af95e1c75065d82601f9557281e58f"
+    },
+    {
+      "path": "packages\\sdk\\dist\\pack.js",
+      "sha256": "714d738414f4bb225b22f0dd0c451838c929edd15b477a6b90c985977664a7a5"
+    },
+    {
+      "path": "packages\\sdk\\dist\\pack.js.map",
+      "sha256": "1236c4472828d1a51fa6895864cb1732ee9fcee15081a42d76c75690ccb1af85"
+    },
+    {
+      "path": "packages\\sdk\\dist\\zod.d.ts",
+      "sha256": "d1343933b6a4aaef0f6c74a34c342b97ee7c11b1b90f4f1dc44a93b5b18bdcbc"
+    },
+    {
+      "path": "packages\\sdk\\dist\\zod.js",
+      "sha256": "771e8644453e9fbb170c959cb6a841757af60b0c5a116587b52720b43c7bb426"
+    },
+    {
+      "path": "packages\\sdk\\dist\\zod.js.map",
+      "sha256": "35e4009b5ae43cfcdca326f94d49392045cc6fd0b0d58842142a49b78dd53149"
+    },
+    {
+      "path": "packages\\server\\dist\\app-remote.d.ts",
+      "sha256": "2541a6cb63369b78b91a5a9ac3d504a91cd36d9cb3f696de5848454b1cf7fe99"
+    },
+    {
+      "path": "packages\\server\\dist\\app-remote.js",
+      "sha256": "acede2d521146bdcfbc7f09f96a04ab2c6d2a5e3aa070b958d666453e154a2f8"
+    },
+    {
+      "path": "packages\\server\\dist\\app-remote.js.map",
+      "sha256": "e41aa8f0e45d2c7fed081d4f5d4b59edf607cde67af8142ab9a806b263e7433c"
+    },
+    {
+      "path": "packages\\server\\dist\\auth.d.ts",
+      "sha256": "adea511d5e158ef86bb91ce34d5896875ec33041aab86042cf9fac2e180f0b56"
+    },
+    {
+      "path": "packages\\server\\dist\\auth.js",
+      "sha256": "5f5492f7270507152befb6b09574ef5645fece81c768e0d159c40e4535cfdaf6"
+    },
+    {
+      "path": "packages\\server\\dist\\auth.js.map",
+      "sha256": "d73a18fd9f3c994498f54beacbebf2dba28cd253bb10de2043b5c94bf846e89b"
+    },
+    {
+      "path": "packages\\server\\dist\\commands.d.ts",
+      "sha256": "34864221d841dccdfcab06aceb6737d4a633d057a5252c79ccc93738d2e0237e"
+    },
+    {
+      "path": "packages\\server\\dist\\commands.js",
+      "sha256": "52e510f6fba53f533308c61e4bf689bb0d39e49aba51098ad04aa47ad1ac2dc7"
+    },
+    {
+      "path": "packages\\server\\dist\\commands.js.map",
+      "sha256": "89e2da6c5b72118130569a7a0abbe3a37d2cf593dae0e23c45f3633412987d36"
+    },
+    {
+      "path": "packages\\server\\dist\\http.d.ts",
+      "sha256": "e72071d5bb590ed1dcc03f82ac34f9fcfec27ac316f735fa28b3cb7838adc8d6"
+    },
+    {
+      "path": "packages\\server\\dist\\http.js",
+      "sha256": "ccbe958a5a98b371182b3905047cc639f9c760e6c3bd2a5a5237e31c47e24e0b"
+    },
+    {
+      "path": "packages\\server\\dist\\http.js.map",
+      "sha256": "f41edb218d7f279058f7347d3100b61e82e689c5b623150f870486b5fbbda451"
+    },
+    {
+      "path": "packages\\server\\dist\\index.d.ts",
+      "sha256": "020f8c5ae4ac5092ba757328e3f86c93f4d65514b4a87d64f17bd5536dc70e5a"
+    },
+    {
+      "path": "packages\\server\\dist\\index.js",
+      "sha256": "1fc50dfec4c178ea94d833339a94bb19b269306718fbed9c69b0daaed07c2986"
+    },
+    {
+      "path": "packages\\server\\dist\\index.js.map",
+      "sha256": "96b4c34ba9abf011636df8f4d631cb0fe4b646a895915661183d05a80d8c03bd"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\adapter.d.ts",
+      "sha256": "7971612475996ffb37e622ea0fdb41a201bba152565c37e2d0362732a42bef86"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\adapter.js",
+      "sha256": "108db2dc63402d0e6f3cf074555c4025b873512d5d50601694e8720828a05edf"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\adapter.js.map",
+      "sha256": "c6f3a0c01f76c6b0b5a90cd3f4db772aed0cd62086fe765d7a1540885e72e3a0"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\agent-control-adapter.d.ts",
+      "sha256": "f1440d28839491cb47b886f4be263460d5e93135b8b4282fc92dc35fec4f3957"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\agent-control-adapter.js",
+      "sha256": "fb1d5e99e906d90bf4e91dac99f5bc1df618758ed9a9d8e479fdce86901e584c"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\agent-control-adapter.js.map",
+      "sha256": "853c12cb38a56db4c61243d6eca67f08751d9ffa986ecc90627c2ec9204aa779"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\agent-governance-adapter.d.ts",
+      "sha256": "a880b5ca2e04117ca2e69d77c6d33c0e6ec7f3e05cb8caadcc6bf4cc2257af85"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\agent-governance-adapter.js",
+      "sha256": "512d7081572614540157fd408f58c1a09003a0dd3def318f8e37c8cc07b32b8d"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\agent-governance-adapter.js.map",
+      "sha256": "582ac484811fb94bf1ae5773115fdb7068ad194bdcceacbddf5368e90e9d0ffc"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\driver.d.ts",
+      "sha256": "e3af64588fb1ba52127d4062fe798bb9a27588a24a1447a9891b56bb8b25cc45"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\driver.js",
+      "sha256": "2c767708520d837dd4c7d3873bf0a51fcfbf0479127fc1d2d178ea905d960b87"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\driver.js.map",
+      "sha256": "1f877ab71a69c71a9fbea15e8e6bcb34bc201a7dedc48291e0983e4efeb5cfec"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\index.d.ts",
+      "sha256": "03da01343423d0974543994642d10f39ae933aed91d65c9f9da3cacae2ee010e"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\index.js",
+      "sha256": "a5c3e3deaca2b98351af1f850fad72b34b4b7a61978981bfe4df55d3be6f817c"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\index.js.map",
+      "sha256": "f381b1bb51695bbe3ae9865045f2ef5b8ec437a9e4e3241f5d0a40feee402b63"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\migrations.d.ts",
+      "sha256": "cd82cc3d644f682514184945b8b987b196431741674a246459b8cdedcd69852c"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\migrations.js",
+      "sha256": "da69e3ccb8415bfa345ad8d72032d4587153ae64a82b77b0c629476a337d6487"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\migrations.js.map",
+      "sha256": "887a4bd928283a8da56f2ee440c278ca3fcb5f51a739cfac8094f8c469965e7f"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\orchestration-adapter.d.ts",
+      "sha256": "60b4658c7d6507c74648b6adb68e422fd62479da972308739706e522569495b2"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\orchestration-adapter.js",
+      "sha256": "5e8eab931ec6eca3ed81d0959684cb1de31cfa95b57e12241ce990d05fe84958"
+    },
+    {
+      "path": "packages\\store-sqlite\\dist\\orchestration-adapter.js.map",
+      "sha256": "3ae9760e54872bb088930c977770cad8aea2ce3594054414439aecb2b489ff28"
+    },
+    {
+      "path": "packages\\ui\\dist\\authoring-semantics.d.ts",
+      "sha256": "802a1cac792ca7123dde82b4be50d1caaee942649ed7b5fb1d0f1c429dae531b"
+    },
+    {
+      "path": "packages\\ui\\dist\\authoring-semantics.js",
+      "sha256": "baf54987261d31754b5892951705b76ff057cb67bb15eb75311796f0817cc759"
+    },
+    {
+      "path": "packages\\ui\\dist\\authoring-semantics.js.map",
+      "sha256": "4702277e6481fd27d6377b8411c629a136e515fc65a97b46295f96269ccb1932"
+    },
+    {
+      "path": "packages\\ui\\dist\\authoring.d.ts",
+      "sha256": "5c7d43fc58416369c7947ef0f058d5542362d946d3fa889fc0f527a13865f15a"
+    },
+    {
+      "path": "packages\\ui\\dist\\authoring.js",
+      "sha256": "7529f9e48396fc0bc57da7b769a5605b858114220d0665425e71f0b0836cc1f3"
+    },
+    {
+      "path": "packages\\ui\\dist\\authoring.js.map",
+      "sha256": "b61c11b5a65aa1369753c3ffdd650640245ef7d816ee155f3022090428c696eb"
+    },
+    {
+      "path": "packages\\ui\\dist\\canonical-error.d.ts",
+      "sha256": "99e922277e791b8f2ec02db3888d746958b302a991c385c92bd967e3465e8d4c"
+    },
+    {
+      "path": "packages\\ui\\dist\\canonical-error.js",
+      "sha256": "af800eeeb2054935d70a250368e69d10733a9ca46df260cf174de063f2bb30a3"
+    },
+    {
+      "path": "packages\\ui\\dist\\canonical-error.js.map",
+      "sha256": "ab752328e8704be891f2adb75e859e5290e2ccc32bff236e5951fcea615a345b"
+    },
+    {
+      "path": "packages\\ui\\dist\\canonical.d.ts",
+      "sha256": "ebe78b0794d9351acad1347814a9a3679b6269ec610ab38c2b24bbb9e36a487d"
+    },
+    {
+      "path": "packages\\ui\\dist\\canonical.js",
+      "sha256": "2a776f5be9296fae4c8340ab133068261bc09b65db1fcb0b83bc6dfef7a39469"
+    },
+    {
+      "path": "packages\\ui\\dist\\canonical.js.map",
+      "sha256": "bdc8337523bbe4ae3e015c837251638a12742415f1e5082b55eb2c0f4e1f8e93"
+    },
+    {
+      "path": "packages\\ui\\dist\\compile.d.ts",
+      "sha256": "9c53bf07e74ced7be33dae3c60b24449acbf649a87841b019fb0b3f01c8f087f"
+    },
+    {
+      "path": "packages\\ui\\dist\\compile.js",
+      "sha256": "d10a329fbbf1c6c7fa76e2d49866e4bd582bcbafb2d59d47e8d81729189f60e2"
+    },
+    {
+      "path": "packages\\ui\\dist\\compile.js.map",
+      "sha256": "306382802f8a4a3d28160656dd902dd6043e1ba9d1a98707befc857f13edacbe"
+    },
+    {
+      "path": "packages\\ui\\dist\\composition.d.ts",
+      "sha256": "13364758216c226a93065188afb852da7dd5f15fecc3f8a2805d44dfc533dd47"
+    },
+    {
+      "path": "packages\\ui\\dist\\composition.js",
+      "sha256": "c95698a11cfc77400906c538d5e41dc0861dc81538bd28a06cb1d073ba9b4098"
+    },
+    {
+      "path": "packages\\ui\\dist\\composition.js.map",
+      "sha256": "fe360c5e49de6c67627fb14b8eb0acee7c21da3171da56ca7c12bb6c20e1fed5"
+    },
+    {
+      "path": "packages\\ui\\dist\\diagnostics.d.ts",
+      "sha256": "ecda2dc64bcb65a324ca7ba71369cba3d89a8815341596eb9ce46e7aa500a700"
+    },
+    {
+      "path": "packages\\ui\\dist\\diagnostics.js",
+      "sha256": "fc61b5653aa9e093f77a76ec35dde9b97ee9f85bceb97cdbecbd53da2ee5dc3f"
+    },
+    {
+      "path": "packages\\ui\\dist\\diagnostics.js.map",
+      "sha256": "6fb2b9c6da97446f5785354d5aee910cd3fcec1c607772270f5c8349fa6914af"
+    },
+    {
+      "path": "packages\\ui\\dist\\document.d.ts",
+      "sha256": "7048b45f86a3f988a4f2b731faee9c945a44e8237ac46e2c11111ba4aa536a15"
+    },
+    {
+      "path": "packages\\ui\\dist\\document.js",
+      "sha256": "0047c65f20fcb9ddfb0ab08f34df2638dc484c16d345fdf83d789f39478ccdd1"
+    },
+    {
+      "path": "packages\\ui\\dist\\document.js.map",
+      "sha256": "57bdf6f5568faaaf2175c2de1185fb068997bfe18635c2a9ee2a10341382bacb"
+    },
+    {
+      "path": "packages\\ui\\dist\\edit.d.ts",
+      "sha256": "d5a46bbc74bf689b3c1708961001faf9162587d98608f46a5cbf704c767bcd61"
+    },
+    {
+      "path": "packages\\ui\\dist\\edit.js",
+      "sha256": "019b3d815f712c4ee2a7c92e422b84dad292beb5974a8093a79c271f27e98752"
+    },
+    {
+      "path": "packages\\ui\\dist\\edit.js.map",
+      "sha256": "359cd80b5c0c9fdd81cee01c5f989ec91d0a242f68959553fea7c26157ad073d"
+    },
+    {
+      "path": "packages\\ui\\dist\\expressions.d.ts",
+      "sha256": "5d334d0ea1d0573a0c5355d7473cdc6cb715e0832d1f4f920ba508570fd81b28"
+    },
+    {
+      "path": "packages\\ui\\dist\\expressions.js",
+      "sha256": "d0e0fda58a610d76d2c2d5e417fd194bfae9e48ddac8c7974f0c63b8686377db"
+    },
+    {
+      "path": "packages\\ui\\dist\\expressions.js.map",
+      "sha256": "55f86c8f1887b3acfcc39f951b825eccdbd06eb45718434b002eb39f97ef148c"
+    },
+    {
+      "path": "packages\\ui\\dist\\feedback.d.ts",
+      "sha256": "3457ba87c69c4267527695ae4c18a6cf69490e4eedf6de7c6b92d81a9f13403e"
+    },
+    {
+      "path": "packages\\ui\\dist\\feedback.js",
+      "sha256": "761ab5f7c0d9592fac4f73448a6acf72637e3d4da5dcc18aa04353c329ac78ee"
+    },
+    {
+      "path": "packages\\ui\\dist\\feedback.js.map",
+      "sha256": "e922c82e39a5c9f8d9b71cb98e747aee4e75ae38fc87139585b96d0b64cbb5a2"
+    },
+    {
+      "path": "packages\\ui\\dist\\index.d.ts",
+      "sha256": "6a5b5b09b7c3497288bc6e81353edbedc922412ac8ef54ba90a2715dd411fa36"
+    },
+    {
+      "path": "packages\\ui\\dist\\index.js",
+      "sha256": "5200dd5465ff7582a06d6d879d167f56546df654f3d253e939f498c091938732"
+    },
+    {
+      "path": "packages\\ui\\dist\\index.js.map",
+      "sha256": "82ae9187aecc104a4c52f3a0c5c0862e38d678bc44d00c4edb9d3d349d39e2ad"
+    },
+    {
+      "path": "packages\\ui\\dist\\local-storage-store.d.ts",
+      "sha256": "1b98f331463b6e0143c1b22f651c90b1194f5b62318fd260cd3017006f0df583"
+    },
+    {
+      "path": "packages\\ui\\dist\\local-storage-store.js",
+      "sha256": "3ef7e8100da57113d7a7ceb942200e32a1a7a838d3cd4d5482be8baeb8b73538"
+    },
+    {
+      "path": "packages\\ui\\dist\\local-storage-store.js.map",
+      "sha256": "bf4ee5faf6231b91387b6b0ba2733e35ba23cb8f3a709cc86a927a85f367b043"
+    },
+    {
+      "path": "packages\\ui\\dist\\occurrence.d.ts",
+      "sha256": "ef9fd98c3c575a57d0b4abc94e60abf19d4c48e0c20490b7dfd07308f4b72b23"
+    },
+    {
+      "path": "packages\\ui\\dist\\occurrence.js",
+      "sha256": "7b3e10ecb738207faec99caad6069420d66f5c34c4c7654ef1a8d6177a455093"
+    },
+    {
+      "path": "packages\\ui\\dist\\occurrence.js.map",
+      "sha256": "a2fc34620559816ce45e56f16cb8545d94965aa205c5b0e288e7bcbbab2eae50"
+    },
+    {
+      "path": "packages\\ui\\dist\\scenario.d.ts",
+      "sha256": "468a2c93010c0e8e8e2705f6f5e7f9e026ea0b0b3c286022308a1185aaac889c"
+    },
+    {
+      "path": "packages\\ui\\dist\\scenario.js",
+      "sha256": "190b868313c258fed512bafc81c43804f75d5ba71370574da9e7a5c8bf447ff1"
+    },
+    {
+      "path": "packages\\ui\\dist\\scenario.js.map",
+      "sha256": "eea6855d3ec04de953d8d8bbd8b3f782cc02df2ab2b9f8d1184b19ed7f350af8"
+    },
+    {
+      "path": "packages\\ui\\dist\\semantic.d.ts",
+      "sha256": "90014e56efe7dbd4cdc831bebc618952986c3c7458b1042f0eebeb119475089a"
+    },
+    {
+      "path": "packages\\ui\\dist\\semantic.js",
+      "sha256": "b9a4677747d8a5cb5a716319df3b9e3c24039369d6840581364bfd0dd8f6b37e"
+    },
+    {
+      "path": "packages\\ui\\dist\\semantic.js.map",
+      "sha256": "1c33757c4e774dc6b603c3aea69df5010f075e1fab79f94aebef7bf007718de6"
+    },
+    {
+      "path": "packages\\ui\\dist\\session.d.ts",
+      "sha256": "6b918bf3f29cceea250d5ea5063866f8f9405f80bba862de82d0cc3ab0dbb6a4"
+    },
+    {
+      "path": "packages\\ui\\dist\\session.js",
+      "sha256": "713dd05a0399ad459eb767cbe74115dc48ba5724eab3b2940f8ced48a5883dd4"
+    },
+    {
+      "path": "packages\\ui\\dist\\session.js.map",
+      "sha256": "51e8c3b6f5e20c52a81b71658755f94657c13d1d023b17432064799d885ff1dd"
+    },
+    {
+      "path": "packages\\ui\\dist\\sha256.d.ts",
+      "sha256": "7d85afe71610b11eccf56c3481f2fe12cf6a847020c305b411f625b851a20e30"
+    },
+    {
+      "path": "packages\\ui\\dist\\sha256.js",
+      "sha256": "e348daa7bbabd20ccd1b3bffff561f3fd12292b57e1c30d37d0eedd87d789d25"
+    },
+    {
+      "path": "packages\\ui\\dist\\sha256.js.map",
+      "sha256": "5fb5eab78f8a29f224cc49e644e9d5c597ff37e6e4c254d6220c118d129db1dd"
+    },
+    {
+      "path": "packages\\ui\\dist\\slot-scope.d.ts",
+      "sha256": "28822129a3dcaf495c5e6f535b8787b85db20fb84d1db4f90305a459e51d0adb"
+    },
+    {
+      "path": "packages\\ui\\dist\\slot-scope.js",
+      "sha256": "89b9d66f25d9d044335e230e455ff60e39a2683acee81d0dccbd311a11f83c34"
+    },
+    {
+      "path": "packages\\ui\\dist\\slot-scope.js.map",
+      "sha256": "44e1d8af12683b07563fc9aeff459c4cb9acffc4b128f55d82705df80c51db8a"
+    },
+    {
+      "path": "packages\\ui\\dist\\storage.d.ts",
+      "sha256": "eb9753a4369e5563150995e68de6bbf19fec449120dc6205bde0fd4e64aa9516"
+    },
+    {
+      "path": "packages\\ui\\dist\\storage.js",
+      "sha256": "aed4afbef764da20536803ef37fae7b44da7e85e08968cca1ef782c4e3843460"
+    },
+    {
+      "path": "packages\\ui\\dist\\storage.js.map",
+      "sha256": "56f97a0b7c06e799a66e3e7b614191edb3c35825426f266832ae6ed6317ac8af"
+    },
+    {
+      "path": "packages\\ui\\dist\\theme.d.ts",
+      "sha256": "394c2664a66efdaf57973d4080a0598855c791c95254d524ff1177dfd5d25af2"
+    },
+    {
+      "path": "packages\\ui\\dist\\theme.js",
+      "sha256": "dd2ec173f5c89a7e5fa21b0e716a4c68f06b58aeb671aace49020ffcc735360b"
+    },
+    {
+      "path": "packages\\ui\\dist\\theme.js.map",
+      "sha256": "d58897bb103431dd786e9219ae6da125b749643fb74fe2d9e5128228fca6ff9e"
+    },
+    {
+      "path": "packages\\ui\\dist\\validate.d.ts",
+      "sha256": "64664c2be0574effab4389dd9326681cee1844528e51d4915a3d3f7a186cabd6"
+    },
+    {
+      "path": "packages\\ui\\dist\\validate.js",
+      "sha256": "e4e0c3178cfbbe466baa51c58ddaec43f140ef08ee9cc8a36302760d2a461b58"
+    },
+    {
+      "path": "packages\\ui\\dist\\validate.js.map",
+      "sha256": "f85bcd8a817f097b765a0725a76957e2266e240935fb068f3222f9da82e43956"
+    },
+    {
+      "path": "packages\\ui\\dist\\values.d.ts",
+      "sha256": "36a467972253c880fc3540e1548993d274002800796725833fe00163191aaad2"
+    },
+    {
+      "path": "packages\\ui\\dist\\values.js",
+      "sha256": "d4957a46073cc5590f379b927eadcf04f346b449220a0248dc6beaed3138d4a1"
+    },
+    {
+      "path": "packages\\ui\\dist\\values.js.map",
+      "sha256": "8f823a19a3135ec14efbda7f9d7bb1a8c8307d226279b06bf1023468fcb70fe9"
+    },
+    {
+      "path": "packages\\ui-ai-svelte\\dist\\styles.css",
+      "sha256": "3ff3352898a01cd853df68c2ef5318b11671d83de7e872184b08151e21f5ddd6"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\bridge.d.ts",
+      "sha256": "8684aa8f9ca320fb22d45713410a00cda9f0b3e9eb0e2ef668e619aaae2bcc1f"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\bridge.js",
+      "sha256": "93aa01dbc574b72b78514ed55985e8d40fb1c03dd9e2f39b4eb543d118ec89a3"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\bridge.js.map",
+      "sha256": "328b06e221b4a8a11c7ffc7fd00e65af8864e3a91c1a45d5f5acf4de06307d2a"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\canvas-selection-target.d.ts",
+      "sha256": "44b92e51fac5a265b1bc2be46f98fd4be0933fdba91f43c34e2d2a115bc19c96"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\canvas-selection-target.js",
+      "sha256": "a8daf1a6c3fb01b5ce0e3f64fb3caffc8fe14f718ff7d39591847f28d4fba0e5"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\canvas-selection-target.js.map",
+      "sha256": "954b95349948c75e69307ad00b18d02137fcfc2a27ff912118378946eca2c5ec"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\color-ux.d.ts",
+      "sha256": "1fb898d890883cf616ba651af6aca77a3410ff754c821d00a66b89036be8bbfb"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\color-ux.js",
+      "sha256": "8bba4001b5e43cb386f3a936d39ac44156e8a0575fd7dd77b44e1e24982231ec"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\color-ux.js.map",
+      "sha256": "70035b2cd535966da29b7bdd75a292c84dcec23f3eca7674805a8a829d5c0d9d"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\commands.d.ts",
+      "sha256": "59754717491e10e9c4f5fbcb4fadccc33b2db2e0a669b15ba2eb5f356f4e7e17"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\commands.js",
+      "sha256": "eda0d1e8cb000f362ce0523c7111c365b572f5abe961644cc75d0e5d455b7c33"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\commands.js.map",
+      "sha256": "14daead2b6cce2f1f0dfe839ee3bab953e604b3e4ab071f508f34d2ab32e7bc3"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\composition-focus.d.ts",
+      "sha256": "3f02df53241ba566ba9bdfdfc387031a733842a64bf218988474c7db7791eff0"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\composition-focus.js",
+      "sha256": "e3ca6d16cd45b04f2836b68066c6368463a9902586c74bf6c5d2bcbc6cfc9c75"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\composition-focus.js.map",
+      "sha256": "5ae80864bdd5f7c14106e209cbd3b3aa477b32835e7472ac711fd9c7c8234341"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\composition.d.ts",
+      "sha256": "d8ad8d5441b9501e09697b08e5cda1b9c04d1ca5c2c896dbbe432646c074ed10"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\composition.js",
+      "sha256": "7d40f1d584eb79b1e50d272d1219d4cf245b240e4c084615a681b3753a632777"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\composition.js.map",
+      "sha256": "fe19c75195c6a95d5040661aad9406a34e115e234f84daf013014d6596bf5481"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\floating-position.d.ts",
+      "sha256": "70ec052e7792e440cef336ec6b60ac846282c707fbf557e2585cce0b4488cc82"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\floating-position.js",
+      "sha256": "dc9ac9a6a0368e855337f15094e7ccd4766f788434bf029c1efe26cee4b8cc70"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\floating-position.js.map",
+      "sha256": "2347ebe404911a1d278115993a8f88244eedc1e0c60305f0286b3d69be4e8a4d"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\index.d.ts",
+      "sha256": "a3a8f7b589fc00d30925bf39cb517bb9aa764001f42e16f2e803ca9dcb27bd0b"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\index.js",
+      "sha256": "90c7833f4e63f83aaebd81f42d7ef0a5252da17e14d7b186f499effee062f08a"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\index.js.map",
+      "sha256": "2171b300ed62e5544f9e4b6040a35149b819878d2bcd360655ce602037f41540"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\inspector-ux.d.ts",
+      "sha256": "87f177fb771863e54bed5c79c653e1cb0be26ea6f924948fe01e8b4aae9d8979"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\inspector-ux.js",
+      "sha256": "583f2c424b6d42c8f9478ef721b447f3d8294784dd83ac63d73467789aa58855"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\inspector-ux.js.map",
+      "sha256": "1d371e6e62b917469701a46ba5ebaaea914d800a9d89af5014651b9ea34b881a"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\interactive-slots.d.ts",
+      "sha256": "452279ce7c6cdf4db7ed61e6ea707657117722f25357593ccbac60764d53e93c"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\interactive-slots.js",
+      "sha256": "aff955859ff842c882e1d2bd564ef6baaae8b4ccdde1e7bd1c8e4e8cc7c07123"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\interactive-slots.js.map",
+      "sha256": "387542e14f9d28dbdbec1cf25be9f9b9ac5d157eefd63053ce3ac6af37ff53b1"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\local-storage-store.d.ts",
+      "sha256": "1fdd085075a9d21cc1bed1b592d079834e73341a3ed4d4585352bdbd6b6daea1"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\local-storage-store.js",
+      "sha256": "0e7c6ed9126290ef997caef86b5f51196a2a295c70d08b2d7a28d370ba57b10c"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\local-storage-store.js.map",
+      "sha256": "85856254ff6bdc5c2e973fa34d8a3965ae69cec52766980f2bbe526ee54b624c"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\occurrence.d.ts",
+      "sha256": "2443d7388369339f3b2a91974dfa6555ff1dcc03a4c0ad8c5d9cb8dd9094b7ad"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\occurrence.js",
+      "sha256": "ae8e12068d52e8e31cde5a4ec9fcf3e9a9c357dac13afe97fb1965cdef8f2094"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\occurrence.js.map",
+      "sha256": "9d52c3710d110544651245bb74cff820a7b6192cc06efa3fbf073c5e64424cdf"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\preview-values.d.ts",
+      "sha256": "82f6f75a29054768185204aca919254e0c8345f0c98fda1826558cdd4cbfb364"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\preview-values.js",
+      "sha256": "ed628d30bd1df9d50a1813d735cdef8f17b16b4dde440fe657c3adba2d4a4532"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\preview-values.js.map",
+      "sha256": "70a7e9fe209ce92fdafd65bd9472fafdf99c5b49394b4ac3edbf3b7902a0048d"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\registered-authoring.d.ts",
+      "sha256": "b73454d8f5756ff9ed3657fcf6cb49e2279130fb1a9e1c04ad16b4fcd3f20acf"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\registered-authoring.js",
+      "sha256": "a6fec7965b23ce99655a102fea6691d7d3f02d9f6d4de380624e5a71ff3952a5"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\registered-authoring.js.map",
+      "sha256": "8a39c523ed50f8305f342e926df707d6abefab3bd9838646f594130390ba27ef"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\responsive-style.d.ts",
+      "sha256": "513f0f07ef1aa4f1557b57b68346b1407218f0f5d3a9a8e61b9edf81e7da7af5"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\responsive-style.js",
+      "sha256": "9d35f93b809ffb258d236508cc67b45b648deba8a2e4595acc9f9222f2b9aed6"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\responsive-style.js.map",
+      "sha256": "5666e223ae45deaff767c3f0fc7777a791f6b2907a396828c53601ebf842b773"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\selection-intent.d.ts",
+      "sha256": "016247834a9215573db6cd3c26bb7e1d0c06b8dc0fadb1c77385dc5246c4e1af"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\selection-intent.js",
+      "sha256": "e4920dc7e3acab287105122a78c8b0d47047344088cbcc77eca1057266fcc566"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\selection-intent.js.map",
+      "sha256": "873d5fec5773facda5b83fdb12227858b255a5175da8408dfc6336870b7888ed"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\selection-tools.d.ts",
+      "sha256": "0cb8a395cef599c2a930c5c420740abe754c2e846f3f8ec3942e053994bce67f"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\selection-tools.js",
+      "sha256": "1422b42e9fb216584c8d35a0aa0f4c0d6552ce7694c482dc42b9fb0445aabb49"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\selection-tools.js.map",
+      "sha256": "267f8f76fae60e49354201314006c64ef3f788dc15a413d6151891d39c50bbfb"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\source-icon.d.ts",
+      "sha256": "dab3d2a8dbf21658f8ecbd482a241c81d1ae713cca49a7f74e38c77e6f8b3f03"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\source-icon.js",
+      "sha256": "be3993679f34e2e2f70214d4aba8505564923cd017d3b21f106f43b3f77d998f"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\source-icon.js.map",
+      "sha256": "49ea40a16e06b2cf4c4fb67eda43a1d46c166ebd473bdb0f85a23c788be2829e"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\style-sources.d.ts",
+      "sha256": "b7df8662216aecb459661f3909f1d67cf252d8737b6f946ee046fbffbb744579"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\style-sources.js",
+      "sha256": "155321011ce3cb42093a1e785de62d6aab6e68dae478b67090bf209d1dead215"
+    },
+    {
+      "path": "packages\\ui-editor\\dist\\style-sources.js.map",
+      "sha256": "30190e8e2894db1d43ec1de11e3ab75c224d0d4650c9001b1b4c89c7555d1eaf"
+    },
+    {
+      "path": "packages\\ui-preview\\dist\\index.d.ts",
+      "sha256": "18b17082675573a87f1208abd8c03f39dff9ca8c24d25437c5245bd9ee163033"
+    },
+    {
+      "path": "packages\\ui-preview\\dist\\index.js",
+      "sha256": "e67f789aea0e361b152b04254dec8c2340037837ec1ac9e136624f1c42932491"
+    },
+    {
+      "path": "packages\\ui-preview\\dist\\index.js.map",
+      "sha256": "4a6daf65f7781f17e02eb9095523d4efdb51d1222d47a003c9eba8845c5c317f"
+    },
+    {
+      "path": "packages\\ui-preview\\dist\\session.d.ts",
+      "sha256": "76a38e37252d8cca11fa784c4d55ff13f8d80df3ccda75f372a38d8cca6b46d0"
+    },
+    {
+      "path": "packages\\ui-preview\\dist\\session.js",
+      "sha256": "5c7a4b6e7413c662e738f20c2faee2c19f2df0bdea9118f948073f3708acd334"
+    },
+    {
+      "path": "packages\\ui-preview\\dist\\session.js.map",
+      "sha256": "f31430bc24923a866078223121f40b755eca526b5f4d7c06d2c9a5b4eb4fea88"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\accordion.d.ts",
+      "sha256": "fe9d4d16ac755135fdc3e46cb78fb061505c31fa62ddef980c9980d7f6cda617"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\alert-dialog.d.ts",
+      "sha256": "9993e6c5118651320cc7793d5b92c2b3704e14898e784dd7e5214636e12c6f50"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\aspect-ratio.d.ts",
+      "sha256": "80d7223ac3157ec13f7105ab6a3cc2d42409374b4a288cc4e823ed445455862c"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\avatar.d.ts",
+      "sha256": "0353d3174f3ad7c3bb1d894501a6af80be5ba95ac9f45f56e41c8329b628b607"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\button.d.ts",
+      "sha256": "074628e5cfe25756fcbabf116783133aeb46ef2675d2fa49ea59ddca810dd40d"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\calendar.d.ts",
+      "sha256": "01c63bbf38e64d1a5d9791041213ec27d6545fe322b8bda0900f614496503f41"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\checkbox.d.ts",
+      "sha256": "5f3d616163cfbfab9931c50d4996a674ec1517761a1db82cec2b768e13d9ff6b"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\collapsible.d.ts",
+      "sha256": "0dd81f0e52384a385d467e40e57a2e14d1427fe8fdb8c35772a09b93ea99b4e2"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\combobox.d.ts",
+      "sha256": "8a1bad9033cf9dcc9a1dd69b3819d87eea010684f67f213c07cc73ab6eb7ee7f"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\command.d.ts",
+      "sha256": "dd2e9520033363b3dc27f146c9827644729ef8364c307fb12caa7ba511ec43f6"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\components\\authoring.d.ts",
+      "sha256": "11b91e2f968da4a5c3dfe70a4e04d383cc241f74240263f0f43cd9d8b4ac144e"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\components\\b2-descriptors.d.ts",
+      "sha256": "d8233bdda59c96def1dc4460dd7f21d266c6fd08434ac8a8ce97e541836d0209"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\components\\b2-implementations.d.ts",
+      "sha256": "2818f4d8e1221b4a6c326da2ea2878aa3ef4c1eacf2281af01844a8a0d8b5286"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\components\\B2ComboboxContext.d.ts",
+      "sha256": "bcc8e1b1d1affe390b0c359783f8658779ca8b121373ece47660cb09db372b00"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\components\\b3-descriptors.d.ts",
+      "sha256": "3a85efc96387b1ff449ea28f7795453dd73bcbed79d7099e9f76eaddc86a7f84"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\components\\b3-implementations.d.ts",
+      "sha256": "79c89200615e4754eb4a66d1ea05fe40e8e0a7973e39bd5e1ccf8fa3a8b08b51"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\components\\b3-values.d.ts",
+      "sha256": "20a9f51319ca2cc3fed6af228f9611e4263b17f192b7917a631efe0aee8cf7bb"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\components\\b4-descriptors.d.ts",
+      "sha256": "f0473040b2ee0ef6eaa4af9de97a8f355e2cd94996d668328c2b2ce8723e11fc"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\components\\b4-implementations.d.ts",
+      "sha256": "a672de01b68f7795b8b9adbb727d68220246c56dd565badc54b555354e49ee1e"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\components\\B4MenuContext.d.ts",
+      "sha256": "d3d34f37fef0c6ee1e99e2db8e108238f6def0475cdba1ff67d6504d8d173a38"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\components\\b5-descriptors.d.ts",
+      "sha256": "b380147f3c410009a95396e5025430d55282af7a1f8ff3d51330cb9fb2ee5bc0"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\components\\b5-implementations.d.ts",
+      "sha256": "d33b897da6464d7617ff04e2083df0a2c4074a79b65a3c95ff7b17e8864daee7"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\components\\catalog.d.ts",
+      "sha256": "123958c965147987e56fa39ec8967a8f4e9f509db76be1b3891ce0715ad64fd7"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\components\\descriptors.d.ts",
+      "sha256": "ab753a3b7fca69f8e287893121aad0f24fb0412e90ea621c786bb57cfc1a7353"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\components\\focus-return.d.ts",
+      "sha256": "09fe7671305e5d97b1e38a8074da5e070ced5878783c9c8f5d3177153a0c58ed"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\components\\implementations.d.ts",
+      "sha256": "421067403e29037f216337d6f434637329e1c60a5b72528d90bb4d3955c55b91"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\components\\portal-layer.d.ts",
+      "sha256": "01b3613414c2418255723095d2a81e136ada36e5cfa4fa58afc218552c89cf49"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\components\\range-state.svelte.d.ts",
+      "sha256": "6c65e1dab5b4010446f55ec0e9cff7a61374ad158e2626be9f639d61eaca057c"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\context-menu.d.ts",
+      "sha256": "16097e3b970321a8ddf59040887f55517dbb0d0fcc63168a497a3d4072fb0dc4"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\date-field.d.ts",
+      "sha256": "0c76fa790bd1fc290b8a632a3cca7eb34476234a75b7c4bc433a0e9264858b2c"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\date-picker.d.ts",
+      "sha256": "aa48e6dcb235c5b94cf4b90e58cd9b607b7f799be4b2fbe681351a37f22dc6f1"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\date-range-field.d.ts",
+      "sha256": "4c2386c7d605c157f19e400b2602924665f87fffff7b7aa929cfba927feef9b4"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\date-range-picker.d.ts",
+      "sha256": "b07d396ec898f4de424a4782da2c901891a00b813f30fc719bb8ab290f22c02a"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\dialog.d.ts",
+      "sha256": "c1fa56c1d901713c0bd7be6daa3f98c17653cad3609f95df11063160791cbc19"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\dropdown-menu.d.ts",
+      "sha256": "bd3655ae372a9b8d4524f08a68b573a8d88c12cc129887bf42750ec92401362b"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\label.d.ts",
+      "sha256": "0b2025d41091566c729c8b432a87be12634f73a426d2dfe3b9a09a915719651b"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\link-preview.d.ts",
+      "sha256": "620294a37780a8a641e7cf8c97d554c53c85537dbca22fb2976f47034c6bc808"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\menubar.d.ts",
+      "sha256": "c34bbe3a99e85af180126d7ef8a308b765685c5600febd4a197334ea179d99ea"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\meter.d.ts",
+      "sha256": "487caa828240410f7eae1206669ec5db03d5b9a588ecdfb7a6dddb53d70c0f26"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\navigation-menu.d.ts",
+      "sha256": "41953ba154e2d8d004a4867c341972dd7c2e6c650de898e76dc2f5db44feedc3"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\pagination.d.ts",
+      "sha256": "2a53d104629b5e6cddfe6a13caadfa2e7776e42d9119e8d4e361ea587213da78"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\popover.d.ts",
+      "sha256": "9dc364da9ffb434522567be01582bd798033f3f01ba70ba51027d96f9b86c48b"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\progress.d.ts",
+      "sha256": "a84ce7c2b6c8f341dee5835a8dbcec06f82fb167f36dc48c3234a5b0d3284dae"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\radio-group.d.ts",
+      "sha256": "ee8462339fb7ecef622228956ac4d19c0d1620463548632f4c3994a63ead6a13"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\range-calendar.d.ts",
+      "sha256": "04484b94d4554e96edb54d1705cae4e33921e2728cb2fe118d65c80d316bea2c"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\scroll-area.d.ts",
+      "sha256": "29d445799a953a657d9db13eb40b2eccb0b8cf90ab9ea1a109f72454334c2bad"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\select.d.ts",
+      "sha256": "8ee4d5c638f72d372e56cb76e4232442ad7788d6280f3bef5a5afc4f6f8f8f43"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\separator.d.ts",
+      "sha256": "ef20dd5231351745e1d9e790d9063c66069de5396e4d1d74caf37e2e37c1f270"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\slider.d.ts",
+      "sha256": "6e9d193727253aaec63299b6b4aec710fffa81a097b6c18525447d071fd1e38d"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\switch.d.ts",
+      "sha256": "9619be12ad63250c673577cfd6117d1ea15c01134752ef889bcf22832321b9f5"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\tabs.d.ts",
+      "sha256": "e630e573790feb531c42caaf5b43715feedd48e51b7bc6b3a524a30cc7574063"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\time-field-context.d.ts",
+      "sha256": "1d77b6706a8d99ed7835c7f4ad9c0540b2c52b0d1b055971a8b6573c825d23d4"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\time-field-parts.d.ts",
+      "sha256": "6a157a1e9a300883175d8379513eb9af445cb745331afaa3974f0522d5aa3383"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\time-field.d.ts",
+      "sha256": "a227eb4ca413d88a41d14481d0d98b1a0565cb48db34762bb75404164cc24418"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\toggle-group.d.ts",
+      "sha256": "305230a4bdb6d60911d2e9accbf68aee817e6af92b934a5e7a215adc849e8071"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\toggle.d.ts",
+      "sha256": "4afb63f4f2821a9a04d81b1485443e2ddf08e842c7080080e92bca8bed9b6532"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\toolbar.d.ts",
+      "sha256": "33d640852e85f4974323fcd70658cb52cd051dab168f926b1ce9436111053a38"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\catalog\\tooltip.d.ts",
+      "sha256": "dc017a78538ed4ea770613c1e6d88d4874013acd7802a368ae64dfc3106a4e97"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\component-actions.d.ts",
+      "sha256": "ac386a39728b5913bef3360dc30ed0ea9782ffb7319d8c1094c908e878ec92a2"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\component-context.d.ts",
+      "sha256": "1db97c4f530753653da1562938424e7c5d62f00230091c67996c79ea2aefd1d2"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\controls.d.ts",
+      "sha256": "f51680928b8927f95819b2c63c06b3f774c6ea3543e4e7a2a72d60f2543bde97"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\dates.d.ts",
+      "sha256": "5a8bed3ffdb07ebcb73b74522090dbfcbfb6dfc404c80d0f1a12caeca3fc24f9"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\document\\authoring-runtime.d.ts",
+      "sha256": "2ebe3cbc842b4aed3cebb905e3b29fa85b8d0f3ea0dce3235a5d6236dab54eab"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\document\\extensions.d.ts",
+      "sha256": "97177fed09851c4498b1cb679157be4c3414202a06b61633d9db271ddf46cc01"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\document\\logic.d.ts",
+      "sha256": "14518dfddfa9f456c08b3d4b56dd7973a10ad41a9d63358324897a3976421c35"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\document\\slot-labels.d.ts",
+      "sha256": "93a9a6947f12f82b95a30219b13ff642812225e942fb27bd677f5575238a6e08"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\form-values.d.ts",
+      "sha256": "7d5c154f7883ec9ab0aef7df7921515f9fae79601751cee1715cb0192878af24"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\index.d.ts",
+      "sha256": "11ed09caed0f590aecf7513b840ea5b43f1aadf2a60dd905adccafdb1979fa8b"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\logic.d.ts",
+      "sha256": "c1becb7dff3e75ad8321bc1a0cbf9a3dbdc7e495259318c1260649a4691793c8"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\mount.svelte.d.ts",
+      "sha256": "913e500d0c162b8196938f0052303a5ab5129ccfb3c7a2ea5f9032fd6b9ddc22"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\owned-dialog.d.ts",
+      "sha256": "abce3337b7e8accbb5e6e5805ee677445f3aa5347662587e25a567e339b673b3"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\owned-menu.d.ts",
+      "sha256": "ece867578c97a86523ac90afde237a937875f236e6ba6d814959c92793405d53"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\owned-popup.d.ts",
+      "sha256": "3ed7e14e75fb48e99f9a79dd25dae72156ad3e87afa5a0e9854adc8795d1a122"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\owned-tooltip.d.ts",
+      "sha256": "0e006ce3cbdd68abc9eef223904754353b4fc44e4928f57e4aeca9a1ea1b6dd2"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\presentation.d.ts",
+      "sha256": "997fe5263cedf18dc21d6b03fef69825ffe15464adc922a57d61cfcaa6d71b49"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\primitives.d.ts",
+      "sha256": "cb9a2e46475bf2ea0232cc926b10be64576a13add0ba8b2e4484d8c481ff211d"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\renderer.d.ts",
+      "sha256": "33012da975cd6a5020088ef08064794aad22d09703f7245af48deff310388885"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\rhea.d.ts",
+      "sha256": "c634fe95782e99c64ca4dd036276ef9f0d6e18e3ebcba92d517646f20190e5a9"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\viewport\\context.d.ts",
+      "sha256": "72f1b8c71a295455594180aeef242010dc13c8e64b9aad9c106a4b39e2155eca"
+    },
+    {
+      "path": "packages\\ui-svelte\\dist\\viewport\\index.d.ts",
+      "sha256": "6bc43bb14348d8a2a7a1cc7fd01b05d8b0d22c2d91f1f1e2c9bed26250f5fd6e"
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-factory-recheck-20261031/apps/studio
+
+3:12:00 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-factory-recheck-20261031/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+3:12:00 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-factory-recheck-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:12:00 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-factory-recheck-20261031/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+3:12:00 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-factory-recheck-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+3:12:00 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-edge-adapter-factory-recheck-20261031/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/edge-v3-adapter-independent.test.ts (6 tests | 4 failed) 104ms
+   × independent: leaves graph-looking text/private values and unrelated literal readers unchanged 35ms
+     → {"ok":false,"message":"Migration requires a valid graph3 factory default for family container, parameter innerGraph. First use editGraph defineNodeType with replace:true to prepare an explicit intended graph3 string default. Preserve existing inherited instance values with setParameter as needed. Then migrateGraph must use the working graph/route revisions after that earlier editGraph operation in the same atomic batch."}: expected false to be true // Object.is equality
+   ✓ independent: shared lexical reader revisions update together without changing unrelated scopes 8ms
+   × independent: original parent/nested target permutation does not restore stale parent snapshots 10ms
+     → expected false to be true // Object.is equality
+   ✓ independent: absent bidirectional source authority refuses with no mutation 6ms
+   × independent: mismatched acknowledgement digest refuses migration after readonly preflight 32ms
+     → {"ok":false,"code":"STUDIO_AGENT_GRAPH_MIGRATION_INVALID","message":"Migration requires a valid graph3 factory default for family container, parameter innerGraph. First use editGraph defineNodeType with replace:true to prepare an explicit intended graph3 string default. Preserve existing inherited instance values with setParameter as needed. Then migrateGraph must use the working graph/route revisions after that earlier editGraph operation in the same atomic batch."}: expected false to be true // Object.is equality
+   × independent challenge: migrated nested reader remains usable for a new inherited parent node 10ms
+     → expected false to be true // Object.is equality
+ ✓ tests/graph-v3-factory-default.test.ts (3 tests) 515ms
+   ✓ prepares an explicit meaningful graph3 factory then migrates atomically; a new node inherits valid graph3  479ms
+ ✓ tests/graph-v3-migration.test.ts (11 tests) 724ms
+   ✓ atomically composes two explicit nested occurrences and outer migration through source history/save/import  405ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/edge-v3-adapter-independent.test.ts > independent: leaves graph-looking text/private values and unrelated literal readers unchanged
+AssertionError: {"ok":false,"message":"Migration requires a valid graph3 factory default for family container, parameter innerGraph. First use editGraph defineNodeType with replace:true to prepare an explicit intended graph3 string default. Preserve existing inherited instance values with setParameter as needed. Then migrateGraph must use the working graph/route revisions after that earlier editGraph operation in the same atomic batch."}: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/edge-v3-adapter-independent.test.ts:16:653
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/edge-v3-adapter-independent.test.ts > independent: original parent/nested target permutation does not restore stale parent snapshots
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/edge-v3-adapter-independent.test.ts:18:288
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/edge-v3-adapter-independent.test.ts > independent: mismatched acknowledgement digest refuses migration after readonly preflight
+AssertionError: {"ok":false,"code":"STUDIO_AGENT_GRAPH_MIGRATION_INVALID","message":"Migration requires a valid graph3 factory default for family container, parameter innerGraph. First use editGraph defineNodeType with replace:true to prepare an explicit intended graph3 string default. Preserve existing inherited instance values with setParameter as needed. Then migrateGraph must use the working graph/route revisions after that earlier editGraph operation in the same atomic batch."}: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/edge-v3-adapter-independent.test.ts:20:692
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  tests/edge-v3-adapter-independent.test.ts > independent challenge: migrated nested reader remains usable for a new inherited parent node
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/edge-v3-adapter-independent.test.ts:21:202
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  4 failed | 16 passed (20)
+   Start at  15:11:48
+   Duration  27.91s (transform 17.19s, setup 0ms, collect 75.27s, tests 1.34s, environment 3.79s, prepare 913ms)
+
