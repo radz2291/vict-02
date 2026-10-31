@@ -1,0 +1,12 @@
+
+> @victframework/runtime@0.4.0-rc.1 build
+> tsc -p tsconfig.json
+
+src/stream-hub.ts(293,67): error TS18048: 'captured.value' is possibly 'undefined'.
+npm error Lifecycle script `build` failed with error:
+npm error code 2
+npm error path C:\Users\RZ1\.codex\worktrees\vict-stream-order-repair-20261031\packages\runtime
+npm error workspace @victframework/runtime@0.4.0-rc.1
+npm error location C:\Users\RZ1\.codex\worktrees\vict-stream-order-repair-20261031\packages\runtime
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c tsc -p tsconfig.json

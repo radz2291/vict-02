@@ -51,6 +51,9 @@ export interface AgentStreamSubscriber {
    * Deliver one event. Returning `false` signals backpressure: the hub
    * switches this subscriber to buffered mode with delta coalescing until
    * it drains via `pull()`.
+   * An awaited sink must not await completion of a later publication to the
+   * same stream: strict ordering requires that publication to wait for this
+   * delivery. Other streams and scheduling without awaiting are supported.
    */
   deliver(event: AgentStreamEvent, signal?: AbortSignal): boolean | Promise<boolean>;
   /**
@@ -116,6 +119,7 @@ interface SubscriberState {
   registering: boolean;
   slow: boolean;
   pending: AgentStreamEvent[];
+  acceptedSeq: number;
   detached: boolean;
 }
 
@@ -125,6 +129,11 @@ interface StreamState {
   readonly subscribers: Map<string, SubscriberState>;
   /** Publication admission order, including durable append and awaited delivery. */
   publicationTail: Promise<void>;
+}
+
+interface ReplaySnapshot {
+  readonly newestSeq: number;
+  readonly buffered: readonly AgentStreamEvent[];
 }
 
 export class AgentStreamHub {
@@ -238,6 +247,7 @@ export class AgentStreamHub {
       registering: true,
       slow: false,
       pending: [],
+      acceptedSeq: afterSeq,
       detached: false,
     };
     state.subscribers.set(subscriber.subscriberId, entry);
@@ -250,30 +260,58 @@ export class AgentStreamHub {
         return;
       }
     }
-    // Deliver the ordered backlog page by page (bounded memory) plus any
-    // live events that were captured during registration. Everything goes
-    // through the private pending queue during registration so the ordered
-    // backlog and live captures stay strictly ordered relative to each
-    // other; the epilogue then hands them off and leaves the subscriber in
-    // the mode the LAST delivery dictated (fast transport keeps receiving
-    // directly; a saturated transport buffers with coalescing).
-    for await (const event of this.#replayIterator(streamId, afterSeq)) {
-      if (entry.detached) {
-        return;
+    // Snapshot at a short publication barrier: every earlier append and its
+    // transient capture has finished before we choose the replay watermark.
+    // Later publications remain free to run while paged replay/sink demand
+    // waits; their captures cannot overtake the fixed historical interval.
+    const snapshot = state.publicationTail.then(async (): Promise<ReplaySnapshot | undefined> => {
+      if (entry.detached) return;
+      // This barrier owns only a read. Cancellation can release it after all
+      // prior durable publications finished, even if the read itself is late.
+      const watermark = await awaitAgentDelivery(
+        this.#ledger.latestSeq(streamId),
+        entry.deliveryAbort.signal,
+      );
+      if (!watermark.delivered || entry.detached) return;
+      const newestSeq = watermark.value;
+      const buffered = new Map<number, AgentStreamEvent>();
+      for (const event of [...state.buffer, ...entry.pending]) {
+        if (!isDurableStreamKind(event.kind) && event.seq <= newestSeq) {
+          buffered.set(event.seq, cloneEvent(event));
+        }
       }
-      // Registration buffers EXACTLY (no coalescing): every replayed and
-      // captured event keeps its identity and sequence, and the epilogue
-      // hands each one off individually, in order.
-      if (entry.pending.length < this.#pendingLimit) {
-        entry.pending.push(cloneEvent(event));
-        continue;
+      return { newestSeq, buffered: [...buffered.values()].sort((a, b) => a.seq - b.seq) };
+    });
+    state.publicationTail = snapshot.then(
+      () => undefined,
+      () => undefined,
+    );
+    try {
+      const captured = await awaitAgentDelivery(snapshot, entry.deliveryAbort.signal);
+      if (!captured.delivered || !captured.value || entry.detached) return;
+      const replaySnapshot = captured.value;
+      // Overlap is replayed exactly once. Keep only newer live captures.
+      entry.pending = entry.pending.filter((event) => event.seq > replaySnapshot.newestSeq);
+      const replay = this.#replayIterator(streamId, afterSeq, replaySnapshot);
+      for (;;) {
+        const next = await awaitAgentDelivery(replay.next(), entry.deliveryAbort.signal);
+        if (!next.delivered || entry.detached || next.value.done) break;
+        const event = next.value.value;
+        if (entry.slow) {
+          if (!this.#queueExact(state, entry, event)) return;
+        } else {
+          // Fast historical delivery is page-streamed, never accumulated in
+          // the slow subscriber queue merely because history is long.
+          await this.#send(entry, event);
+        }
       }
-      // Hard bound reached during registration: explicit recoverable
-      // overflow (never silent loss).
-      this.#overflow(state, entry);
-      return;
+      await this.#flushPending(state, entry);
+    } catch (error) {
+      if (state.subscribers.get(subscriber.subscriberId) === entry) {
+        this.unsubscribe(streamId, subscriber.subscriberId);
+      }
+      throw error;
     }
-    await this.#flushPending(state, entry);
   }
 
   /** Detach a subscriber (clean completion/cancellation/overflow). */
@@ -319,6 +357,7 @@ export class AgentStreamHub {
     const coalesced = coalesceDeltas(entry.pending);
     entry.pending = [];
     entry.slow = false;
+    entry.acceptedSeq = coalesced.at(-1)?.seq ?? entry.acceptedSeq;
     return coalesced;
   }
 
@@ -356,11 +395,12 @@ export class AgentStreamHub {
   async *#replayIterator(
     streamId: string,
     afterSeq: number,
+    snapshot?: ReplaySnapshot,
   ): AsyncGenerator<AgentStreamEvent, void, void> {
     const state = this.#stateOf(streamId);
     // Buffered transients are bounded by the buffer size: snapshot them
     // once (private copies; the buffer itself may keep growing).
-    const buffered = state.buffer
+    const buffered = (snapshot?.buffered ?? state.buffer)
       .filter((event) => event.seq > afterSeq)
       .map((event) => cloneEvent(event))
       .sort((a, b) => a.seq - b.seq);
@@ -372,6 +412,10 @@ export class AgentStreamHub {
         break;
       }
       for (const row of page) {
+        if (snapshot && row.seq > snapshot.newestSeq) {
+          while (bufferIndex < buffered.length) yield buffered[bufferIndex++]!;
+          return;
+        }
         const durableEvent = ledgerRowToEvent(row);
         while (bufferIndex < buffered.length && buffered[bufferIndex]!.seq < row.seq) {
           yield buffered[bufferIndex]!;
@@ -444,17 +488,12 @@ export class AgentStreamHub {
       if (entry.detached) {
         continue;
       }
+      if (event.seq <= entry.acceptedSeq) continue;
       if (entry.registering) {
         // Registration phase: buffer EXACTLY (no coalescing) so every
         // captured event keeps its identity and sequence — the epilogue
         // hands each one off individually, in order with the backlog.
-        if (entry.pending.length < this.#pendingLimit) {
-          entry.pending.push(cloneEvent(event));
-          continue;
-        }
-        // Hard bound reached during registration: explicit recoverable
-        // overflow (never silent loss).
-        this.#overflow(state, entry);
+        this.#queueExact(state, entry, event);
         continue;
       }
       if (!entry.slow) {
@@ -462,21 +501,37 @@ export class AgentStreamHub {
         // mutate an event the replay buffer (or another subscriber) reads.
         // A `false` return means the event was ACCEPTED and the transport
         // is saturated: only SUBSEQUENT events buffer.
-        const delivery = entry.subscriber.deliver(cloneEvent(event), entry.deliveryAbort.signal);
-        const result =
-          typeof delivery === 'boolean'
-            ? { delivered: true as const, value: delivery }
-            : await awaitAgentDelivery(delivery, entry.deliveryAbort.signal);
-        if (!result.delivered) continue;
-        if (!result.value) {
-          entry.slow = true;
-        }
+        await this.#send(entry, event);
         continue;
       }
       // Buffered mode: enqueue honoring the hard bound. Overflow follows
       // the explicit recoverable policy (never silent loss).
       this.#enqueue(state, entry, event);
     }
+  }
+
+  /** Registration captures preserve identity; replay/live overlap is deduplicated. */
+  #queueExact(state: StreamState, entry: SubscriberState, event: AgentStreamEvent): boolean {
+    if (event.seq <= entry.acceptedSeq || entry.pending.some((queued) => queued.seq === event.seq))
+      return true;
+    if (entry.pending.length < this.#pendingLimit) {
+      entry.pending.push(cloneEvent(event));
+      return true;
+    }
+    this.#overflow(state, entry);
+    return false;
+  }
+
+  async #send(entry: SubscriberState, event: AgentStreamEvent): Promise<void> {
+    if (entry.detached || event.seq <= entry.acceptedSeq) return;
+    const delivery = entry.subscriber.deliver(cloneEvent(event), entry.deliveryAbort.signal);
+    const result =
+      typeof delivery === 'boolean'
+        ? { delivered: true as const, value: delivery }
+        : await awaitAgentDelivery(delivery, entry.deliveryAbort.signal);
+    if (!result.delivered || entry.detached) return;
+    entry.acceptedSeq = event.seq;
+    entry.slow = !result.value;
   }
 
   /**
@@ -516,19 +571,14 @@ export class AgentStreamHub {
 
   /** Deliver the pending queue of a slow subscriber (subscribe epilogue). */
   async #flushPending(state: StreamState, entry: SubscriberState): Promise<void> {
+    entry.pending = entry.pending
+      .filter((event) => event.seq > entry.acceptedSeq)
+      .sort((a, b) => a.seq - b.seq);
     while (entry.pending.length > 0 && !entry.detached) {
       const next = entry.pending[0]!;
       if (!entry.slow) {
         entry.pending.shift();
-        const delivery = entry.subscriber.deliver(next, entry.deliveryAbort.signal);
-        const result =
-          typeof delivery === 'boolean'
-            ? { delivered: true as const, value: delivery }
-            : await awaitAgentDelivery(delivery, entry.deliveryAbort.signal);
-        if (!result.delivered) continue;
-        if (!result.value) {
-          entry.slow = true;
-        }
+        await this.#send(entry, next);
         continue;
       }
       break;

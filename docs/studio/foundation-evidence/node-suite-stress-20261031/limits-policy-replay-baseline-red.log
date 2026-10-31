@@ -1,0 +1,106 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-stream-order-repair-20261031
+
+ ❯ |unit| packages/runtime/test/independent-hub-replay-race.test.ts (1 test | 1 failed) 34ms
+   × independent: live capture cannot precede older replay during subscription registration 30ms
+ ❯ |unit| packages/runtime/test/stream-replay-handoff.test.ts (5 tests | 3 failed) 321ms
+   × streams more than the default pending limit to a fast replay sink without overflow 304ms
+   × merges transient and durable replay before newer live capture without duplicates 7ms
+   × a slow historical sink makes cursor progress before recoverable overflow 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| packages/runtime/test/independent-hub-replay-race.test.ts > independent: live capture cannot precede older replay during subscription registration
+AssertionError: expected [ 2, 1, 2 ] to deeply equal [ 1, 2 ]
+
+- Expected
++ Received
+
+  [
++   2,
+    1,
+    2,
+  ]
+
+ ❯ packages/runtime/test/independent-hub-replay-race.test.ts:29:21
+     27|     expect(hub.pull(base.streamId,'sub')).toEqual([]);
+     28|   } finally {release();await subscribing;}
+     29|   expect(delivered).toEqual([1,2]);
+       |                     ^
+     30| });
+     31|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  |unit| packages/runtime/test/stream-replay-handoff.test.ts > streams more than the default pending limit to a fast replay sink without overflow
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/runtime/test/stream-replay-handoff.test.ts:18:20
+     16|   let overflow = false;
+     17|   await hub.subscribe(base.streamId, { subscriberId: 'large', deliver:…
+     18|   expect(overflow).toBe(false);
+       |                    ^
+     19|   expect(received).toEqual(Array.from({ length: 4100 }, (_, i) => i + …
+     20| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  |unit| packages/runtime/test/stream-replay-handoff.test.ts > merges transient and durable replay before newer live capture without duplicates
+AssertionError: expected [ 4, 5, 1, 2, 3, 5 ] to deeply equal [ 1, 2, 3, 4, 5 ]
+
+- Expected
++ Received
+
+  [
++   4,
++   5,
+    1,
+    2,
+    3,
+-   4,
+    5,
+  ]
+
+ ❯ packages/runtime/test/stream-replay-handoff.test.ts:47:20
+     45|     expect(hub.pull(base.streamId, 'race')).toEqual([]);
+     46|   } finally { release.resolve(); await subscription; }
+     47|   expect(received).toEqual([1, 2, 3, 4, 5]);
+       |                    ^
+     48| });
+     49|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  |unit| packages/runtime/test/stream-replay-handoff.test.ts > a slow historical sink makes cursor progress before recoverable overflow
+AssertionError: expected [] to deeply equal [ 1 ]
+
+- Expected
++ Received
+
+- [
+-   1,
+- ]
++ []
+
+ ❯ packages/runtime/test/stream-replay-handoff.test.ts:70:20
+     68|   let overflows = 0;
+     69|   await hub.subscribe(base.streamId, { subscriberId: 'slow', deliver: …
+     70|   expect(received).toEqual([1]);
+       |                    ^
+     71|   expect(overflows).toBe(1);
+     72|   const reconnect: number[] = [];
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  4 failed | 2 passed (6)
+   Start at  11:22:34
+   Duration  2.67s (transform 3.01s, setup 0ms, import 3.73s, tests 356ms, environment 1ms)
+
