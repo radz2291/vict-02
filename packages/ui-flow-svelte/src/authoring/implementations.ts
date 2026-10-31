@@ -4,6 +4,7 @@ import GraphWorkspace from '../composition/GraphWorkspace.svelte';
 import GraphWorkspaceV2 from '../composition/GraphWorkspaceV2.svelte';
 import GraphViewport from '../composition/GraphViewport.svelte';
 import GraphPort from '../composition/GraphPort.svelte';
+import GraphPortRow from '../composition/GraphPortRow.svelte';
 import type { UiSvelteComponentImplementation } from '@victframework/ui-svelte';
 import FlowCanvas from './FlowCanvas.svelte';
 import FlowNode from './FlowNodeDeclaration.svelte';
@@ -11,6 +12,7 @@ import FlowEdge from './FlowEdgeDeclaration.svelte';
 import FlowEditor from './FlowEditor.svelte';
 import { graphEditorParts } from '../editor/presentation.js';
 export const flowAuthoringImplementations: readonly UiSvelteComponentImplementation[] = [
+  {extensionId:'vict.flow.port-row',revision:'1',rendererImplementationId:'vict.svelte.flow.composition',abi:'vict.ui-component-abi@1',styleTargets:['root','handle','socket','label','type'],slots:['content'],requiresParentContext:true,component:GraphPortRow},
   {extensionId:'vict.flow.workspace',revision:'3',rendererImplementationId:'vict.svelte.flow.composition',abi:'vict.ui-component-abi@1',styleTargets:['root'],slots:['content','body'],scopedSlots:['content','body'],component:GraphWorkspaceV3},
   {extensionId:'vict.flow.viewport',revision:'3',rendererImplementationId:'vict.svelte.flow.composition',abi:'vict.ui-component-abi@1',styleTargets:['root'],slots:[],requiresParentContext:true,component:GraphViewport},
   {extensionId:'vict.flow.port',revision:'3',rendererImplementationId:'vict.svelte.flow.composition',abi:'vict.ui-component-abi@1',styleTargets:['root'],slots:['content'],requiresParentContext:true,component:GraphPort},

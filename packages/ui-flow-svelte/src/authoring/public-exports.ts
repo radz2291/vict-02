@@ -1,5 +1,6 @@
 /** Explicit pinned public export inventory. Export changes require a disposition review. */
 export const specialistPublicExports = [
+  'GraphPortRow','./authoring:graphPortRowDescriptor',
   'GraphWorkspaceV3','GraphEdgeSettings','GraphEdgeAppearance','GraphEdgeV3','GraphDocumentV3','GraphOperationV3','GraphResultV3','GraphOperationsResultV3','GraphPatchResultV3','GraphValidationErrorV3','defaultGraphEdgeAppearance','resolveGraphEdgeAppearance','emptyGraphV3','validateGraphV3','parseGraphV3','serializeGraphV3','parseGraphOperationsV3','copyGraphSelectionV3','applyGraphOperationsV3','applyGraphPatchV3','migrateGraphV2ToV3','graphMigrationV2ToV3','GraphSessionV3','graphEdgeAppearanceSchema','graphDocumentSchemaV3','graphClipboardSchemaV3','graphOperationSchemasV3','graphOperationsSchemaV3','./authoring:graphWorkspaceDescriptorV3','./authoring:graphViewportDescriptorV3','./authoring:graphPortDescriptorV3','./authoring:graphEdgeSettingsDescriptor',
   'GraphWorkspaceV2',
   './authoring:graphWorkspaceDescriptorV2','./authoring:graphViewportDescriptorV2','./authoring:graphPortDescriptorV2',

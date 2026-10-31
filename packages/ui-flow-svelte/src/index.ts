@@ -21,5 +21,6 @@ export { default as GraphWorkspace } from './composition/GraphWorkspace.svelte';
 export { default as GraphWorkspaceV2 } from './composition/GraphWorkspaceV2.svelte';
 export { default as GraphViewport } from './composition/GraphViewport.svelte';
 export { default as GraphPortAnchor } from './composition/GraphPort.svelte';
+export { default as GraphPortRow } from './composition/GraphPortRow.svelte';
 export { GRAPH_WORKSPACE, GRAPH_BODY, type GraphWorkspaceContext, type GraphBodyContext } from './composition/context.js';
 export * from './editor/commands.js';

@@ -25,4 +25,9 @@ export const graphPortDescriptorV2:UiExtensionDescriptor={...graphPortDescriptor
 export const graphWorkspaceDescriptorV3:UiExtensionDescriptor={...graphWorkspaceDescriptor,revision:'3',inspectionLimits:[...graphWorkspaceDescriptor.inspectionLimits??[],'Accepts vict.flow-graph@3 only. Static connection appearance defaults and per-edge overrides never imply execution.']};
 export const graphViewportDescriptorV3:UiExtensionDescriptor={...graphViewportDescriptor,revision:'3'};
 export const graphPortDescriptorV3:UiExtensionDescriptor={...graphPortDescriptor,revision:'3'};
+/** A labeled row is opt-in; the existing bare anchor contracts remain unchanged. */
+export const graphPortRowDescriptor:UiExtensionDescriptor={...common,id:'vict.flow.port-row',
+  props:[{name:'id',type:'string'},{name:'color',type:'string',default:'token:accent'},{name:'showType',type:'boolean',default:true}],
+  styleTargets:['root','handle','socket','label','type'],slots:['content'],outputs:[],
+  inspectionLimits:['A horizontal semantic port row inside an authored workspace body. Input sockets are on the left and output sockets on the right; label/type/capacity come from the graph. Place the row at full card width, outside padded settings, to attach wires to the card boundary. The 10px visual socket has a 28px hit area; app part styles remain explicit. Colour accepts hex or token:<semantic-colour-name>, never arbitrary CSS or URLs.']};
 export const graphEdgeSettingsDescriptor:UiExtensionDescriptor={...common,id:'vict.flow.edge-settings',props:[{name:'target',type:'string',default:'selection'},{name:'label',type:'string',default:'Connection appearance'}],slots:['content'],scopedSlots:['content'],outputs:[],inspectionLimits:['Requires nearest graph@3 workspace content. target canvas edits graph defaults; target selection edits exactly one selected edge with no selected nodes. App supplies ordinary controls in scoped content. No imposed inspector UI or execution.']};

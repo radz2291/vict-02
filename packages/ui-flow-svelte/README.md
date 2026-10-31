@@ -79,6 +79,18 @@ missing anchors show diagnostics. Body dimensions are measured, including
 conditional port changes. Choose explicit `vict-graph-drag-handle` elements and
 keep inputs/scroll regions `nodrag nopan nowheel`.
 
+For a readable horizontal editor, `vict.flow.port-row@1` is an opt-in named
+socket row in workspace bodies @1/@2/@3. It derives the visible label, data type
+and input-left/output-right direction from the exact graph port ID. Compose one
+full-width row per port at the unpadded card boundary, and pad ordinary settings
+separately. This prevents several unrelated inputs becoming anonymous footer
+dots. The 10px visual socket has a transparent 28px hit area; rows grow with
+content. Choose consistent hex or semantic-token colours by data type and keep
+the labels visible. The root/handle/socket/label/type parts are authorable, and
+optional content remains ordinary UI. This changes presentation only: graph
+types, capacity, connection history and ownership stay authoritative. Existing
+bare-port identities retain their original behavior.
+
 A newly registered ordinary VICT component can be authored inside a body without
 a flow-specific variant or allowlist. Its ordinary placement, required context,
 accessibility and overlay contracts still apply; this is not a claim that every

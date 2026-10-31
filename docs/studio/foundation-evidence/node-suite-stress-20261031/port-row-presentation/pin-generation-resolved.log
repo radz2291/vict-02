@@ -1,0 +1,48 @@
+vite v6.4.3 building SSR bundle for production...
+transforming...
+3:04:48 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+335:   {/if}
+336: {:else if instruction.kind === 'text'}
+337:   <span
+            ^
+338:     class="uv-text"
+339:     data-ui-owner={ownerId}
+3:04:48 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+335:   {/if}
+336: {:else if instruction.kind === 'text'}
+337:   <span
+            ^
+338:     class="uv-text"
+339:     data-ui-owner={ownerId}
+3:04:48 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+422:   {:else if extension?.ok}
+423:     {@const Implementation = extension.component}
+424:     <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+                ^
+425:       onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+426:       <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+3:04:48 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+422:   {:else if extension?.ok}
+423:     {@const Implementation = extension.component}
+424:     <span style="display: contents" data-extension-id={instruction.extensionId} data-ui-owner={ownerId} data-ui-occ={occ} data-ui-node={instruction.nodeId}
+                ^
+425:       onclick={event => { event.stopPropagation(); selectOccurrence?.(occ); }}>
+426:       <Implementation props={extensionProps} occurrenceKey={occ} nodeId={instruction.nodeId} {presentation} />
+3:04:48 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+109:   let stateBag: Record<string, unknown> = $state(initialValues());
+110:   let acceptedSupplied: Record<string, UiValue> = {};
+111:   let lastDocumentId = $state(plan.documentId);
+                                       ^
+112:   let lastSignal: symbol | undefined = $state<symbol | undefined>(undefined);
+113: 
+✓ 1343 modules transformed.
+rendering chunks...
+../../../AppData/Local/Temp/vict-port-row-pin-HPgqel/build/pin.js  1,809.05 kB
+✓ built in 9.17s
+[{"id":"vict.flow.port-row","revision":"1","descriptorDigest":"3213092087601d4e95027666e999f76bc1bd351dc61ff8b5cdfc98102901311d","capabilitiesDigest":"3c2a37417032ee6382dcd797f6a90e09bb9c84ac68a27abd5b782e9e77121f92"}]
+

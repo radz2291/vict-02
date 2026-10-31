@@ -2,6 +2,8 @@ import appearanceCompatibility from './compatibility-composition-v3.json' with {
 import compositionCompatibility from './compatibility-composition-v1.json' with { type: 'json' };
 import typedCompositionCompatibility from './compatibility-composition-v2.json' with {type:'json'};
 import { graphCompositionRegistrations,graphCompositionRegistrationsV2,graphCompositionRegistrationsV3 } from '../composition/knowledge.js';
+import {graphPortRowRegistrations} from '../composition/knowledge.js';
+import portRowCompatibility from './compatibility-port-row.json' with {type:'json'};
 import type { UiAuthoringFragment, UiAuthoringPackage } from '@victframework/ui';
 import {
   flowCanvasDescriptor,
@@ -190,9 +192,9 @@ const legacyPackage: UiAuthoringPackage = {
 const editorRegistration = legacyPackage.registrations.find(item => item.descriptor.id === 'vict.flow.editor')!;
 export const flowAuthoringPackage: UiAuthoringPackage = {
   ...legacyPackage,
-  compatibility: [...compatibility, ...presentationCompatibility,...compositionCompatibility,...typedCompositionCompatibility,...appearanceCompatibility],
+  compatibility: [...compatibility, ...presentationCompatibility,...compositionCompatibility,...typedCompositionCompatibility,...appearanceCompatibility,...portRowCompatibility],
   // Preserve historical unpinned resolution; new typed composition pins @2.
-  registrations: [...graphCompositionRegistrationsV3,...graphCompositionRegistrationsV2,...graphCompositionRegistrations,...legacyPackage.registrations, {
+  registrations: [...graphPortRowRegistrations,...graphCompositionRegistrationsV3,...graphCompositionRegistrationsV2,...graphCompositionRegistrations,...legacyPackage.registrations, {
     ...editorRegistration,
     descriptor: flowEditorDescriptorV2,
     guidance: editorRegistration.guidance,

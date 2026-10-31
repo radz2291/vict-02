@@ -2,6 +2,19 @@ import {graphDocumentSchemaV3,graphOperationsSchemaV3} from '../editor/graph-v3-
 import type { UiAuthoringRegistration } from '@victframework/ui';
 import { graphWorkspaceDescriptor,graphViewportDescriptor,graphPortDescriptor,graphWorkspaceDescriptorV2,graphViewportDescriptorV2,graphPortDescriptorV2,graphWorkspaceDescriptorV3,graphViewportDescriptorV3,graphPortDescriptorV3,graphEdgeSettingsDescriptor } from './descriptors.js';
 import {graphDocumentSchemaV1,graphDocumentSchemaV2,graphOperationsSchemaV1,graphOperationsSchemaV2,graphDataExamples} from '../editor/graph-schemas.js';
+import {graphPortRowDescriptor} from './descriptors.js';
+export const graphPortRowRegistrations:readonly UiAuthoringRegistration[]=[{
+  descriptor:graphPortRowDescriptor,label:'Labeled graph port row',family:'flow',category:'graph-part',
+  purpose:'A readable named and typed socket row with input left/output right and a larger hit area, composed into the application-owned node card.',eligibility:{kind:'part'},
+  dependencies:[{id:'vict.flow.workspace',revision:'3'}],
+  rules:[{kind:'ancestorSlot',placements:[1,2,3].map(revision=>({definitionId:'vict.flow.workspace',revision:String(revision),slotName:'body'}))}],
+  guidance:[
+    'Place inside workspace.body and pass the exact semantic graph port id. Label, direction, type and capacity come from that current node, not from presentation props. It uses the same connection validation and duplicate-anchor refusal as the bare port; do not render both anchors for the same port.',
+    'For horizontal node editors, compose one full-width row per named input on the left and output on the right. Keep the node border unpadded around these rows and pad ordinary settings separately, so the socket centre is on the card boundary. A mixed anonymous footer row is unsuitable for nodes with several differently named inputs.',
+    'The default name and type remain visible; optional content is ordinary authored UI. color is a hex value or token:<semantic-colour-name>; choose consistent colours by the actual data type and retain text labels. showType defaults true. style parts are root, handle, socket, label and type. The default socket is 10px inside a transparent 28px handle; the row has a 32px minimum height and grows with content. These are presentation defaults, not graph or content quotas.',
+    'Use ordinary authoring wrappers for input/output sections and local controls; the component does not generate a node application, mutate graph data, infer executions or add ports. Recheck endpoint locations after card resizing, nested zoom, reconnect, source history and save/export/import. Existing bare port @1/@2/@3 identities are unchanged.',
+  ],
+}];
 const dataV1=[{id:'vict.flow-graph',revision:'1',schema:{...graphDocumentSchemaV1},examples:[graphDataExamples.v1]},{id:'vict.flow-operations',revision:'1',schema:{...graphOperationsSchemaV1}}];
 const dataV2=[{id:'vict.flow-graph',revision:'2',schema:{...graphDocumentSchemaV2},examples:[graphDataExamples.v2,graphDataExamples.typedParameters]},{id:'vict.flow-operations',revision:'2',schema:{...graphOperationsSchemaV2}}];
 export const graphCompositionRegistrations:readonly UiAuthoringRegistration[]=[
