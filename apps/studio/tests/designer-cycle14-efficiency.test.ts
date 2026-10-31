@@ -240,11 +240,11 @@ it('enforces completed knowledge and delivers measured progress through the actu
     readInputRevision: '9',
     editCapabilityRevision: '8',
     editInputRevision: '8',
-    instructionsRevision: '14',
-    profileRevision: '16',
-    startInputRevision: '4',
-    observationInstructionsRevision: '6',
-    observationProfileRevision: '10',
+    instructionsRevision: '15',
+    profileRevision: '17',
+    startInputRevision: '5',
+    observationInstructionsRevision: '7',
+    observationProfileRevision: '11',
   });
   const full = agentContext(source, cursor, undefined, {
     section: 'contracts',

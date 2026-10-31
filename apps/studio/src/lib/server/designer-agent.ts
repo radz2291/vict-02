@@ -84,11 +84,11 @@ export const STUDIO_AGENT_PROTOCOL = {
   readInputRevision: '9',
   editCapabilityRevision: '8',
   editInputRevision: '8',
-  instructionsRevision: '14',
-  profileRevision: '16',
-  startInputRevision: '4',
-  observationInstructionsRevision: '6',
-  observationProfileRevision: '10',
+  instructionsRevision: '15',
+  profileRevision: '17',
+  startInputRevision: '5',
+  observationInstructionsRevision: '7',
+  observationProfileRevision: '11',
 } as const;
 
 export type StudioAgentEvent =
@@ -200,20 +200,20 @@ const startSchema = z
     mode: z.literal('observe-only').optional(),
     observationTask: z.string().trim().min(1).optional(),
     observationTarget: z
-      .object({ nodeId: z.string().min(1).max(160), part: z.string().min(1).max(160).optional() })
+      .object({ nodeId: z.string().min(1), part: z.string().min(1).optional() })
       .strict()
       .optional(),
     document: z.unknown(),
     mediaInventory: agentMediaInventorySchema.optional(),
     cursor: z
       .object({
-        documentId: z.string().min(1).max(160),
-        revision: z.string().min(1).max(160),
-        digest: z.string().max(160),
+        documentId: z.string().min(1),
+        revision: z.string().min(1),
+        digest: z.string(),
         epoch: z.string().uuid(),
       })
       .strict(),
-    selection: z.string().max(500).optional(),
+    selection: z.string().optional(),
     selectionSet: selectionSetSchema.optional(),
     toolEvidenceSchema: z.literal(STUDIO_TOOL_EVIDENCE_SCHEMA).optional(),
     toolEvidenceArchiveSchema: z.literal(TOOL_ARCHIVE_SCHEMA).optional(),
@@ -226,14 +226,14 @@ const startSchema = z
         viewport: z
           .object({
             model: z.enum(['isolated-viewport', 'hosted-container']),
-            width: z.number().finite().min(0).max(100_000),
-            height: z.number().finite().min(0).max(100_000),
-            devicePixelRatio: z.number().finite().positive().max(16),
+            width: z.number().finite().min(0),
+            height: z.number().finite().min(0),
+            devicePixelRatio: z.number().finite().positive(),
             scrollLeft: z.number().finite(),
             scrollTop: z.number().finite(),
           })
           .strict(),
-        composition: z.string().max(500).optional(),
+        composition: z.string().optional(),
       })
       .strict()
       .optional(),
