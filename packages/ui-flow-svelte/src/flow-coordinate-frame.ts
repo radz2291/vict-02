@@ -45,12 +45,20 @@ export function observeFlowCoordinateFrame(
     if (!(logicalWidth > 0 && logicalHeight > 0 && rect.width > 0 && rect.height > 0)) return;
     const x = rect.width / logicalWidth,
       y = rect.height / logicalHeight;
+    // Keep the relative allowance for serialized computed CSS dimensions, and
+    // account for transformed rectangle edges quantized in the rendering layer.
+    // Four Float32 ULPs bound edge subtraction noise in screen CSS pixels; this
+    // is converted back to ratio uncertainty separately for each dimension.
+    // Transform evidence below independently rejects actual anisotropy.
+    const edgePrecision = Math.max(1,Math.abs(rect.left),Math.abs(rect.top),Math.abs(rect.right),Math.abs(rect.bottom),rect.width,rect.height)*2**-21;
+    const ratioPrecision = edgePrecision*(1/logicalWidth+1/logicalHeight);
+    const uniform=(a:number,b:number)=>Math.abs(a-b)<=Math.max(a,b)*1e-6;
     let supported =
       Number.isFinite(x) &&
       Number.isFinite(y) &&
       x > 0 &&
       y > 0 &&
-      Math.abs(x - y) <= Math.max(x, y) * 1e-6;
+      Math.abs(x - y) <= Math.max(x, y) * 1e-6 + ratioPrecision;
     for (
       let ancestor: HTMLElement | null = root.parentElement;
       supported && ancestor;
@@ -66,7 +74,7 @@ export function observeFlowCoordinateFrame(
       // conversion safely.
       if (css.scale && css.scale !== 'none') {
         const factors = css.scale.split(/\s+/).map(Number);
-        if (factors.some((value) => !Number.isFinite(value) || value <= 0)) {
+        if (factors.some((value) => !Number.isFinite(value) || value <= 0) || (factors.length>1&&!uniform(factors[0]!,factors[1]!)) || (factors.length>2&&factors[2]!==1)) {
           supported = false;
           break;
         }
@@ -78,6 +86,7 @@ export function observeFlowCoordinateFrame(
             matrix.is2D &&
             matrix.a > 0 &&
             matrix.d > 0 &&
+            uniform(matrix.a,matrix.d) &&
             Math.abs(matrix.b) < 1e-10 &&
             Math.abs(matrix.c) < 1e-10;
         } catch {

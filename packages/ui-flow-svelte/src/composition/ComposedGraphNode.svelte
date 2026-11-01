@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { setContext, tick,onDestroy } from 'svelte';
+  import { getContext, setContext, tick,onDestroy } from 'svelte';
   import { on } from 'svelte/events';
+  import {FLOW_COORDINATE_UNITS,type FlowCoordinateUnits} from '../flow-coordinate-frame.js';
   import { useUpdateNodeInternals, type NodeProps } from '@xyflow/svelte';
   import { GRAPH_BODY, type GraphBodyContext, type GraphWorkspaceContext, type GraphWorkspaceNode } from './context.js';
   let {id,data,selected}:NodeProps=$props();
@@ -10,6 +11,7 @@
   let root=$state<HTMLElement>();
   let anchors=$state<Record<string, symbol[]>>({});
   const update=useUpdateNodeInternals();
+  const coordinates=getContext<FlowCoordinateUnits|undefined>(FLOW_COORDINATE_UNITS);
   let mounted=true;
   onDestroy(()=>{mounted=false;});
   const remeasure=()=>{void tick().then(()=>{if(mounted)update(id);});};
@@ -30,6 +32,9 @@
     registerPort(id,token){anchors={...anchors,[id]:[...(anchors[id]??[]),token]};remeasure();return()=>{anchors={...anchors,[id]:(anchors[id]??[]).filter(item=>item!==token)};remeasure();};},
     uniquePort(id){return anchors[id]?.length===1;},
   });
+  // Unit changes need a refresh even when the card never resizes. Keep the
+  // content ResizeObserver alive while ancestor cameras change.
+  $effect(()=>{void coordinates?.scale;remeasure();});
   $effect(()=>{
     void node;let alive=true;
     void tick().then(()=>{if(alive)update(id);});
