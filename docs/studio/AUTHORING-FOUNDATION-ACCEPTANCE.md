@@ -17,6 +17,11 @@
 > [repair record](STRUCTURE-TEST-REPAIR-20261101.md); the original independent
 > verdict above remains attributed to20e26253, not silently reassigned.
 
+> **Readable-caption follow-up CLOSED:** current product2de11bc7 supplies shared
+> graph/JSON State summaries with full Selection/Data values preserved.64/64
+> affected checks and native proof pass; [caption closure](STRUCTURE-CAPTIONS-20261101.md)
+> retains integrator attribution and the earlier independent-review boundaries.
+
 ## Historical 28 October morning-review checkpoint — product a99aea00
 
 **Historical a99aea00 scoped count: 30 demonstrated / 1 partial (AR-25) / 0 failed criteria at that checkpoint across31. All31 owner acceptances remain open; full foundation gate HELD.** Product `a99aea00dd75d8ced3104bc399257a343517e7b3` is independently reviewed, built, loaded and exercised through actual Z.ai subscription proof. AR-05 now has concise receipt-derived default Host evidence summary with unchanged originals/technical details inspectable. AR-09 separates source effects, stable capture measurements, explicitly unverified structured AI interpretation and untested behavior; an actual failed capture is preserved as failed and one visibility-based observation-only recovery succeeds without edits. These are scoped reporting-contract demonstrations, not universal model truth or censorship of the longer original response.

@@ -1,0 +1,14 @@
+{
+  "schema": "vict.structure-caption-technical-review@1",
+  "reviewedBy": "integrator",
+  "status": "PASS",
+  "sourceCandidate": "2de11bc7719984f23341852b1cc8b9985ff81adf",
+  "sealSha256": "fc482c3907086031b6ce3d1289df8e596e3f0ece3ac58149434585b0d99166f1",
+  "postActivation": false,
+  "sourceInputs": 344,
+  "installedFiles": 398,
+  "preservedProofFiles": 93,
+  "consumerPackages": 9,
+  "installedNonmanifestMembers": 647,
+  "errors": []
+}

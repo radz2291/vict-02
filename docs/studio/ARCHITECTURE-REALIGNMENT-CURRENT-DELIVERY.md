@@ -1,6 +1,18 @@
 # Architecture realignment — current delivery boundary
 
-**1November test-repair follow-up CLOSED.** Current local product is
+**1November readable-caption follow-up CLOSED.** Current local product is
+**2de11bc7719984f23341852b1cc8b9985ff81adf**. Shared Structure summarizes validated
+graph states and other JSON states without raw payload prefixes; list/date/time
+labels are readable, and other caption generators were audited. Full values
+remain exact in Selection/Data.64/64 affected checks,5/5 public-consumer checks,
+type/lint, production and native verification pass. Evidence desk r1.r7 remains
+byte-identical; the native card reads “Graph configuration · 3 nodes · 2 connections.”
+[Caption repair and closure](STRUCTURE-CAPTIONS-20261101.md) records exact source,
+seal, rollback and integrator attribution.
+
+## Test-repair checkpoint
+
+**1November test-repair follow-up CLOSED.** That checkpoint's local product is
 **a629b40818ba367daf79850c80d9abb7fe02df1c**. All12 inherited failing cases
 are repaired with their behavior checks retained;31/31 affected/adjacent checks,
 Studio type checking, lint, isolated public consumer and production builds pass.

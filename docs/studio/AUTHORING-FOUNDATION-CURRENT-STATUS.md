@@ -6,6 +6,9 @@
 > The [test-repair follow-up](STRUCTURE-TEST-REPAIR-20261101.md) is also CLOSED:
 > installed producta629b408, all12 targeted failures resolved,31/31 affected checks
 > passing, with native keyboard and exact document-preservation proof.
+> The [caption follow-up](STRUCTURE-CAPTIONS-20261101.md) is also CLOSED on current
+> product2de11bc7:64/64 affected checks, readable graph/JSON State summaries and
+> exact full values in Selection/Data. Earlier runtime identities retain their scope.
 > [Current delivery](ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md) records exact
 > source/build identities; [completion](STRUCTURE-SHARED-COMPLETION-20261101.md)
 > records actual-agent adoption, shared Structure, native checks and retained limits.

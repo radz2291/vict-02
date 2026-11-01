@@ -1,0 +1,61 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Evidence desk — rich-node retry"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- main:
+  - button "Toggle Chat drawer":
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact"
+    - button "Structure" [pressed]
+  - button "Toggle Document and Selection drawer":
+  - region "Structure workspace":
+    - region "Source structure":
+      - searchbox "Search structure": evidence-graph
+      - menubar "Structure menus":
+        - menuitem "View"
+        - menuitem "Object" [disabled]
+      - group "Structure quick actions":
+        - button "Fit all" [active]:
+        - button "Fit selection" [disabled]:
+        - button "Arrange nodes":
+      - paragraph: Search · 1 match · 2 shown
+      - application:
+        - 'group "State: Evidence graph"':
+          - generic: State
+          - strong: Evidence graph
+          - 'generic "Text · starts with “{\"schema\":\"vict.flow-graph@2\",\"…”"'
+          - list "Incoming connections":
+            - listitem "Incoming Updates · 1 declared reference":
+              - generic: Updates
+              - button "Select incoming Updates connections for Evidence graph"
+              - button
+          - list "Outgoing connections"
+        - 'group "Output: Graph Change"':
+          - generic: Output
+          - strong: Graph Change
+          - generic "Component desk-workspace"
+          - list "Incoming connections"
+          - list "Outgoing connections":
+            - listitem "Outgoing Updates · 1 declared reference":
+              - generic: Updates
+              - button "Select outgoing Updates connections for Graph Change"
+              - button
+        - link "Svelte Flow attribution":
+          - /url: https://svelteflow.dev?utm_source=attribution
+          - text: Svelte Flow
+        - generic "Control Panel":
+          - button "Zoom In":
+          - button "Zoom Out":
+- contentinfo:
+  - status: Loaded the saved screen.
+- generic: Designer — VICT Studio

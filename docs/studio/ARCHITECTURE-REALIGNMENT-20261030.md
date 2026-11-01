@@ -259,3 +259,15 @@ consumer and production checks pass; Evidence desk r1.r7 source remains exact.
 of those12 failures as current issues. This follow-up uses explicitly attributed
 integrator checks; the earlier independent20e26253 foundation verdict retains
 its original scope. No push, merge, publication or broader milestone closure.
+
+## 1 November 2026 — readable shared Structure captions closed
+
+Owner-requested graph/JSON State caption repair is CLOSED on locally activated
+2de11bc7719984f23341852b1cc8b9985ff81adf.64/64 affected checks and5/5 isolated
+consumer checks pass, with type/lint, production and native verification. The
+shared formatter uses existing Flow validators through a nonvisual model entry;
+other JSON is summarized by shape. Selection/Data retain complete initial values,
+and Evidence desk r1.r7 source remains exact. Other caption generators were
+audited. [Caption closure](STRUCTURE-CAPTIONS-20261101.md) records the precise
+source, seal, rollback and integrator scope; no broader independent verdict,
+push, merge, publication or milestone closure is inferred.

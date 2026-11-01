@@ -1,0 +1,20 @@
+{
+  "schema": "vict.structure-caption-completion@1",
+  "status": "PASS",
+  "sourceCandidate": "2de11bc7719984f23341852b1cc8b9985ff81adf",
+  "testsPassed": 64,
+  "testFiles": 7,
+  "publicConsumerCases": 5,
+  "installedPackages": 9,
+  "installedNonmanifestMembers": 647,
+  "sourceInputs": 344,
+  "installedFiles": 398,
+  "historicalProofFiles": 93,
+  "nativeSourceExact": true,
+  "selectionFullValueExact": true,
+  "dataFullValueExact": true,
+  "fullValueCharacters": 1648,
+  "nativeCaption": "Graph configuration · 3 nodes · 2 connections",
+  "wholeRepositorySuiteClaim": false,
+  "independentReviewClaim": false
+}

@@ -1,0 +1,87 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Evidence desk — rich-node retry"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- main:
+  - button "Toggle Chat drawer":
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact"
+    - button "Structure" [pressed]
+  - button "Toggle Document and Selection drawer" [expanded]:
+  - region "Structure workspace":
+    - region "Source structure":
+      - searchbox "Search structure": evidence-graph
+      - menubar "Structure menus":
+        - menuitem "View"
+        - menuitem "Object"
+      - group "Structure quick actions":
+        - button "Fit all":
+        - button "Fit selection":
+        - button "Arrange nodes":
+      - paragraph: Search · 1 match · 2 shown · 1 selected
+      - application:
+        - 'group "State: Evidence graph"':
+          - generic: State
+          - strong: Evidence graph
+          - generic "Graph configuration · 3 nodes · 2 connections"
+          - list "Incoming connections":
+            - listitem "Incoming Updates · 1 declared reference":
+              - generic: Updates
+              - button "Select incoming Updates connections for Evidence graph"
+              - button
+          - list "Outgoing connections"
+        - 'group "Output: Graph Change"':
+          - generic: Output
+          - strong: Graph Change
+          - generic "Component desk-workspace"
+          - list "Incoming connections"
+          - list "Outgoing connections":
+            - listitem "Outgoing Updates · 1 declared reference":
+              - generic: Updates
+              - button "Select outgoing Updates connections for Graph Change"
+              - button
+        - link "Svelte Flow attribution":
+          - /url: https://svelteflow.dev?utm_source=attribution
+          - text: Svelte Flow
+        - generic "Control Panel":
+          - button "Zoom In":
+          - button "Zoom Out":
+- separator "Document drawer width"
+- complementary "Document and Selection":
+  - tablist "Panel context":
+    - tab "Document"
+    - tab "Selection" [active] [selected]
+  - button "Hide Document and Selection":
+  - tabpanel "Selection":
+    - region "Source inspection details":
+      - generic "Selected items":
+        - generic: State
+        - strong: Evidence graph
+      - region "Selection overview":
+        - button "Overview" [expanded]:
+          - generic: Overview
+        - button "Edit in Data ↗"
+        - term: Value type
+        - definition: String
+        - term: Starting value
+        - definition: "{\"schema\":\"vict.flow-graph@2\",\"revision\":166,\"nodeTypes\":[{\"id\":\"source-note\",\"label\":\"Source note\",\"parameters\":{\"notes\":{\"default\":\"\",\"label\":\"Provenance notes\",\"type\":\"string\"},\"url\":{\"default\":\"\",\"label\":\"Source URL\",\"type\":\"string\"}},\"ports\":[{\"direction\":\"output\",\"id\":\"evidence\",\"label\":\"Evidence\",\"maxConnections\":1,\"type\":\"evidence\"}]},{\"id\":\"review\",\"label\":\"Review\",\"parameters\":{\"reviewNotes\":{\"default\":\"\",\"label\":\"Review notes\",\"type\":\"string\"},\"reviewReference\":{\"default\":\"\",\"label\":\"Reference\",\"type\":\"string\"},\"reviewStatus\":{\"default\":\"pending\",\"label\":\"Status\",\"type\":\"string\"}},\"ports\":[{\"direction\":\"input\",\"id\":\"intake\",\"label\":\"Evidence in\",\"maxConnections\":2,\"type\":\"evidence\"}]}],\"nodes\":[{\"id\":\"source-note-1\",\"type\":\"source-note\",\"label\":\"Source note\",\"position\":{\"x\":108.58303951389152,\"y\":-87.44864848500723},\"values\":{\"url\":\"https://example.org/source-ax\",\"notes\":\"Manual note: compare the original source.\\nKeep uncertainty visible.\"}},{\"id\":\"review-1\",\"type\":\"review\",\"label\":\"Review\",\"position\":{\"x\":-230,\"y\":40},\"values\":{\"reviewReference\":\"https://example.org/review-b\",\"reviewNotes\":\"Independent review: check the claim.\",\"reviewStatus\":\"needs-work\"}},{\"id\":\"source-note-2\",\"type\":\"source-note\",\"label\":\"Source note\",\"position\":{\"x\":532.8139007098847,\"y\":-24.5587760895105},\"values\":{\"notes\":\"Second source: independent provenance.\",\"url\":\"https://example.org/source-b\"}}],\"edges\":[{\"id\":\"edge-source-review-1\",\"source\":\"source-note-1\",\"sourcePort\":\"evidence\",\"target\":\"review-1\",\"targetPort\":\"intake\"},{\"source\":\"source-note-2\",\"sourcePort\":\"evidence\",\"target\":\"review-1\",\"targetPort\":\"intake\",\"id\":\"edge-1\"}]}"
+      - region "Selection relationships":
+        - button "Relationships":
+          - text: Relationships
+          - generic: "2"
+      - region "Selection technical information":
+        - button "Technical information":
+          - generic: Technical information
+- contentinfo:
+  - status: Loaded the saved screen.
+- generic: Designer — VICT Studio
