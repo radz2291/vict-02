@@ -11,6 +11,10 @@
       "default": "./src/index.ts"
     },
     "./styles.css": "./src/styles.css",
+    "./model": {
+      "types": "./src/model.ts",
+      "default": "./src/model.ts"
+    },
     "./authoring": {
       "types": "./src/authoring/index.ts",
       "svelte": "./src/authoring/index.ts",

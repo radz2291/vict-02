@@ -16,6 +16,7 @@ import {
 import type { Node, Edge } from '@victframework/ui-flow-svelte';
 import { sourceNodeLabels,sourceDisplayName,sourceStyleName } from './presentation.js';
 import { structureBehavior, structureStateName } from './structure-behavior.js';
+import {stateSummary} from './state-summary.js';
 import {
   projectRelations,
   relationLabels,
@@ -332,21 +333,8 @@ export function projectStructure(
     );
   }
   for (const [id, state] of Object.entries(document.localState)) {
-    const initial = state.initial;
-    const start =
-      initial === ''
-        ? 'starts empty'
-        : typeof initial === 'boolean'
-          ? `initially ${initial ? 'on' : 'off'}`
-          : typeof initial === 'number'
-            ? `starts at ${initial}`
-            : typeof initial === 'string'
-              ? `starts with “${initial.length > 32 ? initial.slice(0, 31) + '…' : initial}”`
-              : Array.isArray(initial)
-                ? `${initial.length} initial items`
-                : 'declared starting value';
     add('state', id, structureStateName(id), {
-      summary: `${state.type === 'string' ? 'Text' : friendly(state.type)} · ${start}`,
+      summary: stateSummary(state.type,state.initial),
       kindLabel: 'State',
     });
   }

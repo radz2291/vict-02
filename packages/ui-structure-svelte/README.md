@@ -14,6 +14,13 @@ The shared implementation preserves23 relationship roles, definition/repeat/slot
 
 ## Styles and public modules
 
+State cards summarize declared starting data: supported graphs use the public
+Flow model validators and show node/connection counts; other JSON objects/arrays
+show field/item counts. Ordinary text uses a whitespace-normalized preview, while
+list/date/time types have readable names. Unrecognized or invalid graph-shaped
+JSON stays a generic JSON summary. Full values remain in source facts and host
+Selection/Data editors; no state type, value, schema or runtime state is changed.
+
 The explorer includes scoped card, menu, socket and toolbar styles plus public Flow CSS. No Studio stylesheet is required. VICT theme tokens and optional `--vict-structure-font-ui`/`--vict-structure-font-meta` inherit from the host, with standalone defaults.
 
 Root exports: `StructureExplorer`, `StructureSourceNode`, `StructureRelationEdge` and all helpers. Nonvisual consumers can import `/projection`, `/semantics`, `/behavior`, `/connections`, `/trace`, `/geometry`, `/placement` and `/selection` without loading the explorer. `./styles.css` supports custom compositions.

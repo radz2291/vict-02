@@ -1,5 +1,9 @@
 # Optional Svelte Flow UI
 
+Nonvisual graph contracts, validators and reducers are available from
+`@victframework/ui-flow-svelte/model`, including the retained v1/v2/v3 APIs.
+This entry point loads no Svelte components; validation remains shared with Flow.
+
 This package is a specialist presentation dependency independent of Studio and
 application execution. Canonical composition depends on `ui-svelte` and `ui`;
 neither package depends on flow. It exports the pinned upstream
