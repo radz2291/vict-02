@@ -291,10 +291,15 @@
   }
   function closeInspection(restoreFocus = true) {
     inspectionOpen = false; allowMoves = false; moveSource = ''; moveTarget = '';
-    if (restoreFocus) (inspectionReturn?.isConnected?inspectionReturn:searchInput)?.focus({ preventScroll: true });
+    const target=inspectionReturn?.isConnected&&!inspectionReturn.closest('[hidden],[inert],[aria-hidden="true"]')?inspectionReturn:searchInput;
+    if (restoreFocus) target?.focus({ preventScroll: true });
   }
   function openInspection(page: typeof inspectionPage = 'properties') {
-    inspectionReturn=globalThis.document.activeElement instanceof HTMLElement?globalThis.document.activeElement:undefined;
+    const active=globalThis.document.activeElement;
+    // Menu content can remain mounted after closing. Return to its visible
+    // launcher rather than a connected but hidden menu item/content element.
+    inspectionReturn=active instanceof HTMLElement&&!active.closest('[role="menu"]')?active:
+      structureElement?.querySelector<HTMLElement>('[role="menubar"] > button[aria-expanded="true"]')??searchInput;
     if (onInspect && (page === 'properties' || page === 'relationships')) { onInspect(objectTarget?.id,page); return; }
     allowMoves = page === 'move'; inspectionPage = page; inspectionOpen = true;
   }
@@ -314,8 +319,11 @@
     if(node && ['Enter',' '].includes(event.key)){event.preventDefault();select(node,event);}
   }
   function graphEscape(event: KeyboardEvent) {
-    if(active && !activeMenu && event.key==='Escape' && tracedConnection && event.target instanceof Element && structureElement?.contains(event.target) && !event.target.closest('[role=menu],input,textarea,[contenteditable=true]')){event.preventDefault();event.stopPropagation();clearTrace();return;}
-    if (!active || activeMenu || event.key !== 'Escape' || !(event.target instanceof HTMLElement) || event.target.closest('[role="menu"]')) return;
+    // Inspection closes before selection changes. A selected node's relationship
+    // highlight is not a separate connection selection to consume Escape.
+    const connectionTrace=chosenItems.some(item=>item.kind==='edge')||hoveredEdges.length>0||focusedEdges.length>0;
+    if(active && !activeMenu && !inspectionOpen && connectionTrace && event.key==='Escape' && tracedConnection && event.target instanceof Element && structureElement?.contains(event.target) && !event.target.closest('[role=menu],input,textarea,[contenteditable=true]')){event.preventDefault();event.stopPropagation();clearTrace();return;}
+    if (!active || activeMenu || event.key !== 'Escape' || !(event.target instanceof HTMLElement) || !structureElement?.contains(event.target) || event.target.closest('[role="menu"]')) return;
     if(!event.target.matches('.svelte-flow__node')){
       if(structureElement?.contains(event.target)){escape(event);if(event.defaultPrevented)event.stopPropagation();}
       return;

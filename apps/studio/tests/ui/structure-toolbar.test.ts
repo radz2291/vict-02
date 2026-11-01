@@ -7,6 +7,7 @@ import Designer from '../../src/lib/designer/Designer.svelte';
 import {clarityFixture} from '../fixtures/structure-clarity.js';
 import {structureId,projectStructure,structureMatches} from '../../src/lib/designer/structure.js';
 import {screenStore} from '../../src/lib/designer/storage.js';
+import type {UiDocument} from '@victframework/ui';
 let app:ReturnType<typeof mount>|undefined;
 afterEach(async()=>{if(app)await unmount(app);app=undefined;document.body.innerHTML='';document.body.style.pointerEvents='';localStorage.clear();});
 async function settle(){flushSync();await tick();await tick();}
@@ -15,6 +16,15 @@ async function menu(name='View'){const trigger=[...document.querySelectorAll<HTM
 async function submenu(name:string){control(name).focus();control(name).dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true,cancelable:true}));await settle();}
 async function item(name:string){control(name).click();await settle();}
 async function closeMenu(){document.querySelector<HTMLElement>('[role=menu]')?.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));await settle();}
+/** Read the public canonical source panel; parent DOM queries cannot inspect the preview iframe. */
+async function workingSource():Promise<UiDocument>{
+ const toggle=control('Toggle Document and Selection drawer');
+ if(toggle.getAttribute('aria-expanded')!=='true'){toggle.click();await settle();}
+ document.querySelector<HTMLButtonElement>('[data-context=document]')!.click();await settle();
+ if(!document.querySelector('#canonical-source'))await item('Source');
+ return JSON.parse(document.querySelector<HTMLTextAreaElement>('#canonical-source')!.value);
+}
+async function undo(){document.body.dispatchEvent(new KeyboardEvent('keydown',{key:'z',ctrlKey:true,bubbles:true,cancelable:true}));await settle();}
 function nodes(){return [...document.querySelectorAll<HTMLElement>('.svelte-flow__node')].map(node=>node.dataset.id);}
 async function start(extra:Record<string,unknown>={}){const source=clarityFixture();app=mount(StructureView,{target:document.body,props:{document:source,revision:'r1',onSelect:vi.fn(),onMove:vi.fn(()=>false),onNotice:vi.fn(),...extra}});await settle();return source;}
 it('keeps Object mounted but disabled until nodes or connections are selected',async()=>{
@@ -87,14 +97,34 @@ it('preserves Duplicate and Undo through the existing source command in Object w
  const source=clarityFixture();expect(screenStore(localStorage,source.id).save({document:{...source,revision:'r1.r1'},expectedStoredRevision:'r1',newStoredRevision:'r1.r1'}).ok).toBe(true);app=mount(Designer,{target:document.body});await settle();await item('Structure');
  document.querySelector<HTMLElement>(`[data-id="${structureId(source.id,'node','field-0')}"]`)!.click();await settle();await menu('Object');
  for(const label of ['Duplicate','Delete','Move earlier','Move later','Arrange on canvas…','Reveal in Layers','Move inside…'])expect(control(label)).toBeDefined();
- await item('Duplicate');expect(document.querySelectorAll('.design-frame input[aria-label="Field 0"]')).toHaveLength(2);document.body.dispatchEvent(new KeyboardEvent('keydown',{key:'z',ctrlKey:true,bubbles:true,cancelable:true}));await settle();expect(document.querySelectorAll('.design-frame input[aria-label="Field 0"]')).toHaveLength(1);expect(screenStore(localStorage,source.id).rawLoad()).toMatchObject({document:{...source,revision:'r1.r1'}});
+ await item('Duplicate');const duplicated=await workingSource();
+ const fields=Object.values(duplicated.nodes).filter(node=>node.kind==='element'&&node.attributes?.['aria-label']==='Field 0');
+ expect(fields).toHaveLength(2);expect(duplicated.nodes['field-0']).toEqual(source.nodes['field-0']);
+ const copy=fields.find(node=>node.id!=='field-0')!;expect({...copy,id:'field-0'}).toEqual(source.nodes['field-0']);
+ const root=duplicated.nodes[duplicated.root];expect(root.kind).toBe('element');
+ if(root.kind!=='element')throw Error('Expected screen container');
+ expect(root.children[root.children.indexOf('field-0')+1]).toBe(copy.id);
+ expect(Object.keys(duplicated.nodes)).toHaveLength(Object.keys(source.nodes).length+1);
+ expect(screenStore(localStorage,source.id).rawLoad()).toMatchObject({document:{...source,revision:'r1.r1'}});
+ await undo();expect(await workingSource()).toEqual({...source,revision:'r1.r1'});
+ expect(screenStore(localStorage,source.id).rawLoad()).toMatchObject({document:{...source,revision:'r1.r1'}});
 });
 it('keeps migrated source commands disabled during an unapplied source draft',async()=>{
  const source=clarityFixture();expect(screenStore(localStorage,source.id).save({document:{...source,revision:'r1.r1'},expectedStoredRevision:'r1',newStoredRevision:'r1.r1'}).ok).toBe(true);app=mount(Designer,{target:document.body});await settle();await item('Structure');document.querySelector<HTMLElement>(`[data-id="${structureId(source.id,'node','field-0')}"]`)!.click();await settle();await item('Toggle Document and Selection drawer');document.querySelector<HTMLButtonElement>('[data-context=document]')!.click();await settle();await item('Source');const draft=document.querySelector<HTMLTextAreaElement>('#canonical-source')!;draft.value+=' ';draft.dispatchEvent(new Event('input',{bubbles:true}));await settle();
- await menu('Object');for(const name of ['Duplicate','Delete','Move earlier','Move later','Arrange on canvas…','Move inside…'])expect(control(name).getAttribute('aria-disabled')).toBe('true');await item('Duplicate');expect(document.querySelectorAll('.design-frame input[aria-label="Field 0"]')).toHaveLength(1);expect(draft.value.endsWith(' ')).toBe(true);
+ const unchangedDraft=draft.value;await menu('Object');for(const name of ['Duplicate','Delete','Move earlier','Move later','Arrange on canvas…','Move inside…'])expect(control(name).getAttribute('aria-disabled')).toBe('true');await item('Duplicate');
+ expect(draft.value).toBe(unchangedDraft);expect(JSON.parse(draft.value)).toEqual({...source,revision:'r1.r1'});
+ await closeMenu();await item('Discard draft');expect(await workingSource()).toEqual({...source,revision:'r1.r1'});
+ expect(screenStore(localStorage,source.id).rawLoad()).toMatchObject({document:{...source,revision:'r1.r1'}});
 });
 it('duplicates the exact selected text source rather than its containing heading',async()=>{
  const source=clarityFixture();expect(screenStore(localStorage,source.id).save({document:{...source,revision:'r1.r1'},expectedStoredRevision:'r1',newStoredRevision:'r1.r1'}).ok).toBe(true);app=mount(Designer,{target:document.body});await settle();await item('Structure');await menu();await item('Find source item');const finder=document.querySelector<HTMLSelectElement>('[aria-label="Structure source selection"]')!;finder.value=structureId(source.id,'node','title-text');finder.dispatchEvent(new Event('change',{bubbles:true}));await settle();await settle();await menu('Object');await item('Duplicate');
- const text='An intentionally long heading whose complete content must remain available in accessible labels and tooltips';expect(document.querySelectorAll('.design-frame h1')).toHaveLength(1);expect(document.querySelector('.design-frame h1')!.textContent).toBe(text+text);
- document.body.dispatchEvent(new KeyboardEvent('keydown',{key:'z',ctrlKey:true,bubbles:true,cancelable:true}));await settle();expect(document.querySelector('.design-frame h1')!.textContent).toBe(text);expect(screenStore(localStorage,source.id).rawLoad()).toMatchObject({document:{...source,revision:'r1.r1'}});
+ const duplicated=await workingSource(),headings=Object.values(duplicated.nodes).filter(node=>node.kind==='element'&&node.tag==='h1');
+ expect(headings).toHaveLength(1);const heading=duplicated.nodes.title;expect(heading.kind).toBe('element');
+ if(heading.kind!=='element')throw Error('Expected original heading');
+ expect(heading.children).toHaveLength(2);expect(heading.children[0]).toBe('title-text');expect(heading.children[1]).not.toBe('title-text');
+ const original=source.nodes['title-text'],copy=duplicated.nodes[heading.children[1]!];expect({...copy,id:'title-text'}).toEqual(original);
+ expect(Object.keys(duplicated.nodes)).toHaveLength(Object.keys(source.nodes).length+1);
+ expect(screenStore(localStorage,source.id).rawLoad()).toMatchObject({document:{...source,revision:'r1.r1'}});
+ await undo();expect(await workingSource()).toEqual({...source,revision:'r1.r1'});
+ expect(screenStore(localStorage,source.id).rawLoad()).toMatchObject({document:{...source,revision:'r1.r1'}});
 });

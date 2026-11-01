@@ -31,15 +31,15 @@ it('applies visibility and collapsed ownership before a direct neighbourhood wit
 });
 it('maps a conditional to its declared controlling data without evaluating the condition',()=>{
   const source=clarityFixture(),graph=projectStructure(source),id=structureId(source.id,'node','conditional');
-  expect(conditionDescription(source,'show')).toBe('Accepted is on');
+  expect(conditionDescription(source,'show')).toBe('Agreement is on');
   expect(graph.edges.some(edge=>edge.source===structureId(source.id,'condition','show')&&edge.target===id&&edge.data?.path==='/nodes/conditional/branches/0/when')).toBe(true);
   const groups=groupStructureRelationships(graph,id);
   expect(groups.flatMap(group=>group.relations.map(relation=>relation.label))).toEqual(expect.arrayContaining(['Branch','Otherwise']));
-  expect(structureBehavior(source,'conditional').map(fact=>fact.value)).toContain('Shown when Accepted is on · 1 item');
+  expect(structureBehavior(source,'conditional').map(fact=>fact.value)).toContain('Shown when Agreement is on · 1 item');
   expect(structureBehavior(source,'repeat').map(fact=>fact.value)).toContain('One template for each item in Items');
   expect(structureBehavior(source,'portal').map(fact=>fact.value)).toContain('Logical ownership only; native portal rendering is not supported');
   expect(source.localState.accepted?.initial).toBe(false);
-  expect(branchDescription(source,'show',1)).toBe('Otherwise, when Accepted is on');
+  expect(branchDescription(source,'show',1)).toBe('Otherwise, when Agreement is on');
 });
 it('searches displayed semantic types and retains full identities after concise card presentation',()=>{
   const source=clarityFixture(),graph=projectStructure(source),node=graph.nodes.find(node=>node.data.sourceId==='title')!,presentation=structureNodePresentation(source,node.data);
@@ -53,8 +53,10 @@ it('describes native events and viewport conditions as declarations, without inv
   const seed=clarityFixture();
   const source:UiDocument={...seed,conditions:{...seed.conditions,compact:{id:'compact',kind:'media',query:'(max-width: 600px)'}},nodes:{...seed.nodes,screen:{id:'screen',kind:'element',tag:'main',children:['submit']},submit:{id:'submit',kind:'element',tag:'button',children:[],interactions:[{on:'click',action:'invokeAction',actionId:'demo.submit',input:{message:{type:'ref',path:'state.message'},accepted:{type:'ref',path:'state.accepted'}}}]}}};
   expect(compileScreen(source).ok).toBe(true);
-  expect(structureBehavior(source,'submit')).toContainEqual({name:'When clicked',value:'Requests Submit (simulated)'});
+  const before=canonicalUiDocument(source).contentDigest;
+  expect(structureBehavior(source,'submit')).toContainEqual({name:'When clicked',value:'Requests Submit'});
   expect(conditionDescription(source,'compact')).toBe('screen is 600 px wide or smaller');
+  expect(canonicalUiDocument(source).contentDigest).toBe(before);
 });
 it('bounds shared-state fanout, reveals other users only on demand, and preserves source across paging',()=>{
   const source=clarityFixture(140),before=canonicalUiDocument(source).contentDigest,graph=filterStructure(projectStructure(source),{bindings:true}),field=structureId(source.id,'node','field-0'),state=structureId(source.id,'state','message');
