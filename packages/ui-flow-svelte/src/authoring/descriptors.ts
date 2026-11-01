@@ -1,5 +1,5 @@
 import { graphWorkspaceDescriptor, graphViewportDescriptor, graphPortDescriptor,graphWorkspaceDescriptorV2,graphViewportDescriptorV2,graphPortDescriptorV2,graphWorkspaceDescriptorV3,graphViewportDescriptorV3,graphPortDescriptorV3,graphEdgeSettingsDescriptor } from '../composition/descriptors.js';
-import {graphPortRowDescriptor} from '../composition/descriptors.js';
+import {graphPortRowDescriptor,graphPortRowDescriptorV2,graphPortColumnsDescriptor} from '../composition/descriptors.js';
 import type { UiExtensionDescriptor } from '@victframework/ui';
 import { graphEditorParts } from '../editor/presentation.js';
 const base = {
@@ -85,9 +85,9 @@ export const flowEditorDescriptor: UiExtensionDescriptor = {
 /** Explicit parts are a new contract; the retained root-only @1 is unchanged. */
 export const flowEditorDescriptorV2: UiExtensionDescriptor = { ...flowEditorDescriptor, revision: '2', styleTargets: graphEditorParts };
 export { graphWorkspaceDescriptor, graphViewportDescriptor, graphPortDescriptor,graphWorkspaceDescriptorV2,graphViewportDescriptorV2,graphPortDescriptorV2,graphWorkspaceDescriptorV3,graphViewportDescriptorV3,graphPortDescriptorV3,graphEdgeSettingsDescriptor };
-export {graphPortRowDescriptor};
+export {graphPortRowDescriptor,graphPortRowDescriptorV2,graphPortColumnsDescriptor};
 export const flowAuthoringDescriptors = [
-  graphPortRowDescriptor,
+  graphPortRowDescriptorV2,graphPortColumnsDescriptor,graphPortRowDescriptor,
   graphWorkspaceDescriptorV3,graphViewportDescriptorV3,graphPortDescriptorV3,graphEdgeSettingsDescriptor,
   graphWorkspaceDescriptorV2,graphViewportDescriptorV2,graphPortDescriptorV2,
   graphWorkspaceDescriptor, graphViewportDescriptor, graphPortDescriptor,

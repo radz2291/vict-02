@@ -1,5 +1,7 @@
 /** Explicit pinned public export inventory. Export changes require a disposition review. */
 export const specialistPublicExports = [
+  'GRAPH_EDITOR_HOST_V2','GraphAuthoringContract','GraphAuthoringDisposition','GraphEditorHostV2','GraphOccurrenceIdentity','GraphOccurrenceRoute','graphAuthoringContract','graphAuthoringRegistrations',
+  'GraphPortRowV2','GraphPortColumns','./authoring:graphPortRowDescriptorV2','./authoring:graphPortColumnsDescriptor',
   'GraphPortRow','./authoring:graphPortRowDescriptor',
   'GraphWorkspaceV3','GraphEdgeSettings','GraphEdgeAppearance','GraphEdgeV3','GraphDocumentV3','GraphOperationV3','GraphResultV3','GraphOperationsResultV3','GraphPatchResultV3','GraphValidationErrorV3','defaultGraphEdgeAppearance','resolveGraphEdgeAppearance','emptyGraphV3','validateGraphV3','parseGraphV3','serializeGraphV3','parseGraphOperationsV3','copyGraphSelectionV3','applyGraphOperationsV3','applyGraphPatchV3','migrateGraphV2ToV3','graphMigrationV2ToV3','GraphSessionV3','graphEdgeAppearanceSchema','graphDocumentSchemaV3','graphClipboardSchemaV3','graphOperationSchemasV3','graphOperationsSchemaV3','./authoring:graphWorkspaceDescriptorV3','./authoring:graphViewportDescriptorV3','./authoring:graphPortDescriptorV3','./authoring:graphEdgeSettingsDescriptor',
   'GraphWorkspaceV2',

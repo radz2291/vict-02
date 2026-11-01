@@ -4,5 +4,17 @@
     "revision": "1",
     "descriptorDigest": "3213092087601d4e95027666e999f76bc1bd351dc61ff8b5cdfc98102901311d",
     "capabilitiesDigest": "3c2a37417032ee6382dcd797f6a90e09bb9c84ac68a27abd5b782e9e77121f92"
+  },
+  {
+    "id": "vict.flow.port-row",
+    "revision": "2",
+    "descriptorDigest": "a2d34460755afd2d0c48f2f5786d8fa3c78f11dc152bba23319990db77c364b9",
+    "capabilitiesDigest": "15d96390ed30779e7dc9853f0c4d1be8869d60d514439cf230d994be1f01676c"
+  },
+  {
+    "id": "vict.flow.port-columns",
+    "revision": "1",
+    "descriptorDigest": "05b162fb623016c939fdb9a8f88fd66214493b5ed7803baeb91cfa972577d18a",
+    "capabilitiesDigest": "1d5ecf1ef53dc09fc61c0e853b1daa398ddc8b7bcd0498ff79d76771e28caea1"
   }
 ]

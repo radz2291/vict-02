@@ -51,6 +51,28 @@ describe('named semantic port rows',()=>{
       expect(parsed.graph.edges).toEqual(JSON.parse(String(original.localState.graph.initial)).edges);
     }finally{await view.close();}
   });
+  it('opts into independent columns and name-only rows without changing saved row@1',async()=>{
+    const doc=source(),card=doc.nodes['settings-card'];if(card.kind!=='element')throw Error('Fixture');
+    const input=doc.nodes['settings-in'],output=doc.nodes['settings-out'];if(input.kind!=='component'||output.kind!=='component')throw Error('Fixture');
+    input.revision='2';output.revision='2';
+    // Ordinary controls live above the two independent port stacks.
+    input.slots={};output.slots={};card.children=['settings-title','steps-input','columns'];
+    doc.nodes.columns={kind:'component',id:'columns',definitionId:'vict.flow.port-columns',revision:'1',props:{},slots:{inputs:{name:'inputs',children:['settings-in']},outputs:{name:'outputs',children:['settings-out']}}};
+    const view=await open(doc);try{
+      const columns=view.target.querySelector('.graph-port-columns')!;expect(columns).not.toBeNull();
+      const sides=columns.querySelectorAll('.graph-port-column');expect(sides).toHaveLength(2);
+      expect(sides[0].querySelector('[data-direction="input"]')).not.toBeNull();expect(sides[0].querySelector('[data-direction="output"]')).toBeNull();
+      expect(sides[1].querySelector('[data-direction="output"]')).not.toBeNull();
+      expect(columns.querySelector('.port-row-type')).toBeNull();
+      expect(columns.querySelector('button.port-row-detail')?.getAttribute('aria-label')).toBe('Prompt: text');
+      expect(columns.querySelector('[role="tooltip"]')?.textContent).toBe('text');
+      expect(columns.querySelector('[data-direction="output"] .svelte-flow__handle')?.getAttribute('title')).toMatch(/^output Frame . image$/);
+      expect(view.target.querySelector('[data-node-port="prompt-a/result"] .port-row-type')?.textContent).toBe('text');
+      expect(view.writes.filter(([key])=>key==='graph')).toEqual([]);
+    }finally{await view.close();}
+    output.props={...output.props,showType:{type:'literal',value:true}};
+    const shown=await open(doc);try{expect(shown.target.querySelector('[data-node-port="sampler/result"] .port-row-type')?.textContent).toBe('image');}finally{await shown.close();}
+  });
   it('refuses duplicate semantic anchors even across bare and labeled presentations',async()=>{
     const documentSource=source(),card=documentSource.nodes['prompt-card'];if(card.kind!=='element')throw Error('Fixture');
     card.children.push('duplicate-port');documentSource.nodes['duplicate-port']={kind:'component',id:'duplicate-port',definitionId:'vict.flow.port',revision:'2',props:{id:{type:'literal',value:'result'}},slots:{}};

@@ -2,8 +2,8 @@ import {graphDocumentSchemaV3,graphOperationsSchemaV3} from '../editor/graph-v3-
 import type { UiAuthoringRegistration } from '@victframework/ui';
 import { graphWorkspaceDescriptor,graphViewportDescriptor,graphPortDescriptor,graphWorkspaceDescriptorV2,graphViewportDescriptorV2,graphPortDescriptorV2,graphWorkspaceDescriptorV3,graphViewportDescriptorV3,graphPortDescriptorV3,graphEdgeSettingsDescriptor } from './descriptors.js';
 import {graphDocumentSchemaV1,graphDocumentSchemaV2,graphOperationsSchemaV1,graphOperationsSchemaV2,graphDataExamples} from '../editor/graph-schemas.js';
-import {graphPortRowDescriptor} from './descriptors.js';
-export const graphPortRowRegistrations:readonly UiAuthoringRegistration[]=[{
+import {graphPortRowDescriptor,graphPortRowDescriptorV2,graphPortColumnsDescriptor} from './descriptors.js';
+const legacyPortRowRegistration:UiAuthoringRegistration={
   descriptor:graphPortRowDescriptor,label:'Labeled graph port row',family:'flow',category:'graph-part',
   purpose:'A readable named and typed socket row with input left/output right and a larger hit area, composed into the application-owned node card.',eligibility:{kind:'part'},
   dependencies:[{id:'vict.flow.workspace',revision:'3'}],
@@ -14,7 +14,15 @@ export const graphPortRowRegistrations:readonly UiAuthoringRegistration[]=[{
     'The default name and type remain visible; optional content is ordinary authored UI. color is a hex value or token:<semantic-colour-name>; choose consistent colours by the actual data type and retain text labels. showType defaults true. style parts are root, handle, socket, label and type. The measured handle and visible socket are 10px; a separate transparent 28px pointer halo enlarges the hit area without moving the wire endpoint. Keep semantic port IDs in source; engine handle IDs are opaque per owning viewport/node/port. The row has a 32px minimum height and grows with content. These are presentation defaults, not graph or content quotas.',
     'Use ordinary authoring wrappers for input/output sections and local controls; the component does not generate a node application, mutate graph data, infer executions or add ports. Recheck endpoint locations after card resizing, nested zoom, reconnect, source history and save/export/import. Existing bare port @1/@2/@3 identities are unchanged.',
   ],
-}];
+};
+export const graphPortRowRegistrations:readonly UiAuthoringRegistration[]=[{
+  ...legacyPortRowRegistration,descriptor:graphPortRowDescriptorV2,label:'Named graph port row',
+  guidance:[...(legacyPortRowRegistration.guidance??[]).filter(text=>!text.includes('showType defaults true')), 'For this exact revision@2, showType defaults false: display the port name alone; the handle title and accessible label retain direction and type. Set showType:true explicitly for a visible type badge. Retained revision@1 defaults true and is not migrated. Place rows in port-columns inputs/outputs to align both sides at the top.'],
+},{
+  descriptor:graphPortColumnsDescriptor,label:'Independent input/output port columns',family:'flow',category:'graph-part',purpose:'Two top-aligned independent stacks of ordinary authored port rows, with sockets at the outer card boundaries.',eligibility:{kind:'part'},
+  dependencies:[{id:'vict.flow.workspace',revision:'3'}],rules:legacyPortRowRegistration.rules,
+  guidance:['Place full-width in workspace.body, after ordinary padded settings. Fill inputs with input rows and outputs with output rows; the first output aligns with the first input regardless of how many inputs exist. No port inference or data mutation. Use row@2 names by default; optional Show types UI binds showType on rows. The host chooses all controls.'],
+},legacyPortRowRegistration];
 const dataV1=[{id:'vict.flow-graph',revision:'1',schema:{...graphDocumentSchemaV1},examples:[graphDataExamples.v1]},{id:'vict.flow-operations',revision:'1',schema:{...graphOperationsSchemaV1}}];
 const dataV2=[{id:'vict.flow-graph',revision:'2',schema:{...graphDocumentSchemaV2},examples:[graphDataExamples.v2,graphDataExamples.typedParameters]},{id:'vict.flow-operations',revision:'2',schema:{...graphOperationsSchemaV2}}];
 export const graphCompositionRegistrations:readonly UiAuthoringRegistration[]=[

@@ -39,13 +39,13 @@ describe('specialist public export admission inventory', () => {
       const actual = pkg.exportDispositions
         .filter(
           (item) =>
-            !['./authoring', './patterns', './components/*', './markdown'].includes(item.name),
+            !['./authoring', './patterns', './components/*', './markdown', './capture'].includes(item.name),
         )
         .map((item) => item.name)
         .sort();
       expect(actual).toEqual(expected);
       expect(new Set(actual).size).toBe(actual.length);
-      expect(pkg.registrations).toHaveLength(family === 'flow' ? 11 : 28);
+      expect(pkg.registrations).toHaveLength(family === 'flow' ? 18 : 28);
       expect(pkg.exportDispositions.every((item) => item.disposition && item.reason)).toBe(true);
     }, 20000);
 });

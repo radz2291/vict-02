@@ -49,10 +49,10 @@ Cycle 1.3 completion adds original reusable presentation helpers:
 - `FlowCanvas` now binds `viewport` as well as nodes and edges, allowing the
   consumer to retain view state independently of its canonical document.
 
-Layout uses pinned Dagre 1.1.5 (MIT) and ELK.js 0.11.0 (EPL-2.0). ELK is selected
-for routed focused views of at most 120 visible nodes. Requests above that bound
-automatically use Dagre, because an expanded 500-node benchmark exposed very
-slow ELK work. There is no unrestricted large-ELK option. Node positions and
+Layout uses pinned Dagre 1.1.5 (MIT) and ELK.js 0.11.0 (EPL-2.0). The requested
+engine is respected at every graph size; omitted engine defaults to ELK. Hosts
+can offer Dagre for faster hierarchy layouts, without overriding an explicit
+choice. Node positions and
 collapse/focus state remain consumer presentation data. These helpers do not
 interpret VICT bindings, mutate documents or implement workflow execution.
 
@@ -269,3 +269,9 @@ Stale selection identities, source revisions and renderer channels cannot write
 to another edge. Whole-canvas and exceptional per-edge styling are ordinary
 portable source changes through the workspace, not Studio-only CSS or an object
 mutation expression.
+
+### Independent input/output columns
+
+Compose `vict.flow.port-columns@1` full-width in `workspace.body`, after ordinary padded settings. Its `inputs` and `outputs` slots are independent top-aligned stacks: adding inputs does not push outputs below them. Supply ordinary `vict.flow.port-row@2` children with exact existing semantic port IDs. Columns do not create ports or grant editing/execution authority. Both sides stay at the outer card boundaries; do not pad the column container if sockets should meet the card edge.
+
+`port-row@2` shows the name alone by default. Type remains in the accessible socket label and hover/focus tooltip; `showType:true` displays a persistent badge. Applications may bind that prop to their own Show types control. Explicit `port-row@1` and unpinned legacy resolution retain visible types by default. Migration is explicit: update the row revision to `2`, then move existing input/output rows into the corresponding column slots. Ordinary settings and graph state remain unchanged. Code consumers may import `GraphPortColumns` and `GraphPortRowV2` using the normal VICT renderer ABI. No application shell or fixed node form is imposed.

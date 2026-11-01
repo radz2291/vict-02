@@ -24,3 +24,6 @@ export { default as GraphPortAnchor } from './composition/GraphPort.svelte';
 export { default as GraphPortRow } from './composition/GraphPortRow.svelte';
 export { GRAPH_WORKSPACE, GRAPH_BODY, type GraphWorkspaceContext, type GraphBodyContext } from './composition/context.js';
 export * from './editor/commands.js';
+
+export { default as GraphPortRowV2 } from './composition/GraphPortRowV2.svelte';
+export { default as GraphPortColumns } from './composition/GraphPortColumns.svelte';
