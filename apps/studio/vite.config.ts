@@ -12,6 +12,7 @@ export default defineConfig({
       '@victframework/ui-patterns-svelte',
       '@victframework/ui-ai-svelte',
       '@victframework/ui-flow-svelte',
+      '@victframework/ui-structure-svelte',
       '@victframework/ui-svelte',
       '@victframework/ui-editor',
       '@victframework/ui-preview',

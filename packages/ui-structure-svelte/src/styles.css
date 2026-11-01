@@ -1,0 +1,42 @@
+/* Studio source identities share the quiet relationship-card treatment.
+   Generic Flow nodes and authored canvas components retain their own styles. */
+.vict-structure[data-vict-structure] :is(.selection-identity-card,.details-relationships > button,.vict-source-node[data-kind]) {
+  border:1px solid var(--vict-color-border,#dce2eb);
+  border-radius:5px;
+  background:var(--vict-color-surface,#fff);
+  color:var(--vict-color-text,#26334b);
+  box-shadow:none;
+  padding:5px 8px;
+  gap:3px;
+}
+.vict-structure[data-vict-structure] .selection-identity-card {
+  display:flex;flex-direction:column;flex:1;min-width:0;text-align:left;
+}
+.vict-structure[data-vict-structure] .vict-source-node .vict-source-summary {
+  color:var(--vict-color-textMuted,#65748d);
+}
+.vict-structure[data-vict-structure] .vict-source-node.selected[data-kind] {
+  border-color:var(--vict-color-accent,#355cc9);
+  outline:2px solid var(--vict-color-accent,#355cc9);
+  outline-offset:-1px;
+}
+.vict-structure[data-vict-structure] .vict-source-node.structured-source-node[data-kind]{padding:0;gap:0}
+.vict-structure[data-vict-structure] .structured-source-node:not(.selected):hover,
+.vict-structure[data-vict-structure] .details-relationships>button:hover:not(:disabled){border-color:#9aa9c2}
+.vict-structure[data-vict-structure] .details-relationships>button:hover:not(:disabled){background:#f8fafc}
+
+.vict-structure.workspace-menu {margin:0;padding:5px;width:max-content;max-width:min(320px,calc(100dvw - 16px));max-height:calc(100dvh - 60px);overflow:auto;border:1px solid var(--vict-color-border,#dce2eb);border-radius:6px;background:white;box-shadow:0 8px 24px #25334f20;color:var(--vict-color-text,#26334b);}
+.vict-structure.workspace-menu kbd {font:10px 'Segoe UI',system-ui,sans-serif;color:var(--vict-color-textMuted,#65748d);}
+.vict-structure.workspace-menu {min-width:0;box-sizing:border-box;z-index:100;font:12px/1.45 'Segoe UI',system-ui,sans-serif;outline:none;}
+.vict-structure.workspace-menu [role^="menuitem"] {min-height:0;height:auto;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 10px;border-radius:3px;cursor:pointer;outline:none;}
+.vict-structure.workspace-menu [data-highlighted] {background:var(--vict-control-selected,#edf1ff);}
+.vict-structure.workspace-menu [role="separator"] {border-top:1px solid var(--vict-color-border,#dce2eb);margin:4px 5px;}
+.vict-structure.workspace-menu [role^="menuitem"]::before {display:none;}
+.vict-structure.workspace-menu .menu-caption {padding:0;margin:6px 10px;font-size:10px;}
+.vict-structure.workspace-menu [data-disabled] {opacity:.4;cursor:default;}
+.vict-structure.workspace-menu [role="menuitem"][aria-haspopup="menu"]::after {display:none;}
+.vict-structure.workspace-menu [role="menuitem"][aria-haspopup="menu"][data-state="open"] {background:var(--vict-control-selected,#edf1ff);color:var(--vict-color-accent,#355cc9);}
+.vict-structure .workspace-menus {display:flex;align-items:center;gap:2px}
+.vict-structure .workspace-menus>button {border:0;border-radius:4px;padding:5px 9px;background:transparent;color:inherit;font:inherit;cursor:pointer}
+.vict-structure .workspace-icon-button {display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;padding:0;border:0;background:transparent;color:inherit;cursor:pointer}
+.vict-structure .workspace-icon-button:disabled {opacity:.4;cursor:default}

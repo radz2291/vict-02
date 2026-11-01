@@ -1,0 +1,64 @@
+{
+  "name": "@victframework/ui-structure-svelte",
+  "version": "0.4.0-rc.1",
+  "private": true,
+  "type": "module",
+  "description": "Optional canonical VICT UI-source relationship projection and Svelte explorer. No execution or persistence authority.",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "svelte": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./styles.css": "./src/styles.css",
+    "./projection": {
+      "types": "./src/structure.ts",
+      "default": "./src/structure.ts"
+    },
+    "./semantics": {
+      "types": "./src/structure-semantics.ts",
+      "default": "./src/structure-semantics.ts"
+    },
+    "./behavior": {
+      "types": "./src/structure-behavior.ts",
+      "default": "./src/structure-behavior.ts"
+    },
+    "./connections": {
+      "types": "./src/structure-connections.ts",
+      "default": "./src/structure-connections.ts"
+    },
+    "./trace": {
+      "types": "./src/structure-trace.ts",
+      "default": "./src/structure-trace.ts"
+    },
+    "./geometry": {
+      "types": "./src/structure-edge-geometry.ts",
+      "default": "./src/structure-edge-geometry.ts"
+    },
+    "./placement": {
+      "types": "./src/structure-placement.ts",
+      "default": "./src/structure-placement.ts"
+    },
+    "./selection": {
+      "types": "./src/workspace-selection.ts",
+      "default": "./src/workspace-selection.ts"
+    }
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "svelte-check --tsconfig ./tsconfig.json"
+  },
+  "dependencies": {
+    "@victframework/ui-editor": "0.4.0-rc.1",
+    "@victframework/ui-flow-svelte": "0.4.0-rc.1"
+  },
+  "peerDependencies": {
+    "@victframework/ui": "0.4.0-rc.1",
+    "@victframework/ui-svelte": "0.4.0-rc.1",
+    "svelte": "^5.33.0"
+  },
+  "license": "Apache-2.0"
+}
