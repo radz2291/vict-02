@@ -1,0 +1,2 @@
+# Evidence hashes bind the original bytes, including captured line endings.
+* -text
