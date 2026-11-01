@@ -1,5 +1,5 @@
 /** Installed public artifacts only; coding-authored fixtures, never actual-agent proof. */
-import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, realpathSync, readdirSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, renameSync, realpathSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -18,17 +18,22 @@ const evidence = resolve(root, 'docs/studio/foundation-evidence/structure-shared
 mkdirSync(evidence, { recursive: true });
 const reportPath = join(evidence, destination.split(/[/\\]/).at(-1) + '.json');
 const report = { schema: 'vict.structure-shared-public-consumer@1', sourceCandidate: git(['rev-parse', 'HEAD']), status: 'started', destination, consumer, packageBuilds: [], packs: [], scope: 'Installed public-artifact source projection, grouping/tracing, explorer DOM, authored columns/row version compatibility and ordinary control interaction. No private Studio imports, source aliases or actual-agent authorship.' };
-const save = () => writeFileSync(reportPath, JSON.stringify(report, null, 2));
+const save = () => { const staging = reportPath + '.tmp'; writeFileSync(staging, JSON.stringify(report, null, 2)); renameSync(staging, reportPath); };
 const put = (path, text) => writeFileSync(join(consumer, path), text);
 save();
 try {
   const reuseIndex = process.argv.indexOf('--reuse-artifacts');
   const reusePath = reuseIndex < 0 ? undefined : process.argv[reuseIndex + 1];
   if (reuseIndex >= 0 && (!reusePath || reusePath.startsWith('--'))) throw Error('--reuse-artifacts requires an earlier report path');
-  const previous = reusePath ? JSON.parse(readFileSync(resolve(root, reusePath), 'utf8')) : undefined;
+  const previousBytes = reusePath ? readFileSync(resolve(root, reusePath)) : undefined;
+  const previous = previousBytes ? JSON.parse(previousBytes.toString('utf8')) : undefined;
   if (previous && (previous.schema !== report.schema || previous.packageBuilds.length !== names.length || previous.packs.length !== names.length)) throw Error('Reuse requires all earlier package builds and exact packed inventories');
   if (previous && git(['diff', '--name-only', previous.sourceCandidate, report.sourceCandidate, '--', 'package.json', 'package-lock.json', 'tsconfig.base.json'])) throw Error('Shared build inputs changed: use a full build ladder');
-  if (previous) report.reusedArtifactEvidence = { path: resolve(root, reusePath), sha256: hash(readFileSync(resolve(root, reusePath))), previousStatus: previous.status, note: 'Only successful package-build results with equal tracked trees and every existing packed file byte qualify. A fixture failure does not erase an earlier successful dependency build; fixture tests and consumer production build always rerun.' };
+  if (previous) {
+    const snapshot = join(evidence, destination.split(/[/\\]/).at(-1) + '-reuse-manifest.json');
+    writeFileSync(snapshot, previousBytes);
+    report.reusedArtifactEvidence = { path: snapshot, originalPath: resolve(root, reusePath), sha256: hash(previousBytes), previousStatus: previous.status, note: 'Only successful package-build results with equal tracked trees and every existing packed file byte qualify. A fixture failure does not erase an earlier successful dependency build; fixture tests and consumer production build always rerun.' };
+  }
   const dependencyKinds = ['dependencies', 'peerDependencies', 'optionalDependencies'];
   for (const name of names) {
     if (git(['diff', '--name-only', 'HEAD', '--', `packages/${name}`]) || git(['ls-files', '--others', '--exclude-standard', '--', `packages/${name}`])) throw Error(`Commit packed source first: ${name}`);

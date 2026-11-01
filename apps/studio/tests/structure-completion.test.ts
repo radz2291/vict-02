@@ -5,7 +5,7 @@ import { newScreen } from '../src/lib/designer/application.js';
 import { compositionName, compositionNames } from '@victframework/ui-editor';
 import { projectStructure, filterStructure, structureId, structureFacts } from '../src/lib/designer/structure.js';
 import { layoutGraph, LayoutFence, nodeSize, type LayoutEngine, type LayoutDirection } from '../../../packages/ui-flow-svelte/src/layout.js';
-import type { Node, Edge } from '@xyflow/svelte';
+import type { Node } from '@xyflow/svelte';
 
 function fixture(count: number): UiDocument {
   const base = newScreen(`Structure fixture ${count}`, `structure-${count}`);
