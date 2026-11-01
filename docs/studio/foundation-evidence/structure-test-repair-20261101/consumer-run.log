@@ -1,0 +1,11 @@
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+{
+  "reportPath": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\docs\\studio\\foundation-evidence\\structure-shared-completion-20261101\\vict-structure-consumer-PTVWq5.json",
+  "status": "PASS",
+  "destination": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-consumer-PTVWq5",
+  "sourceCandidate": "a629b40818ba367daf79850c80d9abb7fe02df1c"
+}

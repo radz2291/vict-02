@@ -1,5 +1,11 @@
 # Shared Structure and port presentation completion
 
+Follow-up: the12 inherited test failures recorded below are now repaired on
+installed producta629b408, including real Escape/focus defects they exposed.
+[Test-repair closure](STRUCTURE-TEST-REPAIR-20261101.md) records31/31 passing
+affected/adjacent checks and final native proof. This record retains the original
+20e26253 checkpoint and its independent-review attribution.
+
 **CLOSED — bounded Option2 / Authoring Foundation delivery,1November2026.**
 Independent final integration verdict: **QUALIFIED PASS**, no remaining in-scope
 blocker. The owner's instruction to finish properly and then close is fulfilled.

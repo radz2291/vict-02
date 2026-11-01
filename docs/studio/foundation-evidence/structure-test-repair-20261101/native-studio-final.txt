@@ -1,0 +1,91 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Evidence desk — rich-node retry"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- main:
+  - button "Toggle Chat drawer":
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact"
+    - button "Structure" [pressed]
+  - button "Toggle Document and Selection drawer":
+  - region "Structure workspace":
+    - region "Source structure":
+      - searchbox "Search structure"
+      - menubar "Structure menus":
+        - menuitem "View"
+        - menuitem "Object" [disabled]
+      - group "Structure quick actions":
+        - button "Fit all":
+        - button "Fit selection" [disabled]:
+        - button "Arrange nodes":
+      - paragraph: Screen · 5 shown
+      - application:
+        - 'group "Container: Screen, source screen" [active]':
+          - generic: Container
+          - strong: Screen
+          - button "Collapse Screen" [expanded]: ⌄
+          - generic "4 direct children"
+          - list "Incoming connections"
+          - list "Outgoing connections":
+            - listitem "Outgoing Contains · 4 declared references":
+              - generic: Contains
+              - generic: · 4
+              - button "Select outgoing Contains connections for Screen"
+              - button
+        - 'group "Heading: Evidence desk — record, review, save, source desk-title"':
+          - generic: Heading
+          - strong: Evidence desk — record, review, save
+          - list "Incoming connections":
+            - listitem "Incoming Contains · 1 declared reference":
+              - generic: Contains
+              - button "Select incoming Contains connections for Evidence desk — record, review, save"
+              - button
+          - list "Outgoing connections"
+        - 'group "Paragraph: Two reusable source notes feed typed Evidence connections into the Review node. Record each source URL with its provenance, review the evidence, set a status, then Save in Studio to keep your entries., source desk-intro"':
+          - generic: Paragraph
+          - strong: Two reusable source notes feed typed Evidence connections into the Review n…
+          - list "Incoming connections":
+            - listitem "Incoming Contains · 1 declared reference":
+              - generic: Contains
+              - button "Select incoming Contains connections for Two reusable source notes feed typed Evidence connections into the Review n…"
+              - button
+          - list "Outgoing connections"
+        - 'group "Component: Evidence desk graph, source desk-workspace"':
+          - generic: Component
+          - strong: Evidence desk graph
+          - button "Expand Evidence desk graph": ›
+          - generic "Vict flow workspace": 41 items inside
+          - list "Incoming connections":
+            - listitem "Incoming Contains · 1 declared reference":
+              - generic: Contains
+              - button "Select incoming Contains connections for Evidence desk graph"
+              - button
+          - list "Outgoing connections"
+        - 'group "Paragraph: Paragraph, source desk-guide"':
+          - strong: Paragraph
+          - button "Expand Paragraph": ›
+          - list "Incoming connections":
+            - listitem "Incoming Contains · 1 declared reference":
+              - generic: Contains
+              - button "Select incoming Contains connections for Paragraph"
+              - button
+          - list "Outgoing connections"
+        - link "Svelte Flow attribution":
+          - /url: https://svelteflow.dev?utm_source=attribution
+          - text: Svelte Flow
+        - generic "Control Panel":
+          - button "Zoom In":
+          - button "Zoom Out":
+- contentinfo:
+  - status: Loaded the saved screen.
+- generic: Designer — VICT Studio

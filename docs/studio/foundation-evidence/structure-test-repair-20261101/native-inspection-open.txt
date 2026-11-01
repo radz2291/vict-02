@@ -1,0 +1,95 @@
+- heading "Independent public Structure consumer" [level=1]
+- paragraph: Source relationships and ordinary authored controls, using installed VICT packages.
+- region "Source structure":
+  - searchbox "Search structure"
+  - menubar "Structure menus":
+    - menuitem "View"
+    - menuitem "Object" [active]
+  - group "Structure quick actions":
+    - button "Fit all":
+    - button "Fit selection":
+    - button "Arrange nodes":
+  - paragraph: Screen · 3 shown · 2 selected
+  - application:
+    - 'group "Container: Screen, source screen"':
+      - generic: Container
+      - strong: Screen
+      - button "Collapse Screen" [expanded]: ⌄
+      - generic "2 direct children"
+      - list "Incoming connections"
+      - list "Outgoing connections":
+        - listitem "Outgoing Contains · 2 declared references":
+          - generic: Contains
+          - generic: · 2
+          - button "Select outgoing Contains connections for Screen" [pressed]
+          - button
+    - 'group "Section: Section, source section"':
+      - strong: Section
+      - button "Expand Section": ›
+      - generic "1 direct child"
+      - list "Incoming connections":
+        - listitem "Incoming Contains · 1 declared reference":
+          - generic: Contains
+          - button "Select incoming Contains connections for Section" [pressed]
+          - button
+      - list "Outgoing connections"
+    - 'group "Input: Input, source other"':
+      - strong: Input
+      - list "Incoming connections":
+        - listitem "Incoming Contains · 1 declared reference":
+          - generic: Contains
+          - button "Select incoming Contains connections for Input" [pressed]
+          - button
+      - list "Outgoing connections"
+    - link "Svelte Flow attribution":
+      - /url: https://svelteflow.dev?utm_source=attribution
+      - text: Svelte Flow
+    - generic "Control Panel":
+      - button "Zoom In":
+      - button "Zoom Out":
+  - complementary "Structure inspection":
+    - strong: Screen
+    - button "Close inspection": ×
+    - generic "Inspection view":
+      - button "Details" [pressed]
+      - button "Relationships"
+    - generic: Container
+    - code: screen
+    - button "Edit on canvas"
+    - code: kind
+    - generic: element
+    - code: id
+    - generic: screen
+    - code: tag
+    - generic: main
+    - code: children.0
+    - generic: section
+    - code: children.1
+    - generic: other
+- heading "Independent port columns" [level=2]
+- region "Graph workspace":
+  - application "Graph canvas":
+    - application:
+      - group "First":
+        - article:
+          - text: Review note
+          - textbox "Review note": Pending
+          - 'button "input Brief: brief"'
+          - 'button "Brief: brief"': Brief
+          - 'button "input Prompt: prompt"'
+          - 'button "Prompt: prompt"': Prompt
+          - 'button "output Draft: image"'
+          - 'button "Draft: image"': Draft
+      - group "Second":
+        - article:
+          - text: Review note
+          - textbox "Review note": Second note
+          - 'button "input Brief: brief"'
+          - 'button "Brief: brief"': Brief
+          - 'button "input Prompt: prompt"'
+          - 'button "Prompt: prompt"': Prompt
+          - 'button "output Draft: image"'
+          - 'button "Draft: image"': Draft
+      - link "Svelte Flow attribution":
+        - /url: https://svelteflow.dev?utm_source=attribution
+        - text: Svelte Flow

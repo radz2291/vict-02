@@ -1,0 +1,18 @@
+{
+  "schema": "vict.structure-shared-activation@1",
+  "sourceCandidate": "a629b40818ba367daf79850c80d9abb7fe02df1c",
+  "previousServingSource": "20e26253f0ec6aab20f480c1b3e537e2282938d8",
+  "backup": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-pre-structure-tests-20e26253-20261101-build",
+  "sealSha256": "2ce5498b2d0b954a2100802cd1121df965a2266ea1019ee03bce6e5894b051f1",
+  "installedFiles": 398,
+  "historicalProofFiles": 93,
+  "hashMismatches": [],
+  "launch": {
+    "LauncherPid": 18512,
+    "Address": "http://127.0.0.25:5626",
+    "Model": "zai/glm-5.3-flash",
+    "Configuration": "existing launch-agent.mjs loader",
+    "Verification": "Check the listener and supported internal browser; a PID alone is not reachability proof."
+  },
+  "nativeVerification": "pending"
+}

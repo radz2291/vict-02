@@ -246,3 +246,16 @@ Original31 dispositions, retained failures, earlier owner-device reports and slo
 authoring remain attributed. This closure does not close whole Stage9/Milestone2
 or authorize push, main merge or publication. Repository records remain the task
 update surface; no external ticket was created or inferred.
+
+## 1 November 2026 — inherited Structure test follow-up closed
+
+Owner-requested repair of all12 inherited failing tests is CLOSED on locally
+activated a629b40818ba367daf79850c80d9abb7fe02df1c. The original behavioral
+checks remain, and31/31 affected/adjacent cases pass. The repaired checks exposed
+real shared Escape-priority and hidden-menu focus defects; these are fixed and
+natively verified in the installed public consumer and Studio host. Type/lint,
+consumer and production checks pass; Evidence desk r1.r7 source remains exact.
+[Repair and evidence](STRUCTURE-TEST-REPAIR-20261101.md) supersede descriptions
+of those12 failures as current issues. This follow-up uses explicitly attributed
+integrator checks; the earlier independent20e26253 foundation verdict retains
+its original scope. No push, merge, publication or broader milestone closure.

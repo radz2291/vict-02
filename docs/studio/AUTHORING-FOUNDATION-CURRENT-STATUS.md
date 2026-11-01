@@ -2,14 +2,18 @@
 
 > **CLOSED — bounded Authoring Foundation / Option2 delivery,1November2026.**
 > The owner's instruction to finish properly and then close is fulfilled after
-> independent final integration **QUALIFIED PASS** on installed product20e26253.
+> independent final integration **QUALIFIED PASS** at the20e26253 checkpoint.
+> The [test-repair follow-up](STRUCTURE-TEST-REPAIR-20261101.md) is also CLOSED:
+> installed producta629b408, all12 targeted failures resolved,31/31 affected checks
+> passing, with native keyboard and exact document-preservation proof.
 > [Current delivery](ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md) records exact
 > source/build identities; [completion](STRUCTURE-SHARED-COMPLETION-20261101.md)
 > records actual-agent adoption, shared Structure, native checks and retained limits.
 > Original31 dispositions remain evidence at their reviewed scope. Older holds,
 > acceptance counts and service identities below are historical checkpoints.
 > Whole Stage9/Milestone2 closure, push, main merge and publication are outside
-> this bounded closure. Slow authoring and12 inherited failed tests remain recorded.
+> this bounded closure. Slow authoring remains a separate follow-up; the earlier12
+> failures remain historical evidence, not current failing tests.
 
 ## Historical owner pause and 29 October checkpoints (superseded operationally)
 

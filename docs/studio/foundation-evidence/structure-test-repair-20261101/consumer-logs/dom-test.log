@@ -1,0 +1,13 @@
+
+> test
+> vitest run
+
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-structure-consumer-PTVWq5/consumer
+
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  23:00:54
+   Duration  24.55s (transform 17.07s, setup 0ms, import 21.08s, tests 1.58s, environment 1.55s)
+

@@ -1,0 +1,19 @@
+{
+  "schema": "vict.structure-test-repair-completion@1",
+  "status": "PASS",
+  "sourceCandidate": "a629b40818ba367daf79850c80d9abb7fe02df1c",
+  "targetedInheritedFailuresResolved": 12,
+  "existingCasesRetained": 25,
+  "newGroupedEscapeCase": 1,
+  "neighborCases": 5,
+  "testsPassed": 31,
+  "testFiles": 6,
+  "typecheck": "PASS",
+  "eslint": "PASS",
+  "consumerCasesPassed": 4,
+  "nativeConsumer": "PASS",
+  "nativeStudioHost": "PASS",
+  "currentDocumentExact": true,
+  "wholeRepositorySuiteClaim": false,
+  "independentReviewClaim": false
+}

@@ -1,24 +1,38 @@
 # Architecture realignment — current delivery boundary
 
+**1November test-repair follow-up CLOSED.** Current local product is
+**a629b40818ba367daf79850c80d9abb7fe02df1c**. All12 inherited failing cases
+are repaired with their behavior checks retained;31/31 affected/adjacent checks,
+Studio type checking, lint, isolated public consumer and production builds pass.
+The repaired tests exposed shared Escape priority and hidden-menu focus defects;
+both are fixed, with capture restricted to the owning Structure root. Native
+public-consumer and activated Studio keyboard checks pass. The current Evidence
+desk r1.r7 source is exact across activation. Seal:
+**2ce5498b2d0b954a2100802cd1121df965a2266ea1019ee03bce6e5894b051f1**.
+[Repair/verification/closure](STRUCTURE-TEST-REPAIR-20261101.md) records the scope
+and integrator attribution. Slow authoring remains a separate follow-up.
+
+## Original Option2 closure checkpoint
+
 **CLOSED — bounded Option2 / Authoring Foundation delivery,1November2026.**
 The owner's “do properly … then close” instruction is fulfilled after independent
 final integration **QUALIFIED PASS**, with no remaining in-scope blocker.
-Current local product: **20e26253f0ec6aab20f480c1b3e537e2282938d8**;
+That checkpoint's local product: **20e26253f0ec6aab20f480c1b3e537e2282938d8**;
 Campaign Foundry is saved as **r1.r18**, preserving graph data and owner positions.
 Shared Structure now owns the reusable explorer; Studio supplies thin host adapters.
 Versioned names-only ports, independent columns and explicit engine choice are
 delivered. The final fresh-load coordinate precision defect was reproduced,
 repaired and independently verified on two untouched reloads and native zoom.
 
-The exact seal is **28856024cfbc35470d3edb8ee722b8914c833a6e3093d10eb9fa8ad7aa6d09ec**:
+That checkpoint's seal is **28856024cfbc35470d3edb8ee722b8914c833a6e3093d10eb9fa8ad7aa6d09ec**:
 398 installed files,93 historical proof files and all four398-file predecessor
 backups match. Final saved source/export are exact; all24 connections,20 node
 bounds and44 port labels pass recorded native checks. See the
 [completion and limitations](STRUCTURE-SHARED-COMPLETION-20261101.md) and
 [independent final verdict](foundation-evidence/structure-shared-completion-20261101/independent-final-integration-review.md).
 The original31 requirement dispositions retain their reviewed scope. Earlier
-Android reports remain attributed;12 baseline-reproduced test failures and slow
-authoring remain disclosed follow-ups. This closes the bounded delivery under
+Android reports remain attributed. The12 then-failing tests are now resolved by
+the follow-up above; slow authoring remains disclosed. This closes the bounded delivery under
 the owner's directive, not whole Stage9 or Milestone2. No push, main merge or
 publication occurred.
 

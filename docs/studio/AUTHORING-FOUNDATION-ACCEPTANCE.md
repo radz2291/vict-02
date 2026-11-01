@@ -11,6 +11,12 @@
 > historical records. Whole Stage9/Milestone2, push, main merge and publication
 > remain outside this bounded closure.
 
+> **Test-repair follow-up CLOSED:** installed producta629b408 resolves the12
+> inherited failing cases without removing their behavioral coverage.31/31
+> affected/adjacent checks and recorded native keyboard checks pass. See the
+> [repair record](STRUCTURE-TEST-REPAIR-20261101.md); the original independent
+> verdict above remains attributed to20e26253, not silently reassigned.
+
 ## Historical 28 October morning-review checkpoint — product a99aea00
 
 **Historical a99aea00 scoped count: 30 demonstrated / 1 partial (AR-25) / 0 failed criteria at that checkpoint across31. All31 owner acceptances remain open; full foundation gate HELD.** Product `a99aea00dd75d8ced3104bc399257a343517e7b3` is independently reviewed, built, loaded and exercised through actual Z.ai subscription proof. AR-05 now has concise receipt-derived default Host evidence summary with unchanged originals/technical details inspectable. AR-09 separates source effects, stable capture measurements, explicitly unverified structured AI interpretation and untested behavior; an actual failed capture is preserved as failed and one visibility-based observation-only recovery succeeds without edits. These are scoped reporting-contract demonstrations, not universal model truth or censorship of the longer original response.
