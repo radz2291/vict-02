@@ -1,0 +1,19 @@
+
+> vict-studio@0.1.0 check
+> svelte-kit sync && tsc --noEmit
+
+tests/edge-v3-adapter-independent.test.ts(15,272): error TS2540: Cannot assign to 'initial' because it is a read-only property.
+tests/edge-v3-adapter-independent.test.ts(26,171): error TS2542: Index signature in type 'Readonly<Record<string, UiLocalStateDecl>>' only permits reading.
+tests/edge-v3-adapter-independent.test.ts(26,244): error TS2542: Index signature in type 'Readonly<Record<string, UiNode>>' only permits reading.
+tests/edge-v3-adapter-independent.test.ts(26,345): error TS2542: Index signature in type 'Readonly<Record<string, UiNode>>' only permits reading.
+tests/edge-v3-adapter-independent.test.ts(27,127): error TS2542: Index signature in type 'Readonly<Record<string, UiNode>>' only permits reading.
+tests/edge-v3-adapter-independent.test.ts(29,200): error TS2540: Cannot assign to 'outputs' because it is a read-only property.
+tests/structure-public-package.test.ts(25,9): error TS2554: Expected 5-6 arguments, but got 4.
+tests/structure-public-package.test.ts(26,9): error TS2554: Expected 5-6 arguments, but got 4.
+npm error Lifecycle script `check` failed with error:
+npm error code 2
+npm error path C:\Users\RZ1\.codex\worktrees\vict-architecture-realignment-20261030\apps\studio
+npm error workspace vict-studio@0.1.0
+npm error location C:\Users\RZ1\.codex\worktrees\vict-architecture-realignment-20261030\apps\studio
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c svelte-kit sync && tsc --noEmit

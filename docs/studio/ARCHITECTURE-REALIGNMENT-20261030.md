@@ -229,3 +229,20 @@ statements only; stage 2 remains unpassed and later integrated/device gates rema
 The task/milestone remain open.
 The current-delivery record above is the handover entry; historical red records
 and first-candidate builds remain preserved.
+
+## 1 November 2026 — bounded Option2 completion and closure
+
+The owner instructed: “do properly … option2 … then close.” The bounded
+Authoring Foundation / Option2 delivery is now CLOSED after independent final
+integration QUALIFIED PASS, with no remaining in-scope blocker. Installed product
+is20e26253f0ec6aab20f480c1b3e537e2282938d8; Campaign Foundry r1.r18 source/export
+remain exact. Shared Structure, versioned independent port columns, explicit
+engine choice and the final fractional-frame precision repair have matched
+public-artifact, source, actual-agent and native evidence at their stated scopes.
+See [current delivery](ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md),
+[completion](STRUCTURE-SHARED-COMPLETION-20261101.md) and the
+[final independent verdict](foundation-evidence/structure-shared-completion-20261101/independent-final-integration-review.md).
+Original31 dispositions, retained failures, earlier owner-device reports and slow
+authoring remain attributed. This closure does not close whole Stage9/Milestone2
+or authorize push, main merge or publication. Repository records remain the task
+update surface; no external ticket was created or inferred.

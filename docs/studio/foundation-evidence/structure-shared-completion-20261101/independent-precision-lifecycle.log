@@ -1,0 +1,50 @@
+[WARN] The "workspaces" field in package.json is not supported by pnpm. Create a "pnpm-workspace.yaml" file instead.
+[WARN] The "workspaces" field in package.json is not supported by pnpm. Create a "pnpm-workspace.yaml" file instead.
+[WARN] Moving @sveltejs/vite-plugin-svelte that was installed by a different package manager to "node_modules/.ignored"
+[WARN] Moving @eslint/js that was installed by a different package manager to "node_modules/.ignored"
+[WARN] Moving @types/node that was installed by a different package manager to "node_modules/.ignored"
+[WARN] Moving eslint that was installed by a different package manager to "node_modules/.ignored"
+[WARN] Moving globals that was installed by a different package manager to "node_modules/.ignored"
+[WARN] Moving happy-dom that was installed by a different package manager to "node_modules/.ignored"
+[WARN] Moving js-yaml that was installed by a different package manager to "node_modules/.ignored"
+[WARN] Moving svelte that was installed by a different package manager to "node_modules/.ignored"
+[WARN] Moving svelte-check that was installed by a different package manager to "node_modules/.ignored"
+[WARN] Moving prettier that was installed by a different package manager to "node_modules/.ignored"
+[WARN] Moving tsx that was installed by a different package manager to "node_modules/.ignored"
+[WARN] Moving typescript that was installed by a different package manager to "node_modules/.ignored"
+[WARN] Moving typescript-eslint that was installed by a different package manager to "node_modules/.ignored"
+[WARN] Moving vitest that was installed by a different package manager to "node_modules/.ignored"
+[WARN] Moving zod that was installed by a different package manager to "node_modules/.ignored"
+Progress: resolved 1, reused 0, downloaded 0, added 0
+
+   ╭────────────────────────────────────────────────────────────────────────╮
+   │                                                                        │
+   │                  Update available! 11.25.0 → 12.16.1.                  │
+   │                  Changelog: https://pnpm.io/v/12.16.1                  │
+   │   To update, run: Invoke-WebRequest https://get.pnpm.io/install.ps1    │
+   │                 -UseBasicParsing | Invoke-Expression                   │
+   │                                                                        │
+   ╰────────────────────────────────────────────────────────────────────────╯
+
+Progress: resolved 14, reused 9, downloaded 0, added 0
+Progress: resolved 15, reused 9, downloaded 1, added 0
+Progress: resolved 16, reused 12, downloaded 1, added 0
+Progress: resolved 95, reused 86, downloaded 2, added 0
+Progress: resolved 99, reused 90, downloaded 4, added 0
+Progress: resolved 103, reused 92, downloaded 5, added 0
+Progress: resolved 166, reused 102, downloaded 6, added 0
+Progress: resolved 171, reused 132, downloaded 8, added 0
+Progress: resolved 174, reused 132, downloaded 9, added 0
+Progress: resolved 187, reused 145, downloaded 12, added 0
+Progress: resolved 192, reused 150, downloaded 13, added 0
+Progress: resolved 197, reused 154, downloaded 14, added 0
+Progress: resolved 226, reused 156, downloaded 16, added 0
+Progress: resolved 253, reused 157, downloaded 17, added 0
+Packages: +177
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: C:\Users\RZ1\AppData\Local\pnpm\store\v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 253, reused 157, downloaded 19, added 3
+Progress: resolved 253, reused 157, downloaded 19, added 49
+Progress: resolved 253, reused 157, downloaded 20, added 139

@@ -1,0 +1,1027 @@
+[
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-c-sum",
+        "outside": false,
+        "tag": "TEXTAREA"
+      },
+      {
+        "class": "uv-e86e951c-c-aud",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-hl-bi-c",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-brief svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-br-o uv-e86e951c-pr2-br-o-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "brief",
+    "overflow": 0
+  },
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-c-ptext",
+        "outside": false,
+        "tag": "TEXTAREA"
+      },
+      {
+        "class": "uv-e86e951c-hl-pi-c",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-prompt svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-pr-i uv-e86e951c-pr2-pr-i-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-pr-o uv-e86e951c-pr2-pr-o-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "pos",
+    "overflow": 0
+  },
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-c-ptext",
+        "outside": false,
+        "tag": "TEXTAREA"
+      },
+      {
+        "class": "uv-e86e951c-hl-pi-c",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-prompt svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-pr-i uv-e86e951c-pr2-pr-i-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-pr-o uv-e86e951c-pr2-pr-o-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "neg",
+    "overflow": 0
+  },
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-c-msel",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-c-steps",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-c-guid",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-c-help-m",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-model svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-mod-o uv-e86e951c-pr2-mod-o-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "model",
+    "overflow": 0
+  },
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-c-pal",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-c-snotes",
+        "outside": false,
+        "tag": "TEXTAREA"
+      },
+      {
+        "class": "uv-e86e951c-hl-si-c",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-style svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-st-i uv-e86e951c-pr2-st-i-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-st-o uv-e86e951c-pr2-st-o-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "style",
+    "overflow": 0
+  },
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-c-seednum",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-c-rand",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-hl-sdi-c",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-seed svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-sd-o uv-e86e951c-pr2-sd-o-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "seed",
+    "overflow": 0
+  },
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-c-dfmt",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-c-hires",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-hl-di-c",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-draft svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-dr-b uv-e86e951c-pr2-dr-b-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-dr-p uv-e86e951c-pr2-dr-p-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-dr-n uv-e86e951c-pr2-dr-n-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-dr-s uv-e86e951c-pr2-dr-s-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-dr-t uv-e86e951c-pr2-dr-t-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-dr-c uv-e86e951c-pr2-dr-c-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-dr-o uv-e86e951c-pr2-dr-o-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "soc",
+    "overflow": 0
+  },
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-c-dfmt",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-c-hires",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-hl-di-c",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-draft svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-dr-b uv-e86e951c-pr2-dr-b-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-dr-p uv-e86e951c-pr2-dr-p-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-dr-n uv-e86e951c-pr2-dr-n-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-dr-s uv-e86e951c-pr2-dr-s-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-dr-t uv-e86e951c-pr2-dr-t-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-dr-c uv-e86e951c-pr2-dr-c-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-dr-o uv-e86e951c-pr2-dr-o-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "pst",
+    "overflow": 0
+  },
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-c-mode",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "graph-viewport uv-e86e951c-fin-vp svelte-wxgezj",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "uv-e86e951c-fc-route",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-fc-pattern",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-fc-color",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-fc-width",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-fc-sa",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-fc-ea",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-fs-route",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-fs-pattern",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-fs-color",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-fs-width",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-fs-sa",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-fs-ea",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-c-help-fin",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-fin svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-fin-i uv-e86e951c-pr2-fin-i-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-fin-o uv-e86e951c-pr2-fin-o-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "finS",
+    "overflow": 0
+  },
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-fc-crop-sel",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-crop svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-crop-o uv-e86e951c-pr2-crop-o-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "f-crop",
+    "overflow": 0
+  },
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-fc-grade-in",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-grade svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-grade-i uv-e86e951c-pr2-grade-i-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-grade-o uv-e86e951c-pr2-grade-o-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "f-grade",
+    "overflow": 0
+  },
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-fc-caption-in",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-caption svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-cap-i uv-e86e951c-pr2-cap-i-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "f-caption",
+    "overflow": 0
+  },
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-c-mode",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "graph-viewport uv-e86e951c-fin-vp svelte-wxgezj",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "uv-e86e951c-fc-route",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-fc-pattern",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-fc-color",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-fc-width",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-fc-sa",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-fc-ea",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-fs-route",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-fs-pattern",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-fs-color",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-fs-width",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-fs-sa",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-fs-ea",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-c-help-fin",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-fin svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-fin-i uv-e86e951c-pr2-fin-i-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-fin-o uv-e86e951c-pr2-fin-o-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "finP",
+    "overflow": 0
+  },
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-fc-crop-sel",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-crop svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-crop-o uv-e86e951c-pr2-crop-o-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "f-crop",
+    "overflow": 0
+  },
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-fc-grade-in",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-grade svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-grade-i uv-e86e951c-pr2-grade-i-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-grade-o uv-e86e951c-pr2-grade-o-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "f-grade",
+    "overflow": 0
+  },
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-fc-caption-in",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-caption svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-cap-i uv-e86e951c-pr2-cap-i-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "f-caption",
+    "overflow": 0
+  },
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-c-rstatus",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-c-rnotes",
+        "outside": false,
+        "tag": "TEXTAREA"
+      },
+      {
+        "class": "uv-e86e951c-c-help-r",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-review svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-rev-i uv-e86e951c-pr2-rev-i-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-rev-o uv-e86e951c-pr2-rev-o-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "revS",
+    "overflow": 0
+  },
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-c-rstatus",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-c-rnotes",
+        "outside": false,
+        "tag": "TEXTAREA"
+      },
+      {
+        "class": "uv-e86e951c-c-help-r",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-review svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-rev-i uv-e86e951c-pr2-rev-i-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-rev-o uv-e86e951c-pr2-rev-o-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "revP",
+    "overflow": 0
+  },
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-c-chk1",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-c-chk2",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-c-chk3",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-c-ready",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-c-help-c",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-check svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-chk-p uv-e86e951c-pr2-chk-p-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-chk-s uv-e86e951c-pr2-chk-s-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-chk-o uv-e86e951c-pr2-chk-o-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "check",
+    "overflow": 0
+  },
+  {
+    "checks": [
+      {
+        "class": "uv-e86e951c-c-dest",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "uv-e86e951c-c-fmt",
+        "outside": false,
+        "tag": "SELECT"
+      },
+      {
+        "class": "uv-e86e951c-c-help-e",
+        "outside": false,
+        "tag": "INPUT"
+      },
+      {
+        "class": "graph-port-columns uv-e86e951c-pc-exp svelte-kj68rr",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-exp-i uv-e86e951c-pr2-exp-i-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      },
+      {
+        "class": "graph-port-row nodrag nopan nowheel uv-e86e951c-pr2-exp-o uv-e86e951c-pr2-exp-o-part-4813494d13 svelte-vxjkku",
+        "outside": false,
+        "tag": "DIV"
+      },
+      {
+        "class": "port-row-label port-row-detail  svelte-vxjkku",
+        "outside": false,
+        "tag": "BUTTON"
+      }
+    ],
+    "id": "exp",
+    "overflow": 0
+  }
+]

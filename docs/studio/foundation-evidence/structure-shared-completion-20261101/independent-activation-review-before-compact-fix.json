@@ -1,0 +1,34 @@
+{
+  "schema": "vict.structure-shared-independent-activation-review@1",
+  "status": "PASS",
+  "sourceCandidate": "3dfdde4ecb5567bc03130426482076d5344e3530",
+  "baseline": "f483088f29785f973ffa1bb5131081c0936e1b47",
+  "sealSha256": "c8b940751d9c8be44ddc7aeec7339f41eae133517fa80a7817d2a0c88df36fc0",
+  "consumerReportSha256": "f8ce9e220e440a4344714be017ea794791a149126a8f5307463735c4819a848d",
+  "stageRoot": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-shared-3dfdde4e-stage",
+  "stagedInputFiles": 343,
+  "newOutputFiles": 398,
+  "previousFiles": 398,
+  "retainedProofFiles": 93,
+  "compiledWorkspaceFiles": 296,
+  "publicArchives": 9,
+  "installedNonmanifestFilesMatched": 645,
+  "actualArchiveNonmanifestFilesMatched": 645,
+  "manifestSemanticsCompared": 9,
+  "consumerOutputFiles": 6,
+  "consumerFixtureFiles": 8,
+  "consumerDomCases": 4,
+  "unpackRoot": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-independent-unpack-ZAxp1X",
+  "sourceDrift": false,
+  "technicalActivationSupported": true,
+  "actualUiVerified": false,
+  "notes": [
+    "The reuse report path later changed when its original run terminated. Its exact recorded digest survives in the explicitly preserved build-reuse snapshot; this review associates that snapshot independently. Eight unchanged package builds/artifacts were reused; Structure was freshly built/packed."
+  ],
+  "errors": [],
+  "limits": [
+    "Technical source/artifact association only; no new native browser, actual-agent or physical-device verdict.",
+    "Test-only/harness-only working changes outside the runtime freeze do not change the staged candidate; their final committed identities belong to integrator delivery.",
+    "Existing build diagnostics and matched inherited test failures remain qualified by the source review."
+  ]
+}

@@ -1,0 +1,13 @@
+
+> test
+> vitest run
+
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-structure-consumer-LEWDWl/consumer
+
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  21:38:01
+   Duration  25.20s (transform 17.78s, setup 0ms, import 21.94s, tests 1.80s, environment 1.11s)
+

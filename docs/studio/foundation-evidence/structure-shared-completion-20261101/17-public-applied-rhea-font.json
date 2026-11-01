@@ -1,0 +1,41 @@
+{
+  "source": "20e26253f0ec6aab20f480c1b3e537e2282938d8",
+  "rows": [
+    {
+      "font": "12px",
+      "label": "Brief",
+      "parentFont": "14px",
+      "rhea": true
+    },
+    {
+      "font": "12px",
+      "label": "Prompt",
+      "parentFont": "14px",
+      "rhea": true
+    },
+    {
+      "font": "12px",
+      "label": "Draft",
+      "parentFont": "14px",
+      "rhea": true
+    },
+    {
+      "font": "12px",
+      "label": "Brief",
+      "parentFont": "14px",
+      "rhea": true
+    },
+    {
+      "font": "12px",
+      "label": "Prompt",
+      "parentFont": "14px",
+      "rhea": true
+    },
+    {
+      "font": "12px",
+      "label": "Draft",
+      "parentFont": "14px",
+      "rhea": true
+    }
+  ]
+}

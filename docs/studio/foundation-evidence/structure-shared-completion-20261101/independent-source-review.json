@@ -1,0 +1,58 @@
+{
+  "schema": "vict.structure-shared-independent-source-review@1",
+  "reviewer": "/root/structure_independent_review",
+  "date": "2026-11-01",
+  "baseline": "f483088f29785f973ffa1bb5131081c0936e1b47",
+  "initialCandidate": "c39e6aa739b9801e16f81666387c635feca42d80",
+  "initialVerdict": "REPAIR REQUIRED",
+  "initialFindings": [{
+    "id": "F1",
+    "severity": "medium",
+    "location": "packages/ui-structure-svelte/src/StructureView.svelte:224",
+    "summary": "Shared rendered card summaries omit the host presentation context",
+    "observed": "Shown when Accepted is on · 1 item",
+    "expectedContains": "Friendly consent",
+    "evidence": "independent-context-red.log",
+    "actualMountedExplorer": true
+  }],
+  "independentPureParity": {
+    "candidate": "c39e6aa739b9801e16f81666387c635feca42d80",
+    "testsPassed": 7,
+    "testsFailed": 0,
+    "cases": ["bindings", "definitions", "repeats", "outputs", "styles", "clarity", "campaign-r17"],
+    "includes": ["projection", "direct node presentation", "compact projection", "ports", "member-preserving grouping", "facts", "search and filtering", "collapse", "focused disclosure", "source immutability"],
+    "log": "independent-parity-final-run.log",
+    "runtime": "Vitest4.1.11",
+    "actualAgentProof": false,
+    "nativeBrowserProof": false
+  },
+  "inheritedObservation": "Inspector facts omit descriptor/action context in baseline and initial candidate; compatible propagation is separate from the newly demonstrated F1 regression.",
+  "finalCandidate": "3dfdde4ecb5567bc03130426482076d5344e3530",
+  "finalVerdict": "QUALIFIED PASS — source/parity only",
+  "resolvedFindings": ["F1"],
+  "finalAffectedRecheck": {
+    "testsPassed": 8,
+    "filesPassed": 2,
+    "testsFailed": 0,
+    "includesActualMountedContextRegression": true,
+    "log": "independent-repaired-final.log",
+    "canonicalSourceUnchanged": true
+  },
+  "inheritedRedTests": {
+    "matchedBaseline": "f483088f29785f973ffa1bb5131081c0936e1b47",
+    "matchedUiFailures": 10,
+    "matchedClarityAliasFailures": 2,
+    "sameToolbarChecksPassing": 9,
+    "logsIndependentlyInspected": ["structure-baseline-matched-regressions.log", "structure-baseline-clarity.log", "structure-candidate-regressions.log"],
+    "countedAsPasses": false
+  },
+  "navigationDomRecheck": {
+    "candidate": "3dfdde4ecb5567bc03130426482076d5344e3530",
+    "testsPassed": 2,
+    "testsFailed": 0,
+    "log": "independent-navigation.log",
+    "checks": ["host destinations hidden without callback", "source-aware Reveal in Layers retained with callback"]
+  },
+  "taskClosureVerdict": "not awarded",
+  "physicalDeviceVerdict": "not performed by this reviewer"
+}

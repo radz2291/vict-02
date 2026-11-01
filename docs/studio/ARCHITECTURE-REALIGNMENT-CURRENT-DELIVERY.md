@@ -1,5 +1,29 @@
 # Architecture realignment — current delivery boundary
 
+**CLOSED — bounded Option2 / Authoring Foundation delivery,1November2026.**
+The owner's “do properly … then close” instruction is fulfilled after independent
+final integration **QUALIFIED PASS**, with no remaining in-scope blocker.
+Current local product: **20e26253f0ec6aab20f480c1b3e537e2282938d8**;
+Campaign Foundry is saved as **r1.r18**, preserving graph data and owner positions.
+Shared Structure now owns the reusable explorer; Studio supplies thin host adapters.
+Versioned names-only ports, independent columns and explicit engine choice are
+delivered. The final fresh-load coordinate precision defect was reproduced,
+repaired and independently verified on two untouched reloads and native zoom.
+
+The exact seal is **28856024cfbc35470d3edb8ee722b8914c833a6e3093d10eb9fa8ad7aa6d09ec**:
+398 installed files,93 historical proof files and all four398-file predecessor
+backups match. Final saved source/export are exact; all24 connections,20 node
+bounds and44 port labels pass recorded native checks. See the
+[completion and limitations](STRUCTURE-SHARED-COMPLETION-20261101.md) and
+[independent final verdict](foundation-evidence/structure-shared-completion-20261101/independent-final-integration-review.md).
+The original31 requirement dispositions retain their reviewed scope. Earlier
+Android reports remain attributed;12 baseline-reproduced test failures and slow
+authoring remain disclosed follow-ups. This closes the bounded delivery under
+the owner's directive, not whole Stage9 or Milestone2. No push, main merge or
+publication occurred.
+
+## Historical delivery checkpoints (superseded operationally)
+
 **31October local stress delivery, device report added1November:** the owner-directed Campaign Foundry suite serves frozen source **3e62f75d8337db767c8de6e7d214d520abcdce41** at the established local Studio origin. The exact saved/exported r1.r17 app retains the owner's layout and values. Named typed boundary ports, socket ownership/endpoint alignment, nested connection dragging, canvas/per-connection appearance and single-step Undo have matching source, package and recorded native evidence. Independent verdict **2bdb349a5d704eeb3ac4c53ab13168fa83497995** supplies a **qualified local stress pass**; all398 active files and395 preserved prior files match. On1November the owner reported that the complex app works on Xiaomi Android/Chrome for typing with the keyboard open, canvas dragging/panning, rotation and reachable controls. This is new owner-reported evidence, not an extension of the earlier two-node result or an independent phone port-connection test. Measured slow authoring remains a follow-up. See [the device report](foundation-evidence/node-suite-stress-20261031/38-owner-android-check.json), [final local verdict](foundation-evidence/packed-edge-row-independent-20261101/FINAL-LOCAL-STRESS-VERDICT.md), [limit-removal record](NODE-SUITE-LIMITS-20261031.md) and [actual suite record](NODE-SUITE-STRESS-20261031.md). The30October verdict below is historical at its exact scope. No owner acceptance, Stage9 closure, push or publication is inferred.
 
 30 October 2026. **Fresh integrated Gate E QUALIFIED PASS — verified and ready

@@ -1,0 +1,84 @@
+{
+  "schema": "vict.consumer-final-artifact-association@1",
+  "status": "PASS",
+  "sourceCandidate": "11200357a0883dda7f2b35637901c4e217eb01b9",
+  "report": "vict-structure-consumer-CIpk78.json",
+  "reportSha256": "1587233199b62bbb05129b25984083aba82119391f213cc27a26c9af3dc49495",
+  "consumerDist": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-consumer-CIpk78\\consumer\\dist",
+  "installedPackages": 9,
+  "installedFiles": 645.0,
+  "freshBuilds": 0,
+  "reusedBuilds": 9,
+  "domCases": 4,
+  "productionBuildPassed": true,
+  "reusedManifest": {
+    "archivedSnapshot": "vict-structure-consumer-CIpk78-reuse-manifest.json",
+    "sha256": "f5bd6229772e4895b1976478285fa3098135a78853cbf268555cbf99ae7c6a9e",
+    "matchesConsumedManifestHash": true,
+    "previousFinalReport": "vict-structure-consumer-LEWDWl.json",
+    "previousFinalReportSha256": "f5bd6229772e4895b1976478285fa3098135a78853cbf268555cbf99ae7c6a9e"
+  },
+  "themeContext": "Standalone App imports installed public rhea.css and explicitly applies class vict-rhea on a 14px wrapper around the authored DocumentHost. Source fixture inclusion is verified; native computed font measurements are a separate root browser proof.",
+  "fixtureApp": {
+    "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-consumer-CIpk78\\consumer\\src\\App.svelte",
+    "sha256": "6731d45504ae9726fe34170be445b2808d9ca6c405df81fe6b345c3b419623f5"
+  },
+  "logs": [
+    {
+      "path": "consumer-CIpk78-logs/build-application.log",
+      "sha256": "1417c203143084ae32a7dbbad279944165aae3115e1b114674f8a2c7b88bf4eb"
+    },
+    {
+      "path": "consumer-CIpk78-logs/build-contracts.log",
+      "sha256": "35a56727276a2e2078289f8420c00b3e1d0e2cb083bb09849573ec5931eb768b"
+    },
+    {
+      "path": "consumer-CIpk78-logs/build-sdk.log",
+      "sha256": "dd540bb66f8f0f472a9f812be24c699a6d8d1c0288f0ab8026733fdb836318d9"
+    },
+    {
+      "path": "consumer-CIpk78-logs/build-ui-editor.log",
+      "sha256": "19331eee0b8fcc4a50340a63bd1e6f36ca178c6161aaa60f01ec124b522ca881"
+    },
+    {
+      "path": "consumer-CIpk78-logs/build-ui-flow-svelte.log",
+      "sha256": "d5bcf52516fe4b33ff854bef91abdcbf58b0bcee3a9c7f6cf134712d98cf2bd1"
+    },
+    {
+      "path": "consumer-CIpk78-logs/build-ui-media-svelte.log",
+      "sha256": "02d0c1dcf476a5461cfd6b04283d986cd134b94a95e96c5552e3fc4c5e3eb964"
+    },
+    {
+      "path": "consumer-CIpk78-logs/build-ui-structure-svelte.log",
+      "sha256": "02d0c1dcf476a5461cfd6b04283d986cd134b94a95e96c5552e3fc4c5e3eb964"
+    },
+    {
+      "path": "consumer-CIpk78-logs/build-ui-svelte.log",
+      "sha256": "ee5b5c723f82c659709c877857197cb1e17156bdb2612bab7a8db008e0d90793"
+    },
+    {
+      "path": "consumer-CIpk78-logs/build-ui.log",
+      "sha256": "07f2d835c9f5b8132e6216d1bd790c5c0052ff17eca34695a09adf5552980036"
+    },
+    {
+      "path": "consumer-CIpk78-logs/dom-test.log",
+      "sha256": "b718e97f88ff3825665a49704a1240209a0d1bbee4e3e2533349bb5792deec56"
+    },
+    {
+      "path": "consumer-CIpk78-logs/install.log",
+      "sha256": "d847b17d66dce299dea287378552d0e6ad6c9889f1d5a42c828043f6ca04df09"
+    },
+    {
+      "path": "consumer-CIpk78-logs/production-build.log",
+      "sha256": "5328228d5e62789ef4c8a29bc12b6897a4d9c55096b2df67387ac72326b2b8a4"
+    }
+  ],
+  "limitations": [
+    "Coding-authored fixture is not actual-agent authorship.",
+    "DOM simulation proves renderer/event/source behavior, not painted routing, physical touch, pointer connection dragging or phone inset coverage.",
+    "No persistence/backend execution or new device proof claimed.",
+    "Existing production chunk-size warning retained; no performance pass claimed.",
+    "LEWDWl loaded public Rhea CSS without applying its root class; it remains a bounded DOM/public build result and does not prove Rhea font precedence.",
+    "Previous14973 native font failure remains separate from its bounded public-consumer DOM pass."
+  ]
+}

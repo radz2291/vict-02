@@ -1,0 +1,1 @@
+{"focus":"Flow node cards in the campaign canvas: do port rows now render as independent left inputs / right outputs columns, top-aligned, with sockets reaching the card edges, names-only labels, and ordinary settings above the columns? Note any clipped, overlapping or misaligned port rows."}

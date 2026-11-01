@@ -1,0 +1,77 @@
+[
+  {
+    "name": "@sveltejs/vite-plugin-svelte",
+    "from": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\.ignored\\@sveltejs\\vite-plugin-svelte",
+    "to": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\@sveltejs\\vite-plugin-svelte"
+  },
+  {
+    "name": "@eslint/js",
+    "from": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\.ignored\\@eslint\\js",
+    "to": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\@eslint\\js"
+  },
+  {
+    "name": "@types/node",
+    "from": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\.ignored\\@types\\node",
+    "to": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\@types\\node"
+  },
+  {
+    "name": "eslint",
+    "from": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\.ignored\\eslint",
+    "to": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\eslint"
+  },
+  {
+    "name": "globals",
+    "from": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\.ignored\\globals",
+    "to": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\globals"
+  },
+  {
+    "name": "happy-dom",
+    "from": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\.ignored\\happy-dom",
+    "to": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\happy-dom"
+  },
+  {
+    "name": "js-yaml",
+    "from": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\.ignored\\js-yaml",
+    "to": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\js-yaml"
+  },
+  {
+    "name": "svelte",
+    "from": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\.ignored\\svelte",
+    "to": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\svelte"
+  },
+  {
+    "name": "svelte-check",
+    "from": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\.ignored\\svelte-check",
+    "to": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\svelte-check"
+  },
+  {
+    "name": "prettier",
+    "from": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\.ignored\\prettier",
+    "to": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\prettier"
+  },
+  {
+    "name": "tsx",
+    "from": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\.ignored\\tsx",
+    "to": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\tsx"
+  },
+  {
+    "name": "typescript",
+    "from": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\.ignored\\typescript",
+    "to": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\typescript"
+  },
+  {
+    "name": "typescript-eslint",
+    "from": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\.ignored\\typescript-eslint",
+    "to": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\typescript-eslint"
+  },
+  {
+    "name": "vitest",
+    "from": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\.ignored\\vitest",
+    "to": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\vitest"
+  },
+  {
+    "name": "zod",
+    "from": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\.ignored\\zod",
+    "to": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\zod"
+  }
+]

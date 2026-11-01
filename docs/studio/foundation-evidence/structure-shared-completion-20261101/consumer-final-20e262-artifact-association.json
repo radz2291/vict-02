@@ -1,0 +1,83 @@
+{
+  "schema": "vict.consumer-final-artifact-association@1",
+  "status": "PASS",
+  "sourceCandidate": "20e26253f0ec6aab20f480c1b3e537e2282938d8",
+  "report": "vict-structure-consumer-cMPuh4.json",
+  "reportSha256": "54e01ac50e6d6219565cdcb488cd01cf7a94892f094aabbc778033b12ded6ff0",
+  "consumerDist": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-consumer-cMPuh4\\consumer\\dist",
+  "installedPackages": 9,
+  "installedFiles": 645.0,
+  "freshBuilds": 2,
+  "reusedBuilds": 7,
+  "domCases": 4,
+  "productionBuildPassed": true,
+  "reusedManifest": {
+    "archivedSnapshot": "vict-structure-consumer-cMPuh4-reuse-manifest.json",
+    "sha256": "1587233199b62bbb05129b25984083aba82119391f213cc27a26c9af3dc49495",
+    "matchesConsumedManifestHash": true,
+    "previousFinalReport": "vict-structure-consumer-CIpk78.json",
+    "previousFinalReportSha256": "1587233199b62bbb05129b25984083aba82119391f213cc27a26c9af3dc49495"
+  },
+  "themeContext": "Standalone App imports installed public rhea.css and explicitly applies class vict-rhea on a 14px wrapper around the authored DocumentHost. Native font/frame/endpoint measurements remain separate root browser proof.",
+  "fixtureApp": {
+    "path": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-consumer-cMPuh4\\consumer\\src\\App.svelte",
+    "sha256": "6731d45504ae9726fe34170be445b2808d9ca6c405df81fe6b345c3b419623f5"
+  },
+  "logs": [
+    {
+      "path": "consumer-cMPuh4-logs/build-application.log",
+      "sha256": "8bb949a76c18e123cf1159cec3dc7d01a48b444973f71cccc49f7cb9a9a2a8ef"
+    },
+    {
+      "path": "consumer-cMPuh4-logs/build-contracts.log",
+      "sha256": "70d40f2fdf2d9396fc8eb8b64f96e18ea73d7e2c3c3b9776eccdd91894a7c47e"
+    },
+    {
+      "path": "consumer-cMPuh4-logs/build-sdk.log",
+      "sha256": "ed7a8bf3492a6bb482739804b08ee1ab51b1be71861d040fcf3a6d0af1e47f44"
+    },
+    {
+      "path": "consumer-cMPuh4-logs/build-ui-editor.log",
+      "sha256": "a50e34a4cc2e13c6ffc0b9b7099122febc3883c9c955a9461933f82d89419ef4"
+    },
+    {
+      "path": "consumer-cMPuh4-logs/build-ui-flow-svelte.log",
+      "sha256": "670ee8f056a61854d3dfcc4aec5144b64920d55591e433cfa5b345f288065b5a"
+    },
+    {
+      "path": "consumer-cMPuh4-logs/build-ui-media-svelte.log",
+      "sha256": "110c130f9320ce7116e4c5c78e93052edf3cdfa53a2c4cf18afe92671f6cc834"
+    },
+    {
+      "path": "consumer-cMPuh4-logs/build-ui-structure-svelte.log",
+      "sha256": "6835c80ca3b371b3de4d9c009bdc5213f422198cbb4a0043dfc037280d705100"
+    },
+    {
+      "path": "consumer-cMPuh4-logs/build-ui-svelte.log",
+      "sha256": "e25ca6c026f269f356313b1186c746c9ee84ad080c93fc598b1176cd8ac13cb8"
+    },
+    {
+      "path": "consumer-cMPuh4-logs/build-ui.log",
+      "sha256": "37c93fac904737e0b7a22a1ed5762d08c3acf09977eec222730ddcf5bd6a8a40"
+    },
+    {
+      "path": "consumer-cMPuh4-logs/dom-test.log",
+      "sha256": "ce019ede0499434983ff442e19cdd17d2fcb49061c2b6e7b6a09cc21d3fd3f07"
+    },
+    {
+      "path": "consumer-cMPuh4-logs/install.log",
+      "sha256": "4bca45a706202ccbedd67404e1f470491d11ed73639c3aeb752cda205bc35f1a"
+    },
+    {
+      "path": "consumer-cMPuh4-logs/production-build.log",
+      "sha256": "f06b0ab6cae2b32327e10b7739d43eeda0b39acc419d748246c9b78e690cc82c"
+    }
+  ],
+  "limitations": [
+    "Coding-authored fixture is not actual-agent authorship.",
+    "DOM simulation proves renderer/event/source behavior, not painted routing, physical touch, pointer connection dragging or phone inset coverage.",
+    "No persistence/backend execution or new device proof claimed.",
+    "Existing production chunk-size warning retained; no performance pass claimed.",
+    "Earlier native frame precision and font failures remain separate from their bounded public-consumer DOM/build results."
+  ]
+}

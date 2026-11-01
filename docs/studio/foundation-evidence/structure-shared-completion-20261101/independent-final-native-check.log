@@ -1,0 +1,92 @@
+{
+  "schema": "vict.structure-independent-final-native-recomputation@1",
+  "sourceCandidate": "20e26253f0ec6aab20f480c1b3e537e2282938d8",
+  "status": "PASS",
+  "receipts": [
+    {
+      "file": "17-fresh-load-geometry.json",
+      "sha256": "e17b56e3b5c660cc7b6dcb56bade8183691ecc63c649874f5765da7e7a36c41e",
+      "beforeCanvasInteraction": true,
+      "edgeCount": 24,
+      "ownerCounts": {
+        "root": 20,
+        "finS": 2,
+        "finP": 2
+      },
+      "maxAxisError": 0.00029473988024619757,
+      "maxEuclideanError": 0.00035780399664853255,
+      "frames": [
+        {
+          "alert": [],
+          "inert": false,
+          "owner": "root",
+          "scale": "1.00000001699197"
+        },
+        {
+          "alert": [],
+          "inert": false,
+          "owner": "finS",
+          "scale": "0.17569877405997614"
+        },
+        {
+          "alert": [],
+          "inert": false,
+          "owner": "finP",
+          "scale": "0.1756987250225876"
+        }
+      ],
+      "labelCount": null
+    },
+    {
+      "file": "18-fresh-load-geometry.json",
+      "sha256": "5d265e3c0af0c12b72036522694cfccc11183c257d03a5797de37a3973e9a0e3",
+      "beforeCanvasInteraction": true,
+      "edgeCount": 24,
+      "ownerCounts": {
+        "root": 20,
+        "finS": 2,
+        "finP": 2
+      },
+      "maxAxisError": 0.00029473988024619757,
+      "maxEuclideanError": 0.00035780399664853255,
+      "frames": [
+        {
+          "alert": [],
+          "inert": false,
+          "owner": "root",
+          "scale": "1.00000001699197"
+        },
+        {
+          "alert": [],
+          "inert": false,
+          "owner": "finS",
+          "scale": "0.17569877405997614"
+        },
+        {
+          "alert": [],
+          "inert": false,
+          "owner": "finP",
+          "scale": "0.1756987250225876"
+        }
+      ],
+      "labelCount": 44
+    },
+    {
+      "file": "19-after-native-zoom-geometry.json",
+      "sha256": "8f348c535ce019c029803086d49b6fd55ad6cc3733d3ed8c39f483b96d57fc5b",
+      "beforeCanvasInteraction": false,
+      "edgeCount": 24,
+      "ownerCounts": {
+        "root": 20,
+        "finS": 2,
+        "finP": 2
+      },
+      "maxAxisError": 0.001123798988373892,
+      "maxEuclideanError": 0.0014775581231828221,
+      "frames": null,
+      "labelCount": null
+    }
+  ],
+  "errors": [],
+  "scope": "Independent numeric and identity review of integrator native captures; reviewer did not operate the browser. Two fresh-load captures before canvas interaction supersede, and do not erase, retained adverse geometry14/15. Source/export and containment are separately checked."
+}

@@ -1,0 +1,118 @@
+{
+  "schema": "vict.independent-actual-agent-receipt-association@1",
+  "scope": "Independent parsing of integrator-retained public Studio UI receipts, not an independent live provider or native interaction.",
+  "chatPath": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\docs\\studio\\foundation-evidence\\structure-shared-completion-20261101\\05-agent-chat-public.txt",
+  "chatSha256": "860d358ca03e789f3e05e6f17babcabaef23fd60764b23fb4125afb851135bc8",
+  "afterSourcePath": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\docs\\studio\\foundation-evidence\\structure-shared-completion-20261101\\06-agent-adopted-unsaved-source.json",
+  "afterSourceSha256": "b52399ecc96347df3a9fc5766e0ffcf764d87b268eee07b8eeddcbe539c34e07",
+  "afterCanonicalDigest": "3b0f6d15607dd805b67633038f0f6c3f575f46633ca5ea52f585a9ea48ca06b1",
+  "parsedJsonObjects": 458,
+  "publicProgressReceipts": 17,
+  "maximumAcknowledgedSnapshot": {
+    "cursor": {
+      "documentId": "screen-a8690ffa-1e90-4b72-909c-66141d372773",
+      "revision": "r1.r17#3",
+      "digest": "3b0f6d15607dd805b67633038f0f6c3f575f46633ca5ea52f585a9ea48ca06b1",
+      "epoch": "39b37957-ff45-4edd-8a3b-29f76bc33044"
+    },
+    "expectedRevision": "r1.r17#3",
+    "applied": 3,
+    "metrics": {
+      "toolCalls": 41,
+      "completedCalls": 40,
+      "refusedCalls": 0,
+      "recoveryAttempts": 0,
+      "toolElapsedMs": 5532,
+      "providerRequests": 19,
+      "visionRequests": 0,
+      "acknowledgementMs": 2279,
+      "confirmedEdits": 3,
+      "usage": {
+        "inputTokens": 1628613,
+        "outputTokens": 28945,
+        "totalTokens": 1657558
+      },
+      "firstEditMs": 566392.8043000001,
+      "categories": {
+        "knowledge": 3,
+        "source": 35,
+        "edit": 3,
+        "observe": 0,
+        "other": 0
+      },
+      "elapsedMs": 667848,
+      "toolActiveMs": 5213,
+      "outsideToolMs": 662634,
+      "modelSteps": null,
+      "cost": null
+    },
+    "keys": [
+      "expectedRevision",
+      "cursor",
+      "section",
+      "scope",
+      "items",
+      "total",
+      "offset",
+      "nextOffset",
+      "turnProgress"
+    ]
+  },
+  "acknowledgedEditSnapshots": [
+    {
+      "applied": 1,
+      "confirmedEdits": 1,
+      "toolCalls": 35,
+      "refusedCalls": 0
+    },
+    {
+      "applied": 2,
+      "confirmedEdits": 2,
+      "toolCalls": 36,
+      "refusedCalls": 0
+    },
+    {
+      "applied": 3,
+      "confirmedEdits": 3,
+      "toolCalls": 37,
+      "refusedCalls": 0
+    },
+    {
+      "cursor": {
+        "documentId": "screen-a8690ffa-1e90-4b72-909c-66141d372773",
+        "revision": "r1.r17#3",
+        "digest": "3b0f6d15607dd805b67633038f0f6c3f575f46633ca5ea52f585a9ea48ca06b1",
+        "epoch": "39b37957-ff45-4edd-8a3b-29f76bc33044"
+      },
+      "applied": 3,
+      "confirmedEdits": 3,
+      "toolCalls": 41,
+      "refusedCalls": 0
+    },
+    {
+      "cursor": {
+        "documentId": "screen-a8690ffa-1e90-4b72-909c-66141d372773",
+        "revision": "r1.r17#3",
+        "digest": "3b0f6d15607dd805b67633038f0f6c3f575f46633ca5ea52f585a9ea48ca06b1",
+        "epoch": "39b37957-ff45-4edd-8a3b-29f76bc33044"
+      },
+      "applied": 3,
+      "confirmedEdits": 3,
+      "toolCalls": 41,
+      "refusedCalls": 0
+    }
+  ],
+  "receiptCursorMatchesFinalSource": true,
+  "matchingFinalSourceCursors": [
+    {
+      "documentId": "screen-a8690ffa-1e90-4b72-909c-66141d372773",
+      "revision": "r1.r17#3",
+      "digest": "3b0f6d15607dd805b67633038f0f6c3f575f46633ca5ea52f585a9ea48ca06b1",
+      "epoch": "39b37957-ff45-4edd-8a3b-29f76bc33044"
+    }
+  ],
+  "limits": [
+    "Final cumulative snapshot is a retained tool acknowledgement, not independently measured provider latency or cost.",
+    "Captured model image interpretation remains unverified; native geometry and behavior require separate receipts."
+  ]
+}

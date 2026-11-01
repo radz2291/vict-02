@@ -1,0 +1,39 @@
+{
+  "schema": "vict.structure-shared-independent-activation-review@1",
+  "status": "PASS",
+  "sourceCandidate": "20e26253f0ec6aab20f480c1b3e537e2282938d8",
+  "inspectedHead": "20e26253f0ec6aab20f480c1b3e537e2282938d8",
+  "baseline": "f483088f29785f973ffa1bb5131081c0936e1b47",
+  "sealSha256": "28856024cfbc35470d3edb8ee722b8914c833a6e3093d10eb9fa8ad7aa6d09ec",
+  "consumerReportSha256": "54e01ac50e6d6219565cdcb488cd01cf7a94892f094aabbc778033b12ded6ff0",
+  "stageRoot": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-shared-20e26253-stage",
+  "stagedInputFiles": 343,
+  "newOutputFiles": 398,
+  "previousFiles": 398,
+  "previousSource": "11200357a0883dda7f2b35637901c4e217eb01b9",
+  "original3e62BackupFiles": 398,
+  "intermediate3dfBackupFiles": 398,
+  "intermediate149BackupFiles": 398,
+  "retainedProofFiles": 93,
+  "compiledWorkspaceFiles": 296,
+  "publicArchives": 9,
+  "installedNonmanifestFilesMatched": 645,
+  "actualArchiveNonmanifestFilesMatched": 645,
+  "manifestSemanticsCompared": 9,
+  "consumerOutputFiles": 6,
+  "consumerFixtureFiles": 8,
+  "consumerDomCases": 4,
+  "unpackRoot": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-independent-unpack-9FZvbq",
+  "sourceDrift": false,
+  "technicalActivationSupported": true,
+  "actualUiVerified": false,
+  "notes": [
+    "Final consumer C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-consumer-cMPuh4\\consumer: build provenance [{\"name\":\"@victframework/contracts\",\"mode\":\"reused-build\",\"previousSource\":\"11200357a0883dda7f2b35637901c4e217eb01b9\"},{\"name\":\"@victframework/ui\",\"mode\":\"reused-build\",\"previousSource\":\"11200357a0883dda7f2b35637901c4e217eb01b9\"},{\"name\":\"@victframework/sdk\",\"mode\":\"reused-build\",\"previousSource\":\"11200357a0883dda7f2b35637901c4e217eb01b9\"},{\"name\":\"@victframework/application\",\"mode\":\"reused-build\",\"previousSource\":\"11200357a0883dda7f2b35637901c4e217eb01b9\"},{\"name\":\"@victframework/ui-svelte\",\"mode\":\"reused-build\",\"previousSource\":\"11200357a0883dda7f2b35637901c4e217eb01b9\"},{\"name\":\"@victframework/ui-media-svelte\",\"mode\":\"reused-build\",\"previousSource\":\"11200357a0883dda7f2b35637901c4e217eb01b9\"},{\"name\":\"@victframework/ui-editor\",\"mode\":\"reused-build\",\"previousSource\":\"11200357a0883dda7f2b35637901c4e217eb01b9\"},{\"name\":\"@victframework/ui-flow-svelte\",\"mode\":\"fresh-build\",\"previousSource\":null},{\"name\":\"@victframework/ui-structure-svelte\",\"mode\":\"fresh-build\",\"previousSource\":null}]. Archive/member/installed bytes are independently recomputed; no claim of nine fresh package builds."
+  ],
+  "errors": [],
+  "limits": [
+    "Technical source/artifact association only; no new native browser, actual-agent or physical-device verdict.",
+    "Runtime source matches20e26253 even when later evidence-only descendants exist; exact staged inputs and all packages remain checked.",
+    "Existing build diagnostics and matched inherited test failures remain qualified by the source review."
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sourceCandidate": "14973bc5e9faba4426164f98ae06b5b33ea3dd95",
+  "font": "14px",
+  "label": "Image in",
+  "matches": [
+    {
+      "font": "",
+      "fontSize": "12px",
+      "href": "http://127.0.0.25:5626/_app/immutable/assets/studio-theme.CEu4lAEE.css",
+      "selector": ".port-row-label.svelte-vxjkku"
+    },
+    {
+      "font": "inherit",
+      "fontSize": "inherit",
+      "href": "http://127.0.0.25:5626/_app/immutable/assets/studio-theme.CEu4lAEE.css",
+      "selector": ".vict-controls :where(button, input, select, textarea)"
+    },
+    {
+      "font": "inherit",
+      "fontSize": "inherit",
+      "href": "http://127.0.0.25:5626/_app/immutable/assets/studio-theme.CEu4lAEE.css",
+      "selector": ".vict-rhea.vict-rhea :where(button, input, select, textarea)"
+    }
+  ]
+}

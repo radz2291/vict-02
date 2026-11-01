@@ -1,0 +1,308 @@
+{
+  "schema": "vict.actual-port-presentation-comparison@3",
+  "status": "PASS",
+  "before": {
+    "path": "docs/studio/foundation-evidence/structure-shared-completion-20261101/01-before-source.json",
+    "sha256": "f830a8153e82eda6af52c151d59e09990dc16f6f5855fec9b987180aa02315a0",
+    "revision": "r1.r17"
+  },
+  "after": {
+    "path": "docs/studio/foundation-evidence/structure-shared-completion-20261101/11-reopened-r18-source.json",
+    "sha256": "853796683a8a54c17ff2b774c56f10d6b1c56ab691855e1345bbb192c531265c",
+    "revision": "r1.r18"
+  },
+  "sourceRows": 27,
+  "explicitRowsV2": 27,
+  "independentColumnSources": 13,
+  "rowSourceIdentityMapping": [
+    {
+      "before": "pr-br-o",
+      "after": "pr2-br-o",
+      "semanticPort": "o",
+      "owner": {
+        "id": "br-brief",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-pr-i",
+      "after": "pr2-pr-i",
+      "semanticPort": "i",
+      "owner": {
+        "id": "br-prompt",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-pr-o",
+      "after": "pr2-pr-o",
+      "semanticPort": "o",
+      "owner": {
+        "id": "br-prompt",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-mod-o",
+      "after": "pr2-mod-o",
+      "semanticPort": "o",
+      "owner": {
+        "id": "br-model",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-st-i",
+      "after": "pr2-st-i",
+      "semanticPort": "i",
+      "owner": {
+        "id": "br-style",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-st-o",
+      "after": "pr2-st-o",
+      "semanticPort": "o",
+      "owner": {
+        "id": "br-style",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-sd-o",
+      "after": "pr2-sd-o",
+      "semanticPort": "o",
+      "owner": {
+        "id": "br-seed",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-dr-b",
+      "after": "pr2-dr-b",
+      "semanticPort": "b",
+      "owner": {
+        "id": "br-draft",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-dr-p",
+      "after": "pr2-dr-p",
+      "semanticPort": "p",
+      "owner": {
+        "id": "br-draft",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-dr-n",
+      "after": "pr2-dr-n",
+      "semanticPort": "n",
+      "owner": {
+        "id": "br-draft",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-dr-s",
+      "after": "pr2-dr-s",
+      "semanticPort": "s",
+      "owner": {
+        "id": "br-draft",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-dr-t",
+      "after": "pr2-dr-t",
+      "semanticPort": "t",
+      "owner": {
+        "id": "br-draft",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-dr-c",
+      "after": "pr2-dr-c",
+      "semanticPort": "c",
+      "owner": {
+        "id": "br-draft",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-dr-o",
+      "after": "pr2-dr-o",
+      "semanticPort": "o",
+      "owner": {
+        "id": "br-draft",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-rev-i",
+      "after": "pr2-rev-i",
+      "semanticPort": "i",
+      "owner": {
+        "id": "br-review",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-rev-o",
+      "after": "pr2-rev-o",
+      "semanticPort": "o",
+      "owner": {
+        "id": "br-review",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-chk-p",
+      "after": "pr2-chk-p",
+      "semanticPort": "p",
+      "owner": {
+        "id": "br-check",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-chk-s",
+      "after": "pr2-chk-s",
+      "semanticPort": "s",
+      "owner": {
+        "id": "br-check",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-chk-o",
+      "after": "pr2-chk-o",
+      "semanticPort": "o",
+      "owner": {
+        "id": "br-check",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-exp-i",
+      "after": "pr2-exp-i",
+      "semanticPort": "i",
+      "owner": {
+        "id": "br-exp",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-exp-o",
+      "after": "pr2-exp-o",
+      "semanticPort": "o",
+      "owner": {
+        "id": "br-exp",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-fin-i",
+      "after": "pr2-fin-i",
+      "semanticPort": "i",
+      "owner": {
+        "id": "br-fin",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-fin-o",
+      "after": "pr2-fin-o",
+      "semanticPort": "o",
+      "owner": {
+        "id": "br-fin",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-crop-o",
+      "after": "pr2-crop-o",
+      "semanticPort": "o",
+      "owner": {
+        "id": "fc-crop",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-grade-i",
+      "after": "pr2-grade-i",
+      "semanticPort": "i",
+      "owner": {
+        "id": "fc-grade",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-grade-o",
+      "after": "pr2-grade-o",
+      "semanticPort": "o",
+      "owner": {
+        "id": "fc-grade",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    },
+    {
+      "before": "pr-cap-i",
+      "after": "pr2-cap-i",
+      "semanticPort": "i",
+      "owner": {
+        "id": "fc-caption",
+        "slot": "children",
+        "precedingOrdinary": 2
+      }
+    }
+  ],
+  "graphStrings": [
+    {
+      "path": [
+        "localState",
+        "campaignGraph",
+        "initial"
+      ],
+      "schema": "vict.flow-graph@3",
+      "revision": 49,
+      "nodes": 14,
+      "edges": 20,
+      "sha256": "dcaa04a1473bca6a252eb663daa78f25bcf160318782445f2603d4316a22ff1d",
+      "unchanged": true
+    }
+  ],
+  "otherNonstructuralChanges": [],
+  "addedStyleSources": [],
+  "errors": [],
+  "scope": "Read-only actual-source preservation and explicit adoption checks, including non-port order/ownership and scope. Bijective UI leaf replacement permits only id/revision/showType changes, identical semantic ports/fields/body anchors and no outside references. Ambiguous semantic port directions and painted socket geometry remain separately reviewed."
+}

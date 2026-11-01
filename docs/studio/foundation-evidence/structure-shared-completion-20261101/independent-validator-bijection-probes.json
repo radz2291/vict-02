@@ -1,0 +1,107 @@
+{
+  "schema": "vict.independent-port-validator-negative-probes@1",
+  "validatorPath": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\scripts\\verify-node-port-presentation.mjs",
+  "validatorSha256": "a47e8edeff660a87891e10db6d8d5c6eba3e2cf9ae695819616075f57c738b17",
+  "scope": "Coding-authored in-memory comparison counterexamples; no actual application source files, browser state, provider or agent edits.",
+  "baseline": "screen-a8690ffa-1e90-4b72-909c-66141d372773",
+  "cases": [
+    {
+      "name": "positive conversion preserving ordinary source",
+      "validatorStatus": "PASS",
+      "reportedNonstructuralChanges": [],
+      "errors": [],
+      "expected": "PASS",
+      "matchedExpected": true
+    },
+    {
+      "name": "positive explicit bijective UI leaf replacement preserving semantic ports",
+      "validatorStatus": "PASS",
+      "reportedNonstructuralChanges": [],
+      "errors": [],
+      "expected": "PASS",
+      "matchedExpected": true
+    },
+    {
+      "name": "ordinary control moved between source containers",
+      "control": "c-sum",
+      "from": "bf-brief",
+      "to": "bf-prompt",
+      "validatorStatus": "FAIL",
+      "reportedNonstructuralChanges": [
+        {
+          "id": "bf-brief",
+          "beforeKind": "element",
+          "afterKind": "element",
+          "deleted": false
+        },
+        {
+          "id": "bf-prompt",
+          "beforeKind": "element",
+          "afterKind": "element",
+          "deleted": false
+        }
+      ],
+      "errors": [
+        "Existing non-port source/order/scope changed: bf-brief",
+        "Existing non-port source/order/scope changed: bf-prompt"
+      ],
+      "falsePass": false
+    },
+    {
+      "name": "source-bound workspace changed to a literal graph",
+      "workspace": "ws-main",
+      "validatorStatus": "FAIL",
+      "reportedNonstructuralChanges": [
+        {
+          "id": "ws-main",
+          "beforeKind": "component",
+          "afterKind": "component",
+          "deleted": false
+        }
+      ],
+      "errors": [
+        "Existing non-port source/order/scope changed: ws-main"
+      ],
+      "falsePass": false
+    },
+    {
+      "name": "explicitly re-enable redundant type badge",
+      "row": "pr-br-o",
+      "validatorStatus": "FAIL",
+      "reportedNonstructuralChanges": [],
+      "errors": [
+        "Port is not explicitly names-only: pr-br-o"
+      ],
+      "falsePass": false
+    },
+    {
+      "name": "new port-only wrapper adds source state-changing interaction",
+      "wrapper": "independent-behavior-wrapper",
+      "validatorStatus": "FAIL",
+      "reportedNonstructuralChanges": [
+        {
+          "id": "br-brief",
+          "beforeKind": "element",
+          "afterKind": "element",
+          "deleted": false
+        }
+      ],
+      "errors": [
+        "Port moved to a different body/scope: pr-br-o",
+        "Existing non-port source/order/scope changed: br-brief",
+        "New ordinary node outside port presentation: independent-behavior-wrapper",
+        "Port container acquired non-presentation behavior: bp-brief"
+      ],
+      "falsePass": false
+    },
+    {
+      "name": "replaced UI leaf retains an outside stale reference",
+      "validatorStatus": "FAIL",
+      "reportedNonstructuralChanges": [],
+      "errors": [
+        "Replaced UI row has an outside or stale reference: pr-br-o"
+      ],
+      "falsePass": false
+    }
+  ]
+}

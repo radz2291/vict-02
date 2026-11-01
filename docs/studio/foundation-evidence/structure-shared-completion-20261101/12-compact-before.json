@@ -1,0 +1,116 @@
+[
+  {
+    "grid": "88.2px 88.2px",
+    "labels": [
+      {
+        "font": "14px",
+        "lineHeight": "21px",
+        "logicalHeight": "42px",
+        "logicalWidth": "48.2px",
+        "text": "Cropped"
+      }
+    ],
+    "node": "f-crop",
+    "sides": [
+      {
+        "display": "flex",
+        "empty": true,
+        "width": "88.2px"
+      },
+      {
+        "display": "flex",
+        "empty": false,
+        "width": "88.2px"
+      }
+    ]
+  },
+  {
+    "grid": "88.2px 88.2px",
+    "labels": [
+      {
+        "font": "14px",
+        "lineHeight": "21px",
+        "logicalHeight": "42px",
+        "logicalWidth": "48.2px",
+        "text": "Image in"
+      },
+      {
+        "font": "14px",
+        "lineHeight": "21px",
+        "logicalHeight": "21px",
+        "logicalWidth": "45.4125px",
+        "text": "Graded"
+      }
+    ],
+    "node": "f-grade",
+    "sides": [
+      {
+        "display": "flex",
+        "empty": false,
+        "width": "88.2px"
+      },
+      {
+        "display": "flex",
+        "empty": false,
+        "width": "88.2px"
+      }
+    ]
+  },
+  {
+    "grid": "88.2px 88.2px",
+    "labels": [
+      {
+        "font": "14px",
+        "lineHeight": "21px",
+        "logicalHeight": "42px",
+        "logicalWidth": "48.2px",
+        "text": "Graded in"
+      }
+    ],
+    "node": "f-caption",
+    "sides": [
+      {
+        "display": "flex",
+        "empty": false,
+        "width": "88.2px"
+      },
+      {
+        "display": "flex",
+        "empty": true,
+        "width": "88.2px"
+      }
+    ]
+  },
+  {
+    "grid": "373.2px 373.2px",
+    "labels": [
+      {
+        "font": "14px",
+        "lineHeight": "21px",
+        "logicalHeight": "21px",
+        "logicalWidth": "46.0875px",
+        "text": "Draft in"
+      },
+      {
+        "font": "14px",
+        "lineHeight": "21px",
+        "logicalHeight": "21px",
+        "logicalWidth": "50.975px",
+        "text": "Finished"
+      }
+    ],
+    "node": "finS",
+    "sides": [
+      {
+        "display": "flex",
+        "empty": false,
+        "width": "373.2px"
+      },
+      {
+        "display": "flex",
+        "empty": false,
+        "width": "373.2px"
+      }
+    ]
+  }
+]

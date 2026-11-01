@@ -1,0 +1,19 @@
+{
+  "schema": "vict.structure-shared-independent-post-activation@1",
+  "sourceCandidate": "20e26253f0ec6aab20f480c1b3e537e2282938d8",
+  "status": "PASS",
+  "sealSha256": "28856024cfbc35470d3edb8ee722b8914c833a6e3093d10eb9fa8ad7aa6d09ec",
+  "installedFilesMatched": 398,
+  "preservedPreviousFilesMatched": 398,
+  "preservedOriginal3e62FilesMatched": 398,
+  "preservedIntermediate3dfFilesMatched": 398,
+  "preservedIntermediate149FilesMatched": 398,
+  "compiledDependencyFilesMatched": 296,
+  "previousSource": "11200357a0883dda7f2b35637901c4e217eb01b9",
+  "backup": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-pre-coordinate-fix-112003-20261101-build",
+  "original3e62Backup": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-pre-shared-structure-3e62-20261101-build",
+  "intermediate3dfBackup": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-pre-compact-port-3df-20261101-build",
+  "intermediate149Backup": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-pre-font-reset-14973-20261101-build",
+  "errors": [],
+  "actualBrowserOrDeviceVerified": false
+}

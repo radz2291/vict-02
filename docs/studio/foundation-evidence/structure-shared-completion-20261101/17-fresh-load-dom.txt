@@ -1,0 +1,534 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Campaign Foundry — complex node suite"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- main:
+  - button "Toggle Chat drawer":
+  - group "Workspace mode":
+    - button "Design" [pressed]
+    - button "Interact"
+    - button "Structure"
+  - button "Toggle Document and Selection drawer":
+  - iframe:
+    - generic "Screen canvas":
+      - main "Campaign Foundry — complex node suite":
+        - region "Section":
+          - heading "Campaign Foundry" [level=1]:
+            - generic: Campaign Foundry
+          - paragraph:
+            - generic: Eco travel mug launch · visual campaign workflow — configuration only, no model execution or publishing
+          - paragraph:
+            - generic: 14 nodes · 20 typed links · 10 reusable node types
+        - region "Campaign workflow":
+          - application "Campaign workflow canvas":
+            - application:
+              - group "Campaign brief":
+                - paragraph:
+                  - generic: Campaign brief
+                - textbox "Campaign summary": Launch eco travel mug — 12h heat retention, recycled steel body
+                - textbox "Audience": Commuters, students, hikers
+                - checkbox "Help for this node"
+                - generic: Node help
+                - 'button "output Brief out: brief"'
+                - 'button "Brief out: brief"': Brief out
+              - group "Positive prompt":
+                - paragraph:
+                  - generic: Positive prompt
+                - textbox "Prompt text": matte forest-green travel mug, soft daylight, alpine trail backdrop, product hero
+                - checkbox "Help for this node"
+                - generic: Node help
+                - 'button "input Brief in: brief"'
+                - 'button "Brief in: brief"': Brief in
+                - 'button "output Prompt out: prompt"'
+                - 'button "Prompt out: prompt"': Prompt out
+              - group "Negative prompt":
+                - paragraph:
+                  - generic: Negative prompt
+                - textbox "Prompt text": plastic sheen, cluttered background, warped text, low contrast
+                - checkbox "Help for this node"
+                - generic: Node help
+                - 'button "input Brief in: brief"'
+                - 'button "Brief in: brief"': Brief in
+                - 'button "output Prompt out: prompt"'
+                - 'button "Prompt out: prompt"': Prompt out
+              - group "Model settings":
+                - paragraph:
+                  - generic: Model settings
+                - paragraph:
+                  - generic: Model
+                - combobox "Model":
+                  - option [selected]
+                  - option
+                - paragraph:
+                  - generic: Steps
+                - spinbutton "Steps": "28"
+                - paragraph:
+                  - generic: Guidance
+                - spinbutton "Guidance": "6.5"
+                - checkbox "Help for this node"
+                - generic: Node help
+                - 'button "output Settings: config"'
+                - 'button "Settings: config"': Settings
+              - group "Style reference":
+                - paragraph:
+                  - generic: Style reference
+                - textbox "Style palette":
+                  - /placeholder: e.g. Forest teal
+                  - text: Forest teal
+                - textbox "Style notes": Muted natural palette, soft gradients
+                - checkbox "Help for this node"
+                - generic: Node help
+                - 'button "input Brief in: brief"'
+                - 'button "Brief in: brief"': Brief in
+                - 'button "output Style: style"'
+                - 'button "Style: style"': Style
+              - group "Seed & sampling":
+                - paragraph:
+                  - generic: Seed & sampling
+                - spinbutton "Seed value": "4213"
+                - checkbox "Randomize seed per run (configuration only)"
+                - generic: Randomize seed (config only)
+                - checkbox "Help for this node"
+                - generic: Node help
+                - 'button "output Seed: seed"'
+                - 'button "Seed: seed"': Seed
+              - group "Draft · social":
+                - paragraph:
+                  - generic: Draft · social
+                - combobox "Draft format":
+                  - option [selected]
+                  - option
+                  - option
+                  - option
+                - checkbox "Hi-res render (configuration only)" [checked]
+                - generic: Hi-res render (config only)
+                - checkbox "Help for this node"
+                - generic: Node help
+                - 'button "input Brief: brief"'
+                - 'button "Brief: brief"': Brief
+                - 'button "input Prompt: prompt"'
+                - 'button "Prompt: prompt"': Prompt
+                - 'button "input Negative: prompt"'
+                - 'button "Negative: prompt"': Negative
+                - 'button "input Seed: seed"'
+                - 'button "Seed: seed"': Seed
+                - 'button "input Style: style"'
+                - 'button "Style: style"': Style
+                - 'button "input Settings: config"'
+                - 'button "Settings: config"': Settings
+                - 'button "output Draft: image"'
+                - 'button "Draft: image"': Draft
+              - group "Draft · poster":
+                - paragraph:
+                  - generic: Draft · poster
+                - combobox "Draft format":
+                  - option
+                  - option
+                  - option [selected]
+                  - option
+                - checkbox "Hi-res render (configuration only)" [checked]
+                - generic: Hi-res render (config only)
+                - checkbox "Help for this node"
+                - generic: Node help
+                - 'button "input Brief: brief"'
+                - 'button "Brief: brief"': Brief
+                - 'button "input Prompt: prompt"'
+                - 'button "Prompt: prompt"': Prompt
+                - 'button "input Negative: prompt"'
+                - 'button "Negative: prompt"': Negative
+                - 'button "input Seed: seed"'
+                - 'button "Seed: seed"': Seed
+                - 'button "input Style: style"'
+                - 'button "Style: style"': Style
+                - 'button "input Settings: config"'
+                - 'button "Settings: config"': Settings
+                - 'button "output Draft: image"'
+                - 'button "Draft: image"': Draft
+              - group "Finishing · social":
+                - paragraph:
+                  - generic: Finishing · social
+                - paragraph:
+                  - generic: Nested pipeline — Crop → Grade → Caption · configuration only
+                - paragraph:
+                  - generic: Pipeline mode
+                - combobox "Pipeline mode":
+                  - option
+                  - option [selected]
+                - region "Finishing steps":
+                  - application "Finishing steps canvas":
+                    - application:
+                      - group "Crop":
+                        - paragraph:
+                          - generic: Crop
+                        - paragraph:
+                          - generic: Aspect
+                        - combobox "Aspect":
+                          - option [selected]
+                          - option
+                          - option
+                          - option
+                        - 'button "output Cropped: image"'
+                        - 'button "Cropped: image"': Cropped
+                      - group "Grade":
+                        - paragraph:
+                          - generic: Grade
+                        - paragraph:
+                          - generic: Grade amount (0–100)
+                        - spinbutton "Grade amount": "35"
+                        - 'button "input Image in: image"'
+                        - 'button "Image in: image"': Image in
+                        - 'button "output Graded: image"'
+                        - 'button "Graded: image"': Graded
+                      - group "Caption":
+                        - paragraph:
+                          - generic: Caption
+                        - paragraph:
+                          - generic: Caption text
+                        - textbox "Caption text": Your commute, upgraded — manually reviewed for social. Ready for launch.
+                        - 'button "input Graded in: image"'
+                        - 'button "Graded in: image"': Graded in
+                      - link "Svelte Flow attribution":
+                        - /url: https://svelteflow.dev?utm_source=attribution
+                        - text: Svelte Flow
+                  - region "Nested canvas defaults":
+                    - generic: Nested canvas defaults
+                    - generic: Route
+                    - combobox "Nested canvas route style":
+                      - option [selected]
+                      - option
+                      - option
+                    - generic: Line
+                    - combobox "Nested canvas line pattern":
+                      - option [selected]
+                      - option
+                      - option
+                    - generic: Colour
+                    - textbox "Nested canvas edge colour": "#94a3b8"
+                    - generic: Width
+                    - spinbutton "Nested canvas edge width": "1.5"
+                    - generic: Start
+                    - combobox "Nested canvas start arrow":
+                      - option [selected]
+                      - option
+                      - option
+                    - generic: End
+                    - combobox "Nested canvas end arrow":
+                      - option
+                      - option [selected]
+                      - option
+                    - button "Reset nested canvas defaults"
+                    - status
+                    - alert
+                  - region "Nested selected connection":
+                    - generic: Nested selected connection
+                    - generic: Inherits nested canvas defaults
+                    - generic: "Edge:"
+                    - generic: Route
+                    - combobox "Nested selected connection route" [disabled]:
+                      - option [selected]
+                      - option
+                      - option
+                    - generic: Line
+                    - combobox "Nested selected connection line pattern" [disabled]:
+                      - option [selected]
+                      - option
+                      - option
+                    - generic: Colour
+                    - textbox "Nested selected connection colour" [disabled]: "#94a3b8"
+                    - generic: Width
+                    - spinbutton "Nested selected connection width" [disabled]: "1.5"
+                    - generic: Start
+                    - combobox "Nested selected connection start arrow" [disabled]:
+                      - option [selected]
+                      - option
+                      - option
+                    - generic: End
+                    - combobox "Nested selected connection end arrow" [disabled]:
+                      - option
+                      - option [selected]
+                      - option
+                    - button "Reset to nested canvas" [disabled]
+                    - status
+                    - alert
+                - checkbox "Help for this node"
+                - generic: Node help
+                - 'button "input Draft in: image"'
+                - 'button "Draft in: image"': Draft in
+                - 'button "output Finished: image"'
+                - 'button "Finished: image"': Finished
+              - group "Finishing · poster":
+                - paragraph:
+                  - generic: Finishing · poster
+                - paragraph:
+                  - generic: Nested pipeline — Crop → Grade → Caption · configuration only
+                - paragraph:
+                  - generic: Pipeline mode
+                - combobox "Pipeline mode":
+                  - option
+                  - option [selected]
+                - region "Finishing steps":
+                  - application "Finishing steps canvas":
+                    - application:
+                      - group "Crop":
+                        - paragraph:
+                          - generic: Crop
+                        - paragraph:
+                          - generic: Aspect
+                        - combobox "Aspect":
+                          - option
+                          - option
+                          - option [selected]
+                          - option
+                        - 'button "output Cropped: image"'
+                        - 'button "Cropped: image"': Cropped
+                      - group "Grade":
+                        - paragraph:
+                          - generic: Grade
+                        - paragraph:
+                          - generic: Grade amount (0–100)
+                        - spinbutton "Grade amount": "72"
+                        - 'button "input Image in: image"'
+                        - 'button "Image in: image"': Image in
+                        - 'button "output Graded: image"'
+                        - 'button "Graded: image"': Graded
+                      - group "Caption":
+                        - paragraph:
+                          - generic: Caption
+                        - paragraph:
+                          - generic: Caption text
+                        - textbox "Caption text": Trail-tested. Tireless. Launching soon.
+                        - 'button "input Graded in: image"'
+                        - 'button "Graded in: image"': Graded in
+                      - link "Svelte Flow attribution":
+                        - /url: https://svelteflow.dev?utm_source=attribution
+                        - text: Svelte Flow
+                  - region "Nested canvas defaults":
+                    - generic: Nested canvas defaults
+                    - generic: Route
+                    - combobox "Nested canvas route style":
+                      - option [selected]
+                      - option
+                      - option
+                    - generic: Line
+                    - combobox "Nested canvas line pattern":
+                      - option [selected]
+                      - option
+                      - option
+                    - generic: Colour
+                    - textbox "Nested canvas edge colour": "#94a3b8"
+                    - generic: Width
+                    - spinbutton "Nested canvas edge width": "1.5"
+                    - generic: Start
+                    - combobox "Nested canvas start arrow":
+                      - option [selected]
+                      - option
+                      - option
+                    - generic: End
+                    - combobox "Nested canvas end arrow":
+                      - option
+                      - option [selected]
+                      - option
+                    - button "Reset nested canvas defaults"
+                    - status
+                    - alert
+                  - region "Nested selected connection":
+                    - generic: Nested selected connection
+                    - generic: Inherits nested canvas defaults
+                    - generic: "Edge:"
+                    - generic: Route
+                    - combobox "Nested selected connection route" [disabled]:
+                      - option [selected]
+                      - option
+                      - option
+                    - generic: Line
+                    - combobox "Nested selected connection line pattern" [disabled]:
+                      - option [selected]
+                      - option
+                      - option
+                    - generic: Colour
+                    - textbox "Nested selected connection colour" [disabled]: "#94a3b8"
+                    - generic: Width
+                    - spinbutton "Nested selected connection width" [disabled]: "1.5"
+                    - generic: Start
+                    - combobox "Nested selected connection start arrow" [disabled]:
+                      - option [selected]
+                      - option
+                      - option
+                    - generic: End
+                    - combobox "Nested selected connection end arrow" [disabled]:
+                      - option
+                      - option [selected]
+                      - option
+                    - button "Reset to nested canvas" [disabled]
+                    - status
+                    - alert
+                - checkbox "Help for this node"
+                - generic: Node help
+                - 'button "input Draft in: image"'
+                - 'button "Draft in: image"': Draft in
+                - 'button "output Finished: image"'
+                - 'button "Finished: image"': Finished
+              - group "Review · social":
+                - paragraph:
+                  - generic: Review · social
+                - paragraph:
+                  - generic: Status
+                - combobox "Review status":
+                  - option
+                  - option [selected]
+                  - option
+                - paragraph:
+                  - generic: Reviewer notes
+                - textbox "Reviewer notes": Crop reads well on feed
+                - checkbox "Help for this node"
+                - generic: Node help
+                - 'button "input Draft in: image"'
+                - 'button "Draft in: image"': Draft in
+                - 'button "output Decision: approval"'
+                - 'button "Decision: approval"': Decision
+              - group "Review · poster":
+                - paragraph:
+                  - generic: Review · poster
+                - paragraph:
+                  - generic: Status
+                - combobox "Review status":
+                  - option [selected]
+                  - option
+                  - option
+                - paragraph:
+                  - generic: Reviewer notes
+                - textbox "Reviewer notes"
+                - checkbox "Help for this node"
+                - generic: Node help
+                - 'button "input Draft in: image"'
+                - 'button "Draft in: image"': Draft in
+                - 'button "output Decision: approval"'
+                - 'button "Decision: approval"': Decision
+              - group "Merge & delivery checklist":
+                - paragraph:
+                  - generic: Merge & delivery checklist
+                - paragraph:
+                  - generic: Delivery gates — tick when verified
+                - 'checkbox "Verified: Crop 1:1 social"'
+                - generic: Crop 1:1 social
+                - 'checkbox "Verified: Caption 90 chars or fewer"'
+                - generic: Caption ≤90 chars
+                - 'checkbox "Verified: Contrast AA"'
+                - generic: Contrast AA
+                - checkbox "Mark package ready for delivery (manual sign-off)"
+                - generic: Ready for delivery (manual sign-off)
+                - checkbox "Help for this node"
+                - generic: Node help
+                - 'button "input Poster decision: approval"'
+                - 'button "Poster decision: approval"': Poster decision
+                - 'button "input Social decision: approval"'
+                - 'button "Social decision: approval"': Social decision
+                - 'button "output Package: check"'
+                - 'button "Package: check"': Package
+              - group "Export package":
+                - paragraph:
+                  - generic: Export package
+                - paragraph:
+                  - generic: Package settings — configuration only
+                - paragraph:
+                  - generic: Delivery destination
+                - textbox "Delivery destination": campaign-foundry/mug-launch
+                - paragraph:
+                  - generic: Package format
+                - combobox "Package format":
+                  - option [selected]
+                  - option
+                  - option
+                - paragraph:
+                  - generic: Changing these values only records where this campaign package would be delivered. This canvas does not render, publish, download or send anything.
+                - checkbox "Help for this node"
+                - generic: Node help
+                - 'button "input Checklist in: check"'
+                - 'button "Checklist in: check"': Checklist in
+                - 'button "output Package: package"'
+                - 'button "Package: package"': Package
+              - link "Svelte Flow attribution":
+                - /url: https://svelteflow.dev?utm_source=attribution
+                - text: Svelte Flow
+          - paragraph:
+            - generic: "Pan: drag · Zoom: wheel · Drag cards by their teal header · Flow: brief → prompts → drafts → finishing → review → checklist → export"
+          - paragraph:
+            - generic: Nodes in graph
+          - paragraph:
+            - generic: "14"
+          - paragraph:
+            - generic: Typed links
+          - paragraph:
+            - generic: "20"
+          - region "Canvas edge defaults":
+            - generic: Canvas edge defaults
+            - generic: Route
+            - combobox "Canvas route style":
+              - option [selected]
+              - option
+              - option
+            - generic: Line
+            - combobox "Canvas line pattern":
+              - option [selected]
+              - option
+              - option
+            - generic: Colour
+            - textbox "Canvas edge colour": "#94a3b8"
+            - generic: Width
+            - spinbutton "Canvas edge width": "1.5"
+            - generic: Start
+            - combobox "Canvas start arrow":
+              - option [selected]
+              - option
+              - option
+            - generic: End
+            - combobox "Canvas end arrow":
+              - option
+              - option [selected]
+              - option
+            - button "Reset canvas defaults"
+            - status
+            - alert
+          - region "Selected connection":
+            - generic: Selected connection
+            - generic: Inherits canvas defaults
+            - generic: "Edge:"
+            - generic: Route
+            - combobox "Selected connection route" [disabled]:
+              - option [selected]
+              - option
+              - option
+            - generic: Line
+            - combobox "Selected connection line pattern" [disabled]:
+              - option [selected]
+              - option
+              - option
+            - generic: Colour
+            - textbox "Selected connection colour" [disabled]: "#94a3b8"
+            - generic: Width
+            - spinbutton "Selected connection width" [disabled]: "1.5"
+            - generic: Start
+            - combobox "Selected connection start arrow" [disabled]:
+              - option [selected]
+              - option
+              - option
+            - generic: End
+            - combobox "Selected connection end arrow" [disabled]:
+              - option
+              - option [selected]
+              - option
+            - button "Reset to canvas defaults" [disabled]
+            - status
+            - alert
+- contentinfo:
+  - status: Loaded the saved screen.
+- generic: Designer — VICT Studio

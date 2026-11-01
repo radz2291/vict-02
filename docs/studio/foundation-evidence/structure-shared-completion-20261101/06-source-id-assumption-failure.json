@@ -1,0 +1,64 @@
+{
+  "schema": "vict.actual-port-presentation-comparison@2",
+  "status": "FAIL",
+  "before": {
+    "path": "docs/studio/foundation-evidence/structure-shared-completion-20261101/01-before-source.json",
+    "sha256": "f830a8153e82eda6af52c151d59e09990dc16f6f5855fec9b987180aa02315a0",
+    "revision": "r1.r17"
+  },
+  "after": {
+    "path": "docs/studio/foundation-evidence/structure-shared-completion-20261101/06-agent-adopted-unsaved-source.json",
+    "sha256": "b52399ecc96347df3a9fc5766e0ffcf764d87b268eee07b8eeddcbe539c34e07",
+    "revision": "r1.r17"
+  },
+  "sourceRows": 27,
+  "explicitRowsV2": 27,
+  "independentColumnSources": 13,
+  "graphStrings": [
+    {
+      "path": [
+        "localState",
+        "campaignGraph",
+        "initial"
+      ],
+      "schema": "vict.flow-graph@3",
+      "revision": 49,
+      "nodes": 14,
+      "edges": 20,
+      "sha256": "dcaa04a1473bca6a252eb663daa78f25bcf160318782445f2603d4316a22ff1d",
+      "unchanged": true
+    }
+  ],
+  "otherNonstructuralChanges": [],
+  "addedStyleSources": [],
+  "errors": [
+    "Port row not explicitly adopted as @2: pr-br-o",
+    "Port row not explicitly adopted as @2: pr-pr-i",
+    "Port row not explicitly adopted as @2: pr-pr-o",
+    "Port row not explicitly adopted as @2: pr-mod-o",
+    "Port row not explicitly adopted as @2: pr-st-i",
+    "Port row not explicitly adopted as @2: pr-st-o",
+    "Port row not explicitly adopted as @2: pr-sd-o",
+    "Port row not explicitly adopted as @2: pr-dr-b",
+    "Port row not explicitly adopted as @2: pr-dr-p",
+    "Port row not explicitly adopted as @2: pr-dr-n",
+    "Port row not explicitly adopted as @2: pr-dr-s",
+    "Port row not explicitly adopted as @2: pr-dr-t",
+    "Port row not explicitly adopted as @2: pr-dr-c",
+    "Port row not explicitly adopted as @2: pr-dr-o",
+    "Port row not explicitly adopted as @2: pr-rev-i",
+    "Port row not explicitly adopted as @2: pr-rev-o",
+    "Port row not explicitly adopted as @2: pr-chk-p",
+    "Port row not explicitly adopted as @2: pr-chk-s",
+    "Port row not explicitly adopted as @2: pr-chk-o",
+    "Port row not explicitly adopted as @2: pr-exp-i",
+    "Port row not explicitly adopted as @2: pr-exp-o",
+    "Port row not explicitly adopted as @2: pr-fin-i",
+    "Port row not explicitly adopted as @2: pr-fin-o",
+    "Port row not explicitly adopted as @2: pr-crop-o",
+    "Port row not explicitly adopted as @2: pr-grade-i",
+    "Port row not explicitly adopted as @2: pr-grade-o",
+    "Port row not explicitly adopted as @2: pr-cap-i"
+  ],
+  "scope": "Read-only actual-source preservation and explicit adoption checks, including non-port order/ownership and scope. Ambiguous semantic port directions and painted socket geometry remain separately reviewed."
+}

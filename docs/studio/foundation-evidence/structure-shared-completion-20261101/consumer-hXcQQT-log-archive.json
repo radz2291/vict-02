@@ -1,0 +1,55 @@
+{
+  "schema": "vict.consumer-log-archive@1",
+  "run": "vict-structure-consumer-hXcQQT",
+  "sourceCandidate": "54e7357d9832f3d0985409ede9fcde38f415693d",
+  "logs": [
+    {
+      "path": "consumer-hXcQQT-logs/build-application.log",
+      "sha256": "05c6e2d458cda0bd07291d01d803e44657e865e45f9cf4756b4dcc916c1075e7"
+    },
+    {
+      "path": "consumer-hXcQQT-logs/build-contracts.log",
+      "sha256": "34bd1de61e19a2581f4b32156bda5309ebc7d0f170dd6e1ce9fc1d2071f00fbe"
+    },
+    {
+      "path": "consumer-hXcQQT-logs/build-sdk.log",
+      "sha256": "acf03f7874a0e0424f0f8dbd28514214cbe3abc6fc63651f39edf4ecd4e92b1f"
+    },
+    {
+      "path": "consumer-hXcQQT-logs/build-ui-editor.log",
+      "sha256": "417a13d21e4529d0668ed4927d2ab39436bbb3c43cb11ad746cba668bb343fff"
+    },
+    {
+      "path": "consumer-hXcQQT-logs/build-ui-flow-svelte.log",
+      "sha256": "670ee8f056a61854d3dfcc4aec5144b64920d55591e433cfa5b345f288065b5a"
+    },
+    {
+      "path": "consumer-hXcQQT-logs/build-ui-media-svelte.log",
+      "sha256": "b28eb3b0a9d27823926f08b9b2e92a7405988a9eaa567c82ae3c76bf806ab612"
+    },
+    {
+      "path": "consumer-hXcQQT-logs/build-ui-structure-svelte.log",
+      "sha256": "6835c80ca3b371b3de4d9c009bdc5213f422198cbb4a0043dfc037280d705100"
+    },
+    {
+      "path": "consumer-hXcQQT-logs/build-ui-svelte.log",
+      "sha256": "d71048a46594847f3eeac82067d8c62805510c5f67c242441d4b9a94836f2216"
+    },
+    {
+      "path": "consumer-hXcQQT-logs/build-ui.log",
+      "sha256": "3d6e503ba7eaf6997997a6aa987700aee589ae2a5c7f0866dd902062bd0de0c8"
+    },
+    {
+      "path": "consumer-hXcQQT-logs/dom-test.log",
+      "sha256": "1976053b84f416218fcb7f99acd5df657daecd185b3d2431a332105e5e69b66f"
+    },
+    {
+      "path": "consumer-hXcQQT-logs/install.log",
+      "sha256": "a2ff62a0df0209dc3bcfdf2e5225e723560ca1a22d6f4ac3bec99353cd17b601"
+    },
+    {
+      "path": "consumer-hXcQQT-logs/production-build.log",
+      "sha256": "6d8a83ae8ae206ab971642b9b6f150b6636ae0e8a8b3ab618c8af38a37d11bb6"
+    }
+  ]
+}

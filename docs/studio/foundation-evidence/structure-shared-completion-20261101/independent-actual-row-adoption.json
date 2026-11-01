@@ -1,0 +1,321 @@
+{
+  "schema": "vict.independent-actual-row-adoption@1",
+  "status": "PASS",
+  "scope": "Read-only unique source-leaf bijection and old-reference audit; graph semantic IDs are not renamed. No application source edited by this checker.",
+  "before": {
+    "path": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\docs\\studio\\foundation-evidence\\structure-shared-completion-20261101\\01-before-source.json",
+    "sha256": "f830a8153e82eda6af52c151d59e09990dc16f6f5855fec9b987180aa02315a0",
+    "revision": "r1.r17"
+  },
+  "after": {
+    "path": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\docs\\studio\\foundation-evidence\\structure-shared-completion-20261101\\06-agent-adopted-unsaved-source.json",
+    "sha256": "b52399ecc96347df3a9fc5766e0ffcf764d87b268eee07b8eeddcbe539c34e07",
+    "revision": "r1.r17"
+  },
+  "sourceRowsBefore": 27,
+  "sourceRowsAfter": 27,
+  "mapping": [
+    {
+      "before": "pr-br-o",
+      "after": "pr2-br-o",
+      "semanticPortId": "o",
+      "bodyAnchor": {
+        "id": "br-brief",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-pr-i",
+      "after": "pr2-pr-i",
+      "semanticPortId": "i",
+      "bodyAnchor": {
+        "id": "br-prompt",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-pr-o",
+      "after": "pr2-pr-o",
+      "semanticPortId": "o",
+      "bodyAnchor": {
+        "id": "br-prompt",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-mod-o",
+      "after": "pr2-mod-o",
+      "semanticPortId": "o",
+      "bodyAnchor": {
+        "id": "br-model",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-st-i",
+      "after": "pr2-st-i",
+      "semanticPortId": "i",
+      "bodyAnchor": {
+        "id": "br-style",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-st-o",
+      "after": "pr2-st-o",
+      "semanticPortId": "o",
+      "bodyAnchor": {
+        "id": "br-style",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-sd-o",
+      "after": "pr2-sd-o",
+      "semanticPortId": "o",
+      "bodyAnchor": {
+        "id": "br-seed",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-dr-b",
+      "after": "pr2-dr-b",
+      "semanticPortId": "b",
+      "bodyAnchor": {
+        "id": "br-draft",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-dr-p",
+      "after": "pr2-dr-p",
+      "semanticPortId": "p",
+      "bodyAnchor": {
+        "id": "br-draft",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-dr-n",
+      "after": "pr2-dr-n",
+      "semanticPortId": "n",
+      "bodyAnchor": {
+        "id": "br-draft",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-dr-s",
+      "after": "pr2-dr-s",
+      "semanticPortId": "s",
+      "bodyAnchor": {
+        "id": "br-draft",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-dr-t",
+      "after": "pr2-dr-t",
+      "semanticPortId": "t",
+      "bodyAnchor": {
+        "id": "br-draft",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-dr-c",
+      "after": "pr2-dr-c",
+      "semanticPortId": "c",
+      "bodyAnchor": {
+        "id": "br-draft",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-dr-o",
+      "after": "pr2-dr-o",
+      "semanticPortId": "o",
+      "bodyAnchor": {
+        "id": "br-draft",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-rev-i",
+      "after": "pr2-rev-i",
+      "semanticPortId": "i",
+      "bodyAnchor": {
+        "id": "br-review",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-rev-o",
+      "after": "pr2-rev-o",
+      "semanticPortId": "o",
+      "bodyAnchor": {
+        "id": "br-review",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-chk-p",
+      "after": "pr2-chk-p",
+      "semanticPortId": "p",
+      "bodyAnchor": {
+        "id": "br-check",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-chk-s",
+      "after": "pr2-chk-s",
+      "semanticPortId": "s",
+      "bodyAnchor": {
+        "id": "br-check",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-chk-o",
+      "after": "pr2-chk-o",
+      "semanticPortId": "o",
+      "bodyAnchor": {
+        "id": "br-check",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-exp-i",
+      "after": "pr2-exp-i",
+      "semanticPortId": "i",
+      "bodyAnchor": {
+        "id": "br-exp",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-exp-o",
+      "after": "pr2-exp-o",
+      "semanticPortId": "o",
+      "bodyAnchor": {
+        "id": "br-exp",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-fin-i",
+      "after": "pr2-fin-i",
+      "semanticPortId": "i",
+      "bodyAnchor": {
+        "id": "br-fin",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-fin-o",
+      "after": "pr2-fin-o",
+      "semanticPortId": "o",
+      "bodyAnchor": {
+        "id": "br-fin",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-crop-o",
+      "after": "pr2-crop-o",
+      "semanticPortId": "o",
+      "bodyAnchor": {
+        "id": "fc-crop",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-grade-i",
+      "after": "pr2-grade-i",
+      "semanticPortId": "i",
+      "bodyAnchor": {
+        "id": "fc-grade",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-grade-o",
+      "after": "pr2-grade-o",
+      "semanticPortId": "o",
+      "bodyAnchor": {
+        "id": "fc-grade",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    },
+    {
+      "before": "pr-cap-i",
+      "after": "pr2-cap-i",
+      "semanticPortId": "i",
+      "bodyAnchor": {
+        "id": "fc-caption",
+        "slot": "children",
+        "precedingOrdinary": 2
+      },
+      "sourceFieldsExceptIdRevisionShowTypeExact": true
+    }
+  ],
+  "outsideReferencesBefore": [],
+  "referencesAfter": [],
+  "substringMentionsAfter": [],
+  "addedStyles": {},
+  "errors": []
+}

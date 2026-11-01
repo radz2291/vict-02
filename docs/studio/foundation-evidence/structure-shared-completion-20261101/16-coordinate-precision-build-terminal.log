@@ -1,0 +1,5 @@
+Retained completion output from original successful tool session42132 (before node_modules disappeared).
+Command: npm run build -w @victframework/ui-flow-svelte
+svelte-check found 0 errors and 5 warnings in 2 files
+Warnings are unchanged ui-svelte RenderNode.svelte event/accessibility warnings and DocumentHost.svelte initial plan warning.
+Exit code0.

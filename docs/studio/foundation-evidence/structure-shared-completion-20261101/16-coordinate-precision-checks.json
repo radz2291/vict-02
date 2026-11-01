@@ -1,0 +1,75 @@
+{
+  "schema": "vict.flow-coordinate-precision-repair-checks@1",
+  "priorSourceCandidate": "11200357a0883dda7f2b35637901c4e217eb01b9",
+  "findings": [
+    "Social uniformly transformed nested frame was falsely rejected by rectangle-ratio precision threshold.",
+    "Stable-size composed nodes did not invalidate cached handle bounds after ancestor coordinate-unit changes."
+  ],
+  "productFiles": [
+    "packages/ui-flow-svelte/src/flow-coordinate-frame.ts",
+    "packages/ui-flow-svelte/src/composition/ComposedGraphNode.svelte"
+  ],
+  "tests": [
+    "coordinate-frame-precision.svelte.test.ts",
+    "coordinate-handle-refresh.svelte.test.ts",
+    "flow-coordinate-frame.svelte.test.ts",
+    "coordinate-frame-mounted.svelte.test.ts",
+    "coordinate-coherent-independent.svelte.test.ts",
+    "coordinate-independent-observer.svelte.test.ts",
+    "coordinate-fractional-native.svelte.test.ts",
+    "port-owner-projection.svelte.test.ts",
+    "port-row.svelte.test.ts"
+  ],
+  "before": {
+    "exitCode": 1,
+    "tests": 8,
+    "failed": 5,
+    "passed": 3,
+    "rawLog": "16-coordinate-precision-red.log",
+    "observerSnapshot": "16-coordinate-observer-before.ts",
+    "method": "Temporary test copy imported the archived pre-repair observer. Temporary files removed after run; product source never reverted."
+  },
+  "after": {
+    "exitCode": 0,
+    "filesPassed": 9,
+    "testsPassed": 45,
+    "terminalSession": 45394,
+    "durationSeconds": 24.93,
+    "rawCompletion": "16-coordinate-precision-green-terminal.log",
+    "rawRestoredRun": "16-coordinate-precision-green-restored.log"
+  },
+  "build": {
+    "command": "npm run build -w @victframework/ui-flow-svelte",
+    "exitCode": 0,
+    "errors": 0,
+    "existingWarnings": 5,
+    "terminalSession": 42132,
+    "rawCompletion": "16-coordinate-precision-build-terminal.log",
+    "rawRestoredRun": "16-coordinate-precision-build-restored.log"
+  },
+  "archivalRerun": {
+    "greenLog": "16-coordinate-precision-green.log",
+    "buildLog": "16-coordinate-precision-build.log",
+    "status": "Failed before execution: installed vitest and svelte-check disappeared from shared node_modules. These are separate preserved environmental failures, not replacement pass logs."
+  },
+  "limits": [
+    "Builder lifecycle and numerical regressions do not prove native endpoint geometry. Fresh-load native evidence and independent review required before closure.",
+    "No saved application source, history, graph positions or runtime deployment changed by this track."
+  ],
+  "state": "Product files frozen, pending parent native activation and independent final verification.",
+  "restoredToolchainVerification": {
+    "testsExitCode": 0,
+    "filesPassed": 9,
+    "testsPassed": 45,
+    "buildExitCode": 0,
+    "errors": 0,
+    "existingWarnings": 5,
+    "method": "Parent restored original ignored packages; explicit node vitest/vitest.mjs and explicit node svelte-check/bin/svelte-check used. Original environment failure logs retained."
+  },
+  "finalLiteralLintRepairRecheck": {
+    "exitCode": 0,
+    "testsPassed": 8,
+    "rawLog": "16-coordinate-precision-final-literal.log",
+    "scope": "After parent shortened equivalent expected scale literal to satisfy no-loss-of-precision; product unchanged."
+  }
+}

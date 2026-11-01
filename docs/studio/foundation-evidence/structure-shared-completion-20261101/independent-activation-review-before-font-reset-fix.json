@@ -1,0 +1,37 @@
+{
+  "schema": "vict.structure-shared-independent-activation-review@1",
+  "status": "PASS",
+  "sourceCandidate": "14973bc5e9faba4426164f98ae06b5b33ea3dd95",
+  "inspectedHead": "14973bc5e9faba4426164f98ae06b5b33ea3dd95",
+  "baseline": "f483088f29785f973ffa1bb5131081c0936e1b47",
+  "sealSha256": "c1a90b1f2606d6e8fc60b3d86d0b539c7f8291029502029815d7258aa61d1606",
+  "consumerReportSha256": "7541840acef02d360ccd6a874ae999dabdae7e468ed263661ea31e724ce486d6",
+  "stageRoot": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-shared-14973bc5-stage",
+  "stagedInputFiles": 343,
+  "newOutputFiles": 398,
+  "previousFiles": 398,
+  "previousSource": "3dfdde4ecb5567bc03130426482076d5344e3530",
+  "original3e62BackupFiles": 398,
+  "retainedProofFiles": 93,
+  "compiledWorkspaceFiles": 296,
+  "publicArchives": 9,
+  "installedNonmanifestFilesMatched": 645,
+  "actualArchiveNonmanifestFilesMatched": 645,
+  "manifestSemanticsCompared": 9,
+  "consumerOutputFiles": 6,
+  "consumerFixtureFiles": 8,
+  "consumerDomCases": 4,
+  "unpackRoot": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-independent-unpack-O47Yam",
+  "sourceDrift": false,
+  "technicalActivationSupported": true,
+  "actualUiVerified": false,
+  "notes": [
+    "The final consumer uses an immutable reuse-manifest snapshot matching the prior successful3mP19h report. Seven unchanged package builds/artifacts were reused; Flow and Structure received fresh build checks. Every current archive/member/installed byte is independently recomputed."
+  ],
+  "errors": [],
+  "limits": [
+    "Technical source/artifact association only; no new native browser, actual-agent or physical-device verdict.",
+    "Runtime source matches149 even when later evidence-only descendants exist; exact staged inputs and all packages remain checked.",
+    "Existing build diagnostics and matched inherited test failures remain qualified by the source review."
+  ]
+}

@@ -1,0 +1,8 @@
+[
+  {
+    "offset": 0,
+    "end": 238,
+    "total": 238,
+    "text": "{\"section\":\"sources\",\"offset\":375,\"limit\":20,\"nodeIds\":[\"bp-draft\",\"bp-brief\",\"bp-prompt\",\"bp-model\",\"bp-style\",\"bp-seed\",\"bp-review\",\"bp-check\",\"bp-exp\",\"bp-fin\",\"fc-crop-p\",\"fc-grade-p\",\"fc-caption-p\",\"fc-crop\",\"fc-grade\",\"fc-caption\"]}"
+  }
+]

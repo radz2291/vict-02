@@ -1,13 +1,15 @@
 # Authoring foundation acceptance ledger
 
-> **RESUMED / IN PROGRESS; complete foundation gate HELD.**
-> [Current delivery](ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md) is the single operational
-> record for exact source/serving/review identities, live-trial outcomes, all 31 dispositions
-> and remaining proof. [Architecture and authority](ARCHITECTURE-REALIGNMENT-20261030.md)
-> govern gates A–E and retain dated continuation checkpoints. Older counts, service identities,
-> blockers and in-progress operations below are historical evidence, not current assertions.
-> All 31 owner acceptances remain open. No push, main merge, publication, production
-> deployment, milestone closure or Stage 9 closure is authorized.
+> **CLOSED — bounded Authoring Foundation / Option2 delivery,1November2026.**
+> Conditional closure authority is the owner's “do properly … option2 … then close.”
+> Independent final integration **QUALIFIED PASS** supports closure on exact installed
+> product20e26253 with no remaining in-scope blocker. See [current delivery](ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md),
+> [completion and limitations](STRUCTURE-SHARED-COMPLETION-20261101.md) and the
+> [final independent review](foundation-evidence/structure-shared-completion-20261101/independent-final-integration-review.md).
+> Original31 dispositions retain their reviewed scope; no new physical-device or
+> universal test-green claim is made. Older open-acceptance/held counts below are
+> historical records. Whole Stage9/Milestone2, push, main merge and publication
+> remain outside this bounded closure.
 
 ## Historical 28 October morning-review checkpoint — product a99aea00
 

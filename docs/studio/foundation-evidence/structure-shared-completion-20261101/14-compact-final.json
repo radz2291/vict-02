@@ -1,0 +1,125 @@
+{
+  "sourceCandidate": "11200357a0883dda7f2b35637901c4e217eb01b9",
+  "nodes": [
+    {
+      "grid": "188.4px",
+      "labels": [
+        {
+          "font": "12px",
+          "lineHeight": "18px",
+          "logicalHeight": "18px",
+          "logicalWidth": "46.0875px",
+          "rhea": true,
+          "text": "Cropped"
+        }
+      ],
+      "node": "f-crop",
+      "sides": [
+        {
+          "display": "none",
+          "empty": true,
+          "width": "auto"
+        },
+        {
+          "display": "flex",
+          "empty": false,
+          "width": "188.4px"
+        }
+      ]
+    },
+    {
+      "grid": "88.2px 88.2px",
+      "labels": [
+        {
+          "font": "12px",
+          "lineHeight": "18px",
+          "logicalHeight": "18px",
+          "logicalWidth": "45.9625px",
+          "rhea": true,
+          "text": "Image in"
+        },
+        {
+          "font": "12px",
+          "lineHeight": "18px",
+          "logicalHeight": "18px",
+          "logicalWidth": "38.925px",
+          "rhea": true,
+          "text": "Graded"
+        }
+      ],
+      "node": "f-grade",
+      "sides": [
+        {
+          "display": "flex",
+          "empty": false,
+          "width": "88.2px"
+        },
+        {
+          "display": "flex",
+          "empty": false,
+          "width": "88.2px"
+        }
+      ]
+    },
+    {
+      "grid": "188.4px",
+      "labels": [
+        {
+          "font": "12px",
+          "lineHeight": "18px",
+          "logicalHeight": "18px",
+          "logicalWidth": "51.9125px",
+          "rhea": true,
+          "text": "Graded in"
+        }
+      ],
+      "node": "f-caption",
+      "sides": [
+        {
+          "display": "flex",
+          "empty": false,
+          "width": "188.4px"
+        },
+        {
+          "display": "none",
+          "empty": true,
+          "width": "auto"
+        }
+      ]
+    },
+    {
+      "grid": "373.2px 373.2px",
+      "labels": [
+        {
+          "font": "12px",
+          "lineHeight": "18px",
+          "logicalHeight": "18px",
+          "logicalWidth": "39.5px",
+          "rhea": true,
+          "text": "Draft in"
+        },
+        {
+          "font": "12px",
+          "lineHeight": "18px",
+          "logicalHeight": "18px",
+          "logicalWidth": "43.6875px",
+          "rhea": true,
+          "text": "Finished"
+        }
+      ],
+      "node": "finS",
+      "sides": [
+        {
+          "display": "flex",
+          "empty": false,
+          "width": "373.2px"
+        },
+        {
+          "display": "flex",
+          "empty": false,
+          "width": "373.2px"
+        }
+      ]
+    }
+  ]
+}

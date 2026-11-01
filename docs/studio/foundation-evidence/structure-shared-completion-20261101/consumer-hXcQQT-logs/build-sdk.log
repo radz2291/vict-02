@@ -1,0 +1,4 @@
+
+> @victframework/sdk@0.4.0-rc.1 build
+> tsc -p tsconfig.json
+

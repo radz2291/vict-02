@@ -1,0 +1,33 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/apps/studio
+
+8:50:38 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+8:50:39 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:50:39 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:50:39 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:50:39 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:50:46 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+8:50:46 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:50:46 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:50:46 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:50:46 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/structure-public-package.test.ts (2 tests) 112ms
+ ✓ tests/edge-v3-adapter-independent.test.ts (7 tests) 1636ms
+   ✓ independent: mismatched acknowledgement digest refuses migration after readonly preflight  387ms
+   ✓ independent recheck: explicit factory/current preservation/migration are one Undo and new nodes inherit valid3  986ms
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  20:49:22
+   Duration  134.92s (transform 145.99s, setup 0ms, collect 254.85s, tests 1.75s, environment 4.95s, prepare 1.78s)
+

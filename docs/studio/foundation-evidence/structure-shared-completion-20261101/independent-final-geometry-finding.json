@@ -1,0 +1,47 @@
+{
+  "schema": "vict.structure-independent-final-geometry-finding@1",
+  "sourceCandidate": "11200357a0883dda7f2b35637901c4e217eb01b9",
+  "status": "HOLD",
+  "file": "14-final-geometry.json",
+  "sha256": "eea20cd82a8ad6699d0b55bad032cf8e6064b81e50d8ca8c5babf269bc9e784b",
+  "edgeCount": 24,
+  "cardCount": 20,
+  "cardsWithOverflow": [],
+  "maxAxisError": 26.67743734427097,
+  "maxEuclideanError": 30.279523412379866,
+  "errorsExceeding1px": [
+    {
+      "owner": "finS",
+      "id": "g1",
+      "endpoint": "startError",
+      "x": -26.677419575485654,
+      "y": -14.251138556455771,
+      "euclidean": 30.24532468600404
+    },
+    {
+      "owner": "finS",
+      "id": "g1",
+      "endpoint": "endError",
+      "x": 0.6082702297550213,
+      "y": -14.32354267712276,
+      "euclidean": 14.336452402730716
+    },
+    {
+      "owner": "finS",
+      "id": "g2",
+      "endpoint": "startError",
+      "x": -26.67743734427097,
+      "y": -14.32354267712276,
+      "euclidean": 30.279523412379866
+    },
+    {
+      "owner": "finS",
+      "id": "g2",
+      "endpoint": "endError",
+      "x": 0.6082682228022804,
+      "y": -14.3235617425442,
+      "euclidean": 14.33647136583291
+    }
+  ],
+  "interpretation": "Adverse captured geometry; cause and settled-state reproducibility unestablished. Native typography and source preservation do not resolve this discrepancy. Integration closure withheld pending reconciliation."
+}

@@ -1,0 +1,190 @@
+{
+  "sourceCandidate": "3dfdde4ecb5567bc03130426482076d5344e3530",
+  "url": "http://127.0.0.25:5640/",
+  "ordinaryFieldValues": [
+    "Reviewed independently",
+    "Second note"
+  ],
+  "geometry": [
+    {
+      "direction": "input",
+      "node": {
+        "height": 93.72002410888672,
+        "width": 330,
+        "x": 247.5,
+        "y": 500.3125
+      },
+      "port": "a/brief",
+      "row": {
+        "height": 35.20000076293945,
+        "width": 158.40000915527344,
+        "x": 247.5,
+        "y": 523.6325073242188
+      },
+      "socket": {
+        "height": 11,
+        "width": 11,
+        "x": 247.5,
+        "y": 541.2325439453125
+      },
+      "tooltip": {
+        "display": "none",
+        "text": "brief"
+      },
+      "visibleBadges": 0
+    },
+    {
+      "direction": "input",
+      "node": {
+        "height": 93.72002410888672,
+        "width": 330,
+        "x": 247.5,
+        "y": 500.3125
+      },
+      "port": "a/prompt",
+      "row": {
+        "height": 35.20000076293945,
+        "width": 158.40000915527344,
+        "x": 247.5,
+        "y": 558.83251953125
+      },
+      "socket": {
+        "height": 11,
+        "width": 11,
+        "x": 247.5,
+        "y": 576.4325561523438
+      },
+      "tooltip": {
+        "display": "none",
+        "text": "prompt"
+      },
+      "visibleBadges": 0
+    },
+    {
+      "direction": "output",
+      "node": {
+        "height": 93.72002410888672,
+        "width": 330,
+        "x": 247.5,
+        "y": 500.3125
+      },
+      "port": "a/draft",
+      "row": {
+        "height": 35.20000076293945,
+        "width": 158.40000915527344,
+        "x": 419.1000061035156,
+        "y": 523.6325073242188
+      },
+      "socket": {
+        "height": 11,
+        "width": 11,
+        "x": 577.5,
+        "y": 541.2325439453125
+      },
+      "tooltip": {
+        "display": "block",
+        "text": "image"
+      },
+      "visibleBadges": 0
+    },
+    {
+      "direction": "input",
+      "node": {
+        "height": 93.72002410888672,
+        "width": 330,
+        "x": 687.5,
+        "y": 500.3125
+      },
+      "port": "b/brief",
+      "row": {
+        "height": 35.20000076293945,
+        "width": 158.40000915527344,
+        "x": 687.5,
+        "y": 523.6325073242188
+      },
+      "socket": {
+        "height": 11,
+        "width": 11,
+        "x": 687.5,
+        "y": 541.2325439453125
+      },
+      "tooltip": {
+        "display": "none",
+        "text": "brief"
+      },
+      "visibleBadges": 0
+    },
+    {
+      "direction": "input",
+      "node": {
+        "height": 93.72002410888672,
+        "width": 330,
+        "x": 687.5,
+        "y": 500.3125
+      },
+      "port": "b/prompt",
+      "row": {
+        "height": 35.20000076293945,
+        "width": 158.40000915527344,
+        "x": 687.5,
+        "y": 558.83251953125
+      },
+      "socket": {
+        "height": 11,
+        "width": 11,
+        "x": 687.5,
+        "y": 576.4325561523438
+      },
+      "tooltip": {
+        "display": "none",
+        "text": "prompt"
+      },
+      "visibleBadges": 0
+    },
+    {
+      "direction": "output",
+      "node": {
+        "height": 93.72002410888672,
+        "width": 330,
+        "x": 687.5,
+        "y": 500.3125
+      },
+      "port": "b/draft",
+      "row": {
+        "height": 35.20000076293945,
+        "width": 158.40000915527344,
+        "x": 859.1000366210938,
+        "y": 523.6325073242188
+      },
+      "socket": {
+        "height": 11,
+        "width": 11,
+        "x": 1017.5,
+        "y": 541.2325439453125
+      },
+      "tooltip": {
+        "display": "none",
+        "text": "image"
+      },
+      "visibleBadges": 0
+    }
+  ],
+  "keyboardTypeDisclosure": {
+    "active": "Brief: brief",
+    "tooltip": [
+      {
+        "display": "block",
+        "text": "brief"
+      }
+    ]
+  },
+  "groupSelection": {
+    "pressed": "true",
+    "selectedEdges": 2
+  },
+  "search": {
+    "emptyResultShown": true,
+    "matchingStatus": "Search · 2 matches · 5 shown · 2 selected",
+    "matchingSourceCards": 5
+  }
+}

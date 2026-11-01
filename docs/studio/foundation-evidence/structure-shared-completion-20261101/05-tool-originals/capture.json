@@ -1,0 +1,758 @@
+[
+  {
+    "id": "ce0c81b0-39d8-4d44-b209-4fd3eac75834",
+    "index": 0,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 56,
+    "capturedCharacters": 56,
+    "complete": true
+  },
+  {
+    "id": "837ccad0-1837-4095-86be-5c009b611856",
+    "index": 1,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 74,
+    "capturedCharacters": 74,
+    "complete": true
+  },
+  {
+    "id": "45d88f7e-f8aa-474f-96ab-0f14132f53b5",
+    "index": 2,
+    "label": "Read screen · result",
+    "pages": 3,
+    "totalCharacters": 12132,
+    "capturedCharacters": 12132,
+    "complete": true
+  },
+  {
+    "id": "b8a393b9-3ce3-4378-bd60-ec01cdd0f17a",
+    "index": 3,
+    "label": "Read screen · result",
+    "pages": 1,
+    "totalCharacters": 4244,
+    "capturedCharacters": 4244,
+    "complete": true
+  },
+  {
+    "id": "79387bd7-e335-4909-a37b-bf94397c33a2",
+    "index": 4,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 99,
+    "capturedCharacters": 99,
+    "complete": true
+  },
+  {
+    "id": "50905584-1dbe-475c-a6ec-aec86ce86516",
+    "index": 5,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 95,
+    "capturedCharacters": 95,
+    "complete": true
+  },
+  {
+    "id": "8d44a8e5-6f72-431a-8502-474340fc3e30",
+    "index": 6,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 57,
+    "capturedCharacters": 57,
+    "complete": true
+  },
+  {
+    "id": "a29f1aaf-16d7-4f50-8cb8-4fa37c17c07b",
+    "index": 7,
+    "label": "Read screen · result",
+    "pages": 1,
+    "totalCharacters": 5106,
+    "capturedCharacters": 5106,
+    "complete": true
+  },
+  {
+    "id": "393df9ab-a952-420d-9c41-072cd00407f5",
+    "index": 8,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 6659,
+    "capturedCharacters": 6659,
+    "complete": true
+  },
+  {
+    "id": "fa7b0218-719c-4358-8d3c-4f3aa87ac0aa",
+    "index": 9,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 8609,
+    "capturedCharacters": 8609,
+    "complete": true
+  },
+  {
+    "id": "61c3d256-62e7-41a1-a0cc-81ffa3fe3e5a",
+    "index": 10,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 57,
+    "capturedCharacters": 57,
+    "complete": true
+  },
+  {
+    "id": "c5a9a575-afec-4fe2-b8b8-0de97edc5c53",
+    "index": 11,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 76,
+    "capturedCharacters": 76,
+    "complete": true
+  },
+  {
+    "id": "1b65ca99-1848-433c-9a03-8e6941779191",
+    "index": 12,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 10794,
+    "capturedCharacters": 10794,
+    "complete": true
+  },
+  {
+    "id": "3ff30689-f0df-4755-ae03-6abfbc869794",
+    "index": 13,
+    "label": "Read screen · result",
+    "pages": 1,
+    "totalCharacters": 2034,
+    "capturedCharacters": 2034,
+    "complete": true
+  },
+  {
+    "id": "0eee662d-8abd-4ffa-bf34-0795e3d7bf1d",
+    "index": 14,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 60,
+    "capturedCharacters": 60,
+    "complete": true
+  },
+  {
+    "id": "bb87978a-daa7-44fb-aa27-9c83a186ddec",
+    "index": 15,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 80,
+    "capturedCharacters": 80,
+    "complete": true
+  },
+  {
+    "id": "6865b1b0-a4bf-4ef9-be21-278b77e70de6",
+    "index": 16,
+    "label": "Read screen · result",
+    "pages": 1,
+    "totalCharacters": 2039,
+    "capturedCharacters": 2039,
+    "complete": true
+  },
+  {
+    "id": "6c913d05-36c9-4ae9-974d-ad7298c077ba",
+    "index": 17,
+    "label": "Read screen · result",
+    "pages": 1,
+    "totalCharacters": 2039,
+    "capturedCharacters": 2039,
+    "complete": true
+  },
+  {
+    "id": "64b48757-b3be-4da0-a693-1f872c4a8bda",
+    "index": 18,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 62,
+    "capturedCharacters": 62,
+    "complete": true
+  },
+  {
+    "id": "ab3e0262-adb2-4f8f-9123-20deb9df11e0",
+    "index": 19,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 60,
+    "capturedCharacters": 60,
+    "complete": true
+  },
+  {
+    "id": "8dbbf1cf-bc28-4057-a2be-baa827472593",
+    "index": 20,
+    "label": "Read screen · result",
+    "pages": 1,
+    "totalCharacters": 3182,
+    "capturedCharacters": 3182,
+    "complete": true
+  },
+  {
+    "id": "ddd7db6a-d3c3-4d58-be77-3134fd127e36",
+    "index": 21,
+    "label": "Read screen · result",
+    "pages": 1,
+    "totalCharacters": 3605,
+    "capturedCharacters": 3605,
+    "complete": true
+  },
+  {
+    "id": "665a4d0e-54c8-4702-8616-ec204a4ab257",
+    "index": 22,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 79,
+    "capturedCharacters": 79,
+    "complete": true
+  },
+  {
+    "id": "f9124e8b-036a-4fe8-92ab-2a7978349d60",
+    "index": 23,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 65,
+    "capturedCharacters": 65,
+    "complete": true
+  },
+  {
+    "id": "86f5fb6e-0139-4ee7-acf1-728227a6398a",
+    "index": 24,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 78,
+    "capturedCharacters": 78,
+    "complete": true
+  },
+  {
+    "id": "54928e55-9361-452f-8414-303db82e5ff9",
+    "index": 25,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 78,
+    "capturedCharacters": 78,
+    "complete": true
+  },
+  {
+    "id": "44e93480-2cc0-487b-88b4-e07ce8fb02f2",
+    "index": 26,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 78,
+    "capturedCharacters": 78,
+    "complete": true
+  },
+  {
+    "id": "1927f2dd-0e92-4c48-a72a-c9d775b35377",
+    "index": 27,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 77,
+    "capturedCharacters": 77,
+    "complete": true
+  },
+  {
+    "id": "7457f955-c019-46d5-adbb-4de3018bae99",
+    "index": 28,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 6744,
+    "capturedCharacters": 6744,
+    "complete": true
+  },
+  {
+    "id": "4c74e0f4-adc7-4b01-a602-b0326784f6b5",
+    "index": 29,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 11029,
+    "capturedCharacters": 11029,
+    "complete": true
+  },
+  {
+    "id": "d287adfe-b1ec-49f9-afca-715d09165ffc",
+    "index": 30,
+    "label": "Read screen · result",
+    "pages": 3,
+    "totalCharacters": 12147,
+    "capturedCharacters": 12147,
+    "complete": true
+  },
+  {
+    "id": "ea7104cb-4922-462b-b21f-c953f2c0e6c4",
+    "index": 31,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 11834,
+    "capturedCharacters": 11834,
+    "complete": true
+  },
+  {
+    "id": "d75c95d9-4984-48a6-8032-fe60829a292a",
+    "index": 32,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 11380,
+    "capturedCharacters": 11380,
+    "complete": true
+  },
+  {
+    "id": "66f396c4-2a4b-4e23-b12e-5a1052c0e2eb",
+    "index": 33,
+    "label": "Read screen · result",
+    "pages": 3,
+    "totalCharacters": 12307,
+    "capturedCharacters": 12307,
+    "complete": true
+  },
+  {
+    "id": "c07e4adb-650e-43bb-9a67-981cd2c42a77",
+    "index": 34,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 79,
+    "capturedCharacters": 79,
+    "complete": true
+  },
+  {
+    "id": "c487ac2e-cf85-4608-8846-5f0d4d37c244",
+    "index": 35,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 78,
+    "capturedCharacters": 78,
+    "complete": true
+  },
+  {
+    "id": "4a4cf29b-f446-4722-8650-2ebf0fa021d0",
+    "index": 36,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 76,
+    "capturedCharacters": 76,
+    "complete": true
+  },
+  {
+    "id": "fd9dbec6-ec82-47ae-824e-8e0101aca848",
+    "index": 37,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 79,
+    "capturedCharacters": 79,
+    "complete": true
+  },
+  {
+    "id": "2d5b25b6-e302-4c17-b864-8a512bb87792",
+    "index": 38,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 10753,
+    "capturedCharacters": 10753,
+    "complete": true
+  },
+  {
+    "id": "ab875771-4efc-4069-88cb-740222a7e9c2",
+    "index": 39,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 11669,
+    "capturedCharacters": 11669,
+    "complete": true
+  },
+  {
+    "id": "33ed33bb-9ed3-4c8b-88ff-d59da97372ed",
+    "index": 40,
+    "label": "Read screen · result",
+    "pages": 3,
+    "totalCharacters": 13571,
+    "capturedCharacters": 13571,
+    "complete": true
+  },
+  {
+    "id": "49df3c3c-3be5-48b4-b761-544b30c02d7b",
+    "index": 41,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 10346,
+    "capturedCharacters": 10346,
+    "complete": true
+  },
+  {
+    "id": "4517ccb3-044f-460b-b362-2c3376991c8f",
+    "index": 42,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 78,
+    "capturedCharacters": 78,
+    "complete": true
+  },
+  {
+    "id": "1dd98dab-7139-4916-9e3d-729af642dd30",
+    "index": 43,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 81,
+    "capturedCharacters": 81,
+    "complete": true
+  },
+  {
+    "id": "62f95f8a-4971-488e-b7a5-b0ba0f65a9b5",
+    "index": 44,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 79,
+    "capturedCharacters": 79,
+    "complete": true
+  },
+  {
+    "id": "65238501-a8e8-497e-8893-8094c6280ec8",
+    "index": 45,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 82,
+    "capturedCharacters": 82,
+    "complete": true
+  },
+  {
+    "id": "2eab0870-4794-4cf1-9763-30387db9005f",
+    "index": 46,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 10258,
+    "capturedCharacters": 10258,
+    "complete": true
+  },
+  {
+    "id": "8a6e3658-657c-4abf-bb4a-bc380255c2d7",
+    "index": 47,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 8572,
+    "capturedCharacters": 8572,
+    "complete": true
+  },
+  {
+    "id": "4a417669-9d2e-44f6-818a-38844e2efc6f",
+    "index": 48,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 9012,
+    "capturedCharacters": 9012,
+    "complete": true
+  },
+  {
+    "id": "f9ab686c-6fbd-46a6-b58d-def50bb2cb9e",
+    "index": 49,
+    "label": "Read screen · result",
+    "pages": 1,
+    "totalCharacters": 3788,
+    "capturedCharacters": 3788,
+    "complete": true
+  },
+  {
+    "id": "0538ec83-49e9-4f40-831c-efd2bd29974f",
+    "index": 50,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 81,
+    "capturedCharacters": 81,
+    "complete": true
+  },
+  {
+    "id": "1cb5410f-432e-4b19-94b9-64b7a7a39801",
+    "index": 51,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 80,
+    "capturedCharacters": 80,
+    "complete": true
+  },
+  {
+    "id": "5b36bc11-1619-4a27-b891-35c50dbb6aa5",
+    "index": 52,
+    "label": "Read screen · result",
+    "pages": 3,
+    "totalCharacters": 13018,
+    "capturedCharacters": 13018,
+    "complete": true
+  },
+  {
+    "id": "0efc2274-df6e-48b9-9711-7f0a053d2b8f",
+    "index": 53,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 10255,
+    "capturedCharacters": 10255,
+    "complete": true
+  },
+  {
+    "id": "aa9af289-2627-4b18-84ea-34177806820a",
+    "index": 54,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 80,
+    "capturedCharacters": 80,
+    "complete": true
+  },
+  {
+    "id": "4ca84d6e-9970-4a80-a592-d63ac1cf177d",
+    "index": 55,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 76,
+    "capturedCharacters": 76,
+    "complete": true
+  },
+  {
+    "id": "b85ec1fc-9c84-42aa-82f0-84a94c6fc48a",
+    "index": 56,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 8643,
+    "capturedCharacters": 8643,
+    "complete": true
+  },
+  {
+    "id": "c0bc36dd-72b9-4644-9b66-13c3bd9bf62a",
+    "index": 57,
+    "label": "Read screen · result",
+    "pages": 3,
+    "totalCharacters": 13154,
+    "capturedCharacters": 13154,
+    "complete": true
+  },
+  {
+    "id": "697b20be-abc2-43b9-b412-a7f958f627a6",
+    "index": 58,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 68,
+    "capturedCharacters": 68,
+    "complete": true
+  },
+  {
+    "id": "89cd9034-3084-4989-a7b3-c99de19bdf4f",
+    "index": 59,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 41,
+    "capturedCharacters": 41,
+    "complete": true
+  },
+  {
+    "id": "6c077c28-c009-4be0-ace1-5361f08676e5",
+    "index": 60,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 10415,
+    "capturedCharacters": 10415,
+    "complete": true
+  },
+  {
+    "id": "e7d9cdb2-30bc-4367-b2bc-a23a53e6d5cf",
+    "index": 61,
+    "label": "Read screen · result",
+    "pages": 1,
+    "totalCharacters": 4275,
+    "capturedCharacters": 4275,
+    "complete": true
+  },
+  {
+    "id": "04232e64-2874-46aa-80b9-7c4c1c484b6a",
+    "index": 62,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 236,
+    "capturedCharacters": 236,
+    "complete": true
+  },
+  {
+    "id": "e681971f-8db1-417e-a2ee-e36e0531d673",
+    "index": 63,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 10751,
+    "capturedCharacters": 10751,
+    "complete": true
+  },
+  {
+    "id": "556b3bb5-72da-49b3-b7ab-ff03d0897443",
+    "index": 64,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 238,
+    "capturedCharacters": 238,
+    "complete": true
+  },
+  {
+    "id": "89e233d4-77b6-48f4-9f56-fff3bf985201",
+    "index": 65,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 10843,
+    "capturedCharacters": 10843,
+    "complete": true
+  },
+  {
+    "id": "da1a73db-95ee-408e-9ddd-3f54f8236a79",
+    "index": 66,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 3513,
+    "capturedCharacters": 3513,
+    "complete": true
+  },
+  {
+    "id": "faccb507-086f-44ff-b883-c72eea5b2188",
+    "index": 67,
+    "label": "Read screen · result",
+    "pages": 1,
+    "totalCharacters": 2199,
+    "capturedCharacters": 2199,
+    "complete": true
+  },
+  {
+    "id": "f8370548-0cbb-41ec-8a4a-9072242e2afb",
+    "index": 68,
+    "label": "Edit screen · input",
+    "pages": 1,
+    "totalCharacters": 3460,
+    "capturedCharacters": 3460,
+    "complete": true
+  },
+  {
+    "id": "45aa7b19-769c-476e-a354-a3db9c3d8458",
+    "index": 69,
+    "label": "Edit screen · result",
+    "pages": 1,
+    "totalCharacters": 5393,
+    "capturedCharacters": 5393,
+    "complete": true
+  },
+  {
+    "id": "c0037bb6-0723-422e-98e9-c41a864a1e6f",
+    "index": 70,
+    "label": "Edit screen · input",
+    "pages": 2,
+    "totalCharacters": 6082,
+    "capturedCharacters": 6082,
+    "complete": true
+  },
+  {
+    "id": "24914ae7-4abd-48f5-8761-fe74875ad9b8",
+    "index": 71,
+    "label": "Edit screen · result",
+    "pages": 1,
+    "totalCharacters": 5394,
+    "capturedCharacters": 5394,
+    "complete": true
+  },
+  {
+    "id": "da44bd86-5aea-44ad-aa49-16f5a4796c0d",
+    "index": 72,
+    "label": "Edit screen · input",
+    "pages": 1,
+    "totalCharacters": 2125,
+    "capturedCharacters": 2125,
+    "complete": true
+  },
+  {
+    "id": "369865d1-a687-4efb-8801-336a88c9f829",
+    "index": 73,
+    "label": "Edit screen · result",
+    "pages": 1,
+    "totalCharacters": 5394,
+    "capturedCharacters": 5394,
+    "complete": true
+  },
+  {
+    "id": "614ed6c2-afb1-4173-9d39-4ab95d743b37",
+    "index": 74,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 60,
+    "capturedCharacters": 60,
+    "complete": true
+  },
+  {
+    "id": "bd70f8bf-16b0-45e2-bff1-3af7fc5108a4",
+    "index": 75,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 79,
+    "capturedCharacters": 79,
+    "complete": true
+  },
+  {
+    "id": "3789eba5-f3c0-464c-8e3f-4a1bdfdde40a",
+    "index": 76,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 11475,
+    "capturedCharacters": 11475,
+    "complete": true
+  },
+  {
+    "id": "6d302856-1ca0-4897-9393-45d617eb7df9",
+    "index": 77,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 11447,
+    "capturedCharacters": 11447,
+    "complete": true
+  },
+  {
+    "id": "2a9d937a-eb27-4466-a3ab-ab99ee55eb22",
+    "index": 78,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 80,
+    "capturedCharacters": 80,
+    "complete": true
+  },
+  {
+    "id": "c803f8d9-1818-41fc-9a7b-f987494e5a00",
+    "index": 79,
+    "label": "Read screen · input",
+    "pages": 1,
+    "totalCharacters": 79,
+    "capturedCharacters": 79,
+    "complete": true
+  },
+  {
+    "id": "b440df88-1678-408e-b17e-0ed2123da831",
+    "index": 80,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 7099,
+    "capturedCharacters": 7099,
+    "complete": true
+  },
+  {
+    "id": "3a398a39-4ad2-48ca-a861-b502ab057fde",
+    "index": 81,
+    "label": "Read screen · result",
+    "pages": 2,
+    "totalCharacters": 6061,
+    "capturedCharacters": 6061,
+    "complete": true
+  },
+  {
+    "id": "6630d00d-c8b4-4d83-8041-830f82a84065",
+    "index": 82,
+    "label": "Observe preview · input",
+    "pages": 1,
+    "totalCharacters": 293,
+    "capturedCharacters": 293,
+    "complete": true
+  },
+  {
+    "id": "89fa5d4a-9574-42c4-b554-cd007a6cb971",
+    "index": 83,
+    "label": "Observe preview · result",
+    "pages": 84,
+    "totalCharacters": 501236,
+    "capturedCharacters": 501236,
+    "complete": true
+  }
+]

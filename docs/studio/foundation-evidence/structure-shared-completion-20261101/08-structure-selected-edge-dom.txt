@@ -1,0 +1,81 @@
+- banner:
+  - link "VICT Studio":
+    - /url: /design
+    - generic: V
+  - menubar "Studio menus":
+    - menuitem "File"
+    - menuitem "Edit"
+    - menuitem "View"
+    - menuitem "Preview"
+  - generic "Campaign Foundry — complex node suite"
+  - link "Operator tools":
+    - /url: /
+    - text: ↗
+- main:
+  - button "Toggle Chat drawer":
+  - group "Workspace mode":
+    - button "Design"
+    - button "Interact"
+    - button "Structure" [pressed]
+  - button "Toggle Document and Selection drawer" [expanded]:
+  - region "Structure workspace":
+    - region "Source structure":
+      - searchbox "Search structure": campaignGraph
+      - menubar "Structure menus":
+        - menuitem "View"
+        - menuitem "Object"
+      - group "Structure quick actions":
+        - button "Fit all":
+        - button "Fit selection":
+        - button "Arrange nodes":
+      - paragraph: Search · 1 match · 2 shown · 1 selected
+      - application:
+        - 'group "State: Campaign Graph"':
+          - generic: State
+          - strong: Campaign Graph
+          - 'generic "Text · starts with “{\"schema\":\"vict.flow-graph@3\",\"…”"'
+          - list "Incoming connections":
+            - listitem "Incoming Updates · 1 declared reference":
+              - generic: Updates
+              - button "Select incoming Updates connections for Campaign Graph" [pressed]
+              - button
+          - list "Outgoing connections"
+        - 'group "Output: Graph Change"':
+          - generic: Output
+          - strong: Graph Change
+          - generic "Component ws-main"
+          - list "Incoming connections"
+          - list "Outgoing connections":
+            - listitem "Outgoing Updates · 1 declared reference":
+              - generic: Updates
+              - button "Select outgoing Updates connections for Graph Change" [pressed]
+              - button
+        - link "Svelte Flow attribution":
+          - /url: https://svelteflow.dev?utm_source=attribution
+          - text: Svelte Flow
+        - generic "Control Panel":
+          - button "Zoom In":
+          - button "Zoom Out":
+- complementary "Document and Selection":
+  - tablist "Panel context":
+    - tab "Document"
+    - tab "Selection" [active] [selected]
+  - button "Hide Document and Selection":
+  - tabpanel "Selection":
+    - region "Selection details":
+      - region "Selection relationships":
+        - button "Relationships" [expanded]:
+          - text: Relationships
+          - generic: "1"
+        - button "Output · Graph Change · Component ws-main":
+          - strong: Graph Change
+          - generic "Output · Component ws-main"
+        - button "Inspect Updates connection from Output · Graph Change · Component ws-main to State · Campaign Graph": Updates
+        - button "State · Campaign Graph":
+          - strong: Campaign Graph
+      - region "Selection technical information":
+        - button "Technical information":
+          - generic: Technical information
+- contentinfo:
+  - status: Saved Campaign Foundry — complex node suite · revision r1.r18
+- generic: Designer — VICT Studio

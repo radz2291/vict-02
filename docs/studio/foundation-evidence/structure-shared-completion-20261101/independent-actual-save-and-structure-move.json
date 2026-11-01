@@ -1,0 +1,65 @@
+{
+  "schema": "vict.independent-actual-save-and-structure-move@1",
+  "status": "PASS",
+  "sourceCandidate": "3dfdde4ecb5567bc03130426482076d5344e3530",
+  "savedRevision": "r1.r18",
+  "savedEqualsActualAgentSourceExceptNormalRevision": true,
+  "exportDocumentExactlySaved": true,
+  "applicationDiffs": [
+    {
+      "path": [
+        "screens",
+        "0",
+        "uiDocument",
+        "revision"
+      ],
+      "before": "r1.r17",
+      "after": "r1.r18"
+    }
+  ],
+  "mediaArchiveExactlyPrior": true,
+  "movedDiffs": [
+    {
+      "path": [
+        "nodes",
+        "screen",
+        "children"
+      ],
+      "before": [
+        "cf-header",
+        "ws-main"
+      ],
+      "after": [
+        "cf-header",
+        "ws-main",
+        "cf-title"
+      ]
+    },
+    {
+      "path": [
+        "nodes",
+        "cf-header",
+        "children"
+      ],
+      "before": [
+        "cf-title",
+        "cf-sub",
+        "cf-meta"
+      ],
+      "after": [
+        "cf-sub",
+        "cf-meta"
+      ]
+    }
+  ],
+  "oneUndoExactlySaved": true,
+  "files": {
+    "06-agent-adopted-unsaved-source.json": "b52399ecc96347df3a9fc5766e0ffcf764d87b268eee07b8eeddcbe539c34e07",
+    "07-saved-r18-source.json": "853796683a8a54c17ff2b774c56f10d6b1c56ab691855e1345bbb192c531265c",
+    "07-supported-export.json": "e0ca6d823d432212abc88e894ca8c69aae2fa964c4be7d5ca1e04d82b9b034e3",
+    "08-structure-moved-source.json": "1cf381cb40eeeddd40a564f64f8af4e2b55d1899b37fc7ac43196f51568126c1",
+    "08-structure-one-undo-source.json": "853796683a8a54c17ff2b774c56f10d6b1c56ab691855e1345bbb192c531265c"
+  },
+  "errors": [],
+  "scope": "Independent source recomputation associates integrator-captured native Structure move and Undo with exact saved source. It does not independently perform the native action or claim full reload until a separate reopen source receipt is reviewed."
+}

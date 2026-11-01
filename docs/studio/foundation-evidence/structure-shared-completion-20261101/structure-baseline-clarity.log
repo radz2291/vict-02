@@ -1,0 +1,69 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/AppData/Local/Temp/vict-structure-baseline-f483-20261101/apps/studio
+
+8:48:14 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+8:48:14 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:48:14 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:48:14 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:48:14 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/structure-clarity.test.ts (6 tests | 2 failed) 289ms
+   ✓ shows logical branches/templates without granting occurrence editing and keeps definition bodies optional 88ms
+   ✓ applies visibility and collapsed ownership before a direct neighbourhood without dangling edges 13ms
+   × maps a conditional to its declared controlling data without evaluating the condition 32ms
+     → expected 'Agreement is on' to be 'Accepted is on' // Object.is equality
+   ✓ searches displayed semantic types and retains full identities after concise card presentation 6ms
+   × describes native events and viewport conditions as declarations, without inventing outcomes 37ms
+     → expected [ { name: 'When clicked', …(1) } ] to deep equally contain { name: 'When clicked', …(1) }
+   ✓ bounds shared-state fanout, reveals other users only on demand, and preserves source across paging 109ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/structure-clarity.test.ts > maps a conditional to its declared controlling data without evaluating the condition
+AssertionError: expected 'Agreement is on' to be 'Accepted is on' // Object.is equality
+
+Expected: "Accepted is on"
+Received: "Agreement is on"
+
+ ❯ tests/structure-clarity.test.ts:34:47
+     32| it('maps a conditional to its declared controlling data without evalua…
+     33|   const source=clarityFixture(),graph=projectStructure(source),id=stru…
+     34|   expect(conditionDescription(source,'show')).toBe('Accepted is on');
+       |                                               ^
+     35|   expect(graph.edges.some(edge=>edge.source===structureId(source.id,'c…
+     36|   const groups=groupStructureRelationships(graph,id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/structure-clarity.test.ts > describes native events and viewport conditions as declarations, without inventing outcomes
+AssertionError: expected [ { name: 'When clicked', …(1) } ] to deep equally contain { name: 'When clicked', …(1) }
+
+- Expected: 
+{
+  "name": "When clicked",
+  "value": "Requests Submit (simulated)",
+}
+
++ Received: 
+[
+  {
+    "name": "When clicked",
+    "value": "Requests Submit",
+  },
+]
+
+ ❯ tests/structure-clarity.test.ts:56:46
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 4 passed (6)
+   Start at  20:47:54
+   Duration  44.34s (transform 28.84s, setup 0ms, collect 42.99s, tests 289ms, environment 1ms, prepare 399ms)
+

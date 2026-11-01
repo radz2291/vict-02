@@ -1,0 +1,59 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030
+
+ ❯ packages/ui-flow-svelte/test/CoordinatePrecisionBefore.svelte.test.ts (8 tests | 5 failed) 46ms
+   × recorded uniform Social frame tolerates subpixel DOMRect quantization 26ms
+   × transform evidence rejects actual anisotropy/reflection/rotation despite a near-uniform rectangle (matrix(1,0,0,1.00001,0,0),undefined) 5ms
+   × transform evidence rejects actual anisotropy/reflection/rotation despite a near-uniform rectangle (none,1 1.00001) 3ms
+   × transform evidence rejects actual anisotropy/reflection/rotation despite a near-uniform rectangle (matrix(1,0,0,1.01,0,0),undefined) 2ms
+   × transform evidence rejects actual anisotropy/reflection/rotation despite a near-uniform rectangle (none,1 1.01) 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/ui-flow-svelte/test/CoordinatePrecisionBefore.svelte.test.ts > recorded uniform Social frame tolerates subpixel DOMRect quantization
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ packages/ui-flow-svelte/test/CoordinatePrecisionBefore.svelte.test.ts:15:25
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 3 passed (8)
+   Start at  21:55:35
+   Duration  2.32s (transform 959ms, setup 0ms, import 1.28s, tests 46ms, environment 676ms)
+
+     13| test('recorded uniform Social frame tolerates subpixel DOMRect quantiz…
+     14|  const seen=observe('matrix(0.175699,0,0,0.175699,99.4736,245.173)');
+     15|  expect(seen.supported).toBe(true);expect(seen.scale).toBeCloseTo(.175…
+       |                         ^
+     16| });
+     17| test.each([
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  packages/ui-flow-svelte/test/CoordinatePrecisionBefore.svelte.test.ts > transform evidence rejects actual anisotropy/reflection/rotation despite a near-uniform rectangle (matrix(1,0,0,1.00001,0,0),undefined)
+ FAIL  packages/ui-flow-svelte/test/CoordinatePrecisionBefore.svelte.test.ts > transform evidence rejects actual anisotropy/reflection/rotation despite a near-uniform rectangle (none,1 1.00001)
+ FAIL  packages/ui-flow-svelte/test/CoordinatePrecisionBefore.svelte.test.ts > transform evidence rejects actual anisotropy/reflection/rotation despite a near-uniform rectangle (matrix(1,0,0,1.01,0,0),undefined)
+ FAIL  packages/ui-flow-svelte/test/CoordinatePrecisionBefore.svelte.test.ts > transform evidence rejects actual anisotropy/reflection/rotation despite a near-uniform rectangle (none,1 1.01)
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-flow-svelte/test/CoordinatePrecisionBefore.svelte.test.ts:25:74
+     23|  ['matrix(0,1,-1,0,0,0)',undefined],
+     24| ])('transform evidence rejects actual anisotropy/reflection/rotation d…
+     25|  expect(observe(transform,scale,new DOMRect(0,0,368.4,189.2)).supporte…
+       |                                                                          ^
+     26| });
+     27| test('unexplained physically nonuniform rectangle remains refused',()=…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+

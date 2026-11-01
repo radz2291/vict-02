@@ -1,0 +1,38 @@
+{
+  "schema": "vict.structure-shared-independent-activation-review@1",
+  "status": "PASS",
+  "sourceCandidate": "11200357a0883dda7f2b35637901c4e217eb01b9",
+  "inspectedHead": "11200357a0883dda7f2b35637901c4e217eb01b9",
+  "baseline": "f483088f29785f973ffa1bb5131081c0936e1b47",
+  "sealSha256": "3b15ba83d92842af11618e057551ed9deda8fc99078f0e61052ae59d7393d1ed",
+  "consumerReportSha256": "1587233199b62bbb05129b25984083aba82119391f213cc27a26c9af3dc49495",
+  "stageRoot": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-shared-11200357-stage",
+  "stagedInputFiles": 343,
+  "newOutputFiles": 398,
+  "previousFiles": 398,
+  "previousSource": "14973bc5e9faba4426164f98ae06b5b33ea3dd95",
+  "original3e62BackupFiles": 398,
+  "intermediate3dfBackupFiles": 398,
+  "retainedProofFiles": 93,
+  "compiledWorkspaceFiles": 296,
+  "publicArchives": 9,
+  "installedNonmanifestFilesMatched": 645,
+  "actualArchiveNonmanifestFilesMatched": 645,
+  "manifestSemanticsCompared": 9,
+  "consumerOutputFiles": 6,
+  "consumerFixtureFiles": 8,
+  "consumerDomCases": 4,
+  "unpackRoot": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-independent-unpack-CRlJu7",
+  "sourceDrift": false,
+  "technicalActivationSupported": true,
+  "actualUiVerified": false,
+  "notes": [
+    "Final CIpk78 freshly installs and checks all nine immutable public artifacts reused from successful LEWDWl at the same112 source. LEWDWl freshly checked Flow and Structure and reused seven unchanged packages. This final run rebuilds the corrected fixture with the actual Rhea/14px host class. Every current archive/member/installed byte is independently recomputed; no nine-fresh-package-build claim is made."
+  ],
+  "errors": [],
+  "limits": [
+    "Technical source/artifact association only; no new native browser, actual-agent or physical-device verdict.",
+    "Runtime source matches112 even when later evidence-only descendants exist; exact staged inputs and all packages remain checked.",
+    "Existing build diagnostics and matched inherited test failures remain qualified by the source review."
+  ]
+}

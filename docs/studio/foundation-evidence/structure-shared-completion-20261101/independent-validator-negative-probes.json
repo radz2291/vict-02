@@ -1,0 +1,42 @@
+{
+  "schema": "vict.independent-port-validator-negative-probes@1",
+  "validatorPath": "C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\scripts\\verify-node-port-presentation.mjs",
+  "validatorSha256": "9a64a9c2f4ed9d409620400b6e6e8f209663d4d11fe97e562fadae55a039e868",
+  "scope": "Coding-authored in-memory comparison counterexamples; no actual application source files, browser state, provider or agent edits.",
+  "baseline": "screen-a8690ffa-1e90-4b72-909c-66141d372773",
+  "cases": [
+    {
+      "name": "ordinary control moved between source containers",
+      "control": "c-sum",
+      "from": "bf-brief",
+      "to": "bf-prompt",
+      "validatorStatus": "PASS",
+      "reportedNonstructuralChanges": [],
+      "errors": [],
+      "falsePass": true
+    },
+    {
+      "name": "source-bound workspace changed to a literal graph",
+      "workspace": "ws-main",
+      "validatorStatus": "PASS",
+      "reportedNonstructuralChanges": [
+        {
+          "id": "ws-main",
+          "beforeKind": "component",
+          "afterKind": "component",
+          "deleted": false
+        }
+      ],
+      "errors": [],
+      "falsePass": true
+    },
+    {
+      "name": "explicitly re-enable redundant type badge",
+      "row": "pr-br-o",
+      "validatorStatus": "PASS",
+      "reportedNonstructuralChanges": [],
+      "errors": [],
+      "falsePass": true
+    }
+  ]
+}

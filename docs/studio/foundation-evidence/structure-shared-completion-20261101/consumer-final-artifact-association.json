@@ -1,0 +1,73 @@
+{
+  "schema": "vict.consumer-final-artifact-association@1",
+  "status": "PASS",
+  "sourceCandidate": "3dfdde4ecb5567bc03130426482076d5344e3530",
+  "report": "vict-structure-consumer-3mP19h.json",
+  "reportSha256": "f8ce9e220e440a4344714be017ea794791a149126a8f5307463735c4819a848d",
+  "consumerDist": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-consumer-3mP19h\\consumer\\dist",
+  "installedPackages": 9,
+  "installedFiles": 645.0,
+  "domCases": 4,
+  "productionBuildPassed": true,
+  "reusedManifest": {
+    "archivedSnapshot": "vict-structure-consumer-hXcQQT-build-reuse-snapshot.json",
+    "sha256": "d982c926863afa5351ed07a5c7013ffa2f06b26f8db2e18f22af24168db0da5a",
+    "matchesConsumedManifestHash": true,
+    "note": "The earlier run was completing its separate consumer production build when its completed package-build and artifact inventories were consumed. The original report subsequently finalized PASS. This snapshot preserves the exact bytes read by the final run; the original path in reusedArtifactEvidence is mutable progress output."
+  },
+  "logs": [
+    {
+      "path": "consumer-3mP19h-logs/build-application.log",
+      "sha256": "cbefe87f235a8c4bf3daecb70b50b559d99c087339fc9fc8bcb4e6162ee05e15"
+    },
+    {
+      "path": "consumer-3mP19h-logs/build-contracts.log",
+      "sha256": "3c0a380dc8397c6e66e817f4853af9084469a7b07378d78537c510ea1bc0dcd3"
+    },
+    {
+      "path": "consumer-3mP19h-logs/build-sdk.log",
+      "sha256": "98a5c4c5794d1f6b2f9d51b31669b587f54623a56b43ea29ca74052d62a03f4b"
+    },
+    {
+      "path": "consumer-3mP19h-logs/build-ui-editor.log",
+      "sha256": "fa07c299da7e0eee0703651c1ce3baf374a33f0a83e720149ba569b5ea0189d3"
+    },
+    {
+      "path": "consumer-3mP19h-logs/build-ui-flow-svelte.log",
+      "sha256": "787480091a322b411826144787b86442eb324483b816ac002340c0b3152a844b"
+    },
+    {
+      "path": "consumer-3mP19h-logs/build-ui-media-svelte.log",
+      "sha256": "8648d2cb53a0cd441701dd1a3b06305dbf3575e34d075168e6e9ccf28bb5eeed"
+    },
+    {
+      "path": "consumer-3mP19h-logs/build-ui-structure-svelte.log",
+      "sha256": "6835c80ca3b371b3de4d9c009bdc5213f422198cbb4a0043dfc037280d705100"
+    },
+    {
+      "path": "consumer-3mP19h-logs/build-ui-svelte.log",
+      "sha256": "d28cbb11f9640f109fb4466de5e23314237183efaa41726805089e9d95f5843d"
+    },
+    {
+      "path": "consumer-3mP19h-logs/build-ui.log",
+      "sha256": "9ba773a1826dc0a5a798fb3b4762696474af397a562899f6856097f937ccdb16"
+    },
+    {
+      "path": "consumer-3mP19h-logs/dom-test.log",
+      "sha256": "85d3dbd24c18641efeaad742d82d9318c18f3b4d0bcd5cdfa0925b5c0b5bde76"
+    },
+    {
+      "path": "consumer-3mP19h-logs/install.log",
+      "sha256": "a2ff62a0df0209dc3bcfdf2e5225e723560ca1a22d6f4ac3bec99353cd17b601"
+    },
+    {
+      "path": "consumer-3mP19h-logs/production-build.log",
+      "sha256": "2724f0e5aab976ea95629ff617ffc24ee9b5e32bc7b843f261327463c535a984"
+    }
+  ],
+  "limitations": [
+    "Coding-authored fixture is not actual-agent authorship.",
+    "DOM simulation proves renderer/event/source behavior, not painted routing, physical touch, pointer connection dragging or phone inset coverage.",
+    "No persistence/backend execution or new device proof claimed."
+  ]
+}

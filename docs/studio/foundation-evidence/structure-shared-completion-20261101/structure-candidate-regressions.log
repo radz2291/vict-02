@@ -1,0 +1,554 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/apps/studio
+
+8:44:41 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+8:44:42 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:44:42 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:44:42 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:44:42 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:44:51 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+8:44:52 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:44:52 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+8:44:52 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+8:44:52 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-architecture-realignment-20261030/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/structure-public-package.test.ts (2 tests) 104ms
+ ❯ tests/structure-clarity.test.ts (6 tests | 2 failed) 437ms
+   ✓ shows logical branches/templates without granting occurrence editing and keeps definition bodies optional 114ms
+   ✓ applies visibility and collapsed ownership before a direct neighbourhood without dangling edges 14ms
+   × maps a conditional to its declared controlling data without evaluating the condition 83ms
+     → expected 'Agreement is on' to be 'Accepted is on' // Object.is equality
+   ✓ searches displayed semantic types and retains full identities after concise card presentation 8ms
+   × describes native events and viewport conditions as declarations, without inventing outcomes 53ms
+     → expected [ { name: 'When clicked', …(1) } ] to deep equally contain { name: 'When clicked', …(1) }
+   ✓ bounds shared-state fanout, reveals other users only on demand, and preserves source across paging 159ms
+stderr | tests/ui/structure.test.ts > synchronizes keyboard graph selection with shared selection and inspection without opening tools or moving the camera
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure.test.ts > synchronizes keyboard graph selection with shared selection and inspection without opening tools or moving the camera
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure.test.ts > refuses source navigation and contextual moves while the host has an unapplied draft
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure.test.ts > hands declared state to Data and shows source facts without inventing runtime values
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure.test.ts > offers guarded contextual moves through named keyboard controls and exits move mode on acknowledgement
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure.test.ts > offers guarded contextual moves through named keyboard controls and exits move mode on acknowledgement
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+ ❯ tests/ui/structure.test.ts (7 tests | 7 failed) 3493ms
+   × keeps inspection closed and the camera/search stable during ordinary source selection 591ms
+     → expected  to have a length of 1 but got +0
+   × opens inspection deliberately and Escape closes it with focus restored, preserving shared selection 294ms
+     → Inspect structure: expected undefined to be defined
+   × synchronizes keyboard graph selection with shared selection and inspection without opening tools or moving the camera 703ms
+     → Inspect structure: expected undefined to be defined
+   × refuses source navigation and contextual moves while the host has an unapplied draft 390ms
+     → expected "spy" to be called with arguments: [ Array(1) ]
+
+Number of calls: 0
+
+   × hands declared state to Data and shows source facts without inventing runtime values 248ms
+     → Details: expected undefined to be defined
+   × scopes drawer Escape to its own page and dismisses the host only after inspection is closed 176ms
+     → Inspect structure: expected undefined to be defined
+   × offers guarded contextual moves through named keyboard controls and exits move mode on acknowledgement 1084ms
+     → expected <select …(2)>…(1)</select> to be null
+stderr | tests/ui/structure-toolbar.test.ts > keeps Object mounted but disabled until nodes or connections are selected
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps Object mounted but disabled until nodes or connections are selected
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps Object mounted but disabled until nodes or connections are selected
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps Object mounted but disabled until nodes or connections are selected
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps Object mounted but disabled until nodes or connections are selected
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps quick camera actions independent from scope and selection, with one fit-all home
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > counts exact search matches separately from supporting context and returns to the prior scope on Escape
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > counts exact search matches separately from supporting context and returns to the prior scope on Escape
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps inventory in hierarchy without changing modes, and checks the active layout direction
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > finds exact hidden source items through the shared Selection handoff without opening a second inspector
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > preserves draft refusal when finding an item
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > offers aggregate inspection without source-edit commands for multiple objects and connection selections
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > offers aggregate inspection without source-edit commands for multiple objects and connection selections
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > preserves Duplicate and Undo through the existing source command in Object without saving the screen
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > keeps migrated source commands disabled during an unapplied source draft
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > duplicates the exact selected text source rather than its containing heading
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts > duplicates the exact selected text source rather than its containing heading
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+[svelte-put/shortcut] Trigger should have either `key` or `code`, a trigger missing both was detected! Check your configuration
+
+stderr | tests/ui/structure-toolbar.test.ts
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+stderr | tests/ui/structure-toolbar.test.ts
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+stderr | tests/ui/structure-toolbar.test.ts
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+stderr | tests/ui/structure-toolbar.test.ts
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+ ❯ tests/ui/structure-toolbar.test.ts (12 tests | 3 failed) 10674ms
+   ✓ keeps Object mounted but disabled until nodes or connections are selected  1507ms
+   ✓ keeps quick camera actions independent from scope and selection, with one fit-all home  863ms
+   ✓ counts exact search matches separately from supporting context and returns to the prior scope on Escape  660ms
+   ✓ keeps inventory in hierarchy without changing modes, and checks the active layout direction  1501ms
+   ✓ finds exact hidden source items through the shared Selection handoff without opening a second inspector  444ms
+   ✓ preserves draft refusal when finding an item  361ms
+   ✓ uses stable mode-bar drawer controls across modes and remembers the right drawer tab and drafts  1696ms
+   ✓ keeps status inside the flow canvas and leaves native context menus and multi-selection alone  493ms
+   ✓ offers aggregate inspection without source-edit commands for multiple objects and connection selections  515ms
+   × preserves Duplicate and Undo through the existing source command in Object without saving the screen 997ms
+     → expected  to have a length of 2 but got +0
+   × keeps migrated source commands disabled during an unapplied source draft 720ms
+     → expected  to have a length of 1 but got +0
+   × duplicates the exact selected text source rather than its containing heading 906ms
+     → expected  to have a length of 1 but got +0
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 12 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/structure-clarity.test.ts > maps a conditional to its declared controlling data without evaluating the condition
+AssertionError: expected 'Agreement is on' to be 'Accepted is on' // Object.is equality
+
+Expected: "Accepted is on"
+Received: "Agreement is on"
+
+ ❯ tests/structure-clarity.test.ts:34:47
+     32| it('maps a conditional to its declared controlling data without evalua…
+     33|   const source=clarityFixture(),graph=projectStructure(source),id=stru…
+     34|   expect(conditionDescription(source,'show')).toBe('Accepted is on');
+       |                                               ^
+     35|   expect(graph.edges.some(edge=>edge.source===structureId(source.id,'c…
+     36|   const groups=groupStructureRelationships(graph,id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯
+
+ FAIL  tests/structure-clarity.test.ts > describes native events and viewport conditions as declarations, without inventing outcomes
+AssertionError: expected [ { name: 'When clicked', …(1) } ] to deep equally contain { name: 'When clicked', …(1) }
+
+- Expected: 
+{
+  "name": "When clicked",
+  "value": "Requests Submit (simulated)",
+}
+
++ Received: 
+[
+  {
+    "name": "When clicked",
+    "value": "Requests Submit",
+  },
+]
+
+ ❯ tests/structure-clarity.test.ts:56:46
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/12]⎯
+
+ FAIL  tests/ui/structure-toolbar.test.ts > preserves Duplicate and Undo through the existing source command in Object without saving the screen
+AssertionError: expected  to have a length of 2 but got +0
+
+- Expected
++ Received
+
+- 2
++ 0
+
+ ❯ tests/ui/structure-toolbar.test.ts:90:105
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/12]⎯
+
+ FAIL  tests/ui/structure-toolbar.test.ts > keeps migrated source commands disabled during an unapplied source draft
+AssertionError: expected  to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/ui/structure-toolbar.test.ts:94:296
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/12]⎯
+
+ FAIL  tests/ui/structure-toolbar.test.ts > duplicates the exact selected text source rather than its containing heading
+AssertionError: expected  to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/ui/structure-toolbar.test.ts:98:178
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/12]⎯
+
+ FAIL  tests/ui/structure.test.ts > keeps inspection closed and the camera/search stable during ordinary source selection
+AssertionError: expected  to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/ui/structure.test.ts:35:71
+     33|   await tick(); await tick();
+     34|   expect(document.querySelector('.svelte-flow')).not.toBeNull();
+     35|   expect(document.querySelectorAll('.svelte-flow__controls-fitview')).…
+       |                                                                       ^
+     36|   expect(document.querySelector('.structure-details')).toBeNull();
+     37|   const search = document.querySelector<HTMLInputElement>('[aria-label…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/12]⎯
+
+ FAIL  tests/ui/structure.test.ts > opens inspection deliberately and Escape closes it with focus restored, preserving shared selection
+AssertionError: Inspect structure: expected undefined to be defined
+ ❯ button tests/ui/structure.test.ts:14:23
+     12| const button = (name: string) => {
+     13|   const found = [...document.querySelectorAll<HTMLElement>('button,[ro…
+     14|   expect(found, name).toBeDefined(); return found!;
+       |                       ^
+     15| };
+     16| async function menu(name: string) {
+ ❯ tests/ui/structure.test.ts:54:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/12]⎯
+
+ FAIL  tests/ui/structure.test.ts > synchronizes keyboard graph selection with shared selection and inspection without opening tools or moving the camera
+AssertionError: Inspect structure: expected undefined to be defined
+ ❯ button tests/ui/structure.test.ts:14:23
+     12| const button = (name: string) => {
+     13|   const found = [...document.querySelectorAll<HTMLElement>('button,[ro…
+     14|   expect(found, name).toBeDefined(); return found!;
+       |                       ^
+     15| };
+     16| async function menu(name: string) {
+ ❯ tests/ui/structure.test.ts:80:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/12]⎯
+
+ FAIL  tests/ui/structure.test.ts > refuses source navigation and contextual moves while the host has an unapplied draft
+AssertionError: expected "spy" to be called with arguments: [ Array(1) ]
+
+Number of calls: 0
+
+ ❯ tests/ui/structure.test.ts:102:20
+    100|   await find(structureId(source.id, 'node', source.root));
+    101|   expect(onSelect).not.toHaveBeenCalled(); expect(onMove).not.toHaveBe…
+    102|   expect(onNotice).toHaveBeenCalledWith('Apply or cancel your draft be…
+       |                    ^
+    103|   await menu('Object');
+    104|   expect(button('Move inside…').getAttribute('aria-disabled')).toBe('t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/12]⎯
+
+ FAIL  tests/ui/structure.test.ts > hands declared state to Data and shows source facts without inventing runtime values
+AssertionError: Details: expected undefined to be defined
+ ❯ button tests/ui/structure.test.ts:14:23
+     12| const button = (name: string) => {
+     13|   const found = [...document.querySelectorAll<HTMLElement>('button,[ro…
+     14|   expect(found, name).toBeDefined(); return found!;
+       |                       ^
+     15| };
+     16| async function menu(name: string) {
+ ❯ tests/ui/structure.test.ts:112:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/12]⎯
+
+ FAIL  tests/ui/structure.test.ts > scopes drawer Escape to its own page and dismisses the host only after inspection is closed
+AssertionError: Inspect structure: expected undefined to be defined
+ ❯ button tests/ui/structure.test.ts:14:23
+     12| const button = (name: string) => {
+     13|   const found = [...document.querySelectorAll<HTMLElement>('button,[ro…
+     14|   expect(found, name).toBeDefined(); return found!;
+       |                       ^
+     15| };
+     16| async function menu(name: string) {
+ ❯ tests/ui/structure.test.ts:123:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/12]⎯
+
+ FAIL  tests/ui/structure.test.ts > offers guarded contextual moves through named keyboard controls and exits move mode on acknowledgement
+AssertionError: expected <select …(2)>…(1)</select> to be null
+
+- Expected: 
+null
+
++ Received: 
+<select
+  aria-label="Move destination"
+  class="svelte-116py3p"
+>
+  <option
+    value=""
+  >
+    Choose container
+  </option>
+  <!---->
+</select>
+
+ ❯ tests/ui/structure.test.ts:158:69
+    156|   button('Move').click(); await tick();
+    157|   expect(onMove).toHaveBeenCalledWith({ documentId: source.id, revisio…
+    158|   expect(document.querySelector('[aria-label="Move destination"]')).to…
+       |                                                                     ^
+    159| });
+    160| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/12]⎯
+
+
+ Test Files  3 failed | 1 passed (4)
+      Tests  12 failed | 15 passed (27)
+   Start at  20:43:44
+   Duration  142.12s (transform 156.61s, setup 0ms, collect 442.97s, tests 14.71s, environment 8.67s, prepare 3.15s)
+

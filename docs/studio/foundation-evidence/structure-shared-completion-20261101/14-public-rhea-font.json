@@ -1,0 +1,41 @@
+{
+  "sourceCandidate": "11200357a0883dda7f2b35637901c4e217eb01b9",
+  "labels": [
+    {
+      "font": "12px",
+      "label": "Brief",
+      "parentFont": "14px",
+      "rhea": false
+    },
+    {
+      "font": "12px",
+      "label": "Prompt",
+      "parentFont": "14px",
+      "rhea": false
+    },
+    {
+      "font": "12px",
+      "label": "Draft",
+      "parentFont": "14px",
+      "rhea": false
+    },
+    {
+      "font": "12px",
+      "label": "Brief",
+      "parentFont": "14px",
+      "rhea": false
+    },
+    {
+      "font": "12px",
+      "label": "Prompt",
+      "parentFont": "14px",
+      "rhea": false
+    },
+    {
+      "font": "12px",
+      "label": "Draft",
+      "parentFont": "14px",
+      "rhea": false
+    }
+  ]
+}

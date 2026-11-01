@@ -1,0 +1,77 @@
+{
+  "schema": "vict.consumer-final-artifact-association@1",
+  "status": "PASS",
+  "sourceCandidate": "14973bc5e9faba4426164f98ae06b5b33ea3dd95",
+  "report": "vict-structure-consumer-0yUM1b.json",
+  "reportSha256": "7541840acef02d360ccd6a874ae999dabdae7e468ed263661ea31e724ce486d6",
+  "consumerDist": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-consumer-0yUM1b\\consumer\\dist",
+  "installedPackages": 9,
+  "installedFiles": 645.0,
+  "freshBuilds": 2,
+  "reusedBuilds": 7,
+  "domCases": 4,
+  "productionBuildPassed": true,
+  "reusedManifest": {
+    "archivedSnapshot": "vict-structure-consumer-0yUM1b-reuse-manifest.json",
+    "sha256": "f8ce9e220e440a4344714be017ea794791a149126a8f5307463735c4819a848d",
+    "matchesConsumedManifestHash": true,
+    "previousFinalReport": "vict-structure-consumer-3mP19h.json",
+    "previousFinalReportSha256": "f8ce9e220e440a4344714be017ea794791a149126a8f5307463735c4819a848d"
+  },
+  "logs": [
+    {
+      "path": "consumer-0yUM1b-logs/build-application.log",
+      "sha256": "8f4814ac8d2a8d319370a6b2fabcae88a6e7628ba1fe28900eddf0f86f92e19f"
+    },
+    {
+      "path": "consumer-0yUM1b-logs/build-contracts.log",
+      "sha256": "714d6f0d656e7d733c4d9f16a742a45b1c665f7456ea5aa509aac34a49e30944"
+    },
+    {
+      "path": "consumer-0yUM1b-logs/build-sdk.log",
+      "sha256": "18a127d8cfcb3d28fc37881efe4431ef6744574f3cce3c13054e79cd69b459db"
+    },
+    {
+      "path": "consumer-0yUM1b-logs/build-ui-editor.log",
+      "sha256": "43b02b663638d3ff4c7d97b652c981c3d0b0f620d3ef2e3a2c3aba6627834e33"
+    },
+    {
+      "path": "consumer-0yUM1b-logs/build-ui-flow-svelte.log",
+      "sha256": "670ee8f056a61854d3dfcc4aec5144b64920d55591e433cfa5b345f288065b5a"
+    },
+    {
+      "path": "consumer-0yUM1b-logs/build-ui-media-svelte.log",
+      "sha256": "353ddab7694876c4fbd5d4fd7fa8105ea6d07409018eaab8c37a5485f1cd460c"
+    },
+    {
+      "path": "consumer-0yUM1b-logs/build-ui-structure-svelte.log",
+      "sha256": "6835c80ca3b371b3de4d9c009bdc5213f422198cbb4a0043dfc037280d705100"
+    },
+    {
+      "path": "consumer-0yUM1b-logs/build-ui-svelte.log",
+      "sha256": "eb873b40b9f6804f0f4af8eb08573680d70381f79da2eeb6b90c22643cd79eac"
+    },
+    {
+      "path": "consumer-0yUM1b-logs/build-ui.log",
+      "sha256": "2115a3d5c046b72cc6a1399a8d371f55832726c57535c344c44b1d64bec6c044"
+    },
+    {
+      "path": "consumer-0yUM1b-logs/dom-test.log",
+      "sha256": "f6c80f8e8ce0a4a24b818ac5c7586974185804ecee015c9738ddfe2c3c1e76d4"
+    },
+    {
+      "path": "consumer-0yUM1b-logs/install.log",
+      "sha256": "f8a0eb768bc81c0267d6fbf231c19d75a7fe308a99352134923bd8ee950cd531"
+    },
+    {
+      "path": "consumer-0yUM1b-logs/production-build.log",
+      "sha256": "6963a4c23a59b051684eb35fec907ee618edd1b0ae5dd6ac5ad537f39b5b11bc"
+    }
+  ],
+  "limitations": [
+    "Coding-authored fixture is not actual-agent authorship.",
+    "DOM simulation proves renderer/event/source behavior, not painted routing, physical touch, pointer connection dragging or phone inset coverage.",
+    "No persistence/backend execution or new device proof claimed.",
+    "Existing production chunk-size warning retained; no performance pass claimed."
+  ]
+}

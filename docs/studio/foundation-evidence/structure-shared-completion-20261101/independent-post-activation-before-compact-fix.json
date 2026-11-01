@@ -1,0 +1,13 @@
+{
+  "schema": "vict.structure-shared-independent-post-activation@1",
+  "sourceCandidate": "3dfdde4ecb5567bc03130426482076d5344e3530",
+  "status": "PASS",
+  "sealSha256": "c8b940751d9c8be44ddc7aeec7339f41eae133517fa80a7817d2a0c88df36fc0",
+  "installedFilesMatched": 398,
+  "preservedPreviousFilesMatched": 398,
+  "compiledDependencyFilesMatched": 296,
+  "previousSource": "3e62f75d8337db767c8de6e7d214d520abcdce41",
+  "backup": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-pre-shared-structure-3e62-20261101-build",
+  "errors": [],
+  "actualBrowserOrDeviceVerified": false
+}

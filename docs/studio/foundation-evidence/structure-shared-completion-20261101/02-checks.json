@@ -1,0 +1,48 @@
+{
+  "schema": "vict.structure-option2-checks@1",
+  "sourceCandidate": "54e7357d9832f3d0985409ede9fcde38f415693d",
+  "layoutChoice": {
+    "testsPassed": 2,
+    "actualElkEdges": 120,
+    "actualElkNodes": 121,
+    "command": "npx vitest run --config packages/ui-flow-svelte/vitest.authoring.config.ts packages/ui-flow-svelte/test/layout-choice.svelte.test.ts",
+    "callerSourceUnchanged": true,
+    "filesPassed": 1
+  },
+  "fullLayout": {
+    "testDurationMs": 119875,
+    "testsPassed": 5,
+    "nodeCounts": [
+      12,
+      89,
+      500
+    ],
+    "engineChoicesRespected": [
+      "dagre",
+      "elk"
+    ],
+    "orientations": [
+      "RIGHT",
+      "DOWN"
+    ],
+    "note": "Test collection began before final source freeze; final package check and independent review are separate.",
+    "filesPassed": 1,
+    "historicalEvidenceOverwrite": false,
+    "command": "npx vitest run tests/structure-completion.test.ts"
+  },
+  "portBuilderReported": {
+    "packageBuildErrors": 0,
+    "retainedWarnings": 5,
+    "filesPassed": 3,
+    "testsPassed": 18
+  },
+  "independentVerdict": "pending",
+  "finalProductionSource": "3dfdde4ecb5567bc03130426482076d5344e3530",
+  "finalChecks": {
+    "typedFixtureTests": 9,
+    "changedCodeEslintExit": 0,
+    "productionBuildExit": 0,
+    "diffCheckExit": 0,
+    "studioTypecheckExit": 0
+  }
+}

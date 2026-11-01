@@ -1,0 +1,79 @@
+{
+  "schema": "vict.consumer-final-artifact-association@1",
+  "status": "PASS",
+  "sourceCandidate": "11200357a0883dda7f2b35637901c4e217eb01b9",
+  "report": "vict-structure-consumer-LEWDWl.json",
+  "reportSha256": "f5bd6229772e4895b1976478285fa3098135a78853cbf268555cbf99ae7c6a9e",
+  "consumerDist": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-consumer-LEWDWl\\consumer\\dist",
+  "installedPackages": 9,
+  "installedFiles": 645.0,
+  "freshBuilds": 2,
+  "reusedBuilds": 7,
+  "domCases": 4,
+  "productionBuildPassed": true,
+  "reusedManifest": {
+    "archivedSnapshot": "vict-structure-consumer-LEWDWl-reuse-manifest.json",
+    "sha256": "7541840acef02d360ccd6a874ae999dabdae7e468ed263661ea31e724ce486d6",
+    "matchesConsumedManifestHash": true,
+    "previousFinalReport": "vict-structure-consumer-0yUM1b.json",
+    "previousFinalReportSha256": "7541840acef02d360ccd6a874ae999dabdae7e468ed263661ea31e724ce486d6"
+  },
+  "themeContext": "Standalone App imports installed public rhea.css and renders authored controls in a 14px public theme context; DOM cases do not claim native font measurement.",
+  "logs": [
+    {
+      "path": "consumer-LEWDWl-logs/build-application.log",
+      "sha256": "2dd9fa121135bb1ff88d0d8d50656cd2dbcc6ffc22735137272232729ff89c14"
+    },
+    {
+      "path": "consumer-LEWDWl-logs/build-contracts.log",
+      "sha256": "91370fd8417f5cb40f951f28872593630dccdd06782faf5f3cab4885ece5641d"
+    },
+    {
+      "path": "consumer-LEWDWl-logs/build-sdk.log",
+      "sha256": "3710f22ff6303707da46c06f67afc3ee06b3ff40a11cb671b61303c195ad2ed6"
+    },
+    {
+      "path": "consumer-LEWDWl-logs/build-ui-editor.log",
+      "sha256": "1e1cc89adb2aa25e1e4508c07861c2a6cfd2ddb69db372457dc0cab18bcb9bce"
+    },
+    {
+      "path": "consumer-LEWDWl-logs/build-ui-flow-svelte.log",
+      "sha256": "670ee8f056a61854d3dfcc4aec5144b64920d55591e433cfa5b345f288065b5a"
+    },
+    {
+      "path": "consumer-LEWDWl-logs/build-ui-media-svelte.log",
+      "sha256": "23b231f3ed9939cafaab72a3c138c05431ad9744b95c249ceae80c87a1250bc3"
+    },
+    {
+      "path": "consumer-LEWDWl-logs/build-ui-structure-svelte.log",
+      "sha256": "6835c80ca3b371b3de4d9c009bdc5213f422198cbb4a0043dfc037280d705100"
+    },
+    {
+      "path": "consumer-LEWDWl-logs/build-ui-svelte.log",
+      "sha256": "182b87a0d1acaa3de3bf15c0a6459437cbd9a705d45d7295b5db997ae1c688cb"
+    },
+    {
+      "path": "consumer-LEWDWl-logs/build-ui.log",
+      "sha256": "d216e47822a8646121fc154e71e977ba7e8138c322c8bed888f4743c2bc8df02"
+    },
+    {
+      "path": "consumer-LEWDWl-logs/dom-test.log",
+      "sha256": "46fd2085eed0a02ab6f39bcf64529d2d6b3d098f9a63588558f705bea43d8a0a"
+    },
+    {
+      "path": "consumer-LEWDWl-logs/install.log",
+      "sha256": "f0b4c28eb7a94ca99f1158f92bbbd634dbd11247de6f4693bd1fc30aabfa5d46"
+    },
+    {
+      "path": "consumer-LEWDWl-logs/production-build.log",
+      "sha256": "efe3bdcb9fb01a60d00267c2c986a030c5945df6c0b109fbe735ed09e4aca723"
+    }
+  ],
+  "limitations": [
+    "Coding-authored fixture is not actual-agent authorship.",
+    "DOM simulation proves renderer/event/source behavior, not painted routing, physical touch, pointer connection dragging or phone inset coverage.",
+    "No persistence/backend execution or new device proof claimed.",
+    "Existing production chunk-size warning retained; no performance pass claimed.",
+    "Previous14973 native font failure remains separate from its bounded public-consumer DOM pass."
+  ]
+}

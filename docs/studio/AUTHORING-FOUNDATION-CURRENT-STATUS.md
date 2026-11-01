@@ -1,13 +1,15 @@
 # Authoring foundation current status
 
-> **RESUMED / IN PROGRESS; complete foundation gate HELD.**
-> [Current delivery](ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md) is the single operational
-> record for exact source/serving/review identities, live-trial outcomes, all 31 dispositions
-> and remaining proof. [Architecture and authority](ARCHITECTURE-REALIGNMENT-20261030.md)
-> govern gates A–E and retain dated continuation checkpoints. Older counts, service identities,
-> blockers and in-progress operations below are historical evidence, not current assertions.
-> All 31 owner acceptances remain open. No push, main merge, publication, production
-> deployment, milestone closure or Stage 9 closure is authorized.
+> **CLOSED — bounded Authoring Foundation / Option2 delivery,1November2026.**
+> The owner's instruction to finish properly and then close is fulfilled after
+> independent final integration **QUALIFIED PASS** on installed product20e26253.
+> [Current delivery](ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md) records exact
+> source/build identities; [completion](STRUCTURE-SHARED-COMPLETION-20261101.md)
+> records actual-agent adoption, shared Structure, native checks and retained limits.
+> Original31 dispositions remain evidence at their reviewed scope. Older holds,
+> acceptance counts and service identities below are historical checkpoints.
+> Whole Stage9/Milestone2 closure, push, main merge and publication are outside
+> this bounded closure. Slow authoring and12 inherited failed tests remain recorded.
 
 ## Historical owner pause and 29 October checkpoints (superseded operationally)
 

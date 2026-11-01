@@ -1,0 +1,6 @@
+
+C:\Users\RZ1\.codex\worktrees\vict-architecture-realignment-20261030\packages\ui-flow-svelte\test\coordinate-frame-precision.svelte.test.ts
+  15:67  error  This number literal will lose precision at runtime  no-loss-of-precision
+
+✖ 1 problem (1 error, 0 warnings)
+

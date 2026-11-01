@@ -1,0 +1,192 @@
+{
+  "schema": "vict.structure-shared-final-independent-integration@1",
+  "sourceCandidate": "20e26253f0ec6aab20f480c1b3e537e2282938d8",
+  "status": "QUALIFIED_PASS",
+  "closureSupported": true,
+  "closureScope": "Bounded owner-requested Option 2 and Authoring Foundation task delivery, under the instruction to do Option 2 properly and then close. No blanket acceptance of every historical disposition is inferred.",
+  "sealSha256": "28856024cfbc35470d3edb8ee722b8914c833a6e3093d10eb9fa8ad7aa6d09ec",
+  "savedRevision": "r1.r18",
+  "sourceEqualsOriginalSavedR18": true,
+  "supportedExportByteIdentical": true,
+  "containment": {
+    "cards": 20,
+    "checks": 181,
+    "failures": 0
+  },
+  "typography": {
+    "allRuntimeLabelsFont12": 44,
+    "nestedLabelsNoWrap": 8,
+    "installedPublicRheaRows": 6
+  },
+  "nativeGeometry": [
+    {
+      "file": "17-fresh-load-geometry.json",
+      "sha256": "e17b56e3b5c660cc7b6dcb56bade8183691ecc63c649874f5765da7e7a36c41e",
+      "beforeCanvasInteraction": true,
+      "edgeCount": 24,
+      "ownerCounts": {
+        "root": 20,
+        "finS": 2,
+        "finP": 2
+      },
+      "maxAxisError": 0.00029473988024619757,
+      "maxEuclideanError": 0.00035780399664853255,
+      "frames": [
+        {
+          "alert": [],
+          "inert": false,
+          "owner": "root",
+          "scale": "1.00000001699197"
+        },
+        {
+          "alert": [],
+          "inert": false,
+          "owner": "finS",
+          "scale": "0.17569877405997614"
+        },
+        {
+          "alert": [],
+          "inert": false,
+          "owner": "finP",
+          "scale": "0.1756987250225876"
+        }
+      ],
+      "labelCount": null
+    },
+    {
+      "file": "18-fresh-load-geometry.json",
+      "sha256": "5d265e3c0af0c12b72036522694cfccc11183c257d03a5797de37a3973e9a0e3",
+      "beforeCanvasInteraction": true,
+      "edgeCount": 24,
+      "ownerCounts": {
+        "root": 20,
+        "finS": 2,
+        "finP": 2
+      },
+      "maxAxisError": 0.00029473988024619757,
+      "maxEuclideanError": 0.00035780399664853255,
+      "frames": [
+        {
+          "alert": [],
+          "inert": false,
+          "owner": "root",
+          "scale": "1.00000001699197"
+        },
+        {
+          "alert": [],
+          "inert": false,
+          "owner": "finS",
+          "scale": "0.17569877405997614"
+        },
+        {
+          "alert": [],
+          "inert": false,
+          "owner": "finP",
+          "scale": "0.1756987250225876"
+        }
+      ],
+      "labelCount": 44
+    },
+    {
+      "file": "19-after-native-zoom-geometry.json",
+      "sha256": "8f348c535ce019c029803086d49b6fd55ad6cc3733d3ed8c39f483b96d57fc5b",
+      "beforeCanvasInteraction": false,
+      "edgeCount": 24,
+      "ownerCounts": {
+        "root": 20,
+        "finS": 2,
+        "finP": 2
+      },
+      "maxAxisError": 0.001123798988373892,
+      "maxEuclideanError": 0.0014775581231828221,
+      "frames": null,
+      "labelCount": null
+    }
+  ],
+  "requiredEvidence": [
+    {
+      "file": "independent-agent-originals-association.json",
+      "sha256": "8e76705bf1bee67cd074eb6c2f63e88b8886720737a006cb1b907ab839694225"
+    },
+    {
+      "file": "independent-actual-row-adoption.json",
+      "sha256": "a432e05111174d3b87b59c8df2a06d453f33b12d09f1a2a4c3d4d739a6920590"
+    },
+    {
+      "file": "independent-actual-save-and-structure-move.json",
+      "sha256": "0a319ced30d4d00dd630d4ec8c1a89e2a24ddcaff1606dc06d39003ea625d9c7"
+    },
+    {
+      "file": "07-roundtrip.json",
+      "sha256": "2fa990862f10ca90d064bb2dbda36453b120c15490852972fe21bf3a7841fd8f"
+    },
+    {
+      "file": "11-reopened-preservation.json",
+      "sha256": "6f6854a0d560a8071d615f3ed7f85b1f1d8d54ffb1a611a86db54030e4e75d66"
+    },
+    {
+      "file": "independent-activation-review.json",
+      "sha256": "31071e681bd55bc5fba0e8a61ab334583a7fa3c2cae3de08e4233e5ce343ca45"
+    },
+    {
+      "file": "independent-post-activation.json",
+      "sha256": "47244bbb3927e94f6336398b3431a97d71e9c0d639d0d72d9130df50f9d07c77"
+    },
+    {
+      "file": "independent-final-native-recomputation.json",
+      "sha256": "ab1e8bcb2b0d3f0c7acaa6236f98692854cd2fbdaec0a2d1cdb48818e5c5014b"
+    },
+    {
+      "file": "independent-source-review.json",
+      "sha256": "57658106b11406897223be6cde812c267b0e1afe6743f015aa7716a5acf3886a"
+    },
+    {
+      "file": "production-seal.json",
+      "sha256": "28856024cfbc35470d3edb8ee722b8914c833a6e3093d10eb9fa8ad7aa6d09ec"
+    },
+    {
+      "file": "18-final-r18-source.json",
+      "sha256": "853796683a8a54c17ff2b774c56f10d6b1c56ab691855e1345bbb192c531265c"
+    },
+    {
+      "file": "18-final-supported-export.json",
+      "sha256": "e0ca6d823d432212abc88e894ca8c69aae2fa964c4be7d5ca1e04d82b9b034e3"
+    },
+    {
+      "file": "18-final-containment.json",
+      "sha256": "9fe167bdcd9d95b5ba5a45bb3e126d0fdd82a026e839cbab3891f0078676399d"
+    },
+    {
+      "file": "18-final-compact-labels.json",
+      "sha256": "72dea7b98c157234796fd7d7e4acb549e3667833230b1151f8d3495da6a7e4ee"
+    },
+    {
+      "file": "17-public-applied-rhea-font.json",
+      "sha256": "b3ce99e2fd81d7fa64d86c10e9d64b27af38989830afac496503b33d9c25747a"
+    }
+  ],
+  "resolvedFindings": [
+    "Shared Structure internal host presentation context was reproduced red and repaired with parity and mounted checks.",
+    "Compact labels now outrank the Rhea form reset while authored important styles retain precedence; empty port columns collapse.",
+    "Captured persistent Social startup endpoint mismatch was traced to false unsupported coordinate classification at fractional scale. Precision and lifecycle repairs pass scoped tests; two final fresh-load native captures before canvas interaction align all 24 edges."
+  ],
+  "preservedAdverseEvidence": [
+    "independent-context-red.log",
+    "12-compact-before.json",
+    "13-compact-after.json",
+    "14-final-geometry.json",
+    "15-settled-before-fix.json",
+    "independent-final-geometry-finding.json",
+    "independent-precision-lifecycle.log"
+  ],
+  "limits": [
+    "Original 31 requirement dispositions are reused only at their independently reviewed original scope; this is not a newly executed 31-criterion device suite.",
+    "Native actions/captures were performed by the integrator; this reviewer independently challenged source and recomputed receipt identity, coordinates and source preservation.",
+    "Earlier Xiaomi Android/Chrome reports remain owner-reported historical evidence. No new physical-device port-connection test was performed.",
+    "Twelve inherited failed expectations remain reproduced failures; existing five Svelte warnings and build diagnostics are retained. No universal-green-test claim.",
+    "Actual agent receipt proves 42 completed calls, zero refusals and three acknowledged edits; authoring efficiency remains unresolved. Cropped AI image is explicitly unverified and is not visual acceptance evidence.",
+    "Final agent edit/save/Structure/Undo receipts originate at 3df; final 20 changes are shared CSS/coordinate repairs with byte-identical saved source/export and new affected source, artifact and native rechecks.",
+    "No whole Stage 9, Milestone 2, remote push, main merge, package publication or external production deployment is authorized or certified."
+  ],
+  "errors": []
+}

@@ -1,0 +1,37 @@
+
+> @victframework/ui-flow-svelte@0.4.0-rc.1 build
+> svelte-check --tsconfig ./tsconfig.json
+
+node:internal/modules/cjs/loader:1247
+  throw err;
+  ^
+
+Error: Cannot find module '../../package.json'
+Require stack:
+- C:\Users\RZ1\.codex\worktrees\vict-architecture-realignment-20261030\node_modules\svelte-check\dist\src\index.js
+- C:\Users\RZ1\.codex\worktrees\vict-architecture-realignment-20261030\node_modules\svelte-check\bin\svelte-check
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1244:15)
+    at Function._load (node:internal/modules/cjs/loader:1070:27)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Module.require (node:internal/modules/cjs/loader:1335:12)
+    at require (node:internal/modules/helpers:136:16)
+    at parseOptions (C:\Users\RZ1\.codex\worktrees\vict-architecture-realignment-20261030\node_modules\svelte-check\dist\src\index.js:128709:18)
+    at Object.<anonymous> (C:\Users\RZ1\.codex\worktrees\vict-architecture-realignment-20261030\node_modules\svelte-check\dist\src\index.js:130390:1)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\svelte-check\\dist\\src\\index.js',
+    'C:\\Users\\RZ1\\.codex\\worktrees\\vict-architecture-realignment-20261030\\node_modules\\svelte-check\\bin\\svelte-check'
+  ]
+}
+
+Node.js v22.13.1
+npm error Lifecycle script `build` failed with error:
+npm error code 1
+npm error path C:\Users\RZ1\.codex\worktrees\vict-architecture-realignment-20261030\packages\ui-flow-svelte
+npm error workspace @victframework/ui-flow-svelte@0.4.0-rc.1
+npm error location C:\Users\RZ1\.codex\worktrees\vict-architecture-realignment-20261030\packages\ui-flow-svelte
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c svelte-check --tsconfig ./tsconfig.json

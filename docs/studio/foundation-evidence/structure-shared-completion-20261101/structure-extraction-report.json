@@ -1,0 +1,86 @@
+{
+  "schema": "vict.structure-shared-extraction-report@1",
+  "date": "2026-11-01",
+  "sourceCommit": "c39e6aa739b9801e16f81666387c635feca42d80",
+  "baseline": "f483088f29785f973ffa1bb5131081c0936e1b47",
+  "architecture": {
+    "package": "@victframework/ui-structure-svelte",
+    "dependencyDirection": "Optional composition depends on ui-editor and ui-flow-svelte; neither depends on it. ui/ui-svelte/Svelte remain public peers. No private Studio imports.",
+    "sharedCapabilities": [
+      "Canonical source projection and23 relation roles",
+      "Search/visibility/collapse/focused neighborhoods and explicit progressive disclosure",
+      "Controlled selection/member-preserving groups/partial counts/hover and keyboard tracing",
+      "Source cards with independent columns and read-only reference ports",
+      "Distinct authorized content/container move handles",
+      "Measured backward-edge geometry and stable placement",
+      "Canonical source reparent validation delegating to ui-editor transaction drafts"
+    ],
+    "studioAdapters": "Thin source/behavior-label adapters, public compatibility reexports and component wrapper. Existing EditorBridge applies transactions; projection adds no independent source/history authority.",
+    "compatibility": "Saved source schemas unchanged. Package contains no demo state/action aliases; host presentation callbacks retain Studio aliases. Styles include standalone fallback tokens and no private stylesheet."
+  },
+  "checks": {
+    "packageBuild": {
+      "command": "npm run build -w @victframework/ui-structure-svelte",
+      "exitCode": 0,
+      "errors": 0,
+      "existingWarnings": 5,
+      "log": "structure-package-check.log"
+    },
+    "focusedExtraction": {
+      "files": 10,
+      "tests": 48,
+      "pass": 38,
+      "fail": 10,
+      "note": "Existing focused semantics/anatomy/connection/trace/placement/search tests23 pass; two current UI suites pass13tests and node-port suite2pass. The ten failures are independently compared below, not counted as passing."
+    },
+    "publicProjectionTests": {
+      "file": "apps/studio/tests/structure-public-package.test.ts",
+      "tests": 2,
+      "pass": 2,
+      "coverage": "Public projection equivalence with explicit host labels; neutral ids/relations; counted sockets/group selection; canonical immutability; stale/blocked move refusal. Required descriptors[] typing fixed after runtime pass; parent owns final typecheck."
+    }
+  },
+  "baselineComparison": {
+    "baselineCheckout": "C:/Users/RZ1/AppData/Local/Temp/vict-structure-baseline-f483-20261101",
+    "method": "Detached exactf483 checkout preserves untouched Studio source/tests; node_modules junctions use same installed root and Studio dependencies. Vitest3.2.7 on both sides. Shared dependency source remains current; this is exact Studio-source comparison, not an entirely separately installed historical dependency artifact.",
+    "ui": {
+      "baselineLog": "structure-baseline-matched-regressions.log",
+      "baselineTests": 19,
+      "baselinePass": 9,
+      "baselineFail": 10,
+      "candidateSameFailures": 10,
+      "findings": [
+        "Three Designer-mounted Duplicate/Undo tests see zero design-frame input nodes; localhost3000fetch refusal diagnostics retained on both sides.",
+        "Seven older Structure tests expect replaced Inspect structure/fitview controls or older timing/refusal behavior. Exact same named test failures reproduced at baseline."
+      ]
+    },
+    "clarity": {
+      "baselineLog": "structure-baseline-clarity.log",
+      "baselineTests": 6,
+      "baselinePass": 4,
+      "baselineFail": 2,
+      "candidateSameFailures": 2,
+      "findings": [
+        "Expected Accepted is on, but existing Studio alias produces Agreement is on.",
+        "Expected Requests Submit(simulated), but existing Studio alias produces Requests Submit."
+      ],
+      "harness": "Evidence-only config outside active product extends original Vitest config with fs.allow for shared dependencies; initial outside-worktree resolution collection failure is retained."
+    },
+    "candidateLog": "structure-candidate-regressions.log",
+    "candidateTests": 27,
+    "candidatePass": 15,
+    "candidateFail": 12,
+    "conclusion": "All twelve observed failing expectations reproduced in untouched baseline Studio source. They remain failing checks; no new extraction regression is identified by this comparison."
+  },
+  "retainedFailedObservations": [
+    "Initial package check caught copied loose tuple inference and missing CSS module declarations; repaired, final package check passes.",
+    "Initial in-progress test run observed stale Vite export resolution after adding subpath exports during collection and a dynamic geometry import timeout through the initial UI barrel. Nonvisual public subpaths remove the barrel dependency; fresh focused geometry test passes.",
+    "Initial baseline probe used rootVitest4.1.11 rather than appVitest3.2.7; stopped without verdict, log structure-baseline-regressions.log retained.",
+    "Matched baseline clarity collection initially refused outside-worktree ui/dist resolution; subsequent evidence-only fs.allow run completed and reproduced both failures."
+  ],
+  "limitations": [
+    "No independent gate verdict awarded by this builder report.",
+    "Root integrator owns final Studio build/typecheck, installed-artifact consumer, native activation/reuse evidence and final independent review.",
+    "Twelve baseline failing expectations are retained as such; this report is not a blanket all-tests pass."
+  ]
+}

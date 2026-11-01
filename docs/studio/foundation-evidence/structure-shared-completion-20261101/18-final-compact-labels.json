@@ -1,0 +1,98 @@
+[
+  {
+    "font": "12px",
+    "label": "Cropped",
+    "labelHeight": 3.114306688308716,
+    "lineHeight": "18px",
+    "logicalHeight": "18px",
+    "owner": "finS",
+    "port": "f-crop/o",
+    "rowHeight": 5.536523342132568,
+    "rowWidth": "188.4px",
+    "typeBadges": 0
+  },
+  {
+    "font": "12px",
+    "label": "Image in",
+    "labelHeight": 3.1142823696136475,
+    "lineHeight": "18px",
+    "logicalHeight": "18px",
+    "owner": "finS",
+    "port": "f-grade/i",
+    "rowHeight": 5.5364990234375,
+    "rowWidth": "88.2px",
+    "typeBadges": 0
+  },
+  {
+    "font": "12px",
+    "label": "Graded",
+    "labelHeight": 3.1142823696136475,
+    "lineHeight": "18px",
+    "logicalHeight": "18px",
+    "owner": "finS",
+    "port": "f-grade/o",
+    "rowHeight": 5.5364990234375,
+    "rowWidth": "88.2px",
+    "typeBadges": 0
+  },
+  {
+    "font": "12px",
+    "label": "Graded in",
+    "labelHeight": 3.1142823696136475,
+    "lineHeight": "18px",
+    "logicalHeight": "18px",
+    "owner": "finS",
+    "port": "f-caption/i",
+    "rowHeight": 5.5364990234375,
+    "rowWidth": "188.4px",
+    "typeBadges": 0
+  },
+  {
+    "font": "12px",
+    "label": "Cropped",
+    "labelHeight": 2.089648485183716,
+    "lineHeight": "18px",
+    "logicalHeight": "18px",
+    "owner": "finP",
+    "port": "f-crop/o",
+    "rowHeight": 3.714941501617432,
+    "rowWidth": "188.4px",
+    "typeBadges": 0
+  },
+  {
+    "font": "12px",
+    "label": "Image in",
+    "labelHeight": 2.089648485183716,
+    "lineHeight": "18px",
+    "logicalHeight": "18px",
+    "owner": "finP",
+    "port": "f-grade/i",
+    "rowHeight": 3.714941501617432,
+    "rowWidth": "88.2px",
+    "typeBadges": 0
+  },
+  {
+    "font": "12px",
+    "label": "Graded",
+    "labelHeight": 2.089648485183716,
+    "lineHeight": "18px",
+    "logicalHeight": "18px",
+    "owner": "finP",
+    "port": "f-grade/o",
+    "rowHeight": 3.714941501617432,
+    "rowWidth": "88.2px",
+    "typeBadges": 0
+  },
+  {
+    "font": "12px",
+    "label": "Graded in",
+    "labelHeight": 2.089648485183716,
+    "lineHeight": "18px",
+    "logicalHeight": "18px",
+    "owner": "finP",
+    "port": "f-caption/i",
+    "rowHeight": 3.714941501617432,
+    "rowWidth": "188.4px",
+    "typeBadges": 0
+  }
+]
