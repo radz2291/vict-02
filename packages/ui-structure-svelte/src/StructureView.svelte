@@ -129,7 +129,7 @@
   const inheritedObjectCommands=$derived(objectTarget?.data.occurrence&&objectCommands?objectCommands(objectTarget.data.occurrence).filter(command=>!['inspect','locate','edit'].includes(command.id??'')):[]);
   const framingIds=$derived([...new Set(chosenItems.flatMap(item=>item.kind==='node'?[item.id]:edges.filter(edge=>edge.id===item.id).flatMap(edge=>[edge.source,edge.target])).filter(id=>nodes.some(node=>node.id===id)))]);
   const related = $derived(graph.edges.filter(edge => (edge.source === inspectedId || edge.target === inspectedId) && edge.data?.kind !== 'containment'));
-  const facts = $derived(inspected ? structureFacts(document, inspected) : []);
+  const facts = $derived(inspected ? structureFacts(document, inspected, {descriptors,...context}) : []);
   const filtered = $derived(filterStructure(graph, { search, focusId: focusedId, collapsed, bindings: showBindings, definitions: showDefinitions, inventory }));
   const scopeId = $derived(connectionFocus ?? structureId(document.id,'node',selectedNodeId ?? document.root));
   const scopeIds=$derived(selectionFocus.length?selectionFocus:[scopeId]);
@@ -221,7 +221,7 @@
       const source = node.data.sourceId && document.nodes[node.data.sourceId];
       const target = !!node.data.occurrence && !!source && ((source.kind === 'element' && ['main', 'section', 'div', 'article', 'aside', 'header', 'footer', 'nav', 'form', 'fieldset', 'ul', 'ol', 'li'].includes(source.tag)) || (source.kind === 'component' && (descriptors.find(entry => entry.id === source.definitionId)?.slots?.length ?? 0) === 1));
       return { ...node, position: old?.position ?? knownPositions.get(node.id) ?? remembered?.get(node.id) ?? node.position, measured: old?.measured, selectable:false,selected:untrack(()=>chosenItems.some(item=>item.kind==='node'&&item.id===node.id)),
-        data: { ...structureNodePresentation(document, node.data), ports:structurePorts(currentGraph,node.id), direction: orientation, moveSource: editable && !!node.data.occurrence && node.data.sourceId !== document.root, moveTarget: editable && target,
+        data: { ...structureNodePresentation(document, node.data, context), ports:structurePorts(currentGraph,node.id), direction: orientation, moveSource: editable && !!node.data.occurrence && node.data.sourceId !== document.root, moveTarget: editable && target,
           collapsed: groupClosed(node.id), onToggleGroup: groupGraph.edges.some(edge => edge.source === node.id && edge.data?.kind === 'containment') ? () => collapse(node.id) : undefined } };
     });
     const oldEdges=untrack(()=>new Map(edges.map(edge=>[edge.id,edge])));
@@ -393,22 +393,22 @@
       <WorkspaceMenu label="Object" value="structure-object" {activeMenu} disabled={!chosenItems.length}>
         <Menubar.Item disabled={blocked} onSelect={()=>openInspection('properties')}>Inspect</Menubar.Item>
         <Menubar.Item disabled={blocked} onSelect={() => openInspection('relationships')}>Relationships</Menubar.Item>
-        {#if objectTarget?.data.occurrence}
+        {#if onNavigate && objectTarget?.data.occurrence}
           <Menubar.Item disabled={blocked} onSelect={() => navigate('layers')}>Reveal in Layers</Menubar.Item>
           <Menubar.Item disabled={blocked} onSelect={() => navigate('design')}>{presentation === 'drawer' ? 'Locate on canvas' : 'Show in Design'}</Menubar.Item>
         {/if}
         {#if objectTarget?.data.childCount}<Menubar.Separator /><Menubar.Item onSelect={() => {if(objectTarget)collapse(objectTarget.id);}}>{groupClosed(objectTarget.id) ? 'Expand group' : 'Collapse group'}</Menubar.Item>{/if}
         {#if objectTarget?.data.occurrence}
           <Menubar.Separator />
-          <Menubar.Item disabled={blocked} onSelect={() => navigate('inspector')}>Edit on canvas</Menubar.Item>
+          {#if onNavigate}<Menubar.Item disabled={blocked} onSelect={() => navigate('inspector')}>Edit on canvas</Menubar.Item>{/if}
           <Menubar.Item disabled={blocked || objectTarget.data.sourceId === document.root} onSelect={beginMove}>Move inside…</Menubar.Item>
           {#each inheritedObjectCommands as command}
             {#if command.separator}<Menubar.Separator />{/if}
             <Menubar.Item disabled={blocked || command.disabled} onSelect={()=>command.run()}>{command.label}</Menubar.Item>
           {/each}
         {/if}
-        {#if objectTarget?.data.kind === 'state'}<Menubar.Item disabled={blocked} onSelect={() => navigate('data')}>Edit in Data</Menubar.Item>{/if}
-        {#if objectTarget?.data.kind === 'action'}<Menubar.Item disabled={blocked} onSelect={() => navigate('actions')}>Open Actions</Menubar.Item>{/if}
+        {#if onNavigate && objectTarget?.data.kind === 'state'}<Menubar.Item disabled={blocked} onSelect={() => navigate('data')}>Edit in Data</Menubar.Item>{/if}
+        {#if onNavigate && objectTarget?.data.kind === 'action'}<Menubar.Item disabled={blocked} onSelect={() => navigate('actions')}>Open Actions</Menubar.Item>{/if}
       </WorkspaceMenu>
     </Menubar.Root>
     <div class="structure-quick-tools" role="group" aria-label="Structure quick actions">
@@ -478,15 +478,15 @@
     {#if inspectionPage==='move'}
           <div class="structure-moves">
             <h3>Move inside</h3>
-            <label>Content<select aria-label="Content to move" value={moveSource} onchange={event => { moveSource = event.currentTarget.value; moveTarget = ''; }}><option value="">Choose content</option>{#each moveSources as node (node.id)}<option value={node.id}>{structureNodePresentation(document, node.data).label} · {node.data.sourceId}</option>{/each}</select></label>
-            <label>Container<select aria-label="Move destination" value={moveTarget} onchange={event => moveTarget = event.currentTarget.value}><option value="">Choose container</option>{#each targetOptions as node (node.id)}<option value={node.id}>{structureNodePresentation(document, node.data).label} · {node.data.sourceId}</option>{/each}</select></label>
+            <label>Content<select aria-label="Content to move" value={moveSource} onchange={event => { moveSource = event.currentTarget.value; moveTarget = ''; }}><option value="">Choose content</option>{#each moveSources as node (node.id)}<option value={node.id}>{structureNodePresentation(document, node.data, context).label} · {node.data.sourceId}</option>{/each}</select></label>
+            <label>Container<select aria-label="Move destination" value={moveTarget} onchange={event => moveTarget = event.currentTarget.value}><option value="">Choose container</option>{#each targetOptions as node (node.id)}<option value={node.id}>{structureNodePresentation(document, node.data, context).label} · {node.data.sourceId}</option>{/each}</select></label>
             <div class="move-actions"><button type="button" disabled={blocked || !moveSource || !targetOptions.some(node => node.id === moveTarget)} onclick={() => commitMove({ documentId: document.id, revision, source: moveSource, target: moveTarget })}>Move</button><button type="button" onclick={() => closeInspection()}>Cancel</button></div>
             <button type="button" disabled={blocked} onclick={()=>{inspectionOpen=false;}}>Choose on graph</button>
             <p class="inspection-hint">Moves content in the document. Undo restores its previous place.</p>
           </div>
 
     {:else}
-      <label class="source-finder">Source item<select aria-label="Structure source selection" disabled={blocked} value={inspectedId ?? ''} onchange={event=>{const node=graph.nodes.find(entry=>entry.id===event.currentTarget.value);if(node&&!blocked){closeInspection(false);void reveal(node).then(()=>onInspect?.(node.id,'properties'));}}}><option value="">Select an item</option>{#each graph.nodes as node (node.id)}<option value={node.id}>{structureNodePresentation(document,node.data).label} · {node.data.sourceId ?? parseStructureId(node.id)?.[2]}</option>{/each}</select></label>
+      <label class="source-finder">Source item<select aria-label="Structure source selection" disabled={blocked} value={inspectedId ?? ''} onchange={event=>{const node=graph.nodes.find(entry=>entry.id===event.currentTarget.value);if(node&&!blocked){closeInspection(false);void reveal(node).then(()=>onInspect?.(node.id,'properties'));}}}><option value="">Select an item</option>{#each graph.nodes as node (node.id)}<option value={node.id}>{structureNodePresentation(document,node.data,context).label} · {node.data.sourceId ?? parseStructureId(node.id)?.[2]}</option>{/each}</select></label>
     {/if}
   </dialog>
 </section>

@@ -22,7 +22,7 @@ it('keeps every declaration through public sockets and group selection without a
  const node=structureId(document.id,'node','field');const ports=structurePorts(graph,node);expect(ports.length).toBeGreaterThan(0);
  for(const port of ports){const members=portConnections(edges,node,port.id);expect(members.length).toBe(port.count);const selection=changeSelection({documentId:document.id,items:[]},members.map(edge=>({kind:'edge' as const,id:edge.id})),'replace');expect(selectionHighlight(edges,selection.items)?.edges.size).toBeGreaterThanOrEqual(members.length);}
  const request={documentId:document.id,revision:'old',source:node,target:structureId(document.id,'node',document.root)};
- expect(structureMove(document,'new',request,false).ok).toBe(false);
- expect(structureMove(document,'old',request,true).ok).toBe(false);
+ expect(structureMove(document,'new',request,false,[]).ok).toBe(false);
+ expect(structureMove(document,'old',request,true,[]).ok).toBe(false);
  expect(JSON.stringify(document)).toBe(before);
 });

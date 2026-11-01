@@ -22,18 +22,43 @@ const save = () => writeFileSync(reportPath, JSON.stringify(report, null, 2));
 const put = (path, text) => writeFileSync(join(consumer, path), text);
 save();
 try {
+  const reuseIndex = process.argv.indexOf('--reuse-artifacts');
+  const reusePath = reuseIndex < 0 ? undefined : process.argv[reuseIndex + 1];
+  if (reuseIndex >= 0 && (!reusePath || reusePath.startsWith('--'))) throw Error('--reuse-artifacts requires an earlier report path');
+  const previous = reusePath ? JSON.parse(readFileSync(resolve(root, reusePath), 'utf8')) : undefined;
+  if (previous && (previous.schema !== report.schema || previous.packageBuilds.length !== names.length || previous.packs.length !== names.length)) throw Error('Reuse requires all earlier package builds and exact packed inventories');
+  if (previous && git(['diff', '--name-only', previous.sourceCandidate, report.sourceCandidate, '--', 'package.json', 'package-lock.json', 'tsconfig.base.json'])) throw Error('Shared build inputs changed: use a full build ladder');
+  if (previous) report.reusedArtifactEvidence = { path: resolve(root, reusePath), sha256: hash(readFileSync(resolve(root, reusePath))), previousStatus: previous.status, note: 'Only successful package-build results with equal tracked trees and every existing packed file byte qualify. A fixture failure does not erase an earlier successful dependency build; fixture tests and consumer production build always rerun.' };
+  const dependencyKinds = ['dependencies', 'peerDependencies', 'optionalDependencies'];
   for (const name of names) {
     if (git(['diff', '--name-only', 'HEAD', '--', `packages/${name}`]) || git(['ls-files', '--others', '--exclude-standard', '--', `packages/${name}`])) throw Error(`Commit packed source first: ${name}`);
-    writeFileSync(join(destination, `build-${name}.log`), run(['run', 'build', '-w', `@victframework/${name}`], root));
-    report.packageBuilds.push({ name: `@victframework/${name}`, mode: 'fresh-build', sourceTree: git(['rev-parse', `${report.sourceCandidate}:packages/${name}`]) });
+    const packageName = `@victframework/${name}`, sourceTree = git(['rev-parse', `${report.sourceCandidate}:packages/${name}`]);
+    const oldBuild = previous?.packageBuilds.find(build => build.name === packageName), oldPack = previous?.packs.find(pack => pack.name === packageName);
+    const manifest = JSON.parse(readFileSync(join(root, 'packages', name, 'package.json'), 'utf8'));
+    const deps = dependencyKinds.flatMap(kind => Object.keys(manifest[kind] ?? {}));
+    const freshlyBuiltDependency = report.packageBuilds.some(build => build.mode === 'fresh-build' && deps.includes(build.name));
+    const reusable = oldBuild?.sourceTree === sourceTree && !freshlyBuiltDependency && oldPack?.files?.length && oldPack.files.every(file => { try { return hash(readFileSync(join(root, 'packages', name, file.path))) === file.sha256; } catch { return false; } });
+    if (reusable) {
+      if (hash(readFileSync(oldPack.path)) !== oldPack.sha256) throw Error(`Earlier tar changed: ${packageName}`);
+      writeFileSync(join(destination, `build-${name}.log`), `Reused successful package build; exact source tree and ${oldPack.files.length} packed files unchanged.\nPrior report: ${resolve(root, reusePath)}\n`);
+      report.packageBuilds.push({ name: packageName, mode: 'reused-build', sourceTree, previousSource: previous.sourceCandidate });
+    } else {
+      writeFileSync(join(destination, `build-${name}.log`), run(['run', 'build', '-w', packageName], root));
+      report.packageBuilds.push({ name: packageName, mode: 'fresh-build', sourceTree });
+    }
+    save();
   }
   const dependencies = {};
   for (const name of names) {
+    if (git(['diff', '--name-only', report.sourceCandidate, '--', `packages/${name}`]) || git(['ls-files', '--others', '--exclude-standard', '--', `packages/${name}`])) throw Error(`Source drift before packing: ${name}`);
     const manifest = JSON.parse(readFileSync(join(root, 'packages', name, 'package.json'), 'utf8'));
-    const packed = JSON.parse(run(['pack', '--json', '--pack-destination', artifacts], join(root, 'packages', name)))[0];
-    const path = join(artifacts, packed.filename);
+    const oldPack = previous?.packs.find(pack => pack.name === manifest.name);
+    const reused = report.packageBuilds.find(build => build.name === manifest.name).mode === 'reused-build';
+    const packed = reused ? undefined : JSON.parse(run(['pack', '--json', '--pack-destination', artifacts], join(root, 'packages', name)))[0];
+    const path = reused ? oldPack.path : join(artifacts, packed.filename);
     dependencies[manifest.name] = `file:${path.replaceAll('\\', '/')}`;
-    report.packs.push({ name: manifest.name, path, sha256: hash(readFileSync(path)), files: packed.files.map(file => ({ path: file.path, sha256: hash(readFileSync(join(root, 'packages', name, file.path))) })) });
+    report.packs.push({ name: manifest.name, path, sha256: hash(readFileSync(path)), reused: !!reused, files: reused ? oldPack.files : packed.files.map(file => ({ path: file.path, sha256: hash(readFileSync(join(root, 'packages', name, file.path))) })) });
+    save();
   }
   const version = name => JSON.parse(readFileSync(join(root, 'node_modules', name, 'package.json'), 'utf8')).version;
   dependencies.svelte = version('svelte');
