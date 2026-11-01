@@ -5,8 +5,9 @@ export type LayoutEngine = 'elk' | 'dagre';
 export type LayoutDirection = 'RIGHT' | 'DOWN';
 export type LayoutOptions = { engine?: LayoutEngine; direction?: LayoutDirection; spacing?: number };
 export type RoutedEdgeData = Record<string, unknown> & { route?: XYPosition[] };
-export function chooseLayoutEngine(count: number, requested: LayoutEngine = 'elk'): { engine: LayoutEngine; reason?: string } {
-  return requested === 'elk' && count > 120 ? { engine: 'dagre', reason: 'Large expanded view uses the faster hierarchy layout. Focus or collapse groups to enable routed layout.' } : { engine: requested };
+export function chooseLayoutEngine(_count: number, requested: LayoutEngine = 'elk'): { engine: LayoutEngine; reason?: string } {
+  // Graph size must not silently override the caller's routing choice.
+  return { engine: requested };
 }
 
 /** Presentation only. Measured sizes take precedence over explicit initial sizes. */

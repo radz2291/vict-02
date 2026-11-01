@@ -45,8 +45,9 @@ proof of integration:
 
 Synthetic 12/89/500-node comparisons use variable supplied measured sizes, both
 orientations and actual engines. The initial unbounded ELK result is retained:
-500 expanded nodes took about 48–65 seconds on this host. The selected adapter
-enforces a 120-visible-node ELK bound and falls back to Dagre above it; it returns
-the actual choice and reason. Group/collapse remains a consumer source projection,
+500 expanded nodes took about 48–65 seconds on this host. That historical result
+does not impose a node-count limit: the adapter now respects the requested engine
+at every size. Hosts retain layout generation fences for stale results.
+Group/collapse remains a consumer source projection,
 not automatic canonical reparenting or a claim that native compound subflows
 have been implemented. See the source repository's completion/structure evidence.

@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import { writeFileSync, mkdirSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
 import { canonicalUiDocument, type UiDocument, type UiNode } from '@victframework/ui';
 import { newScreen } from '../src/lib/designer/application.js';
 import { compositionName, compositionNames } from '@victframework/ui-editor';
@@ -83,7 +82,7 @@ it('compares real Dagre and ELK layouts at small, owner-sized and advertised-siz
       expect(result.nodes.every(node => Number.isFinite(node.position.x) && Number.isFinite(node.position.y))).toBe(true);
       expect(result.nodes.every(node => node.sourcePosition === (direction === 'RIGHT' ? 'right' : 'bottom') && node.targetPosition === (direction === 'RIGHT' ? 'left' : 'top'))).toBe(true);
       if (result.engine === 'elk') expect(routedEdges).toBe(result.edges.length);
-      if (count > 120) expect(result.engine).toBe('dagre');
+      expect(result.engine).toBe(engine);
       if (count === 12) {
         const again = await layoutGraph(nodes, graph.edges, { engine, direction });
         expect(again.nodes.map(node => node.position)).toEqual(result.nodes.map(node => node.position));
@@ -91,10 +90,13 @@ it('compares real Dagre and ELK layouts at small, owner-sized and advertised-siz
     }
     expect(canonicalUiDocument(source).contentDigest).toBe(before);
   }
-  const directory = fileURLToPath(new URL('../../../docs/studio/cycle-1-4/structure-semantics/', import.meta.url));
-  mkdirSync(directory, { recursive: true });
-  writeFileSync(`${directory}/layout-comparison.json`, JSON.stringify({ kind: 'deterministic synthetic source fixture benchmark; variable measured sizes supplied; not a browser measurement', engines: { dagre: '1.1.5', elk: '0.11.0' }, results }, null, 2));
-}, 120_000);
+  // Benchmark reports are opt-in so regression runs never overwrite historical evidence.
+  if (process.env.VICT_LAYOUT_BENCHMARK_DIRECTORY) {
+    const directory = process.env.VICT_LAYOUT_BENCHMARK_DIRECTORY;
+    mkdirSync(directory, { recursive: true });
+    writeFileSync(`${directory}/layout-comparison.json`, JSON.stringify({ kind: 'deterministic synthetic source fixture benchmark; variable measured sizes supplied; not a browser measurement', engines: { dagre: '1.1.5', elk: '0.11.0' }, results }, null, 2));
+  }
+}, 240_000);
 
 it('batch names preserve the shared composition naming semantics', () => {
   const source = fixture(12); const names = compositionNames(source);
