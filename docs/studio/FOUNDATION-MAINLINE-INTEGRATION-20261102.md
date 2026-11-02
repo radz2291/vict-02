@@ -18,4 +18,16 @@ The running Studio, installed build, saved applications/assets/conversations/dra
 
 ## Preserved status and stop condition
 
+## Integration test reconciliation
+
+The first expanded regression run found three failures in delivered UI-editor tests, not the previously repaired 12 Studio cases. Original failed logs are retained. A correctly scoped rerun reproduced the stale class assertion. Investigation found no corresponding production defect:
+
+- Class validation deliberately removed numeric quotas. Formerly capped valid 257-character/Unicode tokens and 101-entry lists now have explicit acceptance checks; malformed empty, whitespace, NUL and nonstring refusal checks, atomicity, history and persistence checks remain.
+- Floating tools listen on their owning document to support iframe ownership. The old synthetic F10 event was dispatched directly to window without bubbling. The fixture now dispatches from the actual canvas with bubbling, retaining focus restoration, Escape, visibility and unchanged-source assertions.
+- Catalog coverage iterated the entire enlarged catalog inside one five-second case. Parameterizing by descriptor preserves all property/output/page assertions and the normal per-case timeout, while reporting the failing descriptor individually. No timeout is increased in the repaired test.
+
+These are integration test repairs only. Production source, runtime behavior and package manifests are unchanged. Independent verification must challenge the repaired candidate rather than reuse the initial candidate's verdict.
+
+## Preserved status and stop condition
+
 Bounded Authoring Foundation / Option 2 and follow-ups stay closed. Stage 9 stays open; Milestone 2 stays paused with requirements retained pending explicit owner resumption. Speed work stays deferred pending TORI integration, with measured slowness open. The current agent remains available until a TORI replacement meets the [future integration acceptance requirement](AUTHORING-FOUNDATION-CURRENT-STATUS.md#future-tori-integration-acceptance-requirement) and is verified. Mainline integration establishes a dependency baseline for future TORI work; it does not start that work. Stop after verified mainline delivery and reporting.

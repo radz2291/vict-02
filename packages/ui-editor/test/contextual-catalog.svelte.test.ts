@@ -4,8 +4,7 @@ import { catalogDescriptors } from '@victframework/ui-svelte';
 import type { UiDocument } from '@victframework/ui';
 import Inspector from '../src/Inspector.svelte';
 
-it('exposes every registered catalog property and output in bounded contextual pages without disclosures', async () => {
-  for (const descriptor of catalogDescriptors) {
+it.each(catalogDescriptors)('exposes $id properties and outputs in contextual pages without disclosures', async (descriptor) => {
     const source: UiDocument = {
       schema: 'vict.ui-document@1',
       id: 'audit',
@@ -105,5 +104,4 @@ it('exposes every registered catalog property and output in bounded contextual p
       await unmount(connection);
       outputs.remove();
     }
-  }
 });

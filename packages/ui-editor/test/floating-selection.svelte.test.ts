@@ -68,7 +68,7 @@ it('anchors tools to selection, dismisses outside, and restores keyboard focus w
     document.body.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
     flushSync();
     expect(palette.style.visibility).toBe('hidden');
-    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'F10', cancelable: true }));
+    target.querySelector('.uv-canvas')!.dispatchEvent(new KeyboardEvent('keydown', { key: 'F10', bubbles: true, cancelable: true }));
     await tick();
     expect(document.activeElement?.textContent).toBe('Format selection');
     expect(palette.style.visibility).toBe('visible');

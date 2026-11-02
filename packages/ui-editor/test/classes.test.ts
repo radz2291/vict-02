@@ -4,9 +4,9 @@ import {EditorBridge,type DocumentStorePort} from '../src/bridge.js';
 import {setClasses} from '../src/commands.js';
 const source=():UiDocument=>({schema:'vict.ui-document@1',id:'classes',revision:'1',root:'root',nodes:{root:{kind:'element',id:'root',tag:'main',classes:['legacy'],children:['field']},field:{kind:'element',id:'field',tag:'input',classes:['retained'],children:[]}},componentDefinitions:{},localState:{},styleSources:{},tokens:{},conditions:{},assets:{}});
 describe('canonical authored class transactions',()=>{
- it('accepts normal punctuation/Unicode DOM tokens without a project allowlist and rejects malformed/bounded input',()=>{
-  for(const value of [[],['😀'.repeat(256)],['brand:active','md:grid-cols-[1fr_2fr]','作品','vict-graph-drag-handle','nodrag']])expect(isUiClassList(value)).toBe(true);
-  for(const value of [[''],['a b'],['a\tb'],['a\nb'],['a\0b'],['x'.repeat(257)],['😀'.repeat(257)],Array(101).fill('x'),['okay',1],undefined])expect(isUiClassList(value)).toBe(false);
+ it('accepts valid punctuation/Unicode and formerly capped class lists while rejecting malformed tokens',()=>{
+  for(const value of [[],['😀'.repeat(256)],['x'.repeat(257)],['😀'.repeat(257)],Array(101).fill('x'),Array.from({length:101},(_,i)=>`class-${i}`),['brand:active','md:grid-cols-[1fr_2fr]','作品','vict-graph-drag-handle','nodrag']])expect(isUiClassList(value)).toBe(true);
+  for(const value of [[''],['a b'],['a\tb'],['a\nb'],['a\0b'],['okay',1],undefined])expect(isUiClassList(value)).toBe(false);
  });
  it('uses one undoable replace/clear operation and preserves classes through save/reopen and JSON source roundtrip',()=>{
   let stored=source(),revision='1';const store:DocumentStorePort={load:()=>({status:'loaded',document:stored,storedRevision:revision}),save:input=>{stored=input.document;revision=input.newStoredRevision;return {ok:true,storedRevision:revision};}};
