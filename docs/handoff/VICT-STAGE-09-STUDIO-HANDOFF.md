@@ -1,5 +1,9 @@
 # VICT Stage 09 — Entry and Gate Handoff
 
+## Subsequent integration authority — 2 November 2026
+
+The owner's subsequent instruction authorizes isolated candidate preparation, proportionate checks, fresh independent verification, integration repairs if necessary, and normal mainline integration of the completed foundation. Follow the [integration record](../studio/FOUNDATION-MAINLINE-INTEGRATION-20261102.md). This supersedes the documentation-only next action below solely for this task. Preserve all recorded pauses and closures; do not activate the runtime, start TORI or resume Milestone 2. Stop after remote main verification and reporting.
+
 ## Current handoff — 2 November 2026
 
 **Stage 9 OPEN; Milestone 2 PAUSED to prioritize TORI, requirements retained.** Bounded Authoring Foundation / Option 2 and both follow-ups remain closed. Read the [owner decision and future TORI integration requirement](../studio/AUTHORING-FOUNDATION-CURRENT-STATUS.md#owner-decision--2-november-2026), [current delivery](../studio/ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md) and [acceptance ledger](../studio/AUTHORING-FOUNDATION-ACCEPTANCE.md) before the architecture specification or historical instructions below.

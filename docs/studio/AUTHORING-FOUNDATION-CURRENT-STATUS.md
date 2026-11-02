@@ -1,5 +1,9 @@
 # Authoring foundation current status
 
+## Authorized mainline integration — 2 November 2026
+
+The owner subsequently authorized isolated mainline integration and independent verification of the completed delivery. See the [integration record](FOUNDATION-MAINLINE-INTEGRATION-20261102.md). This supersedes the earlier documentation-only stop only for this integration; the decisions and future TORI acceptance requirements below stand. No runtime activation, new features, TORI implementation, speed optimization or Milestone 2 resumption is authorized.
+
 ## Owner decision — 2 November 2026
 
 **Stage 9 remains OPEN. Milestone 2 is PAUSED to prioritize TORI; its requirements remain retained.** The bounded Authoring Foundation / Option 2 work and its test-repair and caption follow-ups remain CLOSED at their documented scopes below. This is neither whole-Stage-9 closure nor a whole-repository test pass.

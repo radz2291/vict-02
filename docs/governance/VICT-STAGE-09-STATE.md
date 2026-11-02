@@ -1,5 +1,9 @@
 # VICT Stage 09 — Current State
 
+## Subsequent integration authority — 2 November 2026
+
+The owner subsequently authorized verified mainline integration of the completed foundation, without runtime activation or new development. Follow the [integration record](../studio/FOUNDATION-MAINLINE-INTEGRATION-20261102.md) and current handoff. This is a bounded amendment to the documentation-only stop below; Stage 9 stays open, Milestone 2 stays paused, and the TORI direction and retained findings stand.
+
 ## Current status — 2 November 2026
 
 **Stage 9 OPEN; Milestone 2 PAUSED to prioritize TORI, requirements retained.** Bounded Authoring Foundation / Option 2 and both follow-ups remain closed. Read the [owner decision and future integration requirement](../studio/AUTHORING-FOUNDATION-CURRENT-STATUS.md#owner-decision--2-november-2026), [current delivery](../studio/ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md) and [acceptance ledger](../studio/AUTHORING-FOUNDATION-ACCEPTANCE.md). Delivery was subsequently pushed at `09c6ad0710de3838b2e23b95975e8496c89f1654`; product remains `2de11bc7719984f23341852b1cc8b9985ff81adf`.

@@ -1,5 +1,9 @@
 # Architecture realignment — current delivery boundary
 
+## Authorized mainline integration — 2 November 2026
+
+The owner subsequently authorized mainline integration of this completed delivery. The [integration record](FOUNDATION-MAINLINE-INTEGRATION-20261102.md) governs candidate verification and the main update; it supersedes the earlier documentation-only stop solely for that task. Bounded closures, original verification attribution, Stage 9 open, Milestone 2 paused and TORI acceptance requirements remain intact. This does not activate a runtime or start TORI development.
+
 ## Reconciled delivery — 2 November 2026
 
 The completed delivery was subsequently **pushed and remote-verified** on `codex/structure-shared-completion-20261101` at **09c6ad0710de3838b2e23b95975e8496c89f1654** in [radz2291/vict-02](https://github.com/radz2291/vict-02/tree/codex/structure-shared-completion-20261101). Checkout and remote matched that SHA again before this documentation reconciliation. Product source remains **2de11bc7719984f23341852b1cc8b9985ff81adf**. Earlier “no push” statements remain dated checkpoint facts; the subsequent push implies neither main merge nor package publication.
