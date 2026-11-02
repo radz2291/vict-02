@@ -11,6 +11,7 @@
   import { Dialog } from 'bits-ui';
   import CatalogPortal from './CatalogPortal.svelte';
   import { catalogFocusReturn } from './focus-return.js';
+  import { lockOwnedDialogViewport } from '../../owned-dialog.js';
   import type { UiSvelteComponentIO, UiComponentPresentation } from '../../document/extensions.js';
 
   interface Props {
@@ -23,6 +24,14 @@
   const composition = $derived(presentation?.compositionSlot === 'body');
   let open = $derived(props.open === true);
   let triggerRef = $state<HTMLButtonElement | null>(null);
+  let contentRef = $state<HTMLDivElement | null>(null);
+  // Bits' scroll lock targets the module's global document. In an application
+  // iframe, retain its focus/dismissal parts but lock only the existing owner.
+  const isolated = $derived(!!presentation?.ownerDocument && presentation.ownerDocument !== document);
+  $effect(()=>{
+    const owner=contentRef?.closest<HTMLElement>('[data-ui-application-viewport]');
+    if(isolated && open && owner)return lockOwnedDialogViewport(owner);
+  });
   const restoreTrigger = catalogFocusReturn(() => triggerRef);
 </script>
 
@@ -61,6 +70,8 @@
         <Dialog.Overlay data-testid="dialog-overlay" />
         <Dialog.Content
           {...presentation?.target('root')}
+          bind:ref={contentRef}
+          preventScroll={!isolated}
           data-testid="dialog-panel"
           onCloseAutoFocus={restoreTrigger}
         >

@@ -20,29 +20,38 @@
     // Standalone catalog controls retain their ordinary portal lifetime.
     if(typeof owner!=='string' || !owner){ownerVisible=true;return;}
     const ownerDocument=presentation?.ownerDocument ?? hostTarget?.()?.ownerDocument ?? document;
-    let ancestors:Element[]=[];
+    let ancestors:Element[]=[],documents:Document[]=[];
     const visibility=new MutationObserver(reconcile);
     function reconcile(){
       const roots=[...ownerDocument.querySelectorAll<HTMLElement>('[data-ui-owner-root]')].filter(root=>root.dataset.uiOwnerRoot===owner);
       const root=roots.length===1?roots[0]:undefined;
       const next:Element[]=[];
-      for(let element:Element|null=root ?? null;element;element=element.parentElement)next.push(element);
+      // A retained iframe's logical visibility includes its embedding ancestors.
+      // Do not keep hidden application portals (and their locks) alive in Studio.
+      for(let element:Element|null=root ?? null;element;){
+        next.push(element);
+        if(element.parentElement){element=element.parentElement;continue;}
+        try{element=element.ownerDocument.defaultView?.frameElement ?? null;}catch{element=null;}
+      }
       if(next.length!==ancestors.length || next.some((element,index)=>element!==ancestors[index])){
         visibility.disconnect();ancestors=next;
         for(const element of ancestors)visibility.observe(element,{attributes:true,attributeFilter:['hidden','inert','class','style']});
       }
+      const nextDocuments=[...new Set([ownerDocument,...next.map(element=>element.ownerDocument)])];
+      if(nextDocuments.length!==documents.length || nextDocuments.some((doc,index)=>doc!==documents[index])){
+        membership.disconnect();for(const doc of documents)doc.defaultView?.removeEventListener('resize',reconcile);documents=nextDocuments;
+        for(const doc of documents){if(doc.body)membership.observe(doc.body,{childList:true,subtree:true});doc.defaultView?.addEventListener('resize',reconcile);}
+      }
       // Modal libraries may mark the source aria-hidden or disable pointer events.
       // Those do not hide its logical owner and must never close their own portal.
       ownerVisible=!!root?.isConnected && ancestors.every(element=>{
-        const style=ownerDocument.defaultView?.getComputedStyle(element) ?? getComputedStyle(element);
-        return !element.hasAttribute('hidden') && !element.hasAttribute('inert') && style.display!=='none' && style.visibility!=='hidden';
+        const style=element.ownerDocument.defaultView?.getComputedStyle(element) ?? getComputedStyle(element);
+        return element.isConnected && !element.hasAttribute('hidden') && !element.hasAttribute('inert') && style.display!=='none' && style.visibility!=='hidden';
       });
     }
     const membership=new MutationObserver(reconcile);
-    membership.observe(ownerDocument.body,{childList:true,subtree:true});
-    ownerDocument.defaultView?.addEventListener('resize',reconcile);
     reconcile();
-    return ()=>{visibility.disconnect();membership.disconnect();ownerDocument.defaultView?.removeEventListener('resize',reconcile);};
+    return ()=>{visibility.disconnect();membership.disconnect();for(const doc of documents)doc.defaultView?.removeEventListener('resize',reconcile);};
   });
 </script>
 

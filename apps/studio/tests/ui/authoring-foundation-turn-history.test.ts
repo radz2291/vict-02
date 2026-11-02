@@ -32,7 +32,7 @@ describe('turn-specific Chat evidence and safe continuation',()=>{
     instance=mount(AgentChat,{target:document.body,props:{screenLabel:'Recovery',selectionLabel:'Screen',blocked:false,getContext:()=>({document:source,cursor}),applyProposal:apply,getCapture:capture}});
     await vi.waitFor(()=>expect(document.body.textContent).toContain('Ready'));await submit('Inspect header');
     await vi.waitFor(()=>expect(document.querySelector<HTMLButtonElement>('.capture-retry')?.disabled).toBe(false));document.querySelector<HTMLButtonElement>('[aria-label="Chat details"]')!.click();await vi.waitFor(()=>expect(document.querySelector('.capture-only-retry')).not.toBeNull());
-    document.querySelector<HTMLButtonElement>('.capture-only-retry')!.click();await vi.waitFor(()=>expect(capture).toHaveBeenCalledTimes(2));expect(capture).toHaveBeenLastCalledWith(cursor,target);expect(requests).toBe(2);expect(apply).not.toHaveBeenCalled();
+    document.querySelector<HTMLButtonElement>('.capture-only-retry')!.click();await vi.waitFor(()=>expect(capture).toHaveBeenCalledTimes(2));expect(capture).toHaveBeenLastCalledWith(cursor,target,expect.any(AbortSignal));expect(Reflect.get(capture.mock.lastCall!,2)).toMatchObject({aborted:false});expect(requests).toBe(2);expect(apply).not.toHaveBeenCalled();
     cursor={...cursor,revision:'r1#1'};document.querySelector<HTMLButtonElement>('.capture-only-retry')!.click();await new Promise(resolve=>setTimeout(resolve,20));expect(capture).toHaveBeenCalledTimes(2);expect(requests).toBe(2);expect(apply).not.toHaveBeenCalled();
   });
   it('offers an explicit observation-only agent continuation and rejects any unexpected proposal without applying it',async()=>{

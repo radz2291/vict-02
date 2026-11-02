@@ -15,6 +15,6 @@ it('keeps the exposed nested-route example executable under strict tool and grap
   if(!parsed.ok)throw Error(JSON.stringify(parsed));
   const result=applyGraphOperationsV2({...emptyGraphV2(),revision:operation.expectedGraphRevision},parsed.operations,operation.expectedGraphRevision);
   expect(result.ok,JSON.stringify(result)).toBe(true);
-  expect(new TextEncoder().encode(JSON.stringify(editPresentation)).length).toBeLessThanOrEqual(32768);
-  expect(()=>capturePresentationSchema(editPresentation,'Nested route metadata')).not.toThrow();
+  // Preserve the complete executable schema beyond the removed host quota.
+  expect(capturePresentationSchema(editPresentation,'Nested route metadata')).toEqual(editPresentation);
 });

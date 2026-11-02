@@ -16,9 +16,9 @@ Fresh checks run only in the isolated checkout: locked dependency installation, 
 
 The running Studio, installed build, saved applications/assets/conversations/drafts and provider configuration must remain untouched. Read-only before/after fingerprints record the protected runtime location. No historical launcher or activation script is executed.
 
-## Preserved status and stop condition
-
 ## Integration test reconciliation
+
+Tested integration candidate: **58e7296f553325be25d7bb3adb9067e58eef57e0**, following preparation **4e3fe2d545422eb2efb893f7c26da9d9caeb4d9d**. The root build began at the preparation commit and completed after the test-only repair commit; production source, manifests, TypeScript configuration and build scripts are equal between them. That fresh build result is carried to the repaired candidate on exact build-input equality, not mislabeled as a second build.
 
 The first expanded regression run found three failures in delivered UI-editor tests, not the previously repaired 12 Studio cases. Original failed logs are retained. A correctly scoped rerun reproduced the stale class assertion. Investigation found no corresponding production defect:
 
@@ -27,6 +27,36 @@ The first expanded regression run found three failures in delivered UI-editor te
 - Catalog coverage iterated the entire enlarged catalog inside one five-second case. Parameterizing by descriptor preserves all property/output/page assertions and the normal per-case timeout, while reporting the failing descriptor individually. No timeout is increased in the repaired test.
 
 These are integration test repairs only. Production source, runtime behavior and package manifests are unchanged. Independent verification must challenge the repaired candidate rather than reuse the initial candidate's verdict.
+
+## Initial candidate verification evidence (superseded by iframe repair)
+
+Evidence is retained under [mainline integration evidence](foundation-evidence/mainline-integration-20261102/). The preserved initial broad run had three failures / 638 passes / three skips; the corrected scoped run reproduced the class expectation failure. Those observations are retained, not counted as current accepted failures. A timing diagnostic overlapped fixture editing and is supporting diagnosis only; final verdicts use the committed candidate.
+
+| Check | Result and scope |
+| --- | --- |
+| Locked isolated installation | PASS, 719 packages; all workspace links resolve inside the new integration checkout |
+| Shared package build ladder | PASS, all 21 configured packages; build-input equality qualification above |
+| Core/editor/backend regressions | PASS, 58 files / 445 tests, including all three repaired editor files, canonical transactions/history, stream ordering/replay/cancellation and deterministic offline adapter cases |
+| Flow regressions | PASS, 39 files / 209 tests, including nested ownership, sibling isolation, connection behavior, coordinate frames and history |
+| Studio checks and build | TypeScript, designer Svelte check and isolated production build PASS; standalone AI package Svelte check also PASS |
+| Installed public consumer | PASS, five DOM cases and production build; nine public packages / 647 nonmanifest installed files match current packed inventories; no Studio imports or source aliases |
+| Protected runtime | Before/after read-only fingerprints equal: 398 installed files, listener PID/start time and four checked configuration files; no browser/storage export is claimed |
+
+The new consumer report is [mC6r2f](foundation-evidence/structure-shared-completion-20261101/vict-structure-consumer-mC6r2f.json), with source candidate `58e7296f553325be25d7bb3adb9067e58eef57e0`. Six package-build/artifact reuse decisions require equal tracked trees, every packed-file hash and the original archive SHA. UI-editor, Flow and Structure were freshly checked. Seven archive SHAs equal the earlier caption artifacts; Flow/Structure have 33 CRLF/LF-only member differences and were freshly packed, installed and tested. No equality to the old installed production build is claimed for the new isolated build. Earlier native/actual-agent/device evidence remains attributed to its original source and scope.
+
+Retained warnings include the five existing Svelte warnings, fixture initial-value warnings, shortcut trigger warnings, experimental SQLite notices, upstream unused/circular imports and large production chunks. Installation also reports the inherited `posthog-node` Node engine mismatch on Node 22.13.1 and npm 11's unapproved optional install-script notices; installation and all recorded required builds succeed. No warning is silently declared repaired. No whole-repository suite was run; unrelated historical failures outside this gate are not reclassified. No provider call, fresh actual-agent demonstration, painted-browser check or device check is claimed.
+
+## Expanded Studio findings and integration repair
+
+The expanded Studio run at `58e7296f` produced eight failures / 158 passes across 34 files. The earlier repaired 12 cases did not recur. Seven additional expectations/fixtures were stale: a removed metadata-size quota, the capture callback's new cancellation signal, current persistent drawer controls, and reads of retained preview content now owned by the iframe. Repairs preserve executable schema equality, a live AbortSignal, draft element identity, canonical and saved source, exact runtime state (including a bound echo), and focus/shortcut assertions.
+
+The iframe-aware modal test uncovered a real integration defect, retained in `portal-owner-classification.log`: while the frame was hidden for Structure, a dialog remained mounted in the application and Bits' global scroll lock set Studio's parent body to `pointer-events:none`. This is an integration repair, not grounds to reopen all bounded foundation acceptance.
+
+Two shared production files are repaired. `CatalogPortal.svelte` now tracks same-origin embedding-frame ancestors, their owning documents, connection/visibility and resize/membership changes, with observer cleanup. `CatalogDialog.svelte` retains the pinned Bits parts, controlled outputs, focus and dismissal; for an isolated application document it disables Bits' global scroll lock and reuses the existing refcounted `lockOwnedDialogViewport` during mounted content lifetime. Standalone behavior retains the original Bits lock. No component ABI, canonical editing/history, effect, data, provider or dependency contract changes.
+
+Fresh regression checks must verify local modal blocking, focus/dismissal, hidden/inert/detached lifetime and lock release in Studio and an installed public consumer. Happy DOM omits the browser's `Window.frameElement` property; the DOM fixtures model only that same-origin platform link, not visibility, modal rendering or lock outcomes. Failed fixture setup and incomplete diagnostics are retained. This evidence is not a new painted-browser proof.
+
+The later production candidate therefore differs from `2de11bc7` in those two shared files. Earlier backend/graph and native/provider evidence can only carry its original attribution or justified unaffected-source equality; no global source/artifact equality to `2de11bc7` is asserted for the repaired candidate.
 
 ## Preserved status and stop condition
 
