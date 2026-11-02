@@ -1,5 +1,13 @@
 # U0 stage-manager handoff
 
+## Current routing — 2 November 2026
+
+This U0 handoff is historical, not an executable current assignment. Read [current foundation status](STATE.md#current-routing--2-november-2026), [current delivery](../studio/ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md), [owner decision and future TORI requirement](../studio/AUTHORING-FOUNDATION-CURRENT-STATUS.md#owner-decision--2-november-2026) and the [current Stage 9 handoff](../handoff/VICT-STAGE-09-STUDIO-HANDOFF.md#current-handoff--2-november-2026).
+
+Bounded closures stand; Stage 9 remains open; Milestone 2 is paused with requirements retained to prioritize TORI. Speed work is deferred pending TORI integration while slowness remains open. The current agent remains available until a verified replacement. Only documentation reconciliation through commit/push and stop is authorized here, not product or TORI implementation. Historical permissions and baselines below do not override this direction.
+
+## Historical U0 assignment (superseded operationally)
+
 Status: EXECUTABLE DOCUMENTATION HANDOFF, subject to live baseline/isolation reconciliation.
 Authority: owner's 5 October 2026 instruction “Ok lets start” after the scope and documentation-pack discussion. This handoff prepares, reviews and freezes the first foundation contract. It does not authorize production implementation.
 

@@ -1,5 +1,15 @@
 # Architecture realignment — current delivery boundary
 
+## Reconciled delivery — 2 November 2026
+
+The completed delivery was subsequently **pushed and remote-verified** on `codex/structure-shared-completion-20261101` at **09c6ad0710de3838b2e23b95975e8496c89f1654** in [radz2291/vict-02](https://github.com/radz2291/vict-02/tree/codex/structure-shared-completion-20261101). Checkout and remote matched that SHA again before this documentation reconciliation. Product source remains **2de11bc7719984f23341852b1cc8b9985ff81adf**. Earlier “no push” statements remain dated checkpoint facts; the subsequent push implies neither main merge nor package publication.
+
+The [owner decision and future TORI acceptance requirement](AUTHORING-FOUNDATION-CURRENT-STATUS.md#owner-decision--2-november-2026) govern current status: bounded closures stand, Stage 9 remains open, Milestone 2 is paused with requirements retained, and speed investigation/optimization is deferred pending TORI integration while slowness remains open. The current agent stays available until a verified replacement. Only documentation reconciliation is authorized here; no VICT product work or TORI implementation starts.
+
+The independent Option 2 verdict retains product **20e26253f0ec6aab20f480c1b3e537e2282938d8**. Later test-repair and caption checks retain their **integrator verification** attribution; none is promoted to a whole-repository or whole-Stage-9 pass.
+
+## Latest closed follow-up
+
 **1November readable-caption follow-up CLOSED.** Current local product is
 **2de11bc7719984f23341852b1cc8b9985ff81adf**. Shared Structure summarizes validated
 graph states and other JSON states without raw payload prefixes; list/date/time

@@ -1,5 +1,15 @@
 # UI foundation — current state
 
+## Current routing — 2 November 2026
+
+Read the [current delivery](../studio/ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md), [owner decision and future TORI integration requirement](../studio/AUTHORING-FOUNDATION-CURRENT-STATUS.md#owner-decision--2-november-2026), [acceptance ledger](../studio/AUTHORING-FOUNDATION-ACCEPTANCE.md) and [current Stage 9 handoff](../handoff/VICT-STAGE-09-STUDIO-HANDOFF.md#current-handoff--2-november-2026) before using the historical foundation pack below.
+
+Bounded Authoring Foundation / Option 2 and both follow-ups remain closed. Stage 9 remains open; Milestone 2 is paused to prioritize TORI with requirements retained. Speed work is deferred pending TORI integration, with measured slowness still open. The current agent stays available until a verified replacement. Current authority covers only VICT documentation reconciliation through commit/push and stop; neither foundation nor TORI implementation resumes.
+
+## Historical foundation record (superseded operationally)
+
+Earlier operational permissions, baselines and next actions below are preserved history, not current authority. Contracts and exact-scope evidence retain their original meaning.
+
 **2026-10-22 — Mainline integration continuation.** The owner-accepted UI-foundation
 lineage is included with the closed first working Designer in the normal main
 fast-forward. See [integration checks and main-based launch](../studio/DESIGNER-MAIN-INTEGRATION-2026-10-22.md).

@@ -1,5 +1,25 @@
 # Authoring foundation current status
 
+## Owner decision — 2 November 2026
+
+**Stage 9 remains OPEN. Milestone 2 is PAUSED to prioritize TORI; its requirements remain retained.** The bounded Authoring Foundation / Option 2 work and its test-repair and caption follow-ups remain CLOSED at their documented scopes below. This is neither whole-Stage-9 closure nor a whole-repository test pass.
+
+Investigation and optimization of the current Studio agent's authoring speed are **deferred pending TORI integration**. Measured slowness remains an **open finding**, neither resolved nor waived. The [recorded adoption run](STRUCTURE-SHARED-COMPLETION-20261101.md#actual-app-and-native-verification) took 756.7 seconds, with its first edit at 566.4 seconds (42 tool calls). No speed improvement is claimed.
+
+The intended direction is to replace Studio's current agent with a TORI-based agent **after TORI meets the necessary integration requirements**. The current Studio agent remains available until the replacement is verified. This documentation task does not disable or replace it.
+
+TORI is the next development priority. Present authorization covers only VICT documentation reconciliation through commit and push; it does not start TORI implementation or resume product development. Future work requires a separately authorized handoff. Milestone 2 resumption requires an explicit owner decision; integration alone does not automatically resume it. Revisit the open speed finding after TORI integration rather than silently closing it through replacement.
+
+### Future TORI integration acceptance requirement
+
+Future Studio integration must demonstrate use of VICT's existing **discovery, canonical editing, observation and cancellation** capabilities, with manual-edit preservation, revision/occurrence protections, authorization, Undo/Redo and Save/reopen intact.
+
+TORI must consume the established VICT contracts. Replacing the agent must preserve ownership boundaries between shared packages, Studio host integration, canonical source, transient runtime state and durable application data. These are future acceptance requirements, not claims that TORI already supports them or authorization to design its implementation now.
+
+See the [current Stage 9 handoff](../handoff/VICT-STAGE-09-STUDIO-HANDOFF.md#current-handoff--2-november-2026) for the next allowed action and the [current delivery](ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md) for exact identities.
+
+## Closed scope and verification attribution
+
 > **CLOSED — bounded Authoring Foundation / Option2 delivery,1November2026.**
 > The owner's instruction to finish properly and then close is fulfilled after
 > independent final integration **QUALIFIED PASS** at the20e26253 checkpoint.
