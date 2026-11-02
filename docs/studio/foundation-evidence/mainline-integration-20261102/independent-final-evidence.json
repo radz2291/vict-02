@@ -1,0 +1,47 @@
+{
+  "verdict": "PASS_SCOPED_INTEGRATION",
+  "reviewer": "/root/mainline_independent_verifier",
+  "testedCandidate": "f7ef931628454c40a47136aea2b2e54119f9b507",
+  "mainBefore": "d7401bef6e48330796c74ec00c86db9622d48cdf",
+  "ancestry": "0 main-only /562 candidate-only; normal fast-forward possible",
+  "fixtureBytesEqualOnOldAndNewConsumers": {
+    "Fixture.svelte": "6d1b77f2de5669b3b382238037f92bce994211ea73b4f3bd715851c73685c264",
+    "iframe-dialog.test.ts": "88db43616eb4f00e6e38cdb852f84007c4463044efa2542fff134348477c73f4",
+    "missing-fallback.test.ts": "bee79c7371f042556d9dc9a136a26ef3a7b9737fffa670808bb2651aee125441",
+    "vitest.config.mjs": "9e615c68a764d59f8cdcb75bdaf86d2cd5fb7bfa94ec3d86472413e0377a217d"
+  },
+  "reportRelativeLinksChecked": 13,
+  "finalRuntimeDeepEqual": true,
+  "runtimeFiles": 398,
+  "listener": [
+    {
+      "address": "127.0.0.25",
+      "port": 5626,
+      "pid": 1668,
+      "started": "2026-11-01T15:21:00.7056293Z"
+    }
+  ],
+  "publicConsumer": "HXqM2G",
+  "ownFinalPublicCases": 5,
+  "ownFinalStudioCases": 16,
+  "evidenceSha256": {
+    "independent-focused.log": "344af5101f8f03165df829a37bfdf90f4dbfb139d5a3db8a8aaaa3831d522e0a",
+    "independent-installed-consumer.log": "dc22b66db7e058c242a81e2ad81e4d70ddd38878242b7f10173df96a37ca215a",
+    "independent-iframe-old-red.log": "ba25f66ff8265f62af64d26f3f9db32e550f162cac806cef2e8cbf47f7b09417",
+    "independent-fallback-old-red.log": "1f04240914343cd7ad81010c7a3ea2e2f6b3942b6f9f2bb40211d4cfd5538085",
+    "independent-public-green.log": "e3a88042a25211b78e181a1cdecdac31ec9071536c3f69db29602f828a1a6f77",
+    "independent-studio-final.log": "9546bda929f3889c83b948708fa0b0f9b318e4527b0df5071279634024ff477d",
+    "independent-final-artifact-audit.json": "0c39aac657382905f5e55bbb10802c83bf94fe86031b2a1fa1b8cb085d635729",
+    "studio-regressions-final.log": "d112e422d33bb0c5b1e71e8e48b61aea334576c524626f05a766278479acd986",
+    "core-regressions-repaired.log": "342e2f77c70c97f9fb1e6eaef07f99a434ffd86522a96fbb94ae218bc7dc06ff",
+    "flow-regressions-repaired.log": "07c94c41d5130edb063aae9e78a7ae9d9bb850aeac7302ff7689eb5db068d7d2",
+    "studio-final-build-exits.json": "c86a37021be7b5bdd72d3a64e15eb60d4d8911e706ce02357c56dc7fa7d53c7d",
+    "studio-production-build-final.log": "ca1a560c1be2f37dd204d7a51522a80ef982006c5ade6ff14593d6058f384454",
+    "structure-build-final.log": "12d766958638ff2a7d845effad8d7d9dbe1c29b842b61a869064b19a3a8254fc",
+    "runtime-before.json": "7a1d5c0e06a0aa287656e15f34b10fd4609c20c2b524319a03192c8355162345",
+    "runtime-final.json": "7a1d5c0e06a0aa287656e15f34b10fd4609c20c2b524319a03192c8355162345",
+    "independent-review.md": "b3288e8d9f1e599db0d50a44bb3ca2458ccfb1bcca138d67a4b114da838e0539"
+  },
+  "limitations": "Scoped integration, no fresh whole-foundation/repository pass. No browser/provider/device proof; iframe DOM tests model only absent Happy DOM frameElement link. Product unchanged since tested candidate.",
+  "rawWhitespaceQualification": "Raw terminal/HTML receipts preserved byte-for-byte; whitespace check applies to source/report/scripts, not normalization of raw diagnostics."
+}

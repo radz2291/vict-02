@@ -1,0 +1,147 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-structure-consumer-mC6r2f/consumer/independent-iframe-audit
+
+12:44:14 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-structure-consumer-mC6r2f/consumer/independent-iframe-audit/Fixture.svelte:6:35 This reference only captures the initial value of `source`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+xxxx
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  iframe-dialog.test.ts > ends portal lifetime for hidden, inert and detached embedding ancestors, restoring the declared modal without source mutation
+AssertionError: hidden: expected <div …(15)>…(2)</div> to be null
+
+- Expected:
+null
+
++ Received:
+<div
+  aria-labelledby="bits-c6"
+  aria-modal="true"
+  class="uv-79a006df-alpha"
+  data-dialog-content=""
+  data-state="open"
+  data-testid="dialog-panel"
+  data-ui-node="alpha"
+  data-ui-occ="independent-public-iframe|alpha"
+  data-ui-owner="c1"
+  data-ui-part="root"
+  data-ui-primary=""
+  id="bits-c5"
+  role="dialog"
+  style="pointer-events: auto; --bits-dialog-depth: 0; --bits-dialog-nested-count: 0; contain: layout style;"
+  tabindex="-1"
+>
+  <header
+    class="vict-catalog-overlay-header"
+  >
+    <!---->
+    <!---->
+    <div
+      aria-level="2"
+      data-dialog-title=""
+      data-state="open"
+      id="bits-c6"
+      role="heading"
+    >
+      Alpha
+      <!---->
+    </div>
+    
+    <!---->
+     
+    <!---->
+    <button
+      aria-label="Close"
+      data-dialog-close=""
+      data-state="open"
+      data-testid="dialog-close"
+      id="bits-c7"
+      tabindex="0"
+    >
+      ✕
+      <!---->
+    </button>
+    
+    <!---->
+    <!---->
+  </header>
+   
+  <div
+    class="vict-overlay-body"
+  >
+    <!---->
+    <!---->
+    <!---->
+    <span
+      class="uv-text"
+      data-ui-node="alpha-text"
+      data-ui-occ="independent-public-iframe|alpha-text|alpha@vict.catalog.dialog"
+      data-ui-owner="c1"
+      style="display: contents"
+    >
+      Canonical Alpha body
+      <!---->
+    </span>
+    
+    
+    
+    <!---->
+  </div>
+  <!---->
+</div>
+
+ ❯ iframe-dialog.test.ts:26:89
+     24|  for(const kind of ['hidden','inert','removed']){
+     25|   if(kind==='hidden')f.host.hidden=true;else if(kind==='inert')f.host.…
+     26|   await vi.waitFor(()=>expect(f.app.querySelector('[data-testid="dialo…
+       |                                                                                         ^
+     27|   expect(f.viewport.style.overflow,kind).not.toBe('hidden');expect(doc…
+     28|   if(kind==='hidden')f.host.hidden=false;else if(kind==='inert')f.host…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  iframe-dialog.test.ts > locks the actual application viewport while parent and sibling controls remain usable
+AssertionError: expected '' to be 'hidden' // Object.is equality
+
+- Expected
++ Received
+
+- hidden
+
+ ❯ iframe-dialog.test.ts:34:58
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  iframe-dialog.test.ts > retains a refcounted local lock until both authored modals close, without changing canonical initial data
+AssertionError: expected '' to be 'hidden' // Object.is equality
+
+- Expected
++ Received
+
+- hidden
+
+ ❯ iframe-dialog.test.ts:42:62
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  iframe-dialog.test.ts > retains Bits focus looping, Escape, reopen and controlled close within the application document
+AssertionError: expected '' to be 'hidden' // Object.is equality
+
+- Expected
++ Received
+
+- hidden
+
+ ❯ iframe-dialog.test.ts:53:346
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  12:44:10
+   Duration  27.25s (transform 19.10s, setup 0ms, import 22.88s, tests 2.47s, environment 1.46s)
+

@@ -1,0 +1,12 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-structure-consumer-HXqM2G/consumer/independent-iframe-audit
+
+12:56:46 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-structure-consumer-HXqM2G/consumer/independent-iframe-audit/Fixture.svelte:6:35 This reference only captures the initial value of `source`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+·····
+
+ Test Files  2 passed (2)
+      Tests  5 passed (5)
+   Start at  12:56:42
+   Duration  27.39s (transform 17.53s, setup 0ms, import 23.37s, tests 1.08s, environment 2.22s)
+

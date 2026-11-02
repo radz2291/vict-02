@@ -1,0 +1,57 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/apps/studio
+
+12:57:49 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+12:57:49 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:57:49 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+12:57:49 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:57:49 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+stderr | tests/ui/structure-portals.test.ts > does not let a source edit open a modal over Structure, releases locks and restores its open state in Interact
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+···12:58:23 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+12:58:23 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:58:23 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+12:58:23 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:58:23 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+·············
+
+ Test Files  2 passed (2)
+      Tests  16 passed (16)
+   Start at  12:57:30
+   Duration  70.84s (transform 42.87s, setup 0ms, collect 65.56s, tests 3.16s, environment 985ms, prepare 430ms)
+

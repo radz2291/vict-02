@@ -1,0 +1,20 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102
+
+12:29:15 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+12:29:16 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:29:16 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+12:29:16 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:29:16 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+·························································································
+
+ Test Files  5 passed (5)
+      Tests  89 passed (89)
+   Start at  12:28:57
+   Duration  38.17s (transform 21.36s, setup 0ms, import 29.02s, tests 3.58s, environment 2.96s)
+

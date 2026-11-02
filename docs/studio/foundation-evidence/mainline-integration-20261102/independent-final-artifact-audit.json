@@ -1,0 +1,88 @@
+{
+  "status": "PASS",
+  "reviewer": "/root/mainline_independent_verifier",
+  "testedCandidate": "f7ef931628454c40a47136aea2b2e54119f9b507",
+  "consumer": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-consumer-HXqM2G\\consumer",
+  "reportSha256": "120449f02bf68e5164faec9cf252bdbb09efb91bb932922aeee124bafc6cd3ed",
+  "archives": 9,
+  "allTarAndInstalledMembersMatched": 656,
+  "nonmanifestMembersMatched": 647,
+  "manifestSemanticsMatched": 9,
+  "fixtureFilesMatched": 9,
+  "installedPackagesStayInsideConsumer": true,
+  "sourceAliasOrStudioImports": false,
+  "packages": [
+    {
+      "name": "@victframework/contracts",
+      "archiveSha256": "017c0587843869653f6bd723566dcaf39f2e89b2fb55bc923f35667be9d618de",
+      "sourceTree": "ebe69ed3da57a25ae86b50fdf8006fa0d907c9f2",
+      "mode": "reused-build",
+      "allFilesMatched": 31,
+      "nonmanifestFilesMatched": 30
+    },
+    {
+      "name": "@victframework/ui",
+      "archiveSha256": "15dd5f5da2a38b6cbf0bc56677c7f6ccae190c4c7a5029d8cc7c8994263a7cb2",
+      "sourceTree": "01b07346b8975b8c01830bbb1a33c413900a2032",
+      "mode": "reused-build",
+      "allFilesMatched": 70,
+      "nonmanifestFilesMatched": 69
+    },
+    {
+      "name": "@victframework/sdk",
+      "archiveSha256": "c37e97319a52463c9b422a3de2870247beaee97b811fe378b3a4ee8e00e2ce7a",
+      "sourceTree": "4222a8b85f661980dbad03168b8f773dfc5554ec",
+      "mode": "reused-build",
+      "allFilesMatched": 28,
+      "nonmanifestFilesMatched": 27
+    },
+    {
+      "name": "@victframework/application",
+      "archiveSha256": "ea0fdde59f165379154517f4be4ca99e3c8790033862e4a56f6df5fdb09b5db7",
+      "sourceTree": "c6c4ebc5415fcbc42a56aee90ee1edea6c8bdd9f",
+      "mode": "reused-build",
+      "allFilesMatched": 34,
+      "nonmanifestFilesMatched": 33
+    },
+    {
+      "name": "@victframework/ui-svelte",
+      "archiveSha256": "f578759a74fb2ac509e52850d27292871115de3103acbe9f7b6fc7d0ef606336",
+      "sourceTree": "a28287f6db2961cb318b1ed41676ef3613a1a67c",
+      "mode": "reused-build",
+      "allFilesMatched": 285,
+      "nonmanifestFilesMatched": 284
+    },
+    {
+      "name": "@victframework/ui-media-svelte",
+      "archiveSha256": "234e78dd8f615622097b5166e5bd7f7646574d3663d3607b390d26ac8be11f22",
+      "sourceTree": "0673a7b64b17051a4d7dcc45baa45a4ce45d06d1",
+      "mode": "reused-build",
+      "allFilesMatched": 21,
+      "nonmanifestFilesMatched": 20
+    },
+    {
+      "name": "@victframework/ui-editor",
+      "archiveSha256": "ce0cd2c9838a6f9b63589f5bc8ddc47c12511fa263af83c16e19526df4d72914",
+      "sourceTree": "7b2575e987712b2489d65b51084aaeef4b834986",
+      "mode": "reused-build",
+      "allFilesMatched": 100,
+      "nonmanifestFilesMatched": 99
+    },
+    {
+      "name": "@victframework/ui-flow-svelte",
+      "archiveSha256": "a9659b1d4dcb9376e7dc6493d95df73d16084344a9b2d216b81d2205146d2cb4",
+      "sourceTree": "d80e7dcdfadbead4953d17235bd6791a178c2d85",
+      "mode": "reused-build",
+      "allFilesMatched": 65,
+      "nonmanifestFilesMatched": 64
+    },
+    {
+      "name": "@victframework/ui-structure-svelte",
+      "archiveSha256": "24063de16a2386239147c36caf9fea50d3c48f9741ec3e4dd0339914c6544dea",
+      "sourceTree": "dfb232a44ff1437b9029e41f3c9d3783f6a737aa",
+      "mode": "reused-build",
+      "allFilesMatched": 22,
+      "nonmanifestFilesMatched": 21
+    }
+  ]
+}

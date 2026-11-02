@@ -1,0 +1,38 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-structure-consumer-mC6r2f/consumer/independent-iframe-audit
+
+12:43:45 pm [vite-plugin-svelte] C:/Users/RZ1/AppData/Local/Temp/vict-structure-consumer-mC6r2f/consumer/independent-iframe-audit/Fixture.svelte:6:35 This reference only captures the initial value of `source`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally
+xxxx
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  iframe-dialog.test.ts > ends portal lifetime for hidden, inert and detached embedding ancestors, restoring the declared modal without source mutation
+ FAIL  iframe-dialog.test.ts > locks the actual application viewport while parent and sibling controls remain usable
+ FAIL  iframe-dialog.test.ts > retains a refcounted local lock until both authored modals close, without changing canonical initial data
+ FAIL  iframe-dialog.test.ts > retains Bits focus looping, Escape, reopen and controlled close within the application document
+TypeError: Cannot read properties of undefined (reading 'some')
+
+	in <unknown>
+
+ ❯ isKnownElement ../node_modules/@victframework/ui/src/semantic.ts:147:26
+ ❯ validateNode ../node_modules/@victframework/ui/src/validate.ts:565:11
+ ❯ visit ../node_modules/@victframework/ui/src/validate.ts:230:4
+ ❯ validateUiDocument ../node_modules/@victframework/ui/src/validate.ts:244:2
+ ❯ compileUiDocument ../node_modules/@victframework/ui/src/compile.ts:255:21
+ ❯ Fixture Fixture.svelte:6:35
+      4|   import {ApplicationViewport} from '@victframework/ui-svelte/viewport…
+      5|   let {source,onStateChange}:{source:UiDocument;onStateChange?:(key:st…
+      6|   const compiled=compileUiDocument(source,defaultSemanticElementCatalo…
+       |                                   ^
+      7|   if(!compiled.ok)throw Error(JSON.stringify(compiled));
+      8|   let clicks=$state(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  12:43:42
+   Duration  16.56s (transform 12.43s, setup 0ms, import 15.11s, tests 299ms, environment 799ms)
+

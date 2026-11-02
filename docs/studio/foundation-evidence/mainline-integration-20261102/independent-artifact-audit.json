@@ -1,0 +1,96 @@
+{
+  "status": "PASS",
+  "reviewer": "/root/mainline_independent_verifier",
+  "testedCandidate": "58e7296f553325be25d7bb3adb9067e58eef57e0",
+  "consumer": "C:\\Users\\RZ1\\AppData\\Local\\Temp\\vict-structure-consumer-mC6r2f\\consumer",
+  "reportSha256": "d5b8317fb1da1e8099e6138b4331682c9a898cae1c226f589e7aa799e5800d12",
+  "archives": 9,
+  "allTarMembers": 656,
+  "matchedNonmanifestMembers": 647,
+  "fixtureFiles": 9,
+  "sourceAliasOrStudioImports": false,
+  "manifestSemantics": "9/9 source/installed public manifests match",
+  "packages": [
+    {
+      "name": "@victframework/contracts",
+      "archiveSha256": "017c0587843869653f6bd723566dcaf39f2e89b2fb55bc923f35667be9d618de",
+      "sourceTree": "ebe69ed3da57a25ae86b50fdf8006fa0d907c9f2",
+      "mode": "reused-build",
+      "matchedNonmanifestFiles": 30,
+      "matchedAllFiles": 31
+    },
+    {
+      "name": "@victframework/ui",
+      "archiveSha256": "15dd5f5da2a38b6cbf0bc56677c7f6ccae190c4c7a5029d8cc7c8994263a7cb2",
+      "sourceTree": "01b07346b8975b8c01830bbb1a33c413900a2032",
+      "mode": "reused-build",
+      "matchedNonmanifestFiles": 69,
+      "matchedAllFiles": 70
+    },
+    {
+      "name": "@victframework/sdk",
+      "archiveSha256": "c37e97319a52463c9b422a3de2870247beaee97b811fe378b3a4ee8e00e2ce7a",
+      "sourceTree": "4222a8b85f661980dbad03168b8f773dfc5554ec",
+      "mode": "reused-build",
+      "matchedNonmanifestFiles": 27,
+      "matchedAllFiles": 28
+    },
+    {
+      "name": "@victframework/application",
+      "archiveSha256": "ea0fdde59f165379154517f4be4ca99e3c8790033862e4a56f6df5fdb09b5db7",
+      "sourceTree": "c6c4ebc5415fcbc42a56aee90ee1edea6c8bdd9f",
+      "mode": "reused-build",
+      "matchedNonmanifestFiles": 33,
+      "matchedAllFiles": 34
+    },
+    {
+      "name": "@victframework/ui-svelte",
+      "archiveSha256": "028f45f199df8fd5c0a1c9d07dcb57de8fec09d56fbd55020aa6ec1f9a59fa1e",
+      "sourceTree": "36a189df8fc87df4234c7d7444d183eee6c26c35",
+      "mode": "reused-build",
+      "matchedNonmanifestFiles": 284,
+      "matchedAllFiles": 285
+    },
+    {
+      "name": "@victframework/ui-media-svelte",
+      "archiveSha256": "234e78dd8f615622097b5166e5bd7f7646574d3663d3607b390d26ac8be11f22",
+      "sourceTree": "0673a7b64b17051a4d7dcc45baa45a4ce45d06d1",
+      "mode": "reused-build",
+      "matchedNonmanifestFiles": 20,
+      "matchedAllFiles": 21
+    },
+    {
+      "name": "@victframework/ui-editor",
+      "archiveSha256": "ce0cd2c9838a6f9b63589f5bc8ddc47c12511fa263af83c16e19526df4d72914",
+      "sourceTree": "7b2575e987712b2489d65b51084aaeef4b834986",
+      "mode": "fresh-build",
+      "matchedNonmanifestFiles": 99,
+      "matchedAllFiles": 100
+    },
+    {
+      "name": "@victframework/ui-flow-svelte",
+      "archiveSha256": "a9659b1d4dcb9376e7dc6493d95df73d16084344a9b2d216b81d2205146d2cb4",
+      "sourceTree": "d80e7dcdfadbead4953d17235bd6791a178c2d85",
+      "mode": "fresh-build",
+      "matchedNonmanifestFiles": 64,
+      "matchedAllFiles": 65
+    },
+    {
+      "name": "@victframework/ui-structure-svelte",
+      "archiveSha256": "89a3ca34c0cc592e8dcce83ff6ccc3f07c68b8a9b2be8e283082c1af73815890",
+      "sourceTree": "c3894111c21d93e657ae88a76d085f49a74fe4ee",
+      "mode": "fresh-build",
+      "matchedNonmanifestFiles": 21,
+      "matchedAllFiles": 22
+    }
+  ],
+  "matchedAllMembers": 656,
+  "countingNote": "656 archive/installed files matched byte-for-byte, including9 manifests;647 nonmanifest members. Initial tool output mislabeled the all-member count as nonmanifest; field corrected here without changing byte observations.",
+  "historicalArchiveComparison": {
+    "priorCandidate": "2de11bc7719984f23341852b1cc8b9985ff81adf",
+    "identicalArchives": 7,
+    "lineEndingOnlyMemberDifferences": 33,
+    "changedArchiveCount": 2,
+    "limitation": "Historical native/agent proof remains attributed to original source/artifacts; not a claim all9 current archives equal earlier archives."
+  }
+}

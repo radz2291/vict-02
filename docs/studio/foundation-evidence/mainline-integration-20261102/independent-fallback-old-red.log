@@ -1,0 +1,29 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-structure-consumer-mC6r2f/consumer/independent-iframe-audit
+
+x
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  missing-fallback.test.ts > keeps already-admitted native change interactions projectable without inventing a missing fallback
+TypeError: Cannot read properties of undefined (reading 'type')
+ ❯ expression ../node_modules/@victframework/ui-structure-svelte/src/structure-semantics.ts:268:19
+    266|     owner: string,
+    267|   ) {
+    268|     switch (value.type) {
+       |                   ^
+    269|       case 'literal':
+    270|         break;
+ ❯ ../node_modules/@victframework/ui-structure-svelte/src/structure-semantics.ts:579:13
+ ❯ projectRelations ../node_modules/@victframework/ui-structure-svelte/src/structure-semantics.ts:574:26
+ ❯ projectStructure ../node_modules/@victframework/ui-structure-svelte/src/structure.ts:341:3
+ ❯ missing-fallback.test.ts:11:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  12:49:58
+   Duration  26.11s (transform 20.27s, setup 0ms, import 24.04s, tests 40ms, environment 1.46s)
+
