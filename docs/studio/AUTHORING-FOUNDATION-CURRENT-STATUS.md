@@ -1,8 +1,8 @@
 # Authoring foundation current status
 
-## Authorized mainline integration — 2 November 2026
+## Completed mainline integration — 2 November 2026
 
-The owner subsequently authorized isolated mainline integration and independent verification of the completed delivery. See the [integration record](FOUNDATION-MAINLINE-INTEGRATION-20261102.md). This supersedes the earlier documentation-only stop only for this integration; the decisions and future TORI acceptance requirements below stand. No runtime activation, new features, TORI implementation, speed optimization or Milestone 2 resumption is authorized.
+The owner-authorized integration is complete with scoped independent PASS and a normal remote-main fast-forward, verified initially at **2c6fc7684d6f3312c2fbf36d8b76762ffef1a6e6**. The [current main baseline and completion receipt](FOUNDATION-MAINLINE-INTEGRATION-20261102.md#completed-mainline-integration--2-november-2026) records tested candidate `f7ef9316`, verifier `9a837258` and the subsequent documentation-only receipt identity. That mainline baseline is the dependency for future TORI work; it does not start implementation. No runtime activation occurred. The decisions and future acceptance requirements below stand. Stop after this integration; no features, speed work, TORI development or Milestone 2 resumption is authorized.
 
 ## Owner decision — 2 November 2026
 

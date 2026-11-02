@@ -1,8 +1,8 @@
 # Authoring foundation acceptance ledger
 
-## Mainline integration authority — 2 November 2026
+## Completed mainline integration — 2 November 2026
 
-The owner subsequently authorized verified mainline integration of the completed delivery. The [integration record](FOUNDATION-MAINLINE-INTEGRATION-20261102.md) records that separate gate; it does not reopen these bounded closures or expand the original independent verdict. Stage 9 remains open and Milestone 2 paused; no runtime activation or TORI implementation follows.
+The separate mainline integration gate has scoped independent PASS and is complete, initially remote-verified at `2c6fc7684d6f3312c2fbf36d8b76762ffef1a6e6` and followed by its documentation-only receipt. The [current baseline and completion record](FOUNDATION-MAINLINE-INTEGRATION-20261102.md#completed-mainline-integration--2-november-2026) binds exact tested/verifier identities. This does not reopen the bounded closures below or reassign the original independent `20e26253` verdict to later integrator follow-ups. Stage 9 remains open and Milestone 2 paused; no whole-repository pass, runtime activation or TORI implementation follows.
 
 ## Current disposition — 2 November 2026
 

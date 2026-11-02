@@ -1,5 +1,17 @@
 # Authoring Foundation mainline integration — 2 November 2026
 
+## Completed mainline integration — 2 November 2026
+
+**SCOPED INTEGRATION PASS; mainline update completed.** Remote main was normally fast-forwarded from **d7401bef6e48330796c74ec00c86db9622d48cdf** to **2c6fc7684d6f3312c2fbf36d8b76762ffef1a6e6**, then fetched and independently read back at that exact SHA. GitHub's non-forced update checked the expected old head; main had not advanced and reported no required branch checks. The complete delivered history is retained. No reset, force push, squash, main-checkout overwrite or publication occurred.
+
+Tested product/test candidate: **f7ef931628454c40a47136aea2b2e54119f9b507**. Fresh independent verifier commit: **9a83725839a116a0da488619970c298c6821c382**. The verifier also confirmed the documentation/evidence-only integration head `2c6fc7684d6f3312c2fbf36d8b76762ffef1a6e6`; its product, tests and build inputs equal the tested candidate. See the [independent verdict](foundation-evidence/mainline-integration-20261102/independent-review.md), [verification summary](foundation-evidence/mainline-integration-20261102/verification-summary.json) and [remote integration receipt](foundation-evidence/mainline-integration-20261102/mainline-receipt.json).
+
+**VICT baseline for future TORI:** remote main including this documentation-only completion receipt. Its code/test baseline is the verified candidate above; the receipt changes no production or test bytes. The docs-inclusive final main identity is the commit introducing this section, with parent `2c6fc7684d6f3312c2fbf36d8b76762ffef1a6e6` and unique subject `docs: record 2026-11-02 verified foundation mainline baseline`. Resolve it with `git log -1 --format=%H --grep='^docs: record 2026-11-02 verified foundation mainline baseline$' origin/main`; the final handover supplies the full remote SHA. This records a dependency baseline and does not begin TORI implementation.
+
+The running Studio still uses its prior installed `2de11bc7` build: all 398 installed files, listener PID/start and checked configuration fingerprints are unchanged. The isolated repaired production build has 305 files and was not activated. Saved applications, assets, conversations and drafts were not accessed for mutation; no browser action, provider call, service restart, deployment or package publication occurred.
+
+Bounded Authoring Foundation / Option 2 and both follow-ups remain closed at their documented identities and scopes. Stage 9 remains open. Milestone 2 remains paused with requirements retained pending explicit owner resumption. Speed investigation/optimization stays deferred pending TORI integration, with slowness open and unwaived. The current agent remains available until a TORI replacement satisfies the recorded integration acceptance requirement and is verified. The next allowed action is to stop; further TORI or VICT development requires a separately authorized handoff.
+
 ## Authority and candidate preparation
 
 The owner explicitly authorized integration of the completed Authoring Foundation and documentation reconciliation into main, through isolated candidate preparation, independent verification, necessary integration repairs and normal mainline update. This supersedes the prior documentation-only stop solely for this integration. It does not authorize runtime activation, deployment, publication, TORI implementation, Milestone 2 resumption, speed optimization or features.

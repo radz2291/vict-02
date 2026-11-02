@@ -1,8 +1,8 @@
 # VICT Stage 09 — Current State
 
-## Subsequent integration authority — 2 November 2026
+## Completed mainline integration — 2 November 2026
 
-The owner subsequently authorized verified mainline integration of the completed foundation, without runtime activation or new development. Follow the [integration record](../studio/FOUNDATION-MAINLINE-INTEGRATION-20261102.md) and current handoff. This is a bounded amendment to the documentation-only stop below; Stage 9 stays open, Milestone 2 stays paused, and the TORI direction and retained findings stand.
+The completed foundation is integrated by normal fast-forward into remote main, verified initially at **2c6fc7684d6f3312c2fbf36d8b76762ffef1a6e6**. Read the [current baseline, independent PASS and completion receipt](../studio/FOUNDATION-MAINLINE-INTEGRATION-20261102.md#completed-mainline-integration--2-november-2026). It is the VICT dependency baseline for future TORI, with no implementation grant or runtime activation. This integration assignment is complete: stop. Stage 9 stays open, Milestone 2 stays paused pending explicit owner resumption, and the TORI direction and open speed finding stand. Earlier operational permissions below are historical.
 
 ## Current status — 2 November 2026
 

@@ -1,8 +1,8 @@
 # VICT Stage 09 — Entry and Gate Handoff
 
-## Subsequent integration authority — 2 November 2026
+## Completed mainline integration — 2 November 2026
 
-The owner's subsequent instruction authorizes isolated candidate preparation, proportionate checks, fresh independent verification, integration repairs if necessary, and normal mainline integration of the completed foundation. Follow the [integration record](../studio/FOUNDATION-MAINLINE-INTEGRATION-20261102.md). This supersedes the documentation-only next action below solely for this task. Preserve all recorded pauses and closures; do not activate the runtime, start TORI or resume Milestone 2. Stop after remote main verification and reporting.
+The owner-authorized integration is complete: scoped independent PASS and normal remote-main fast-forward, verified initially at **2c6fc7684d6f3312c2fbf36d8b76762ffef1a6e6**. The [current VICT baseline and completion receipt](../studio/FOUNDATION-MAINLINE-INTEGRATION-20261102.md#completed-mainline-integration--2-november-2026) records exact tested/verifier identities and the docs-inclusive final-main identity. Future TORI should use that baseline and the retained integration acceptance requirement. **Next allowed action: stop pending a separately authorized handoff.** Do not repeat the completed gate, activate the runtime, start TORI, optimize agent speed or resume Milestone 2. Existing closed scopes, Stage 9 open and owner pauses remain; the operational instructions below are historical.
 
 ## Current handoff — 2 November 2026
 

@@ -1,8 +1,8 @@
 # U0 stage-manager handoff
 
-## Mainline integration authority — 2 November 2026
+## Completed mainline integration — 2 November 2026
 
-The owner's subsequent mainline integration instruction supersedes the documentation-only stop below solely for verified integration. Follow the [integration record](../studio/FOUNDATION-MAINLINE-INTEGRATION-20261102.md) and stop after remote verification/reporting. Historical U0 authority is not resumed; TORI and Milestone 2 remain outside this task.
+Mainline integration has scoped independent PASS and is complete. Follow the [current VICT baseline and completion receipt](../studio/FOUNDATION-MAINLINE-INTEGRATION-20261102.md#completed-mainline-integration--2-november-2026), initially remote-verified at `2c6fc7684d6f3312c2fbf36d8b76762ffef1a6e6` and followed by a documentation-only receipt. Stop pending a separately authorized handoff. Historical U0 implementation authority is not resumed; Stage 9 remains open, Milestone 2 paused, and TORI implementation is not started. The running product and saved work were untouched.
 
 ## Current routing — 2 November 2026
 

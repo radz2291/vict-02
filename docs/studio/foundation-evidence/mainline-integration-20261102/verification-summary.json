@@ -99,5 +99,8 @@
     "commit": "9a83725839a116a0da488619970c298c6821c382",
     "report": "independent-review.md",
     "reportSha256": "b3288e8d9f1e599db0d50a44bb3ca2458ccfb1bcca138d67a4b114da838e0539"
-  }
+  },
+  "initialVerifiedMain": "2c6fc7684d6f3312c2fbf36d8b76762ffef1a6e6",
+  "integrationMethod": "normal fast-forward",
+  "documentationReceiptSubject": "docs: record 2026-11-02 verified foundation mainline baseline"
 }

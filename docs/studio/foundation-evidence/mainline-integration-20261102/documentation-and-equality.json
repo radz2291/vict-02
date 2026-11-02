@@ -1,7 +1,7 @@
 {
   "status": "PASS",
   "testedCandidate": "f7ef931628454c40a47136aea2b2e54119f9b507",
-  "auditedHead": "9a83725839a116a0da488619970c298c6821c382",
+  "auditedHead": "2c6fc7684d6f3312c2fbf36d8b76762ffef1a6e6",
   "base": "d7401bef6e48330796c74ec00c86db9622d48cdf",
   "delivery": "ed771858fb1d3a28783d320785a3cab1bbe3f341",
   "historicalProductionSource": "2de11bc7719984f23341852b1cc8b9985ff81adf",
@@ -21,7 +21,7 @@
     "packages/ui-editor/test/contextual-catalog.svelte.test.ts",
     "packages/ui-editor/test/floating-selection.svelte.test.ts"
   ],
-  "addedRelativeLinksChecked": 25,
+  "addedRelativeLinksChecked": 28,
   "entryRoutes": "Stage9 and UI foundation -> integration/current delivery -> current status/acceptance/TORI future requirement",
   "workspaceIsolation": "all installed package links point inside integration checkout",
   "scope": "Documentation/topology/source-change audit, not product runtime or whole-repository test verdict."

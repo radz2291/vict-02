@@ -1,8 +1,8 @@
 # UI foundation — current state
 
-## Mainline integration authority — 2 November 2026
+## Completed mainline integration — 2 November 2026
 
-The owner subsequently authorized verified integration of the completed foundation into main. Follow the [integration record](../studio/FOUNDATION-MAINLINE-INTEGRATION-20261102.md), which supersedes the documentation-only stop below solely for this task. Bounded closures and paused work remain unchanged; integration does not start TORI, resume Milestone 2 or activate a runtime.
+Verified mainline integration is complete with scoped independent PASS. Read the [current main baseline and completion receipt](../studio/FOUNDATION-MAINLINE-INTEGRATION-20261102.md#completed-mainline-integration--2-november-2026), initially remote-verified at `2c6fc7684d6f3312c2fbf36d8b76762ffef1a6e6` and followed by a documentation-only receipt. This is VICT's dependency baseline for future TORI; no implementation begins. Stop pending further authorization. Bounded closures stand, Stage 9 stays open and Milestone 2 stays paused; no runtime activation occurred. Older operational permissions below are historical.
 
 ## Current routing — 2 November 2026
 

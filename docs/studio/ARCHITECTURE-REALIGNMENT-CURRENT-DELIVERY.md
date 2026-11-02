@@ -1,8 +1,8 @@
 # Architecture realignment — current delivery boundary
 
-## Authorized mainline integration — 2 November 2026
+## Completed mainline integration — 2 November 2026
 
-The owner subsequently authorized mainline integration of this completed delivery. The [integration record](FOUNDATION-MAINLINE-INTEGRATION-20261102.md) governs candidate verification and the main update; it supersedes the earlier documentation-only stop solely for that task. Bounded closures, original verification attribution, Stage 9 open, Milestone 2 paused and TORI acceptance requirements remain intact. This does not activate a runtime or start TORI development.
+The completed foundation is integrated into remote main by normal fast-forward, verified initially at **2c6fc7684d6f3312c2fbf36d8b76762ffef1a6e6**, followed by its documentation-only completion receipt. The [current baseline and exact identity record](FOUNDATION-MAINLINE-INTEGRATION-20261102.md#completed-mainline-integration--2-november-2026) binds tested candidate **f7ef931628454c40a47136aea2b2e54119f9b507** and independent verifier **9a83725839a116a0da488619970c298c6821c382**, with scoped integration PASS. Four integration repairs are included; the running installed product remains untouched at its prior source. Original bounded closures and attribution stand; Stage 9 stays open, Milestone 2 paused, and TORI requirements unchanged. This baseline does not start TORI or activate a runtime. Integration is complete; stop pending further authorization.
 
 ## Reconciled delivery — 2 November 2026
 
