@@ -58,6 +58,12 @@ Fresh regression checks must verify local modal blocking, focus/dismissal, hidde
 
 The later production candidate therefore differs from `2de11bc7` in those two shared files. Earlier backend/graph and native/provider evidence can only carry its original attribution or justified unaffected-source equality; no global source/artifact equality to `2de11bc7` is asserted for the repaired candidate.
 
+### Historical native-change fallback admission
+
+A strengthened fixture briefly omitted the typed native-change fallback. Investigation distinguished that fixture error from existing JSON admission: public compilation and `UiEditSession.open` accept historical native changes without it, and the renderer intentionally uses the entered native value. The admitted source then crashed Structure's expression projection; a bounded red test confirms admission before the TypeError. Rejecting this already accepted source would change behavior.
+
+`structure-semantics.ts` now retains the declared Updates edge and skips only an absent fallback expression; `structure-behavior.ts` describes the entered value without inventing a fallback. A regression proves compilation/session admission, Updates with no fallback relation, readable behavior and exact canonical digest preservation. These two additional shared production repairs require a fresh Structure package check and installed-consumer regression. Earlier CLI probes that could not load transitive Svelte modules are retained as harness limitations, not admission proof or a Node-only Structure-consumer claim.
+
 ## Preserved status and stop condition
 
 Bounded Authoring Foundation / Option 2 and follow-ups stay closed. Stage 9 stays open; Milestone 2 stays paused with requirements retained pending explicit owner resumption. Speed work stays deferred pending TORI integration, with measured slowness open. The current agent remains available until a TORI replacement meets the [future integration acceptance requirement](AUTHORING-FOUNDATION-CURRENT-STATUS.md#future-tori-integration-acceptance-requirement) and is verified. Mainline integration establishes a dependency baseline for future TORI work; it does not start that work. Stop after verified mainline delivery and reporting.

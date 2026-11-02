@@ -576,7 +576,9 @@ export function projectRelations(
         switch (interaction.action) {
           case 'setState':
             b.link(to, reference(`state.${interaction.key}`,scope), { role: 'updates', path, owner: to });
-            expression(interaction.value, to, `${path}/value`, 'fallback', scope, to);
+            // Historical JSON admitted by the compiler may omit the native
+            // change fallback. Preserve its update edge without inventing one.
+            if (interaction.value !== undefined) expression(interaction.value, to, `${path}/value`, 'fallback', scope, to);
             break;
           case 'invokeAction':
             action(interaction.actionId, path, interaction.input, scope);

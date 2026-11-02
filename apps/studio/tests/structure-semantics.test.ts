@@ -3,6 +3,7 @@ import {
   canonicalUiDocument,
   compileUiDocument,
   defaultSemanticElementCatalog,
+  UiEditSession,
   type UiDocument,
 } from '@victframework/ui';
 import {
@@ -30,6 +31,19 @@ import {
 } from './fixtures/structure-semantics.js';
 import { clarityFixture } from './fixtures/structure-clarity.js';
 const id = (source: UiDocument, kind: string, key: string) => structureId(source.id, kind, key);
+it('preserves admitted historical native changes without inventing an absent fallback', () => {
+  const imported = JSON.parse(JSON.stringify(bindingFixture()));
+  delete imported.nodes.field.interactions[0].value;
+  const source: UiDocument = imported, before = canonicalUiDocument(source).contentDigest;
+  expect(compileFixture(source).ok).toBe(true);
+  expect(UiEditSession.open({document:source,storedRevision:'persisted'}).document).toEqual(source);
+  const graph = projectStructure(source), field = id(source,'node','field'), state = id(source,'state','message');
+  expect(graph.edges.some(edge=>edge.source===field&&edge.target===state&&edge.data?.role==='updates')).toBe(true);
+  expect(graph.edges.some(edge=>edge.data?.role==='fallback')).toBe(false);
+  expect(structureBehavior(source,'field')[0]?.value).toContain('entered value');
+  expect(structureBehavior(source,'field')[0]?.value).not.toContain('fallback');
+  expect(canonicalUiDocument(source).contentDigest).toBe(before);
+});
 it('shows Value and Fallback from state to input, Updates in reverse, with no merged read count', () => {
   const source = bindingFixture();
   expect(compileFixture(source).ok).toBe(true);
