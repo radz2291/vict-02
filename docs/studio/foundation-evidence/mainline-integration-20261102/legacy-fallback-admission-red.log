@@ -1,0 +1,54 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/apps/studio
+
+12:50:15 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+12:50:15 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:50:15 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+12:50:15 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:50:15 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/structure-semantics.test.ts (13 tests | 1 failed | 12 skipped) 39ms
+   × preserves admitted historical native changes without inventing an absent fallback 36ms
+     → Cannot read properties of undefined (reading 'type')
+   ↓ shows Value and Fallback from state to input, Updates in reverse, with no merged read count
+   ↓ keeps an associated input name free of artificial numbering from its label
+   ↓ never interprets inert host-registered attributes as action declarations
+   ↓ keeps different definitions props and per-instance assignments distinct
+   ↓ keeps separate repeat item/key references separate and does not infer shared users
+   ↓ keeps emitted output channels separate and preserves output-to-state destinations
+   ↓ exposes reusable style, token and condition dependencies without changing canonical bytes
+   ↓ keeps a reusable style prop binding scoped to each owning definition
+   ↓ projects only supplied host return wiring and marks external actions honestly
+   ↓ retains exact escaped source pointers for branches, definitions and unusual source ids
+   ↓ uses framework plan diagnostics for unsupported conditioned styles
+   ↓ All declarations includes unused registries while Used keeps them quiet
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/structure-semantics.test.ts > preserves admitted historical native changes without inventing an absent fallback
+TypeError: Cannot read properties of undefined (reading 'type')
+ ❯ expression ../../packages/ui-structure-svelte/src/structure-semantics.ts:268:19
+    266|     owner: string,
+    267|   ) {
+    268|     switch (value.type) {
+       |                   ^
+    269|       case 'literal':
+    270|         break;
+ ❯ ../../packages/ui-structure-svelte/src/structure-semantics.ts:579:13
+ ❯ projectRelations ../../packages/ui-structure-svelte/src/structure-semantics.ts:574:26
+ ❯ projectStructure ../../packages/ui-structure-svelte/src/structure.ts:341:3
+ ❯ projectStructure src/lib/designer/structure.ts:6:92
+ ❯ tests/structure-semantics.test.ts:40:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 12 skipped (13)
+   Start at  12:49:56
+   Duration  39.85s (transform 26.27s, setup 0ms, collect 39.09s, tests 39ms, environment 1ms, prepare 268ms)
+

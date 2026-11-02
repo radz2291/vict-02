@@ -1,0 +1,138 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/apps/studio
+
+12:41:26 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+12:41:26 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:41:26 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+12:41:26 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:41:26 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/ui/structure-workspace.test.ts (5 tests | 5 failed) 69ms
+   × makes Structure the third primary view, with one visible work surface and no View-menu or bottom-dock launcher 33ms
+     → expected false to be true // Object.is equality
+   × does not restart Interact values or mutate saved source when visiting Structure 13ms
+     → expected false to be true // Object.is equality
+   × retains a pending floating text draft through Structure and restores the same editor on returning to Design 7ms
+     → expected false to be true // Object.is equality
+   × retains and protects a pending Source draft while visiting Structure and returning to its canvas mode 7ms
+     → expected false to be true // Object.is equality
+   × keeps retained floating-tool shortcuts from claiming Structure keyboard focus or Escape 7ms
+     → expected false to be true // Object.is equality
+stderr | tests/ui/structure-portals.test.ts > follows its exact connected owner through hidden, inert, style and removal without changing the declared open state
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+ ✓ tests/ui/structure-portals.test.ts (3 tests) 1636ms
+   ✓ does not let a source edit open a modal over Structure, releases locks and restores its open state in Interact  850ms
+   ✓ follows its exact connected owner through hidden, inert, style and removal without changing the declared open state  728ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/ui/structure-workspace.test.ts > makes Structure the third primary view, with one visible work surface and no View-menu or bottom-dock launcher
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ start tests/ui/structure-workspace.test.ts:32:127
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  5 failed | 3 passed (8)
+   Start at  12:41:13
+   Duration  29.87s (transform 17.95s, setup 0ms, collect 53.78s, tests 1.70s, environment 1.66s, prepare 384ms)
+
+ ❯ tests/ui/structure-workspace.test.ts:36:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/ui/structure-workspace.test.ts > does not restart Interact values or mutate saved source when visiting Structure
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ start tests/ui/structure-workspace.test.ts:32:127
+
+ ❯ tests/ui/structure-workspace.test.ts:49:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/ui/structure-workspace.test.ts > retains a pending floating text draft through Structure and restores the same editor on returning to Design
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ start tests/ui/structure-workspace.test.ts:32:127
+
+ ❯ tests/ui/structure-workspace.test.ts:58:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/ui/structure-workspace.test.ts > retains and protects a pending Source draft while visiting Structure and returning to its canvas mode
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ start tests/ui/structure-workspace.test.ts:32:127
+
+ ❯ tests/ui/structure-workspace.test.ts:66:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/ui/structure-workspace.test.ts > keeps retained floating-tool shortcuts from claiming Structure keyboard focus or Escape
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ start tests/ui/structure-workspace.test.ts:32:127
+
+ ❯ tests/ui/structure-workspace.test.ts:72:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+

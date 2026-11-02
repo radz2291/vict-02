@@ -1,0 +1,35 @@
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102
+
+(node:20396) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ |unit| packages/ui-editor/test/classes.test.ts (4 tests | 1 failed) 52ms
+     × accepts normal punctuation/Unicode DOM tokens without a project allowlist and rejects malformed/bounded input 20ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |unit| packages/ui-editor/test/classes.test.ts > canonical authored class transactions > accepts normal punctuation/Unicode DOM tokens without a project allowlist and rejects malformed/bounded input
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-editor/test/classes.test.ts:9:172
+      7|  it('accepts normal punctuation/Unicode DOM tokens without a project a…
+      8|   for(const value of [[],['😀'.repeat(256)],['brand:active','md:grid-c…
+      9|   for(const value of [[''],['a b'],['a\tb'],['a\nb'],['a\0b'],['x'.rep…
+       |                                                                                                                                                                            ^
+     10|  });
+     11|  it('uses one undoable replace/clear operation and preserves classes t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 37 passed (38)
+      Tests  1 failed | 293 passed (294)
+   Start at  12:23:50
+   Duration  25.86s (transform 6.75s, setup 0ms, import 22.28s, tests 9.51s, environment 18ms)
+

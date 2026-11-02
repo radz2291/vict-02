@@ -1,0 +1,266 @@
+[
+  {
+    "package": "@victframework/ui-flow-svelte",
+    "path": "README.md",
+    "oldSha256": "ea94ee0968045e490d1697d59afd9d66ce2b82d49ade0d70b46d3686ef8717b3",
+    "newSha256": "b8a701545f47176398cb6c0b5c6303ce86a370e3c9f05ceb3a909ee791a58896",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-flow-svelte",
+    "path": "src/authoring/descriptors.ts",
+    "oldSha256": "8247b03711894a30fddff723bda3346358e837e644307703aaf21906c24241a1",
+    "newSha256": "cc938488f16aed0bed55d844e5e8a1f477717de6169c1c674b8dadfd789fd7b7",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-flow-svelte",
+    "path": "src/authoring/implementations.ts",
+    "oldSha256": "7eef2f5ea7ada679198dcf047e0875847bc4d31383dc7a1ec6d53347e07f41ed",
+    "newSha256": "7f6562f9337d55914520ccd430a8ed10765dddcb0fb23ef7b483bd28033d0340",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-flow-svelte",
+    "path": "src/authoring/public-exports.ts",
+    "oldSha256": "839f1e1351d02d2564cdfb7ff457cced2f48c84ebf14e4f1fdecadd925f04094",
+    "newSha256": "e1696508e37777f75fda758194b0631eeff04b9bf1a721a45fce1f0d8bd6d083",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-flow-svelte",
+    "path": "src/composition/ComposedGraphNode.svelte",
+    "oldSha256": "b8164be4f9b05bae5b19ce5942656a56acb6bb2ec261a05111d775aed23f5dd6",
+    "newSha256": "c57f1f46617c49ecf39849663057e82a33363a841940fcb96cdd12b2f7fd8678",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-flow-svelte",
+    "path": "src/composition/descriptors.ts",
+    "oldSha256": "2a3f0c9d967e5dc27d2ffdf94becf85345c2dca5acc053069f8dd443f79f0cad",
+    "newSha256": "e6dabac1822ffa96df9297307e519eeacf5ef5dce729044544aa77b107a8989e",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-flow-svelte",
+    "path": "src/composition/GraphPortColumns.svelte",
+    "oldSha256": "285ea21dc764e9eddb2210c093e9a20c90ddb77aff273ca41480586c90a239e7",
+    "newSha256": "73e4171a58b186f93c0c303b1e68155d1ef3b62197e3cde23e86017d584be4ea",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-flow-svelte",
+    "path": "src/composition/GraphPortRow.svelte",
+    "oldSha256": "1833936899bdd2799950b879555b6e2c6194dd4a0f5a3140257ca16fce28a608",
+    "newSha256": "380b8c2c0e4604b16a0186b71ab87a217b563871cc3b5bf4de775f68d678637d",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-flow-svelte",
+    "path": "src/composition/GraphPortRowV2.svelte",
+    "oldSha256": "5b8e0634b63422578f5fb6db43f10a6e1e3650fb8dc960bb4410025bd310c2a8",
+    "newSha256": "1bc3fc2c0ed9d97d0881af8019af207a7cd5a08c4ac73f5354d6511d595122b5",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-flow-svelte",
+    "path": "src/composition/knowledge.ts",
+    "oldSha256": "8bd19975188c430cef88e555f67a97acc77ab4aa40302cf358df22537e345392",
+    "newSha256": "ff314e9e818ded49ab266b3b0b9190727127b657f168d8ed6ab7da4ab8a560d1",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-flow-svelte",
+    "path": "src/flow-coordinate-frame.ts",
+    "oldSha256": "1dc9aeeab61833921f1490d9f3a102bf7079a003a0c186655c9741347085f1e4",
+    "newSha256": "ed505c9df97a486d3c575cfe63d2e556e604dd80841d0e5ecb10672680908525",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-flow-svelte",
+    "path": "src/index.ts",
+    "oldSha256": "d316e1fe4563aa9e0534eab4889f87251e7f3560daeee13f0028294e45fe2672",
+    "newSha256": "b3c279c4d2b6cabb4d1d9910d565f40b22124fc78ec464e6f2be5f3ca7ba5803",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "README.md",
+    "oldSha256": "5437841308f17937a8d42633a9d36b2f2814c2fb46665c0242226a0900207b6f",
+    "newSha256": "e4c301d2ef818099bec3e3bb2c9bd602955ee91fbba31cd49d1f70c22a4e3849",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "package.json",
+    "oldSha256": "18fe33c46cfe68cb4891c9f775ce1c640eeda6296570381425f24912ba645d64",
+    "newSha256": "1f4d52866f37d423826833dee653923405012ce2581d8c751886f25bc6153fbb",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "src/contracts.ts",
+    "oldSha256": "ef5e559d2c5050d79d3d65db587cf2901de678c9a10e2cc47c58ce1d1463b402",
+    "newSha256": "35d9dccd084b64027951058167311b55da03268d299d30c6b1247a1ec46defcc",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "src/css.d.ts",
+    "oldSha256": "db2fa45582823a06255f5123b1a596e8a4c45d10288831aeb7503702c35b187d",
+    "newSha256": "da5bf71d48cf909584a01c80b445f730507068f5b34c920f352e2bfcf0315e4c",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "src/index.ts",
+    "oldSha256": "794441dd10a45467fc1fe2a2266bdcbef644387d07e2e1877fa927af045ea25a",
+    "newSha256": "7d8235a2de4185a391c776f4358f1f454a280c4f6bf3c8c4e32ece6aa11c7784",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "src/presentation.ts",
+    "oldSha256": "db3be685566d4a8f0286707de2d7a9b26a39a1347c437c20589b0cf0fdd30199",
+    "newSha256": "878062569b4debc2b94391378a9ff0f789d8d31f32f95df42675026499f46cd6",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "src/structure-behavior.ts",
+    "oldSha256": "2eb693ea649d38a6319d81793234e18c01868aa8c2345d0e60e5ebbb939d47d9",
+    "newSha256": "584541f66c1f8459d09612bdf2dae76a845d4302defdd29e3dc7889aa6733e4d",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "src/structure-connections.ts",
+    "oldSha256": "4545ade8686dc1184cfed917dc1dda3fdd5c78bf9fb7b11583954538dda7dd5d",
+    "newSha256": "cf80225c4b0980ccdc4c73849650621cae41eea36bf43cb25459d7253275d3a9",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "src/structure-edge-geometry.ts",
+    "oldSha256": "cd4af56670da3aa080d946ec01cb1903dbda66c6a906f96bc04aaa588b95d9bd",
+    "newSha256": "4b3bfb0b639c55b5a96efe5cdfbfe540d53bdbf236da70a761c46022d55b9e83",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "src/structure-placement.ts",
+    "oldSha256": "d11132facfc410e5c1938cd59c77d0bee4b7d28204aaaa07505a330166c980a0",
+    "newSha256": "764610662449585c9f803172aac17a5bff90170f55d99bbf8e0cb153c7091b58",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "src/structure-semantics.ts",
+    "oldSha256": "96896655d71ca654bc0abf27104b3bfc242f479df06d72066cb6fa61d569466c",
+    "newSha256": "517ea1c613afd9a256b2c3e07c9eb4e4d20109dcd4fb8f2f2a376dd57d1c56f6",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "src/structure-trace.ts",
+    "oldSha256": "065ff24c8114181ef9715ae9216c51a20a020ee0de59e9025a7c50e1645d5c82",
+    "newSha256": "757d898d2b24e1aa4cb6d13168ed4bce5808db58af06a97d0653946a615491b2",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "src/structure.ts",
+    "oldSha256": "b75053d914eb66913bf317c9ae620ead5cea0095132a06918a66ff912a12943c",
+    "newSha256": "61cc5b527a1ecad2402cda6f8d5e465cb76c5f9b5b005ad887c12ed01ca0bd3d",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "src/StructuredSourceNode.svelte",
+    "oldSha256": "03bc4e6caaad813c374fdf3bb69c53c62a9d86ca2d5ca7fb9d8c96d238d213ff",
+    "newSha256": "5dfd0720d2298c074abd4727b884b156afa78b1b35bb3f6377a0d1b36019cf27",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "src/StructureEdge.svelte",
+    "oldSha256": "39223171d46fca3cbc478318e94898d5c3fbf7cfb082297fc2d7a88876e55a16",
+    "newSha256": "33114542fb311a9d1b1a1de561a4f7ec6059d09ace871e91d5e60b588f5ca0bf",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "src/StructureView.svelte",
+    "oldSha256": "af28cb77bb01208ba4a5044c2e40a4c8a2c4f6185811f70bc8c05982cbd408a7",
+    "newSha256": "617abb1d46644bd54f1cd401a5a0ca88bb37ba7b3eaf08cecd7d07fd94bd5c37",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "src/styles.css",
+    "oldSha256": "63e67b5cea8a96915bc56604d1f142e9767a53bd4d1c477f7d063e5cdc78e76b",
+    "newSha256": "f64652cd99e7ea51ffa668287343fd87b60e00e329d5f6e9e26fc551965e457a",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "src/workspace-selection.ts",
+    "oldSha256": "f5a9c5377cf34f83c94e06caeea7b5a263c508b10bc97098c678bfcdfb83a168",
+    "newSha256": "1e6f25b6ea0743b9c92a5c3e0e6f94380dc3b91153aff72e5d8a24480fa151ff",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "src/WorkspaceMenu.svelte",
+    "oldSha256": "c67492e3b95e78d598deea1772ae4303b25b0e2f1c92026ccac5865e706970d9",
+    "newSha256": "94ad07bf52f2e561bcac2b80dc069d9a3d994e5469d34090edf9c4e04f9ed5f0",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "src/WorkspaceSubmenu.svelte",
+    "oldSha256": "55022cf706f36d9405abc0aa75a52ec8f66f859beb468b61bd330ecced5fb54d",
+    "newSha256": "60e10ceaa4035e03788609a5aa2b024355e358402fe58d9dfe70433f8d589846",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  },
+  {
+    "package": "@victframework/ui-structure-svelte",
+    "path": "src/WorkspaceToolIcon.svelte",
+    "oldSha256": "bbd0744be0e0b5de67969c4813bcd1d83f985f7c3566a6b242826802aa4d618f",
+    "newSha256": "192d8893a0d492568d07c5ae921fb06909d148c95e8dea9625109934e9f1031e",
+    "equalAfterCrLfNormalization": true,
+    "oldPhysicalFileMatchesHistoricalHash": true
+  }
+]

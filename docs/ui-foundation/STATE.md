@@ -1,5 +1,9 @@
 # UI foundation — current state
 
+## Mainline integration authority — 2 November 2026
+
+The owner subsequently authorized verified integration of the completed foundation into main. Follow the [integration record](../studio/FOUNDATION-MAINLINE-INTEGRATION-20261102.md), which supersedes the documentation-only stop below solely for this task. Bounded closures and paused work remain unchanged; integration does not start TORI, resume Milestone 2 or activate a runtime.
+
 ## Current routing — 2 November 2026
 
 Read the [current delivery](../studio/ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md), [owner decision and future TORI integration requirement](../studio/AUTHORING-FOUNDATION-CURRENT-STATUS.md#owner-decision--2-november-2026), [acceptance ledger](../studio/AUTHORING-FOUNDATION-ACCEPTANCE.md) and [current Stage 9 handoff](../handoff/VICT-STAGE-09-STUDIO-HANDOFF.md#current-handoff--2-november-2026) before using the historical foundation pack below.

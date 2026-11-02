@@ -1,0 +1,145 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/apps/studio
+
+12:44:22 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+12:44:22 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:44:22 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+12:44:22 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:44:22 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ tests/ui/structure-workspace.test.ts (5 tests | 5 failed) 1809ms
+   × makes Structure the third primary view, with one visible work surface and no View-menu or bottom-dock launcher 855ms
+     → Cannot read properties of undefined (reading 'type')
+
+	in <unknown>
+	in bits-config.svelte
+	in ControlScope.svelte
+	in Designer.svelte
+	in undefined
+
+   × does not restart Interact values or mutate saved source when visiting Structure 273ms
+     → Cannot read properties of undefined (reading 'type')
+
+	in <unknown>
+	in bits-config.svelte
+	in ControlScope.svelte
+	in Designer.svelte
+	in undefined
+
+   × retains a pending floating text draft through Structure and restores the same editor on returning to Design 263ms
+     → Cannot read properties of undefined (reading 'type')
+
+	in <unknown>
+	in bits-config.svelte
+	in ControlScope.svelte
+	in Designer.svelte
+	in undefined
+
+   × retains and protects a pending Source draft while visiting Structure and returning to its canvas mode 227ms
+     → Cannot read properties of undefined (reading 'type')
+
+	in <unknown>
+	in bits-config.svelte
+	in ControlScope.svelte
+	in Designer.svelte
+	in undefined
+
+   × keeps retained floating-tool shortcuts from claiming Structure keyboard focus or Escape 187ms
+     → Cannot read properties of undefined (reading 'type')
+
+	in <unknown>
+	in bits-config.svelte
+	in ControlScope.svelte
+	in Designer.svelte
+	in undefined
+
+stderr | tests/ui/structure-portals.test.ts > does not let a source edit open a modal over Structure, releases locks and restores its open state in Interact
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+ ✓ tests/ui/structure-portals.test.ts (3 tests) 4329ms
+   ✓ does not let a source edit open a modal over Structure, releases locks and restores its open state in Interact  3717ms
+   ✓ follows its exact connected owner through hidden, inert, style and removal without changing the declared open state  534ms
+ ✓ tests/ui/authoring-foundation-turn-history.test.ts (3 tests) 1584ms
+   ✓ turn-specific Chat evidence and safe continuation > retains a failed turn while showing a newer turn, without adding mechanical transcript messages  906ms
+   ✓ turn-specific Chat evidence and safe continuation > retries capture without another model request or edit and fences a changed source  337ms
+   ✓ turn-specific Chat evidence and safe continuation > offers an explicit observation-only agent continuation and rejects any unexpected proposal without applying it  339ms
+12:45:29 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+12:45:30 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:45:30 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+12:45:30 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:45:30 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ✓ tests/nested-route-guidance-schema.test.ts (1 test) 334ms
+   ✓ keeps the exposed nested-route example executable under strict tool and graph operation schemas  331ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/ui/structure-workspace.test.ts > makes Structure the third primary view, with one visible work surface and no View-menu or bottom-dock launcher
+ FAIL  tests/ui/structure-workspace.test.ts > does not restart Interact values or mutate saved source when visiting Structure
+ FAIL  tests/ui/structure-workspace.test.ts > retains a pending floating text draft through Structure and restores the same editor on returning to Design
+ FAIL  tests/ui/structure-workspace.test.ts > retains and protects a pending Source draft while visiting Structure and returning to its canvas mode
+ FAIL  tests/ui/structure-workspace.test.ts > keeps retained floating-tool shortcuts from claiming Structure keyboard focus or Escape
+TypeError: Cannot read properties of undefined (reading 'type')
+
+	in <unknown>
+	in bits-config.svelte
+	in ControlScope.svelte
+	in Designer.svelte
+	in undefined
+
+ ❯ expression ../../packages/ui-structure-svelte/src/structure-semantics.ts:268:19
+    266|     owner: string,
+    267|   ) {
+    268|     switch (value.type) {
+       |                   ^
+    269|       case 'literal':
+    270|         break;
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  5 failed | 7 passed (12)
+   Start at  12:43:59
+   Duration  117.88s (transform 65.82s, setup 0ms, collect 160.82s, tests 8.06s, environment 4.50s, prepare 1.33s)
+
+ ❯ ../../packages/ui-structure-svelte/src/structure-semantics.ts:579:13
+ ❯ projectRelations ../../packages/ui-structure-svelte/src/structure-semantics.ts:574:26
+ ❯ projectStructure ../../packages/ui-structure-svelte/src/structure.ts:341:3
+ ❯ ../../packages/ui-structure-svelte/src/StructureView.svelte:121:42
+ ❯ update_reaction ../../node_modules/svelte/src/internal/client/runtime.js:259:16
+ ❯ execute_derived ../../node_modules/svelte/src/internal/client/reactivity/deriveds.js:370:27
+ ❯ update_derived ../../node_modules/svelte/src/internal/client/reactivity/deriveds.js:394:14
+ ❯ Module.get ../../node_modules/svelte/src/internal/client/runtime.js:704:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+

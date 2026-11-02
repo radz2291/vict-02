@@ -1,0 +1,13 @@
+
+> test
+> vitest run
+
+
+ RUN  v4.1.11 C:/Users/RZ1/AppData/Local/Temp/vict-structure-consumer-mC6r2f/consumer
+
+
+ Test Files  2 passed (2)
+      Tests  5 passed (5)
+   Start at  12:29:26
+   Duration  29.36s (transform 37.60s, setup 0ms, import 49.19s, tests 2.25s, environment 2.90s)
+

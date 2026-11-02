@@ -1,0 +1,1 @@
+<script lang="ts">import type {UiSvelteComponentProps} from '@victframework/ui-svelte';let {props,io}:UiSvelteComponentProps=$props();</script><label>Review note<input aria-label="Review note" value={String(props.value)} oninput={event=>io?.emit('valueChange',event.currentTarget.value)}/></label>

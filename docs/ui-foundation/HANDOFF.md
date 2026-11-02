@@ -1,5 +1,9 @@
 # U0 stage-manager handoff
 
+## Mainline integration authority — 2 November 2026
+
+The owner's subsequent mainline integration instruction supersedes the documentation-only stop below solely for verified integration. Follow the [integration record](../studio/FOUNDATION-MAINLINE-INTEGRATION-20261102.md) and stop after remote verification/reporting. Historical U0 authority is not resumed; TORI and Milestone 2 remain outside this task.
+
 ## Current routing — 2 November 2026
 
 This U0 handoff is historical, not an executable current assignment. Read [current foundation status](STATE.md#current-routing--2-november-2026), [current delivery](../studio/ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md), [owner decision and future TORI requirement](../studio/AUTHORING-FOUNDATION-CURRENT-STATUS.md#owner-decision--2-november-2026) and the [current Stage 9 handoff](../handoff/VICT-STAGE-09-STUDIO-HANDOFF.md#current-handoff--2-november-2026).

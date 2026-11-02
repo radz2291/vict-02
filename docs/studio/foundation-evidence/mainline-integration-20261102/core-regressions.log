@@ -1,0 +1,104 @@
+npm warn "unit" is being parsed as a normal command line argument.
+npm warn "mastra" is being parsed as a normal command line argument.
+npm warn Unknown cli config "--project". This will stop working in the next major version of npm.
+npm warn Unknown cli config "--maxWorkers". This will stop working in the next major version of npm.
+
+ RUN  v4.1.11 C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102
+
+(node:23328) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25176) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:26068) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:23756) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25812) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6592) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:20168) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+12:23:08 pm [vite-plugin-svelte] packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+12:23:09 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:23:09 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+12:23:09 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:23:09 pm [vite-plugin-svelte] packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+ ❯ |renderer| packages/ui-editor/test/floating-selection.svelte.test.ts (3 tests | 1 failed) 662ms
+   × anchors tools to selection, dismisses outside, and restores keyboard focus without authoring 352ms
+ ❯ |renderer| packages/ui-editor/test/contextual-catalog.svelte.test.ts (1 test | 1 failed) 6134ms
+   × exposes every registered catalog property and output in bounded contextual pages without disclosures 6130ms
+ ❯ |unit| packages/ui-editor/test/classes.test.ts (4 tests | 1 failed) 100ms
+     × accepts normal punctuation/Unicode DOM tokens without a project allowlist and rejects malformed/bounded input 33ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |renderer| packages/ui-editor/test/contextual-catalog.svelte.test.ts > exposes every registered catalog property and output in bounded contextual pages without disclosures
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ packages/ui-editor/test/contextual-catalog.svelte.test.ts:7:1
+      5| import Inspector from '../src/Inspector.svelte';
+      6|
+      7| it('exposes every registered catalog property and output in bounded co…
+       | ^
+      8|   for (const descriptor of catalogDescriptors) {
+      9|     const source: UiDocument = {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  |renderer| packages/ui-editor/test/floating-selection.svelte.test.ts > anchors tools to selection, dismisses outside, and restores keyboard focus without authoring
+AssertionError: expected '   .uv-canvas-design [data-ui-occ]:ho…' to be 'Format selection' // Object.is equality
+
+- Expected
++ Received
+
+- Format selection
++    .uv-canvas-design [data-ui-occ]:hover:not(:has([data-ui-occ]:hover)) {
++         outline: 1px dashed var(--ui-editor-hover, #7aa7ff);
++         cursor: pointer;
++       }
++       [data-ui-selected] {
++         outline: 2px solid var(--ui-editor-selected, #2b6cff);
++         outline-offset: 1px;
++       } Title× Format selection
+
+ ❯ packages/ui-editor/test/floating-selection.svelte.test.ts:73:49
+     71|     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'F10', ca…
+     72|     await tick();
+     73|     expect(document.activeElement?.textContent).toBe('Format selection…
+       |                                                 ^
+     74|     expect(palette.style.visibility).toBe('visible');
+     75|     document.activeElement!.dispatchEvent(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  |unit| packages/ui-editor/test/classes.test.ts > canonical authored class transactions > accepts normal punctuation/Unicode DOM tokens without a project allowlist and rejects malformed/bounded input
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ packages/ui-editor/test/classes.test.ts:9:172
+      7|  it('accepts normal punctuation/Unicode DOM tokens without a project a…
+      8|   for(const value of [[],['😀'.repeat(256)],['brand:active','md:grid-c…
+      9|   for(const value of [[''],['a b'],['a\tb'],['a\nb'],['a\0b'],['x'.rep…
+       |                                                                                                                                                                            ^
+     10|  });
+     11|  it('uses one undoable replace/clear operation and preserves classes t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  3 failed | 77 passed | 1 skipped (81)
+      Tests  3 failed | 638 passed | 3 skipped (644)
+   Start at  12:22:02
+   Duration  105.52s (transform 125.96s, setup 0ms, import 325.55s, tests 223.87s, environment 65.74s)
+

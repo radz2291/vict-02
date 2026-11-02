@@ -1,0 +1,28 @@
+{
+  "name": "vict-independent-structure-consumer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@victframework/contracts": "file:C:/Users/RZ1/AppData/Local/Temp/vict-mainline-2304233b-packs-KTa8fw/victframework-contracts-0.4.0-rc.1.tgz",
+    "@victframework/ui": "file:C:/Users/RZ1/AppData/Local/Temp/vict-mainline-2304233b-packs-KTa8fw/victframework-ui-0.4.0-rc.1.tgz",
+    "@victframework/sdk": "file:C:/Users/RZ1/AppData/Local/Temp/vict-mainline-2304233b-packs-KTa8fw/victframework-sdk-0.4.0-rc.1.tgz",
+    "@victframework/application": "file:C:/Users/RZ1/AppData/Local/Temp/vict-mainline-2304233b-packs-KTa8fw/victframework-application-0.4.0-rc.1.tgz",
+    "@victframework/ui-svelte": "file:C:/Users/RZ1/AppData/Local/Temp/vict-mainline-2304233b-packs-KTa8fw/victframework-ui-svelte-0.4.0-rc.1.tgz",
+    "@victframework/ui-media-svelte": "file:C:/Users/RZ1/AppData/Local/Temp/vict-mainline-2304233b-packs-KTa8fw/victframework-ui-media-svelte-0.4.0-rc.1.tgz",
+    "@victframework/ui-editor": "file:C:/Users/RZ1/AppData/Local/Temp/vict-mainline-2304233b-packs-KTa8fw/victframework-ui-editor-0.4.0-rc.1.tgz",
+    "@victframework/ui-flow-svelte": "file:C:/Users/RZ1/AppData/Local/Temp/vict-mainline-2304233b-packs-KTa8fw/victframework-ui-flow-svelte-0.4.0-rc.1.tgz",
+    "@victframework/ui-structure-svelte": "file:C:/Users/RZ1/AppData/Local/Temp/vict-mainline-2304233b-packs-KTa8fw/victframework-ui-structure-svelte-0.4.0-rc.1.tgz",
+    "svelte": "5.57.0"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "5.1.1",
+    "vite": "6.4.3",
+    "vitest": "4.1.11",
+    "happy-dom": "20.14.5",
+    "typescript": "6.0.3"
+  }
+}

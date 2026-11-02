@@ -1,5 +1,9 @@
 # Authoring foundation acceptance ledger
 
+## Mainline integration authority — 2 November 2026
+
+The owner subsequently authorized verified mainline integration of the completed delivery. The [integration record](FOUNDATION-MAINLINE-INTEGRATION-20261102.md) records that separate gate; it does not reopen these bounded closures or expand the original independent verdict. Stage 9 remains open and Milestone 2 paused; no runtime activation or TORI implementation follows.
+
 ## Current disposition — 2 November 2026
 
 The bounded closures below stand. [Current delivery](ARCHITECTURE-REALIGNMENT-CURRENT-DELIVERY.md) records the subsequent verified push at `09c6ad0710de3838b2e23b95975e8496c89f1654`; earlier no-push statements remain checkpoint facts. The [owner decision](AUTHORING-FOUNDATION-CURRENT-STATUS.md#owner-decision--2-november-2026) keeps Stage 9 open and pauses Milestone 2 with requirements retained to prioritize TORI. Slow authoring remains open, with investigation/optimization deferred pending TORI integration. Future TORI acceptance requirements are recorded there; they are not demonstrated capabilities or implementation authority. Independent `20e26253` and later integrator-verification scopes remain unchanged.

@@ -1,0 +1,103 @@
+{
+  "testedCandidate": "f7ef931628454c40a47136aea2b2e54119f9b507",
+  "status": "SCOPED_INTEGRATION_PASS",
+  "rootLadder": {
+    "source": "2304233b0c1a88cb02cd55bffed13cb9a95981a5",
+    "packages": 21,
+    "qualification": "20 packages unchanged; changed Structure separately checked on final candidate"
+  },
+  "core": {
+    "files": 58,
+    "cases": 445,
+    "source": "2304233b0c1a88cb02cd55bffed13cb9a95981a5",
+    "qualification": "Consumed core/editor/backend/UI-svelte packages unchanged to final candidate"
+  },
+  "flow": {
+    "files": 39,
+    "cases": 209,
+    "qualification": "Consumed Flow/UI-svelte packages unchanged from iframe-repair candidate"
+  },
+  "studio": {
+    "files": 34,
+    "cases": 167,
+    "source": "f7ef931628454c40a47136aea2b2e54119f9b507"
+  },
+  "installedConsumer": {
+    "id": "HXqM2G",
+    "cases": 5,
+    "packages": 9,
+    "nonmanifestFiles": 647
+  },
+  "independentPublic": {
+    "cases": 5,
+    "oldRed": true,
+    "newGreen": true
+  },
+  "independentStudio": {
+    "files": 2,
+    "cases": 16
+  },
+  "isolatedProductionFiles": 305,
+  "receipts": [
+    {
+      "path": "shared-build-repaired.log",
+      "sha256": "27ec7a0af7332c5500759aed3dc173f0c79f86f62794686a95a5a83b1d67f00a"
+    },
+    {
+      "path": "structure-build-final.log",
+      "sha256": "12d766958638ff2a7d845effad8d7d9dbe1c29b842b61a869064b19a3a8254fc"
+    },
+    {
+      "path": "core-regressions-repaired.log",
+      "sha256": "342e2f77c70c97f9fb1e6eaef07f99a434ffd86522a96fbb94ae218bc7dc06ff"
+    },
+    {
+      "path": "flow-regressions-repaired.log",
+      "sha256": "07c94c41d5130edb063aae9e78a7ae9d9bb850aeac7302ff7689eb5db068d7d2"
+    },
+    {
+      "path": "studio-regressions-final.log",
+      "sha256": "d112e422d33bb0c5b1e71e8e48b61aea334576c524626f05a766278479acd986"
+    },
+    {
+      "path": "studio-typecheck-final.log",
+      "sha256": "3b60fb077fa856d3551b84840f7c025e869ecdb01add9d0e01d3d7cc22953619"
+    },
+    {
+      "path": "studio-svelte-check-final.log",
+      "sha256": "2826c88bdfcba1c8fe1410aea1d6ff3ecb06c420564b8def0fc715ee62483712"
+    },
+    {
+      "path": "studio-production-build-final.log",
+      "sha256": "ca1a560c1be2f37dd204d7a51522a80ef982006c5ade6ff14593d6058f384454"
+    },
+    {
+      "path": "ai-package-typecheck-final.log",
+      "sha256": "9b929d260ea22aa394b30377ecc266e9dab17225fd2b29ee7ae3c3ee8c8d038e"
+    },
+    {
+      "path": "public-consumer-final-command.log",
+      "sha256": "bc9befe2668fcefc8bfff9e4c6704b0caeb7b92433ea3ebeb9273b8cbbfcc2db"
+    },
+    {
+      "path": "independent-public-green.log",
+      "sha256": "e3a88042a25211b78e181a1cdecdac31ec9071536c3f69db29602f828a1a6f77"
+    },
+    {
+      "path": "independent-studio-final.log",
+      "sha256": "9546bda929f3889c83b948708fa0b0f9b318e4527b0df5071279634024ff477d"
+    }
+  ],
+  "limits": [
+    "Counts overlap; no unique combined total.",
+    "No whole-repository, whole-foundation, whole-Stage-9, painted-browser, provider or device pass.",
+    "All historical native/provider evidence retains its source/artifact attribution.",
+    "Running Studio and saved work not activated or edited."
+  ],
+  "independentVerifier": {
+    "identity": "/root/mainline_independent_verifier",
+    "commit": "9a83725839a116a0da488619970c298c6821c382",
+    "report": "independent-review.md",
+    "reportSha256": "b3288e8d9f1e599db0d50a44bb3ca2458ccfb1bcca138d67a4b114da838e0539"
+  }
+}

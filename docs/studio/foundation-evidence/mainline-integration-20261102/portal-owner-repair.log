@@ -1,0 +1,162 @@
+
+ RUN  v3.2.7 C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/apps/studio
+
+12:39:38 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/DocumentHost.svelte:111:30 This reference only captures the initial value of `plan`. Did you mean to reference it inside a derived instead?
+https://svelte.dev/e/state_referenced_locally
+12:39:38 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:337:2 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:39:38 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:337:2 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+12:39:38 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:424:4 Visible, non-interactive element `<span>` with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events
+12:39:38 pm [vite-plugin-svelte] C:/Users/RZ1/.codex/worktrees/vict-foundation-mainline-20261102/packages/ui-svelte/src/document/RenderNode.svelte:424:4 `<span>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions
+stderr | tests/ui/structure-portals.test.ts > does not let a source edit open a modal over Structure, releases locks and restores its open state in Interact
+AggregateError: 
+    at internalConnectMultiple (node:net:1139:18)
+    at afterConnectMultiple (node:net:1712:7) {
+  code: 'ECONNREFUSED',
+  [errors]: [
+    Error: connect ECONNREFUSED ::1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '::1',
+      port: 3000
+    },
+    Error: connect ECONNREFUSED 127.0.0.1:3000
+        at createConnectionError (node:net:1675:14)
+        at afterConnectMultiple (node:net:1705:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 3000
+    }
+  ]
+}
+
+stdout | tests/ui/structure-portals.test.ts > does not let a source edit open a modal over Structure, releases locks and restores its open state in Interact
+{"portalOwnershipFailure":{"frameHidden":true,"documents":[{"owner":"Studio","pointerEvents":"","modals":[]},{"owner":"Application","pointerEvents":"","modals":[{"role":"dialog","testId":"dialog-panel","text":"Owned modal ✕ Add your details here."}]}]}}
+
+ ❯ tests/ui/structure-portals.test.ts (3 tests | 1 failed) 2293ms
+   × does not let a source edit open a modal over Structure, releases locks and restores its open state in Interact 1766ms
+     → Application modal while Structure: expected <div …(15)>…(2)</div> to be null
+   ✓ follows its exact connected owner through hidden, inert, style and removal without changing the declared open state  461ms
+   ✓ preserves standalone dialog behavior when no DocumentHost owner is declared 65ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/ui/structure-portals.test.ts > does not let a source edit open a modal over Structure, releases locks and restores its open state in Interact
+AssertionError: Application modal while Structure: expected <div …(15)>…(2)</div> to be null
+
+- Expected: 
+null
+
++ Received: 
+<div
+  aria-labelledby="bits-c45"
+  aria-modal="true"
+  class="uv-28f38746-dialog"
+  data-dialog-content=""
+  data-state="open"
+  data-testid="dialog-panel"
+  data-ui-node="dialog"
+  data-ui-occ="owned-dialog|dialog"
+  data-ui-owner="c40"
+  data-ui-part="root"
+  data-ui-primary=""
+  id="bits-c44"
+  role="dialog"
+  style="pointer-events: auto; --bits-dialog-depth: 0; --bits-dialog-nested-count: 0; contain: layout style;"
+  tabindex="-1"
+>
+  <header
+    class="vict-catalog-overlay-header"
+  >
+    <!---->
+    <!---->
+    <div
+      aria-level="2"
+      data-dialog-title=""
+      data-state="open"
+      id="bits-c45"
+      role="heading"
+    >
+      Owned modal
+      <!---->
+    </div>
+    
+    <!---->
+     
+    <!---->
+    <button
+      aria-label="Close"
+      data-dialog-close=""
+      data-state="open"
+      data-testid="dialog-close"
+      id="bits-c46"
+      tabindex="0"
+    >
+      ✕
+      <!---->
+    </button>
+    
+    <!---->
+    <!---->
+  </header>
+   
+  <div
+    class="vict-overlay-body"
+  >
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+    <p
+      class="uv-28f38746-dialog-body-1"
+      data-ui-node="dialog-body-1"
+      data-ui-occ="owned-dialog|dialog-body-1|dialog@vict.catalog.dialog"
+      data-ui-owner="c40"
+      style=""
+    >
+      <!---->
+      <!---->
+      <span
+        class="uv-text"
+        data-ui-node="dialog-body-1-text"
+        data-ui-occ="owned-dialog|dialog-body-1-text|dialog@vict.catalog.dialog"
+        data-ui-owner="c40"
+        style="display: contents"
+      >
+        Add your details here.
+        <!---->
+      </span>
+      
+      
+      
+    </p>
+    
+    
+    
+    
+    
+    <!---->
+  </div>
+  <!---->
+</div>
+
+ ❯ tests/ui/structure-portals.test.ts:24:201
+
+
+ Test Files  1 failed (1)
+
+      Tests  1 failed | 2 passed (3)
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+   Start at  12:39:26
+   Duration  27.60s (transform 15.97s, setup 0ms, collect 24.29s, tests 2.29s, environment 632ms, prepare 134ms)
+
+

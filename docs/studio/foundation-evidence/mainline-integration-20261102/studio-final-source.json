@@ -1,0 +1,10 @@
+{
+  "sourceCandidate": "f7ef931628454c40a47136aea2b2e54119f9b507",
+  "commitTime": "2026-11-02T12:51:00+08:00",
+  "appTree": "b847dcd2ad3fb79a1fe39bad81298a32e2734dd6",
+  "packagesTree": "7830cc2044cf275178ca69fe1f975298336b82bd",
+  "scriptsTree": "d327ade60e0ad3ea6c7e08aceea578d8a5a504c4",
+  "productionWorkingTreeClean": true,
+  "productionLogAlreadyExists": true,
+  "qualification": "Previous queued regression/typecheck sequence began on e5fa; final production build consumes stable f7ef source. Final regressions and typecheck are separately recorded on f7ef."
+}

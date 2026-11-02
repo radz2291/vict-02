@@ -8,6 +8,8 @@ Fetched repository: `https://github.com/radz2291/vict-02.git`. Remote main is `d
 
 Main is an ancestor of delivery: zero main-only commits, 557 delivery-only commits. There are no intervening main changes or merge conflicts. A normal fast-forward is preferred. The full delivery changes 7,981 paths, including 7,000 Studio documentation/evidence paths, 280 Studio paths, shared UI packages and inherited kernel/runtime/SDK/Mastra changes. These are retained delivery history, not new integration features. Root package/build ladder, package lock and Vitest configuration changed; no GitHub workflow changed. The release workflows are manual and are not invoked. GitHub's main branch read reports protection disabled and no required status checks; server rules still govern the eventual normal push.
 
+The older local main checkout remains at `4d2df037d8a82d36c60bf1bff16919650643ce22`, with its untracked builder-kit archive preserved. No other worktree or local main checkout is advanced or cleaned by this integration; remote main is the update target.
+
 No product changes follow source `2de11bc7719984f23341852b1cc8b9985ff81adf` in the delivered documentation commits. Historical actual-agent, native and device evidence can therefore be reused at its original source identity and scope; this is not fresh browser/provider/device proof. Original independent Option 2 verdict remains attributed to `20e26253f0ec6aab20f480c1b3e537e2282938d8`, with later test-repair/caption follow-ups attributed to integrator verification.
 
 ## Verification plan and boundary
@@ -56,13 +58,31 @@ Two shared production files are repaired. `CatalogPortal.svelte` now tracks same
 
 Fresh regression checks must verify local modal blocking, focus/dismissal, hidden/inert/detached lifetime and lock release in Studio and an installed public consumer. Happy DOM omits the browser's `Window.frameElement` property; the DOM fixtures model only that same-origin platform link, not visibility, modal rendering or lock outcomes. Failed fixture setup and incomplete diagnostics are retained. This evidence is not a new painted-browser proof.
 
-The later production candidate therefore differs from `2de11bc7` in those two shared files. Earlier backend/graph and native/provider evidence can only carry its original attribution or justified unaffected-source equality; no global source/artifact equality to `2de11bc7` is asserted for the repaired candidate.
+That iframe-repair checkpoint differs from `2de11bc7` in those two shared files. The later fallback repair below adds two more production-file changes. Earlier backend/graph and native/provider evidence can only carry its original attribution or justified unaffected-source equality; no global source/artifact equality to `2de11bc7` is asserted for the repaired candidate.
 
 ### Historical native-change fallback admission
 
 A strengthened fixture briefly omitted the typed native-change fallback. Investigation distinguished that fixture error from existing JSON admission: public compilation and `UiEditSession.open` accept historical native changes without it, and the renderer intentionally uses the entered native value. The admitted source then crashed Structure's expression projection; a bounded red test confirms admission before the TypeError. Rejecting this already accepted source would change behavior.
 
 `structure-semantics.ts` now retains the declared Updates edge and skips only an absent fallback expression; `structure-behavior.ts` describes the entered value without inventing a fallback. A regression proves compilation/session admission, Updates with no fallback relation, readable behavior and exact canonical digest preservation. These two additional shared production repairs require a fresh Structure package check and installed-consumer regression. Earlier CLI probes that could not load transitive Svelte modules are retained as harness limitations, not admission proof or a Node-only Structure-consumer claim.
+
+## Repaired integration candidate
+
+Exact final product/test candidate: **f7ef931628454c40a47136aea2b2e54119f9b507**. It includes iframe repair `2304233b0c1a88cb02cd55bffed13cb9a95981a5`, typed fixture correction `e5fa363d0e3425b7f0393d5df6897a0598545c70` and the admitted-fallback repair. Relative to the delivered source, there are four production-file repairs and eight repaired/regression test files; no manifest, dependency, schema, provider or feature expansion was added by integration.
+
+The fresh 21-package ladder at `2304233b` passes. Packages unchanged since that ladder reuse exact source/build-input equality; the changed Structure package has a separately successful fresh check on `f7ef9316`. Core/editor/backend 445 checks and Flow 209 checks were rerun on the iframe-repaired source and carry to `f7ef9316` only for their unchanged consumed packages. Expanded Studio, affected Structure and isolated consumer results below must bind to the final candidate.
+
+The final public-consumer precursor deliberately records `PACKAGE_BUILDS_PASS_CONSUMER_NOT_RUN`, with raw successful build-log hashes, exact source trees and nine fresh local packs. The established verifier may reuse these same-candidate package checks only after tree/file/archive equality checks; it still installs anew and executes its five DOM checks and production build. This is not a fabricated earlier consumer PASS or reuse of historical artifacts for changed components.
+
+The captured precursor's aggregate equality sentence was overbroad; its detailed per-package source/check fields are authoritative. Equality applies to the other 20 root-ladder packages (eight of this consumer's nine); Structure has its separately successful `f7ef9316` check. The raw precursor and reuse snapshot remain unchanged; the helper wording is corrected for subsequent use. No fresh root-21 check of `f7ef9316` is claimed.
+
+Final Studio regressions pass **34 files / 167 cases** on `f7ef9316`, including the admitted legacy case and the earlier repaired 12 cases; final Studio TypeScript also passes. The isolated consumer [HXqM2G](foundation-evidence/structure-shared-completion-20261101/vict-structure-consumer-HXqM2G.json) passes five cases and its production build, with 647 nonmanifest installed files matching nine current inventories. Independent fixtures reproduce four iframe failures and one fallback failure on old installed artifacts, then pass all five unchanged cases on the new installed artifacts. The independent Studio portal/semantics rerun passes 16 cases. Counts overlap and are not a unique combined total.
+
+## Independent gate and mainline update readiness
+
+**SCOPED INTEGRATION PASS.** Fresh verifier `/root/mainline_independent_verifier` reviewed exact candidate **f7ef931628454c40a47136aea2b2e54119f9b507** and committed its [independent report](foundation-evidence/mainline-integration-20261102/independent-review.md) and SHA-bound evidence at **9a83725839a116a0da488619970c298c6821c382**. It performed no production repairs. No scoped blocker remains. Final Studio Svelte/type checks, explicit production build and standalone AI package check pass; the isolated production inventory has 305 files and is not activated.
+
+The builder's remaining commits may contain only verification evidence and status/delivery records, with production/test trees equal to the tested candidate. Before updating main, recheck the live ref and protections; if it advanced, reconcile and reverify affected changes. A normal fast-forward preserves the full delivery history. Record the resulting remote main and its relationship to the tested candidate in the completion receipt, then stop.
 
 ## Preserved status and stop condition
 
