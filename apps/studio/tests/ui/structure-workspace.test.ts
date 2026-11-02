@@ -27,7 +27,7 @@ async function start(){
  const source:UiDocument={...seed,localState:{...seed.localState,message:{key:'message',type:'string',initial:'Initial runtime value'}},revision:'r1.r1',nodes:{
   screen:{id:'screen',kind:'element',tag:'main',children:['heading','field','mirror']},
   heading:{id:'heading',kind:'element',tag:'h1',children:['text']},text:{id:'text',kind:'text',content:{type:'literal',value:'Keep this title'}},
-  field:{id:'field',kind:'element',tag:'input',children:[],attributes:{type:'text','aria-label':'Live value',value:{type:'ref',path:'state.message'}},interactions:[{on:'change',action:'setState',key:'message'}]},
+  field:{id:'field',kind:'element',tag:'input',children:[],attributes:{type:'text','aria-label':'Live value',value:{type:'ref',path:'state.message'}},interactions:[{on:'change',action:'setState',key:'message',value:{type:'ref',path:'state.message'}}]},
   mirror:{id:'mirror',kind:'element',tag:'p',attributes:{'aria-label':'Runtime echo'},children:['message-value']},'message-value':{id:'message-value',kind:'text',content:{type:'expression',expression:{type:'ref',path:'state.message'}}},
  }};
  expect(screenStore(localStorage,source.id).save({document:source,expectedStoredRevision:'r1',newStoredRevision:'r1.r1'}).ok).toBe(true);
