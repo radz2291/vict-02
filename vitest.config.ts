@@ -11,6 +11,7 @@ const aliases = {
   '@victframework/ui': resolveFromRoot('packages/ui/src/index.ts'),
   '@victframework/kernel/testing': resolveFromRoot('packages/kernel/src/testing.ts'),
   '@victframework/kernel': resolveFromRoot('packages/kernel/src/index.ts'),
+  '@victframework/contracts/sha256': resolveFromRoot('packages/contracts/src/sha256.ts'),
   '@victframework/contracts/zod': resolveFromRoot('packages/contracts/src/zod/index.ts'),
   '@victframework/contracts': resolveFromRoot('packages/contracts/src/index.ts'),
   '@victframework/runtime/testing': resolveFromRoot('packages/runtime/src/testing.ts'),

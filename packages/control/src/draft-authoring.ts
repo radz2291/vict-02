@@ -1,3 +1,5 @@
+import { sha256 } from '@victframework/contracts/sha256';
+
 /** Values come from the host's governed turn context. */
 export interface DraftTurn {
   readonly actorId: string;
@@ -131,7 +133,7 @@ export function createDraftAuthoring(host: DraftAuthoringHost) {
         occurrenceId,
         expectedRevision,
         edit,
-        editDigest: await digestEdit(edit),
+        editDigest: digestEdit(edit),
       });
       const prior = await observe(key);
       if (prior !== undefined) return confirm(proposal, prior);
@@ -172,6 +174,9 @@ export function commitDraftEdit(
   const binding = bindingOf(proposal);
   const { edit } = proposal;
   if (typeof edit !== 'string') throw new Error('The draft proposal contains invalid edit data.');
+  if (digestEdit(edit) !== binding.editDigest) {
+    throw new Error('The draft proposal edit does not match its digest.');
+  }
 
   const key = operationKey(binding);
   // A terminal receipt wins even after Stop, undo, or loss of draft access.
@@ -257,8 +262,7 @@ function confirm(proposal: DraftEditProposal, receipt: DraftEditReceipt): DraftE
     : { status: 'operation-conflict' };
 }
 
-async function digestEdit(edit: string): Promise<string> {
-  const bytes = new TextEncoder().encode(JSON.stringify(edit));
-  const digest = await globalThis.crypto.subtle.digest('SHA-256', bytes);
-  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, '0')).join('');
+function digestEdit(edit: string): string {
+  // JSON string encoding preserves lone surrogates before hashing the UTF-8 bytes.
+  return sha256(JSON.stringify(edit));
 }

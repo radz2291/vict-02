@@ -8,6 +8,10 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./sha256": {
+      "types": "./dist/sha256.d.ts",
+      "default": "./dist/sha256.js"
+    },
     "./zod": {
       "types": "./dist/zod/index.d.ts",
       "default": "./dist/zod/index.js"

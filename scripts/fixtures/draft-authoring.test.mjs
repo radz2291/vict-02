@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import test from 'node:test';
 import { AgentTurnService } from '@victframework/control';
 import { commitDraftEdit, createDraftAuthoring } from '@victframework/control/draft-authoring';
@@ -82,7 +82,12 @@ function activate(capabilities) {
   return registry.activateAgentProfile({ id: 'agent.authoring', revision: '1' });
 }
 
-async function harness({ beforeCommit, afterCommit, authorizeEdit = true } = {}) {
+async function harness({
+  beforeCommit,
+  afterCommit,
+  receiveProposal = (proposal) => proposal,
+  authorizeEdit = true,
+} = {}) {
   const graph = new GraphSessionV3(
     {
       schema: 'vict.flow-graph@3',
@@ -144,7 +149,7 @@ async function harness({ beforeCommit, afterCommit, authorizeEdit = true } = {})
       counters.deliveries += 1;
       await beforeCommit?.();
       // One synchronous owner section serializes manual edits, abort, apply and receipt.
-      commitDraftEdit(proposal, signal, journal);
+      commitDraftEdit(receiveProposal(proposal), signal, journal);
       await afterCommit?.(host);
     },
   };
@@ -310,6 +315,10 @@ test(
     assert.equal((await outcomePromise).status, 'completed');
     assert.deepEqual(h.discovery, { ...target, revision: 7 });
     const receipt = expectReceipt(h, turn.turnId, 'applied');
+    assert.equal(
+      receipt.editDigest,
+      createHash('sha256').update(JSON.stringify(agentText)).digest('hex'),
+    );
     assert.equal(receipt.revision, 8);
     assert.equal(h.graph.graph.nodes[0].values.instructions, agentText);
     assert.equal(h.graph.graph.revision, 8);
@@ -452,6 +461,35 @@ test('lost acknowledgement reconciles from the exact journal receipt', testOptio
     receipt,
   });
   assert.deepEqual(h.counters, { deliveries: 1, journalApplies: 1 });
+});
+
+test('a transported edit with a mismatched digest produces zero writes', testOptions, async () => {
+  let changeInTransit = true;
+  const h = await harness({
+    receiveProposal: (proposal) => {
+      const received = JSON.parse(JSON.stringify(proposal));
+      if (changeInTransit) received.edit = manualText;
+      return received;
+    },
+  });
+  const before = h.graph.graph;
+  await (
+    await h.start()
+  ).outcomePromise;
+  assert.deepEqual(h.result, { status: 'unconfirmed' });
+  assert.deepEqual(h.counters, { deliveries: 1, journalApplies: 0 });
+  assert.deepEqual(h.graph.graph, before);
+  assert.equal(h.graph.canUndo, false);
+  assert.equal(h.receipts.size, 0);
+  assert.equal(await h.authoring.observe(h.invocation), undefined);
+
+  changeInTransit = false;
+  const retry = await h.authoring.apply(h.invocation, request);
+  assert.equal(retry.status, 'confirmed');
+  assert.equal(retry.receipt.status, 'applied');
+  assert.equal(retry.receipt.operationId, h.invocation.operationId);
+  assert.equal(h.graph.graph.nodes[0].values.instructions, agentText);
+  assert.deepEqual(h.counters, { deliveries: 2, journalApplies: 1 });
 });
 
 test('a journal receipt for another operation cannot confirm the edit', testOptions, async () => {

@@ -5,6 +5,7 @@
     "paths": {
       "@victframework/contracts": ["./packages/contracts/src/index.ts"],
       "@victframework/contracts/*": ["./packages/contracts/src/*"],
+      "@victframework/contracts/sha256": ["./packages/contracts/src/sha256.ts"],
       "@victframework/contracts/zod": ["./packages/contracts/src/zod/index.ts"],
       "@victframework/kernel": ["./packages/kernel/src/index.ts"],
       "@victframework/kernel/*": ["./packages/kernel/src/*"],

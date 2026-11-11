@@ -57,7 +57,11 @@ writeFileSync(
     private: true,
     type: 'module',
     dependencies: { ...dependencies, svelte: pinnedVersion('svelte') },
-    devDependencies: { tsx: pinnedVersion('tsx'), typescript: pinnedVersion('typescript') },
+    devDependencies: {
+      esbuild: pinnedVersion('esbuild'),
+      tsx: pinnedVersion('tsx'),
+      typescript: pinnedVersion('typescript'),
+    },
   }),
 );
 run(
@@ -114,6 +118,26 @@ run(
   ],
   consumer,
 );
+writeFileSync(
+  join(consumer, 'browser-entry.mjs'),
+  "export { commitDraftEdit, createDraftAuthoring } from '@victframework/control/draft-authoring';\n",
+);
+run(
+  process.execPath,
+  [
+    npm,
+    'exec',
+    '--offline',
+    '--',
+    'esbuild',
+    'browser-entry.mjs',
+    '--bundle',
+    '--platform=browser',
+    '--format=esm',
+    '--outfile=browser-draft-authoring.mjs',
+  ],
+  consumer,
+);
 copyFileSync(
   join(root, 'scripts/fixtures/draft-authoring.test.mjs'),
   join(consumer, 'draft-authoring.test.mjs'),
@@ -126,8 +150,11 @@ console.log(
       commit: run('git', ['rev-parse', 'HEAD'], root, 'pipe').trim(),
       workingTree: run('git', ['status', '--porcelain'], root, 'pipe').trim() || 'clean',
       node: process.version,
-      controlTarball: control.filename,
-      integrity: control.integrity,
+      artifacts: [...artifacts.values()].map(({ name, filename, integrity }) => ({
+        name,
+        filename,
+        integrity,
+      })),
     },
     null,
     2,
