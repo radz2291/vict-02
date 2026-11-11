@@ -7,6 +7,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./draft-authoring": {
+      "types": "./dist/draft-authoring.d.ts",
+      "default": "./dist/draft-authoring.js"
     }
   },
   "main": "./dist/index.js",

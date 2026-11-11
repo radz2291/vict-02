@@ -26,6 +26,7 @@
     "test:unit": "vitest run --project unit",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "verify:consumer": "node scripts/isolated-consumer-check.mjs",
+    "verify:draft-authoring": "node scripts/verify-draft-authoring.mjs",
     "verify:stage2": "node scripts/verify-stage2.mjs",
     "verify:stage3": "node scripts/verify-stage3.mjs",
     "example:application": "npm run build -w application-proof && npm run test -w application-proof",
