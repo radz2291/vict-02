@@ -1,0 +1,6 @@
+(node:44388) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50700) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"mode":"settled-before-delivery-owner-loss","receipt":"answered","replay":"same typed receipt","streamSeq":3,"turnStatuses":[{"status":"failed","errorCode":"VICT_TURN_INTERRUPTED"},{"status":"failed","errorCode":"VICT_TURN_INTERRUPTED"}],"callsBeforeLoss":{"asker":1,"ordinary":1,"answer":1},"dispatchAfterReopen":0}
+{"independent":"settled-before-delivery-owner-loss","result":"PASS"}

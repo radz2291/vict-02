@@ -1,0 +1,123 @@
+(node:5600) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: '83273e801bf49c4517425c7574855bbb',
+  span_id: '84bcbc94aeeb5572'
+}
+{"mode":"last-step","node":"v22.13.1","askerStatus":"completed","answererStatus":"failed","disposition":"answered","calls":{"asker":2,"ordinary":1,"answer":1},"monotonicEvents":10,"durableReplay":true}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+{"mode":"zero-step","node":"v22.13.1","askerStatus":"completed","answererStatus":"completed","disposition":"refused","calls":{"asker":2,"ordinary":1,"answer":0},"monotonicEvents":10,"durableReplay":true}
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: '4fa773cfd98bfde1e2c67383106e4135',
+  span_id: 'a76874a7b148a14c'
+}
+{"mode":"duplicate","node":"v22.13.1","askerStatus":"completed","answererStatus":"failed","disposition":"answered","calls":{"asker":2,"ordinary":1,"answer":1},"monotonicEvents":10,"durableReplay":true}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: 'e2713c61556e503f9c65adbf671459f5',
+  span_id: 'dafc124b66e8a0dc'
+}
+{"mode":"changed-duplicate","node":"v22.13.1","askerStatus":"completed","answererStatus":"failed","disposition":"answered","calls":{"asker":2,"ordinary":1,"answer":1},"monotonicEvents":10,"durableReplay":true}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+{"mode":"stop-asker","node":"v22.13.1","askerStatus":"cancelled","answererStatus":"cancelled","disposition":"refused","calls":{"asker":1,"ordinary":1,"answer":1},"monotonicEvents":4,"durableReplay":true}
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: '0b737b43072c7a4a0753641502611d0f',
+  span_id: '99b281c210b7f65b'
+}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+{"mode":"stop-answerer","node":"v22.13.1","askerStatus":"cancelled","answererStatus":"cancelled","disposition":"refused","calls":{"asker":1,"ordinary":1,"answer":1},"monotonicEvents":4,"durableReplay":true}
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: '48c7e1a957a1f3b6c774aeabb2944ce2',
+  span_id: '67fd07d8184773e9'
+}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+{"mode":"expire-asker","node":"v22.13.1","askerStatus":"cancelled","answererStatus":"cancelled","disposition":"refused","calls":{"asker":1,"ordinary":1,"answer":1},"monotonicEvents":4,"durableReplay":true}
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: '63a1adc6b34bfb4b0c422afe7903bfa6',
+  span_id: '3b96635bcf2b065a'
+}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+{"mode":"expire-answerer","node":"v22.13.1","askerStatus":"cancelled","answererStatus":"cancelled","disposition":"refused","calls":{"asker":1,"ordinary":1,"answer":1},"monotonicEvents":4,"durableReplay":true}
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: 'b7054ca31bc60363345a8c1ccc749ba4',
+  span_id: '0d54785a5b642cf7'
+}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: 'ee9d633fd47593209bae1bf14367c658',
+  span_id: '774fcdc2bbd0b6c4'
+}
+{"mode":"denied-answer","node":"v22.13.1","askerStatus":"completed","answererStatus":"failed","disposition":"refused","calls":{"asker":2,"ordinary":1,"answer":1},"monotonicEvents":10,"durableReplay":true}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: 'af922131a5400282ca4dda621158376a',
+  span_id: '39dedd10f463bdc9'
+}
+{"mode":"revoked-answer","node":"v22.13.1","askerStatus":"completed","answererStatus":"failed","disposition":"refused","calls":{"asker":2,"ordinary":1,"answer":1},"monotonicEvents":10,"durableReplay":"denied by current actor scope"}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+{"mode":"denied-question","disclosure":"refused","answerCalls":0,"deniedQuestionNotStored":true}
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+(node:39332) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"mode":"process-loss","originalTurns":"Interrupted","exchange":"Uncertain","originalSequences":[3,3],"unrelatedTurnsUnchanged":true,"callsBeforeLoss":{"asker":1,"ordinary":1,"answer":1},"dispatchAfterReopen":0}
+(node:54120) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"mode":"settled-process-loss","originalTurns":"Interrupted","exchange":"Answered","originalSequences":[3,3],"unrelatedTurnsUnchanged":true,"callsBeforeLoss":{"asker":1,"ordinary":1,"answer":1},"dispatchAfterReopen":0}
+{"node":"v22.13.1","candidate":"2ebac8f0e20c19c5731766d0021b0f33ff1ec249","files":[{"name":"victframework-contracts-0.4.0-rc.1.tgz","sha512":"dc8222b6acae1b7f1b604e03e01c8bc538b019e51b2a7723900c9f28b9afd1d3f34755b6fd15440232ecb82a9d260bfdb6fb81d6f5ac962754034f8507f0a5ad"},{"name":"victframework-ui-0.4.0-rc.1.tgz","sha512":"ce86d010b2228d8ce1ee5e4646b8173adf1678236dfe599927118f551c39a21cdd7471ae1794319b2e407cefda4bcd9f3cd0085b4a9ddcc4248f0b6f8b58aa02"},{"name":"victframework-sdk-0.4.0-rc.1.tgz","sha512":"0f1e7f7ce55a78a72b26dc2c7abb920b7c36433385679ab045ce69e2ca47cf009700529f7d1fcf77c43a6ca8310c7a375f45af42edbb08660f88675fd149f8ae"},{"name":"victframework-kernel-0.4.0-rc.1.tgz","sha512":"ee9b7d799d6930414419a19d9d398e71f19b50f78c8611a9d21a304ca13d63497dced9daf32e5fe86e5e799c0a85e049b59bb4c73d35b275ac5618995279ea5f"},{"name":"victframework-runtime-0.4.0-rc.1.tgz","sha512":"1a172f1c2eaa98477488d8a3a06d8b3c5e59d539bacc8038989a54ae2f103581916fad0a0515a56400d888b608b1705958d968fae2aa49ea09c5be42d548f64c"},{"name":"victframework-control-0.4.0-rc.1.tgz","sha512":"637f4d5ea1c6c9d5786dfe11eb21d08415d6b2dd739647650dbb62c9aa17164d0604f71f49ebc62d44dbaf3f0db826e0b212c1349cbdae7b653ef6f8f0587d1c"},{"name":"victframework-store-sqlite-0.4.0-rc.1.tgz","sha512":"5a29cd42369051bc349c309ba748d110fe7612aa7251c64c929cd3a26ea6950f19cdf91a7386e9f31487f3d3e515b6e6770031adfaeb990713e4875b968facc9"},{"name":"victframework-mastra-0.4.0-rc.1.tgz","sha512":"45e2be3dfec4426525d73fb221648276b354db9eb31f3f842866d041f93b9e8625486280d15fbc223f4ff9be809cde69756dcb6b7a7f383b5936c0270514d208"}],"packageConsumer":"isolated installed tarballs","destination":"C:\\Users\\RZ1\\Desktop\\RZ\\261114-verification-evidence\\vict004-repair\\packed"}

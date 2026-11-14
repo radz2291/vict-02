@@ -1,0 +1,8 @@
+(node:10212) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:54020) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"mode":"process-loss","originalTurns":"Interrupted","exchange":"Uncertain","originalSequences":[3,3],"unrelatedTurnsUnchanged":true,"callsBeforeLoss":{"asker":1,"ordinary":1,"answer":1},"dispatchAfterReopen":0}
+(node:51268) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"mode":"settled-process-loss","originalTurns":"Interrupted","exchange":"Answered","originalSequences":[3,3],"unrelatedTurnsUnchanged":true,"callsBeforeLoss":{"asker":1,"ordinary":1,"answer":1},"dispatchAfterReopen":0}
