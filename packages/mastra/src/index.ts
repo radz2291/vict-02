@@ -22,6 +22,7 @@ export {
   MASTRA_ADAPTER_REVISION,
   MASTRA_PINNED_VERSIONS,
   MASTRA_ADAPTER_COMPATIBILITY,
+  MASTRA_EXCHANGE_ADAPTER_COMPATIBILITY,
   MASTRA_LICENSE_BOUNDARIES,
   mastraCompatibilityFingerprint,
   verifyMastraAdapterCompatibility,
@@ -89,6 +90,7 @@ export type {
   BridgeTurnContext,
   CapabilityBridgeDeps,
   CapabilityInvoker,
+  GovernedCapabilityContext,
   CapabilityLiveRunRegistry,
   CapabilityReplayVerdict,
   CapabilityResolver,
@@ -166,3 +168,11 @@ export type { MastraMemoryLifecycleOptions, MastraMemoryPruneResult } from './me
 
 export type {InputValidationFeedbackPolicy,InputValidationFeedbackResolver,SafeInputValidationIssue,InputValidationRule} from './input-validation-feedback.js';
 export {inputValidationFeedback as formatInputValidationFeedback} from './input-validation-feedback.js';
+
+export { AGENT_EXCHANGE_ASK_CAPABILITY, createMastraAgentExchange } from './agent-exchange.js';
+export type {
+  AgentExchangeBinding,
+  AgentExchangeDisclosure,
+  MastraAgentExchange,
+  MastraAgentExchangeOptions,
+} from './agent-exchange.js';

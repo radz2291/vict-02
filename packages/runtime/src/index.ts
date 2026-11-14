@@ -151,7 +151,7 @@ export {
   pinAgentTurnRunner,
   validateAgentActivationRecord,
 } from './agent-types.js';
-export { AgentProfileRegistry } from './agent-registry.js';
+export { AgentProfileRegistry, isRegisteredAgentActivation } from './agent-registry.js';
 export type { AgentProfileRegistryOptions } from './agent-registry.js';
 export {
   AgentCredentialError,
@@ -320,3 +320,20 @@ export {
   runCommandConfirmationReceiptConformanceSuite,
 } from './control-conformance.js';
 export type { AgentControlConformanceFactory } from './control-conformance.js';
+
+export type {
+  AgentExchangeDisposition,
+  AgentExchangeIntent,
+  AgentExchangeOccurrence,
+  AgentExchangeReceipt,
+  AgentExchangeRecord,
+  AgentExchangeRefusal,
+  AgentExchangeStore,
+} from './agent-exchange.js';
+
+export {
+  AGENT_EXCHANGE_ASK_CAPABILITY,
+  AGENT_EXCHANGE_MAX_TEXT_BYTES,
+  validateAgentExchangeIntent,
+  validateAgentExchangeReceipt,
+} from './agent-exchange.js';

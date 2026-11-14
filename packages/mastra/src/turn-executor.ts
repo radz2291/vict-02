@@ -1,7 +1,17 @@
-import type { AgentProfileActivation, AgentControlStores } from '@victframework/runtime';
+import type {
+  AgentProfileActivation,
+  AgentControlStores,
+  AgentExchangeDisposition,
+  AgentExchangeReceipt,
+} from '@victframework/runtime';
 import { AgentStreamHub } from '@victframework/runtime';
 import type { AgentStreamEvent } from '@victframework/contracts';
 import { AgentTurnService } from '@victframework/control';
+import {
+  AGENT_EXCHANGE_ASK_CAPABILITY,
+  exchangeCoordinator,
+  type MastraAgentExchange,
+} from './agent-exchange.js';
 import { MastraProductAgent } from './adapter.js';
 import type { MastraProductAgentConfig } from './adapter.js';
 import {
@@ -36,6 +46,11 @@ export interface MastraTurnExecutorDeps {
   readonly hub: AgentStreamHub;
   readonly capabilityBridge: CapabilityBridgeDeps;
   readonly clock?: () => number;
+  /** Required deadline resolver for an exchange-wired composition. */
+  readonly exchange?: {
+    readonly binding: MastraAgentExchange;
+    readonly deadlineAt: (turn: { readonly turnId: string; readonly actorId: string }) => number;
+  };
   readonly ids?: ConstructorParameters<typeof AgentTurnService>[0]['ids'];
 }
 
@@ -61,11 +76,63 @@ export function composeMastraTurnExecutor(deps: MastraTurnExecutorDeps): MastraT
   // registrations. With no live owner in its own composition, a duplicate
   // reconciles the attempt conservatively (fail closed) — never against
   // another composition's owner.
+  const exchange = deps.exchange && {
+    binding: deps.exchange.binding,
+    deadlineAt: deps.exchange.deadlineAt,
+  };
+  const coordinator = exchange && exchangeCoordinator(exchange.binding);
+  if (
+    deps.activation.capabilities.some(
+      (ref) =>
+        ref.id === AGENT_EXCHANGE_ASK_CAPABILITY && !coordinator?.isAsk(deps.activation, ref),
+    )
+  )
+    throw new Error('VICT_EXCHANGE_UNBOUND');
+  coordinator?.assertActivation(deps.activation);
+  if (deps.agentConfig.exchange !== undefined) throw new Error('VICT_EXCHANGE_UNBOUND');
+  let productAgent: MastraProductAgent;
   const liveRunRegistry =
     deps.capabilityBridge.liveRunRegistry ?? createCapabilityLiveRunRegistry();
+  const exposeExchangeResult = (result: AgentExchangeDisposition | AgentExchangeReceipt) => {
+    const receiptId = 'operationId' in result ? result.operationId : undefined;
+    return result.status === 'answered'
+      ? { status: result.status, answer: result.answer, receiptId }
+      : { status: result.status, code: result.code, ...(receiptId ? { receiptId } : {}) };
+  };
   const capabilityTools = buildCapabilityTools(deps.activation, {
     ...deps.capabilityBridge,
     liveRunRegistry,
+    ...(coordinator
+      ? {
+          resolveCapability: (id, revision) => {
+            const capability = deps.capabilityBridge.resolveCapability(id, revision);
+            if (
+              id === AGENT_EXCHANGE_ASK_CAPABILITY &&
+              (capability?.id !== id ||
+                capability.revision !== revision ||
+                (capability.effect !== 'read' && capability.effect !== 'pure'))
+            )
+              throw new Error('VICT_EXCHANGE_UNBOUND');
+            return capability;
+          },
+          reserveCapabilityBudget: (capability: { id: string; revision: string }) =>
+            coordinator.isAsk(deps.activation, capability)
+              ? 'allowed'
+              : productAgent.capabilityBudgetGate(),
+          replayCapabilityResult: async (definition, input, context) =>
+            coordinator.isAsk(deps.activation, definition)
+              ? exposeExchangeResult(await coordinator.ask(input, context, true))
+              : undefined,
+          invoke: async (definition, input, context) => {
+            if (coordinator.isAsk(deps.activation, definition)) {
+              return exposeExchangeResult(await coordinator.ask(input, context));
+            }
+            return coordinator.invoke(definition, context, () =>
+              deps.capabilityBridge.invoke(definition, input, context),
+            );
+          },
+        }
+      : {}),
     // Live-owner attempt fencing (single-process envelope): the durable
     // claim is the single ownership gate; settlements are EXACT-BINDING on
     // the attempt fence, and an abandoned running attempt is reconciled
@@ -85,9 +152,10 @@ export function composeMastraTurnExecutor(deps: MastraTurnExecutorDeps): MastraT
     },
   });
 
-  const productAgent = MastraProductAgent.create(deps.activation, {
+  productAgent = MastraProductAgent.create(deps.activation, {
     ...deps.agentConfig,
     capabilityTools,
+    ...(exchange ? { exchange: exchange.binding } : {}),
   });
 
   const executor = {
@@ -128,31 +196,47 @@ export function composeMastraTurnExecutor(deps: MastraTurnExecutorDeps): MastraT
           publicationFailure = true;
         }
       };
-      const outcome = await runWithBridgeTurnScope(
-        {
-          turnId: command.turnId,
-          streamId: command.streamId,
-          actorId: command.actorId,
-          agentProfileVersion: deps.activation.agentProfileVersion,
-          threadId: command.threadId,
-          abortSignal: handle.abortSignal,
-        },
-        () =>
-          productAgent.runTurn(
-            {
-              turnId: command.turnId,
-              threadId: command.threadId,
-              actorId: command.actorId,
-              input: command.input,
-            },
-            {
-              activation: deps.activation,
-              abortSignal: handle.abortSignal,
-              streamId: command.streamId,
-              onEvent: (event: AgentStreamEvent) => awaitEmission(() => emit(event)),
-            },
-          ),
-      );
+      const run = (signal: AbortSignal) =>
+        runWithBridgeTurnScope(
+          {
+            turnId: command.turnId,
+            streamId: command.streamId,
+            actorId: command.actorId,
+            agentProfileVersion: deps.activation.agentProfileVersion,
+            threadId: command.threadId,
+            abortSignal: signal,
+          },
+          () =>
+            productAgent.runTurn(
+              {
+                turnId: command.turnId,
+                threadId: command.threadId,
+                actorId: command.actorId,
+                input: command.input,
+              },
+              {
+                activation: deps.activation,
+                abortSignal: signal,
+                streamId: command.streamId,
+                onEvent: (event: AgentStreamEvent) => awaitEmission(() => emit(event)),
+              },
+            ),
+        );
+      const outcome =
+        coordinator && exchange
+          ? await coordinator.withTurn(
+              {
+                activation: deps.activation,
+                stores: deps.stores,
+                turnId: command.turnId,
+                streamId: command.streamId,
+                actorId: command.actorId,
+                deadlineAt: exchange.deadlineAt(command),
+                signal: handle.abortSignal,
+              },
+              run,
+            )
+          : await run(handle.abortSignal);
       // The chain has fully settled before the turn outcome is produced.
       await emissionChain;
       // Correlation: record the Mastra trace identity on the VICT turn

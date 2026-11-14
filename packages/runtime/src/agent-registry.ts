@@ -301,6 +301,13 @@ export interface AgentProfileRegistryOptions {
  * runtime composition. Not a global registry: every composition carries
  * its own.
  */
+const registeredActivations = new WeakSet<AgentProfileActivation>();
+
+/** Proves that the snapshot was resolved or restored by this runtime. */
+export function isRegisteredAgentActivation(activation: AgentProfileActivation): boolean {
+  return registeredActivations.has(activation);
+}
+
 export class AgentProfileRegistry {
   readonly #artifacts = new Map<string, AgentArtifact>();
   readonly #profiles = new Map<string, Map<string, AgentProfileAuthoring>>();
@@ -866,6 +873,7 @@ export class AgentProfileRegistry {
     // Frozen copy preserves function references (frozenCopy passes
     // functions through) — execute/transform/check/parse stay bound while
     // all data becomes immutable.
+    registeredActivations.add(activation);
     return activation;
   }
 
@@ -1021,6 +1029,7 @@ export class AgentProfileRegistry {
       activation.createdAt === record.createdAt
         ? activation
         : (Object.freeze({ ...activation, createdAt: record.createdAt }) as AgentProfileActivation);
+    registeredActivations.add(restored);
     return { ok: true, activation: restored };
   }
 }

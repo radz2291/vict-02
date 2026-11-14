@@ -17,3 +17,5 @@ export type {
   SqliteAgentControlOptions,
   SqliteAgentControlStoreSet,
 } from './agent-control-adapter.js';
+
+export { createSqliteAgentExchangeStore } from './agent-exchange-adapter.js';

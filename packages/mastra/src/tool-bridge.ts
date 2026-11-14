@@ -635,11 +635,21 @@ export type CapabilityResolver = (
   revision: string,
 ) => CapabilityDefinition<unknown, unknown> | undefined;
 
+/** Bridge-owned occurrence identity handed only to admitted implementations. */
+export interface GovernedCapabilityContext extends Partial<CapabilityContext> {
+  readonly victActorId?: string;
+  readonly victTurnId?: string;
+  readonly victInvocationId?: string;
+  readonly victIdempotencyKey?: string;
+  readonly victToolCallId?: string;
+  readonly signal?: AbortSignal;
+}
+
 /** The capability invocation boundary (composition-supplied; least authority). */
 export type CapabilityInvoker = (
   definition: CapabilityDefinition<unknown, unknown>,
   input: unknown,
-  context: Partial<CapabilityContext>,
+  context: GovernedCapabilityContext,
 ) => Promise<unknown>;
 
 /** The durable ports the bridge drives (neutral runtime/control ports). */
@@ -753,6 +763,15 @@ export interface CapabilityBridgeDeps {
     approvalId: string,
   ): Promise<{ status: AgentApprovalRecord['status'] } | undefined>;
   /** Per-turn tool budget gate (adapter-supplied; see helper-tools). */
+  /** Internal selective gate used by exchange wiring to reserve an ask exactly once. */
+  readonly reserveCapabilityBudget?: (capability: { id: string; revision: string }) =>
+    'allowed' | 'denied' | 'outside-turn';
+  /** Read-only replay for an opt-in capability whose durable receipt holds its result. */
+  readonly replayCapabilityResult?: (
+    capability: { id: string; revision: string },
+    input: unknown,
+    context: GovernedCapabilityContext,
+  ) => Promise<unknown | undefined>;
   readonly budgetGate?: () => 'allowed' | 'denied' | 'outside-turn';
   /**
    * The composition-scoped live-owner registry. When omitted, the bridge
@@ -1035,9 +1054,9 @@ export function bridgeCapabilityToolToMastra(
           } satisfies CapabilityToolFailure;
         }
         // Per-turn tool budget (same discipline as helper tools).
-        if (deps.budgetGate !== undefined) {
+        if (deps.reserveCapabilityBudget !== undefined || deps.budgetGate !== undefined) {
           try {
-            if (deps.budgetGate() !== 'allowed') {
+            if ((deps.reserveCapabilityBudget?.(definition) ?? deps.budgetGate?.()) !== 'allowed') {
               return {
                 victCapabilityFailure: 'VICT_CAPABILITY_TOOL_LIMIT_EXCEEDED',
               } satisfies CapabilityToolFailure;
@@ -1156,6 +1175,27 @@ export function bridgeCapabilityToolToMastra(
         const rereadInvocation = (): Promise<AgentToolInvocationRecord> =>
           recordInvocationIntentIdempotent(deps, intentInput);
         let current = await rereadInvocation();
+        const replayResult = async (record: AgentToolInvocationRecord): Promise<unknown> => {
+          if (record.status !== 'completed' || !deps.replayCapabilityResult)
+            return stableDispositionEnvelope(record);
+          try {
+            const value = await deps.replayCapabilityResult(definition, effectiveInput, {
+              signal: turn.abortSignal,
+              victActorId: turn.actorId,
+              victTurnId: turn.turnId,
+              victInvocationId: record.invocationId,
+              victIdempotencyKey: record.idempotencyKey,
+              victToolCallId: toolCallId,
+            });
+            if (value === undefined) return stableDispositionEnvelope(record);
+            const checked = outputContract?.parse(value) ?? { ok: true, value };
+            if (!checked.ok) return stableDispositionEnvelope(record);
+            const safe = captureDeliverySafeSnapshot(checked.value);
+            return safe.ok ? safe.value : stableDispositionEnvelope(record);
+          } catch {
+            return stableDispositionEnvelope(record);
+          }
+        };
 
         /**
          * ---- 5. Attempt-ownership dispatch (bounded arbitration) -----------
@@ -1178,17 +1218,23 @@ export function bridgeCapabilityToolToMastra(
          */
         for (let round = 0; round < 6; round += 1) {
           if (current.status === 'running') {
-            return resolveRunningDuplicate(deps, current, {
+            const duplicate = await resolveRunningDuplicate(deps, current, {
               abortSignal: turn.abortSignal,
               clock,
               liveRunRegistry,
               rereadInvocation,
             });
+            if (deps.replayCapabilityResult && !turn.abortSignal?.aborted &&
+                parseCapabilityReplayEnvelope(duplicate).kind === 'valid') {
+              const settled = await rereadInvocation();
+              if (settled.status === 'completed') return replayResult(settled);
+            }
+            return duplicate;
           }
           if (current.status !== 'intent' && current.status !== 'approved') {
             // TERMINAL REPLAY: an invocation that is already durably terminal
             // NEVER passes through capability invocation again.
-            return stableDispositionEnvelope(current);
+            return replayResult(current);
           }
           // ---- OWNER CANDIDATE: pre-running (intent | approved) ------------
           if (policy.requiresApproval) {
@@ -1872,7 +1918,7 @@ async function executeOwnedAttempt(
       victTurnId: context.turn.turnId,
       victToolCallId: context.toolCallId,
       victActorId: context.turn.actorId,
-    } as Partial<CapabilityContext>);
+    });
   } catch {
     // A capability that THREW may already have performed its effect (the
     // throw could have happened after the effect): the truthful disposition

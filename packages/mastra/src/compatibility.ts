@@ -67,6 +67,15 @@ export const MASTRA_ADAPTER_COMPATIBILITY: Readonly<{
   runtimePackages: Object.freeze({ ...MASTRA_PINNED_VERSIONS }),
 });
 
+/**
+ * Explicit opt-in revision for live wired exchanges. Existing revision 6
+ * activations retain their current ordinary execution semantics.
+ */
+export const MASTRA_EXCHANGE_ADAPTER_COMPATIBILITY = Object.freeze({
+  ...MASTRA_ADAPTER_COMPATIBILITY,
+  revision: '7',
+} as const);
+
 /** The license boundary of every pinned Mastra package (adoption evidence, §2.1). */
 export const MASTRA_LICENSE_BOUNDARIES: Readonly<
   Record<MastraPinnedPackageName, { readonly license: 'Apache-2.0'; readonly registry: string }>
