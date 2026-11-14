@@ -1,0 +1,14 @@
+npm-ci.log exit=0
+build-contracts.log exit=0
+build-ui.log exit=0
+build-sdk.log exit=0
+build-kernel.log exit=0
+build-runtime.log exit=0
+build-store-sqlite.log exit=0
+build-control.log exit=0
+build-mastra.log exit=0
+public-consumer.log exit=0
+independent-consumer.log exit=1
+regressions.log exit=0
+public-consumer-pinned.log exit=0
+independent-consumer-pinned.log exit=1

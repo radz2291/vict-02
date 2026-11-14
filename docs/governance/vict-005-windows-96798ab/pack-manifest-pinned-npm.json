@@ -1,0 +1,38 @@
+{
+  "node": "v22.13.1",
+  "candidate": "96798ab5dcd526af2868692fd156e360189f0434",
+  "files": [
+    {
+      "name": "victframework-contracts-0.4.0-rc.1.tgz",
+      "sha512": "dc8222b6acae1b7f1b604e03e01c8bc538b019e51b2a7723900c9f28b9afd1d3f34755b6fd15440232ecb82a9d260bfdb6fb81d6f5ac962754034f8507f0a5ad"
+    },
+    {
+      "name": "victframework-ui-0.4.0-rc.1.tgz",
+      "sha512": "ce86d010b2228d8ce1ee5e4646b8173adf1678236dfe599927118f551c39a21cdd7471ae1794319b2e407cefda4bcd9f3cd0085b4a9ddcc4248f0b6f8b58aa02"
+    },
+    {
+      "name": "victframework-sdk-0.4.0-rc.1.tgz",
+      "sha512": "0f1e7f7ce55a78a72b26dc2c7abb920b7c36433385679ab045ce69e2ca47cf009700529f7d1fcf77c43a6ca8310c7a375f45af42edbb08660f88675fd149f8ae"
+    },
+    {
+      "name": "victframework-kernel-0.4.0-rc.1.tgz",
+      "sha512": "ee9b7d799d6930414419a19d9d398e71f19b50f78c8611a9d21a304ca13d63497dced9daf32e5fe86e5e799c0a85e049b59bb4c73d35b275ac5618995279ea5f"
+    },
+    {
+      "name": "victframework-runtime-0.4.0-rc.1.tgz",
+      "sha512": "1518bff00d446b2751372b4134174f56be5cda97e7017f829a95d75754d804851a44b5a920534d253e544941435e9090067af6f88ffcd9a807aa24026487cd3d"
+    },
+    {
+      "name": "victframework-control-0.4.0-rc.1.tgz",
+      "sha512": "637f4d5ea1c6c9d5786dfe11eb21d08415d6b2dd739647650dbb62c9aa17164d0604f71f49ebc62d44dbaf3f0db826e0b212c1349cbdae7b653ef6f8f0587d1c"
+    },
+    {
+      "name": "victframework-store-sqlite-0.4.0-rc.1.tgz",
+      "sha512": "923c84e5cd085d191c33af45acb59b66ed229db91c1e6dcbf461bb9181e98b07029b3601bf1a638604e8bd3473d9118724d990a7820f378ffe21053e536f11be"
+    },
+    {
+      "name": "victframework-mastra-0.4.0-rc.1.tgz",
+      "sha512": "5991f126dc8ed63053e9c2f5f10af7889fa63dc7eb3ef9351cab63e11fd2de3ace76aa38c435438b26fd9e6e795af1a2f9233a359830c1c1aeba2081d9359412"
+    }
+  ]
+}

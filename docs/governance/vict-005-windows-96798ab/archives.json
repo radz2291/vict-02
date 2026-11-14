@@ -1,0 +1,50 @@
+[
+  {
+    "file": "victframework-contracts-0.4.0-rc.1.tgz",
+    "sha256": "017c0587843869653f6bd723566dcaf39f2e89b2fb55bc923f35667be9d618de",
+    "sha512": "dc8222b6acae1b7f1b604e03e01c8bc538b019e51b2a7723900c9f28b9afd1d3f34755b6fd15440232ecb82a9d260bfdb6fb81d6f5ac962754034f8507f0a5ad",
+    "bytes": 25610
+  },
+  {
+    "file": "victframework-control-0.4.0-rc.1.tgz",
+    "sha256": "3cf09cb1bf97f90f50e6f4bbf76a690f309b9a3d39833e54bac0d361ab61386f",
+    "sha512": "637f4d5ea1c6c9d5786dfe11eb21d08415d6b2dd739647650dbb62c9aa17164d0604f71f49ebc62d44dbaf3f0db826e0b212c1349cbdae7b653ef6f8f0587d1c",
+    "bytes": 36577
+  },
+  {
+    "file": "victframework-kernel-0.4.0-rc.1.tgz",
+    "sha256": "a865551c64cb25b9314862e1a0afa19d5b8f61ebdb817dcb55f68085a431b5a6",
+    "sha512": "ee9b7d799d6930414419a19d9d398e71f19b50f78c8611a9d21a304ca13d63497dced9daf32e5fe86e5e799c0a85e049b59bb4c73d35b275ac5618995279ea5f",
+    "bytes": 57743
+  },
+  {
+    "file": "victframework-mastra-0.4.0-rc.1.tgz",
+    "sha256": "01fc2e5f0ac4c4f5c63bf686d9de7e9e14fd56df6232bc1b897ad8664a5655ad",
+    "sha512": "5991f126dc8ed63053e9c2f5f10af7889fa63dc7eb3ef9351cab63e11fd2de3ace76aa38c435438b26fd9e6e795af1a2f9233a359830c1c1aeba2081d9359412",
+    "bytes": 132857
+  },
+  {
+    "file": "victframework-runtime-0.4.0-rc.1.tgz",
+    "sha256": "68b1a41be5116934066b89d625a20ed0ae8972df4c9400752a7cbee590dac917",
+    "sha512": "1518bff00d446b2751372b4134174f56be5cda97e7017f829a95d75754d804851a44b5a920534d253e544941435e9090067af6f88ffcd9a807aa24026487cd3d",
+    "bytes": 314185
+  },
+  {
+    "file": "victframework-sdk-0.4.0-rc.1.tgz",
+    "sha256": "c37e97319a52463c9b422a3de2870247beaee97b811fe378b3a4ee8e00e2ce7a",
+    "sha512": "0f1e7f7ce55a78a72b26dc2c7abb920b7c36433385679ab045ce69e2ca47cf009700529f7d1fcf77c43a6ca8310c7a375f45af42edbb08660f88675fd149f8ae",
+    "bytes": 39307
+  },
+  {
+    "file": "victframework-store-sqlite-0.4.0-rc.1.tgz",
+    "sha256": "0f789e7432c20fc2788526bfa52df5fd524ac84c4794bffb77817ad8d45bd2ca",
+    "sha512": "923c84e5cd085d191c33af45acb59b66ed229db91c1e6dcbf461bb9181e98b07029b3601bf1a638604e8bd3473d9118724d990a7820f378ffe21053e536f11be",
+    "bytes": 74533
+  },
+  {
+    "file": "victframework-ui-0.4.0-rc.1.tgz",
+    "sha256": "15dd5f5da2a38b6cbf0bc56677c7f6ccae190c4c7a5029d8cc7c8994263a7cb2",
+    "sha512": "ce86d010b2228d8ce1ee5e4646b8173adf1678236dfe599927118f551c39a21cdd7471ae1794319b2e407cefda4bcd9f3cd0085b4a9ddcc4248f0b6f8b58aa02",
+    "bytes": 113432
+  }
+]

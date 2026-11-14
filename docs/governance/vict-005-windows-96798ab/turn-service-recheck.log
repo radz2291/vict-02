@@ -1,0 +1,3 @@
+(node:17272) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"before":["running","running"],"after":[{"status":"failed","errorCode":"VICT_TURN_INTERRUPTED"},{"status":"failed","errorCode":"VICT_TURN_INTERRUPTED"}],"receiptUnchanged":true,"seq":3,"recovery":{"cancelled":0,"failed":2,"pendingApprovals":0}}

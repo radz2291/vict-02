@@ -1,0 +1,5 @@
+Node executable SHA-256, identical for the installed copy and the verifier toolchain
+8f6945c55a51c893691534e7163372e4cedb62c8ad80a2a975df3f14a19fba16
+
+npm CLI beside the primary Node installation 10.9.2
+npm CLI beside the verifier copy 11.19.1
