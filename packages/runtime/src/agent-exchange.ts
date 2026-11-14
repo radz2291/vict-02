@@ -63,6 +63,11 @@ export type AgentExchangeRecord =
 export interface AgentExchangeStore {
   read(operationId: string): AgentExchangeRecord | undefined;
   listPending(): readonly AgentExchangeIntent[];
+  /** Settled receipts for this binding that reference at least one supplied turn. */
+  listSettledForTurns(
+    bindingId: string,
+    turnIds: readonly string[],
+  ): readonly AgentExchangeReceipt[];
   claim(intent: AgentExchangeIntent): boolean;
   settle(receipt: AgentExchangeReceipt): AgentExchangeReceipt;
   reconcileAbandoned(operationId: string, settledAt: number): AgentExchangeReceipt | undefined;

@@ -24,7 +24,13 @@ export function createSqliteAgentExchangeStore(options: {
         operation_id TEXT PRIMARY KEY,
         intent TEXT NOT NULL,
         receipt TEXT
-      )
+      );
+      CREATE INDEX IF NOT EXISTS vict_agent_exchange_settled_asker
+        ON vict_agent_exchange_v1 (json_extract(intent, '$.bindingId'), json_extract(intent, '$.asker.turnId'))
+        WHERE receipt IS NOT NULL;
+      CREATE INDEX IF NOT EXISTS vict_agent_exchange_settled_answerer
+        ON vict_agent_exchange_v1 (json_extract(intent, '$.bindingId'), json_extract(intent, '$.answerer.turnId'))
+        WHERE receipt IS NOT NULL;
     `),
     );
   } catch (error) {
@@ -103,6 +109,36 @@ export function createSqliteAgentExchangeStore(options: {
           if (!validateAgentExchangeIntent(intent) || intent.operationId !== row.operation_id)
             throw new Error('Invalid exchange intent');
           return intent;
+        });
+      });
+    },
+    listSettledForTurns(bindingId, turnIds) {
+      if (turnIds.length === 0) return [];
+      return safeRun('agentExchange.listSettledForTurns', () => {
+        const ids = JSON.stringify(turnIds);
+        const rows = db
+          .prepare(
+            `
+          SELECT operation_id, receipt FROM vict_agent_exchange_v1
+          WHERE receipt IS NOT NULL AND json_extract(intent, '$.bindingId') = ?
+            AND json_extract(intent, '$.asker.turnId') IN (SELECT value FROM json_each(?))
+          UNION
+          SELECT operation_id, receipt FROM vict_agent_exchange_v1
+          WHERE receipt IS NOT NULL AND json_extract(intent, '$.bindingId') = ?
+            AND json_extract(intent, '$.answerer.turnId') IN (SELECT value FROM json_each(?))
+          ORDER BY operation_id
+        `,
+          )
+          .all(bindingId, ids, bindingId, ids);
+        return rows.map((row) => {
+          const receipt = JSON.parse(String(row.receipt)) as AgentExchangeReceipt;
+          if (
+            !validateAgentExchangeReceipt(receipt) ||
+            receipt.operationId !== row.operation_id ||
+            receipt.bindingId !== bindingId
+          )
+            throw new Error('Invalid exchange receipt');
+          return receipt;
         });
       });
     },

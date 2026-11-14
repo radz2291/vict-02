@@ -454,6 +454,27 @@ class ExchangeCoordinator {
         turns.add(intent.asker.turnId);
         turns.add(intent.answerer.turnId);
       }
+      // Receipt settlement precedes delivery. A crash between them can leave
+      // open turns linked to an already immutable receipt.
+      const openTurns = new Map(
+        (await this.#stores.turns.listOpenTurns()).map((turn) => [turn.turnId, turn]),
+      );
+      for (const receipt of this.#receipts.listSettledForTurns(this.#bindingId, [
+        ...openTurns.keys(),
+      ])) {
+        for (const occurrence of [receipt.asker, receipt.answerer]) {
+          const turn = openTurns.get(occurrence.turnId);
+          if (
+            turn?.streamId === occurrence.streamId &&
+            turn.actorId === occurrence.actorId &&
+            (turn.activationVersion === undefined ||
+              turn.activationVersion === occurrence.activationVersion) &&
+            turn.agentProfileVersion === occurrence.agentProfileVersion
+          ) {
+            turns.add(turn.turnId);
+          }
+        }
+      }
       for (const turnId of turns) {
         const turn = await this.#stores.turns.getTurn(turnId);
         if (

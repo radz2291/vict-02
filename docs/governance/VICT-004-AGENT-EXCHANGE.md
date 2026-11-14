@@ -47,9 +47,12 @@ Independent Windows verification precedes TORI binding.
 - Stop or expiry on either side cancels the linked live scope. On startup after
   confirming loss of the previous single-process owner, call
   `exchange.reconcileAfterRestart()` before accepting work for the binding.
-  This interrupts the original turns and fences pending receipts as outcome
-  unknown. Provider attempt count is unknown when it was not confirmed before
-  the process loss. Replay reads a receipt and performs no execution.
+  This closes the original open turns referenced by pending or settled receipts
+  for the binding. A recorded Stop remains a cancellation. Pending receipts
+  become outcome unknown, with an unknown provider attempt count when applicable.
+  A receipt committed before owner loss keeps its original contents. Recovery
+  preserves both stream sequence high-water marks. Replay reads the receipt and
+  performs no execution.
   Restore the deployment's actor directory before authorized replay.
 
 Ordinary and answer model steps use one per-turn balance. Mastra's public

@@ -5,7 +5,9 @@ import { fork } from 'node:child_process';
 import { once } from 'node:events';
 import { fileURLToPath } from 'node:url';
 import { setTimeout as delay } from 'node:timers/promises';
-import { mkdtemp } from 'node:fs/promises';
+import { mkdtemp, readFile } from 'node:fs/promises';
+import { writeFileSync } from 'node:fs';
+import { DatabaseSync } from 'node:sqlite';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { validateAgentStreamEvent } from '@victframework/contracts';
@@ -153,7 +155,34 @@ async function scenario(mode, directory = undefined) {
       }),
     /VICT_EXCHANGE_UNBOUND/,
   );
-  const exchange = createMastraAgentExchange({ binding, receipts, stores, disclosure });
+  const receiptStore =
+    mode === 'settled-process-loss'
+      ? {
+          ...receipts,
+          settle(receipt) {
+            assert.equal(receipt.status, 'answered');
+            receipts.settle(receipt);
+            writeFileSync(
+              join(directory, 'receipt-committed.json'),
+              JSON.stringify({
+                operationId: receipt.operationId,
+                askerTurnId,
+                answererTurnId,
+                calls,
+              }),
+            );
+            // Freeze this owner before settle returns to the delivery path.
+            Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0);
+            assert.fail('Expected the verifier to terminate the owner');
+          },
+        }
+      : receipts;
+  const exchange = createMastraAgentExchange({
+    binding,
+    receipts: receiptStore,
+    stores,
+    disclosure,
+  });
   await assert.rejects(
     exchange.withAsker(async () => assert.fail('Unwired call')),
     /VICT_EXCHANGE_UNBOUND/,
@@ -479,19 +508,46 @@ async function scenario(mode, directory = undefined) {
   }
 }
 
-async function processLoss() {
+async function waitForCommittedReceipt(directory, worker) {
+  const marker = join(directory, 'receipt-committed.json');
+  while (worker.exitCode === null && worker.signalCode === null) {
+    try {
+      return JSON.parse(await readFile(marker, 'utf8'));
+    } catch (error) {
+      if (error.code !== 'ENOENT' && !(error instanceof SyntaxError)) throw error;
+    }
+    await delay(25, undefined, { ref: false });
+  }
+  assert.fail('Owner exited before committing an answer');
+}
+
+function receiptBytes(path, operationId) {
+  const db = new DatabaseSync(path, { readOnly: true });
+  try {
+    return db
+      .prepare('SELECT receipt FROM vict_agent_exchange_v1 WHERE operation_id = ?')
+      .get(operationId).receipt;
+  } finally {
+    db.close();
+  }
+}
+
+async function processLoss(mode) {
+  const wasSettled = mode === 'settled-process-loss';
   const directory = await mkdtemp(join(tmpdir(), 'vict-exchange-lost-owner-'));
-  const worker = fork(fileURLToPath(import.meta.url), ['--loss-worker', directory], {
+  const worker = fork(fileURLToPath(import.meta.url), ['--loss-worker', mode, directory], {
     stdio: ['ignore', 'ignore', 'inherit', 'ipc'],
   });
   const exited = once(worker, 'exit');
   let data;
   try {
     data = await Promise.race([
-      once(worker, 'message').then(([record]) => record),
-      exited.then(([code]) => assert.fail('Owner exited before exchange intent: ' + code)),
+      wasSettled
+        ? waitForCommittedReceipt(directory, worker)
+        : once(worker, 'message').then(([record]) => record),
+      exited.then(([code]) => assert.fail('Owner exited before the fault boundary: ' + code)),
       delay(25000, undefined, { ref: false }).then(() =>
-        assert.fail('Exchange intent did not reach the model'),
+        assert.fail('Exchange did not reach the fault boundary'),
       ),
     ]);
   } finally {
@@ -499,25 +555,90 @@ async function processLoss() {
     await exited;
   }
   const stores = createSqliteAgentControlStores({ path: join(directory, 'control.sqlite') });
-  const receipts = createSqliteAgentExchangeStore({ path: join(directory, 'exchange.sqlite') });
+  const path = join(directory, 'exchange.sqlite');
+  const receipts = createSqliteAgentExchangeStore({ path });
   try {
-    assert.equal(receipts.read(data.operationId)?.state, 'pending');
+    const saved = receipts.read(data.operationId);
+    assert.equal(saved.state, wasSettled ? 'settled' : 'pending');
+    const beforeBytes = wasSettled ? receiptBytes(path, data.operationId) : null;
+    const originalTurns = await Promise.all(
+      [data.askerTurnId, data.answererTurnId].map((id) => stores.turns.getTurn(id)),
+    );
+    assert.ok(originalTurns.every((turn) => turn.status === 'running'));
+    const originalStreams = await Promise.all(
+      originalTurns.map(async ({ streamId }) => ({
+        seq: await stores.streamLedger.latestSeq(streamId),
+        rows: await stores.streamLedger.listEventsFrom(streamId, 0),
+      })),
+    );
+    const unrelated = [];
+    for (const terminal of [false, true]) {
+      const turnId = randomUUID();
+      await stores.turns.createTurnIntent({
+        ...originalTurns[0],
+        turnId,
+        streamId: randomUUID(),
+        status: 'intent',
+      });
+      await stores.turns.startTurn(turnId, Date.now());
+      if (terminal) {
+        await stores.turns.completeTurn({ turnId, status: 'completed', at: Date.now() });
+      }
+      unrelated.push(await stores.turns.getTurn(turnId));
+    }
     const exchange = createMastraAgentExchange({
       binding: profiles(2),
       stores,
       receipts,
       disclosure: { allowQuestion: () => ({ context: approvedContext }), allowAnswer: () => true },
     });
-    const [receipt] = await exchange.reconcileAfterRestart();
-    assert.equal(receipt.code, 'VICT_EXCHANGE_OUTCOME_UNKNOWN');
-    assert.equal(receipt.answererProviderAttempts, null);
+    if (wasSettled) {
+      const otherBinding = createMastraAgentExchange({
+        binding: profiles(3),
+        stores,
+        receipts,
+        disclosure: {
+          allowQuestion: () => ({ context: approvedContext }),
+          allowAnswer: () => true,
+        },
+      });
+      assert.deepEqual(await otherBinding.reconcileAfterRestart(), []);
+      for (const turn of originalTurns) {
+        assert.deepEqual(await stores.turns.getTurn(turn.turnId), turn);
+      }
+    }
+    const reconciled = await exchange.reconcileAfterRestart();
+    const receipt = wasSettled ? saved.receipt : reconciled[0];
+    assert.equal(reconciled.length, wasSettled ? 0 : 1);
+    if (wasSettled) {
+      assert.equal(receipt.status, 'answered');
+      assert.equal(receipt.answer, approvedContext);
+      assert.equal(receiptBytes(path, data.operationId), beforeBytes);
+    } else {
+      assert.equal(receipt.code, 'VICT_EXCHANGE_OUTCOME_UNKNOWN');
+    }
+    assert.equal(receipt.answererProviderAttempts, wasSettled ? 1 : null);
     assert.equal(receipt.answererModelSteps, 1);
     assert.equal(receipt.askerToolCalls, 1);
-    assert.deepEqual(await exchange.reconcileAfterRestart(), []);
-    for (const turnId of [data.askerTurnId, data.answererTurnId]) {
-      const turn = await stores.turns.getTurn(turnId);
+    const terminalTurns = [];
+    for (const [index, original] of originalTurns.entries()) {
+      const turn = await stores.turns.getTurn(original.turnId);
       assert.equal(turn.status, 'failed');
       assert.equal(turn.errorCode, 'VICT_TURN_INTERRUPTED');
+      assert.equal(turn.streamId, original.streamId);
+      assert.equal(await stores.streamLedger.latestSeq(turn.streamId), originalStreams[index].seq);
+      assert.deepEqual(
+        await stores.streamLedger.listEventsFrom(turn.streamId, 0),
+        originalStreams[index].rows,
+      );
+      terminalTurns.push(turn);
+    }
+    assert.deepEqual(await exchange.reconcileAfterRestart(), []);
+    for (const turn of terminalTurns) {
+      assert.deepEqual(await stores.turns.getTurn(turn.turnId), turn);
+    }
+    for (const turn of unrelated) {
+      assert.deepEqual(await stores.turns.getTurn(turn.turnId), turn);
     }
     // The baseline SQLite control adapter uses a process-local actor directory.
     // Restore the authenticated actor from the fixture's server-side source.
@@ -533,9 +654,11 @@ async function processLoss() {
     );
     console.log(
       JSON.stringify({
-        mode: 'process-loss',
+        mode,
         originalTurns: 'Interrupted',
-        exchange: 'Uncertain',
+        exchange: wasSettled ? 'Answered' : 'Uncertain',
+        originalSequences: originalStreams.map(({ seq }) => seq),
+        unrelatedTurnsUnchanged: true,
         callsBeforeLoss: data.calls,
         dispatchAfterReopen: 0,
       }),
@@ -546,8 +669,13 @@ async function processLoss() {
   }
 }
 if (process.argv[2] === '--loss-worker') {
-  await scenario('process-loss', process.argv[3]);
+  await scenario(process.argv[3], process.argv[4]);
 } else {
-  for (const mode of modes) await scenario(mode);
-  await processLoss();
+  const selected = process.argv.slice(2);
+  for (const mode of modes) {
+    if (!selected.length || selected.includes(mode)) await scenario(mode);
+  }
+  for (const mode of ['process-loss', 'settled-process-loss']) {
+    if (!selected.length || selected.includes(mode)) await processLoss(mode);
+  }
 }
