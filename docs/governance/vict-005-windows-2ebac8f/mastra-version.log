@@ -1,0 +1,10 @@
+vict-monorepo@0.1.0 C:\Users\RZ1\Desktop\RZ\261114-VICT005-2ebac8f
+└─┬ @victframework/mastra@0.4.0-rc.1 -> .\packages\mastra
+  ├── @mastra/core@1.64.0
+  ├─┬ @mastra/libsql@1.22.3
+  │ └── @mastra/core@1.64.0 deduped
+  ├─┬ @mastra/memory@1.28.2
+  │ └── @mastra/core@1.64.0 deduped
+  └─┬ @mastra/observability@1.17.5
+    └── @mastra/core@1.64.0 deduped
+

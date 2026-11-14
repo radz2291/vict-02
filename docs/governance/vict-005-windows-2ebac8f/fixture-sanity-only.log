@@ -1,0 +1,23 @@
+(node:17720) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: '43b68a5cee7de3ad32b49582eeeb429e',
+  span_id: '55773b6d3319fee9'
+}
+{"mode":"role-neutral-pins","profilesReversed":true,"node":"v22.13.1","askerStatus":"completed","answererStatus":"failed","disposition":"answered","calls":{"asker":2,"ordinary":1,"answer":1},"monotonicEvents":10,"durableReplay":true}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+{"independent":"role-neutral-pins","result":"PASS"}
+(node:49764) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"mode":"process-loss","priorReceipt":"pending","recoveredReceipt":"refused","receiptCode":"VICT_EXCHANGE_OUTCOME_UNKNOWN","receiptSha256":"9816b84bd905f7c5d4c4bb556d915cf37adda624c7792f39f75d67da8b617f89","committedBytesPreserved":false,"providerAttempts":null,"originalSequences":[3,3],"originalTurnStatuses":[{"status":"failed","errorCode":"VICT_TURN_INTERRUPTED"},{"status":"failed","errorCode":"VICT_TURN_INTERRUPTED"}],"callsBeforeLoss":{"asker":1,"ordinary":1,"answer":1},"resultDeliveriesBeforeLoss":0,"restartDispatch":{"model":0,"tool":0},"repeatedRecoveryAndReplay":2}
+{"independent":"process-loss","result":"PASS"}
+(node:1964) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"mode":"settled-before-delivery-owner-loss","priorReceipt":"settled","recoveredReceipt":"answered","receiptCode":null,"receiptSha256":"c6f9679700751da3a07c154780c9b6e295945e14dd7051b471054a8d471470a2","committedBytesPreserved":true,"providerAttempts":1,"originalSequences":[3,3],"originalTurnStatuses":[{"status":"failed","errorCode":"VICT_TURN_INTERRUPTED"},{"status":"failed","errorCode":"VICT_TURN_INTERRUPTED"}],"callsBeforeLoss":{"asker":1,"ordinary":1,"answer":1},"resultDeliveriesBeforeLoss":0,"restartDispatch":{"model":0,"tool":0},"repeatedRecoveryAndReplay":2}
+{"independent":"settled-before-delivery-owner-loss","result":"PASS"}

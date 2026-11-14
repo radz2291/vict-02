@@ -1,0 +1,148 @@
+(node:24448) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: '95be1c960ff19daa07018404f6f9cdfe',
+  span_id: '2893c95d327eb53b'
+}
+{"mode":"last-step","profilesReversed":false,"node":"v22.13.1","askerStatus":"completed","answererStatus":"failed","disposition":"answered","calls":{"asker":2,"ordinary":1,"answer":1},"monotonicEvents":10,"durableReplay":true}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+{"independent":"last-step","result":"PASS"}
+{"mode":"zero-step","profilesReversed":false,"node":"v22.13.1","askerStatus":"completed","answererStatus":"completed","disposition":"refused","calls":{"asker":2,"ordinary":1,"answer":0},"monotonicEvents":10,"durableReplay":true}
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+{"independent":"zero-step","result":"PASS"}
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: 'cfefdb76a07539f18a72a1317f60b3f3',
+  span_id: '7f9c4b6f5362fc02'
+}
+{"mode":"duplicate","profilesReversed":false,"node":"v22.13.1","askerStatus":"completed","answererStatus":"failed","disposition":"answered","calls":{"asker":2,"ordinary":1,"answer":1},"monotonicEvents":10,"durableReplay":true}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+{"independent":"duplicate","result":"PASS"}
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: 'f5a603c35920e2debb70cc40b20be069',
+  span_id: '830a1665f3ca7cc7'
+}
+{"mode":"changed-duplicate","profilesReversed":false,"node":"v22.13.1","askerStatus":"completed","answererStatus":"failed","disposition":"answered","calls":{"asker":2,"ordinary":1,"answer":1},"monotonicEvents":10,"durableReplay":true}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+{"independent":"changed-duplicate","result":"PASS"}
+{"mode":"stop-asker","profilesReversed":false,"node":"v22.13.1","askerStatus":"cancelled","answererStatus":"cancelled","disposition":"refused","calls":{"asker":1,"ordinary":1,"answer":1},"monotonicEvents":4,"durableReplay":true}
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: '07a8e0fc98cb21496b7043405ecb275b',
+  span_id: '79dda791b3de05a8'
+}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+{"independent":"stop-asker","result":"PASS"}
+{"mode":"stop-answerer","profilesReversed":false,"node":"v22.13.1","askerStatus":"cancelled","answererStatus":"cancelled","disposition":"refused","calls":{"asker":1,"ordinary":1,"answer":1},"monotonicEvents":4,"durableReplay":true}
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: '3fabc6eb7f7156e0b96b7cc972f9fa57',
+  span_id: '7599e25237e2b314'
+}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+{"independent":"stop-answerer","result":"PASS"}
+{"mode":"expire-asker","profilesReversed":false,"node":"v22.13.1","askerStatus":"cancelled","answererStatus":"cancelled","disposition":"refused","calls":{"asker":1,"ordinary":1,"answer":1},"monotonicEvents":4,"durableReplay":true}
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: '4a59c6391b6a81666a53a2304294ccaf',
+  span_id: '8ad4a66e8872456e'
+}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+{"independent":"expire-asker","result":"PASS"}
+{"mode":"expire-answerer","profilesReversed":false,"node":"v22.13.1","askerStatus":"cancelled","answererStatus":"cancelled","disposition":"refused","calls":{"asker":1,"ordinary":1,"answer":1},"monotonicEvents":4,"durableReplay":true}
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: '8615c55485473b94daddffbf2612e7ca',
+  span_id: '9da3248238d5809c'
+}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+{"independent":"expire-answerer","result":"PASS"}
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: 'd3b450f5eb66eac0b8305c77d734cdec',
+  span_id: 'd93d3ae3a329352c'
+}
+{"mode":"denied-answer","profilesReversed":false,"node":"v22.13.1","askerStatus":"completed","answererStatus":"failed","disposition":"refused","calls":{"asker":2,"ordinary":1,"answer":1},"monotonicEvents":10,"durableReplay":true}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+{"independent":"denied-answer","result":"PASS"}
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: '8457e7faaa91ac45cb51daf4b215501c',
+  span_id: '666e003208ab0b2a'
+}
+{"mode":"revoked-answer","profilesReversed":false,"node":"v22.13.1","askerStatus":"completed","answererStatus":"failed","disposition":"refused","calls":{"asker":2,"ordinary":1,"answer":1},"monotonicEvents":10,"durableReplay":"denied by current actor scope"}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+{"independent":"revoked-answer","result":"PASS"}
+{"mode":"denied-question","disclosure":"refused","answerCalls":0,"deniedQuestionNotStored":true}
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+{"independent":"denied-question","result":"PASS"}
+[LLM] Streaming input processor tripwire triggered {
+  reason: 'VICT_EXCHANGE_STEP_LIMIT',
+  processorId: 'prepare-step',
+  retry: undefined
+} {
+  trace_id: 'edefdecea7262458896d9895a205cbc6',
+  span_id: '2bb06c947a6b90b4'
+}
+{"mode":"role-neutral-pins","profilesReversed":true,"node":"v22.13.1","askerStatus":"completed","answererStatus":"failed","disposition":"answered","calls":{"asker":2,"ordinary":1,"answer":1},"monotonicEvents":10,"durableReplay":true}
+This storage provider does not support batch creating logs
+This storage provider does not support batch creating metrics
+This storage provider does not support batch creating metrics
+{"independent":"role-neutral-pins","result":"PASS"}
+(node:28956) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"mode":"process-loss","priorReceipt":"pending","recoveredReceipt":"refused","receiptCode":"VICT_EXCHANGE_OUTCOME_UNKNOWN","receiptSha256":"0d8d9d5f35a04299ede143520a27ae08761f1e20c5e9b9edb14212f44f4b612f","committedBytesPreserved":false,"providerAttempts":null,"originalSequences":[3,3],"originalTurnStatuses":[{"status":"failed","errorCode":"VICT_TURN_INTERRUPTED"},{"status":"failed","errorCode":"VICT_TURN_INTERRUPTED"}],"callsBeforeLoss":{"asker":1,"ordinary":1,"answer":1},"resultDeliveriesBeforeLoss":0,"restartDispatch":{"model":0,"tool":0},"repeatedRecoveryAndReplay":2}
+{"independent":"process-loss","result":"PASS"}
+(node:37044) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"mode":"settled-before-delivery-owner-loss","priorReceipt":"settled","recoveredReceipt":"answered","receiptCode":null,"receiptSha256":"f1e06758b2d2341829d6e371f19090547ab2fb5d78f669adaca0046af8317f1c","committedBytesPreserved":true,"providerAttempts":1,"originalSequences":[3,3],"originalTurnStatuses":[{"status":"failed","errorCode":"VICT_TURN_INTERRUPTED"},{"status":"failed","errorCode":"VICT_TURN_INTERRUPTED"}],"callsBeforeLoss":{"asker":1,"ordinary":1,"answer":1},"resultDeliveriesBeforeLoss":0,"restartDispatch":{"model":0,"tool":0},"repeatedRecoveryAndReplay":2}
+{"independent":"settled-before-delivery-owner-loss","result":"PASS"}
