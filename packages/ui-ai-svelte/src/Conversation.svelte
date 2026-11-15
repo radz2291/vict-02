@@ -11,12 +11,12 @@
   import * as Trace from './upstream/ui/trace/index.js';
   import MessageAction from './MessageAction.svelte';
   import Markdown from './upstream/markdown/markdown.svelte';
-  import type { ConversationMessage, SendResult, SendAccepted } from './adapters.js';
+  import type { ConversationActivity, ConversationActivityDensity, ConversationMessage, SendResult, SendAccepted } from './adapters.js';
   import type { UiComponentPresentation } from '@victframework/ui-svelte';
 
   let { messages, busy = false, onSend, onStop, emptyMessage = 'How can I help?',
     inputLabel = 'Message', inputPlaceholder = 'Write a message…', footer,
-    title, description, onReset, composer, presentation,
+    title, description, onReset, composer, presentation, turnAttachment, activityDensity, activityAction,
   }: {
     messages: readonly ConversationMessage[];
     busy?: boolean;
@@ -28,6 +28,12 @@
     footer?: Snippet;
     /** Optional app-authored controlled composer; transport stays with its host. */
     composer?: Snippet;
+    /** Host-owned cards attached to the matching, keyed message in this turn. */
+    turnAttachment?: Snippet<[ConversationMessage]>;
+    /** Omit to retain the original activity layout. Quiet is filtered by the host. */
+    activityDensity?: ConversationActivityDensity;
+    /** Host-authorized navigation or related read-only action inside the disclosure. */
+    activityAction?: Snippet<[ConversationMessage, ConversationActivity]>;
     /** Optional canonical parts and popup scope for authored transcripts. */
     presentation?: UiComponentPresentation;
     title?: string;
@@ -90,12 +96,22 @@
         {#if event.kind === 'text'}
           <div {...presentation?.target('message-text')} class={`vict-ai-markdown ${presentation?.target('message-text').class ?? ''}`}><Markdown content={event.text}/></div>
         {:else if event.kind === 'activity'}
-          <div {...presentation?.target('activity')}><ConversationToolCall activity={event.activity}/></div>
+          {@render toolCall(message, event.activity)}
         {:else}
           <p {...presentation?.target('event-summary')} class={`vict-ai-event-summary ${presentation?.target('event-summary').class ?? ''}`}>{event.text}</p>
         {/if}
       </div>
     {/each}
+  </div>
+{/snippet}
+
+{#snippet toolCall(message: ConversationMessage, activity: ConversationActivity)}
+  <div {...presentation?.target('activity')}>
+    {#if activityAction}
+      <ConversationToolCall {activity} density={activityDensity}>
+        {#snippet action()}{@render activityAction(message, activity)}{/snippet}
+      </ConversationToolCall>
+    {:else}<ConversationToolCall {activity} density={activityDensity}/>{/if}
   </div>
 {/snippet}
 
@@ -157,7 +173,7 @@
                     {#if message.activity?.length}
                       <div {...presentation?.target('timeline')} aria-label="Tool activity">
                         {#each message.activity as activity (activity.id)}
-                          <div {...presentation?.target('activity')}><ConversationToolCall {activity}/></div>
+                          {@render toolCall(message, activity)}
                         {/each}
                       </div>
                     {/if}
@@ -174,6 +190,7 @@
                   {/if}
                 </Message.Content>
               </Message.Root>
+              {@render turnAttachment?.(message)}
             </MessageScroller.Item>
           {/each}
         </MessageScroller.Content>

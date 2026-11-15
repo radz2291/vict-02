@@ -39,6 +39,9 @@ export interface ConversationActivity {
   /** Ordered public receipts for one actual tool attempt. No private reasoning. */
   stages?: readonly { id: string; title: string; state: ConversationActivity['state']; detail?: string }[];
 }
+
+/** Host presentation choice. No evidence or action authority is implied. */
+export type ConversationActivityDensity = 'summary' | 'full';
 export type ConversationEvent =
   | { id: string; kind: 'text' | 'summary'; text: string }
   | { id: string; kind: 'activity'; activity: ConversationActivity }
