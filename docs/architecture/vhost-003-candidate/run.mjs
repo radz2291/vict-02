@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict';
-import { readFile, realpath, writeFile } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
+import { mkdtemp, readFile, realpath, writeFile } from 'node:fs/promises';
 import { cpus, release } from 'node:os';
 import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createIndexedHotPathForTests } from './indexed-hot-path.mjs';
 import { loadOracle, digest } from './oracle.mjs';
 import { checkPorts } from './checks.mjs';
@@ -10,6 +11,7 @@ import { checkReceipts, compareReceiptTraffic } from './receipt-checks.mjs';
 import { compareBenchmarks } from './benchmark.mjs';
 import { checkDispatcherClaims } from './dispatcher-claim-checks.mjs';
 import { checkControlPorts } from './control-checks.mjs';
+import { checkOrdering, orderingBaselineCommit } from './ordering-checks.mjs';
 
 const [consumer, source, dataDir, portText, samplesText, output, phase] = process.argv.slice(2);
 const port = Number(portText);
@@ -17,7 +19,7 @@ const samples = Number(samplesText);
 assert(Number.isSafeInteger(port) && port >= 1024 && port <= 65535);
 assert(Number.isSafeInteger(samples) && samples >= 4 && samples <= 1000);
 assert(['check', 'all'].includes(phase));
-const evidence = { format: 'vict.vhost007-indexed-control@1', when: new Date().toISOString(),
+const evidence = { format: 'vict.vhost008-ordering@1', when: new Date().toISOString(),
   node: process.version, cpu: cpus()[0]?.model, logicalCPUs: cpus().length, osRelease: release(),
   checks: [], cells: [], samples };
 const save = () => writeFile(join(output, 'result.json'), JSON.stringify(evidence, null, 2) + '\n');
@@ -26,7 +28,7 @@ try {
   const oracle = await loadOracle(consumer, source, dirname(dataDir), join(here, '../../..'));
   evidence.provenance = oracle.provenance;
   evidence.provenance.candidateSHA256 = {};
-  for (const path of ['indexed-control.mjs', 'control-checks.mjs', 'control-schema.sql', 'dispatcher-claim-checks.mjs', 'schema.sql', 'receipts-schema.sql', 'indexed-receipts.mjs', 'receipt-checks.mjs', 'foundation.mjs', 'indexed-hot-path.mjs', 'values.mjs',
+  for (const path of ['ordering-checks.mjs', 'indexed-control.mjs', 'control-checks.mjs', 'control-schema.sql', 'dispatcher-claim-checks.mjs', 'schema.sql', 'receipts-schema.sql', 'indexed-receipts.mjs', 'receipt-checks.mjs', 'foundation.mjs', 'indexed-hot-path.mjs', 'values.mjs',
     'run.mjs', 'oracle.mjs', 'benchmark.mjs', 'checks.mjs', 'run-local.ps1']) {
     const bytes = await readFile(join(here, path));
     evidence.provenance.candidateSHA256[path] = digest(bytes.toString().replaceAll('\r\n', '\n'));
@@ -65,10 +67,25 @@ try {
       connectionString, namespace, writerEpoch: 1, ...options
     });
     const context = { oracle, observer, provision, legacy, candidate, evidence, samples, save };
+
     await checkPorts(context);
     await checkReceipts(context);
     await checkDispatcherClaims(context);
     await checkControlPorts(context);
+    const git = (...args) => execFileSync('git', ['-C', join(here, '../../..'), ...args], { windowsHide: true });
+    assert.equal(git('merge-base', 'HEAD', orderingBaselineCommit).toString().trim(), orderingBaselineCommit);
+    const scratch = await mkdtemp(join(dirname(dataDir), 'vhost007-baseline-'));
+    const baselineHashes = {};
+    for (const file of ['indexed-hot-path.mjs', 'indexed-receipts.mjs', 'indexed-control.mjs', 'foundation.mjs', 'values.mjs']) {
+      const bytes = git('show', orderingBaselineCommit + ':docs/architecture/vhost-003-candidate/' + file);
+      baselineHashes[file] = digest(bytes);
+      await writeFile(join(scratch, file), bytes);
+    }
+    evidence.provenance.orderingBaselineSHA256 = baselineHashes;
+    const baseline = (await import(pathToFileURL(join(scratch, 'indexed-hot-path.mjs')))).createIndexedHotPathForTests;
+    await checkOrdering(context, (namespace, options) => baseline(oracle, {
+      connectionString, namespace, writerEpoch: 1, ...options
+    }), candidate);
     if (phase === 'all') {
       await compareBenchmarks(context);
       await compareReceiptTraffic(context);

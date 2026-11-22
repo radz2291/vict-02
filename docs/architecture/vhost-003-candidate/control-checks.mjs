@@ -28,7 +28,7 @@ const deletion = (intentId, conversationId = 'thread', actorId = 'actor') => ({
   intentId, conversationId, actorId, createdAt: 1, state: 'pending', receipts: []
 });
 
-function manifest({ kernel, runtime }, graphId, revision = '1') {
+export function manifest({ kernel, runtime }, graphId, revision = '1') {
   const graph = { schema: 'vict.graph@1', id: graphId, entry: 'n1',
     nodes: [{ id: 'n1', capability: 'cap.a', input: null, output: null }], edges: [] };
   const bindings = [{ capability: 'cap.a', revision, effect: 'pure', input: null, output: null }];
@@ -271,7 +271,7 @@ async function differential(context, old, indexed) {
 
 const schema = 'vhost003_indexed';
 
-function traceCandidate(store) {
+export function traceCandidate(store) {
   const pool = store.coordination.pool;
   const connect = pool.connect.bind(pool);
   const counts = { statements: 0, legacySnapshotReads: 0, legacySnapshotWrites: 0, operationTables: {} };

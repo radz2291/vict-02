@@ -17,7 +17,7 @@ export function createControlPorts({ runtime, codec, namespace, q, call, readPag
 
   // Lock before reading to serialize first insert and replay. Combined
   // mutations acquire the union in actual advisory ID order, including
-  // collisions, and use no new lock classes from inside the transaction.
+  // collisions. Append serialization follows the entity lock phase.
   async function lock(client, ...keys) {
     const ids = keys.map(([table, key]) => hash(Buffer.concat([
       Buffer.from(namespace + '\0' + table + '\0'), keyBytes(key)
@@ -27,6 +27,14 @@ export function createControlPorts({ runtime, codec, namespace, q, call, readPag
       await client.query('SELECT pg_advisory_xact_lock($1::integer,$2::integer)',
         [bytes.readInt32BE(0), bytes.readInt32BE(4)]);
     }
+  }
+
+  // Take at most one append lock, after the entity locks and before the
+  // identity sequence is used. The bigint advisory keyspace is disjoint from
+  // the two-integer entity keyspace, even if their hashes collide.
+  async function lockAppend(client, table, subject = null) {
+    const key = hash(keyBytes(JSON.stringify([namespace, table, subject]))).readBigInt64BE(0);
+    await client.query('SELECT pg_advisory_xact_lock($1::bigint)', [key.toString()]);
   }
 
   async function find(client, table, key) {
@@ -48,6 +56,13 @@ export function createControlPorts({ runtime, codec, namespace, q, call, readPag
         [namespace, row.id, payload, ...Object.values(indexed)]
       );
       return row.id;
+    }
+    // Approval lists are ChangeSet-scoped. The unfiltered audit and
+    // catalog lists need one order across their whole namespace.
+    if (table === 'control_approval') {
+      await lockAppend(client, table, record.changesetId);
+    } else if (table === 'control_audit' || table === 'catalog_activation') {
+      await lockAppend(client, table);
     }
     const columns = ['namespace', 'key_digest', 'key_bytes', 'payload', ...Object.keys(indexed)];
     const bindings = [namespace, ...keyParts(key), payload, ...Object.values(indexed)];

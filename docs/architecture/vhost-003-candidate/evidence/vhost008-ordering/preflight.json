@@ -1,0 +1,249 @@
+{
+  "firstProbe": {
+    "when": "2026-11-22T14:08:52.978Z",
+    "failure": {
+      "name": "Error",
+      "message": "Timed out observing a commit or its PostgreSQL blocker",
+      "stack": "Error: Timed out observing a commit or its PostgreSQL blocker\n    at observeUntil (file:///C:/Users/RZ1/AppData/Local/Temp/vhost008-ordering/docs/architecture/vhost-003-candidate/ordering-checks.mjs:76:9)\n    at async primary (file:///C:/Users/RZ1/AppData/Local/Temp/vhost008-ordering/docs/architecture/vhost-003-candidate/ordering-checks.mjs:188:40)\n    at async checkOrdering (file:///C:/Users/RZ1/AppData/Local/Temp/vhost008-ordering/docs/architecture/vhost-003-candidate/ordering-checks.mjs:320:31)\n    at async file:///C:/Users/RZ1/AppData/Local/Temp/vhost008-ordering/docs/architecture/vhost-003-candidate/run.mjs:83:5"
+    },
+    "baseline": {
+      "approval": {
+        "namespace": "vhost008-baseline-approval",
+        "pids": [
+          24324,
+          7968,
+          19976
+        ],
+        "seeded": {
+          "approvals": [
+            "seed"
+          ]
+        },
+        "firstUncommitted": [
+          {
+            "sql": "INSERT INTO \"vhost003_indexed\".control_approval (namespace,key_digest,key_bytes,payload,subject_digest,subject_key) VALUES ($1,$2,$3,$4,$5,$6) RETURNING id",
+            "rows": 1
+          }
+        ],
+        "secondUncommitted": [
+          {
+            "sql": "INSERT INTO \"vhost003_indexed\".control_approval (namespace,key_digest,key_bytes,payload,subject_digest,subject_key) VALUES ($1,$2,$3,$4,$5,$6) RETURNING id",
+            "rows": 1
+          }
+        ],
+        "beforeEitherCommit": {
+          "approvals": [
+            "seed"
+          ]
+        },
+        "afterSecondCommit": {
+          "approvals": [
+            "seed",
+            "second"
+          ]
+        },
+        "afterBothCommit": {
+          "approvals": [
+            "seed",
+            "first",
+            "second"
+          ]
+        }
+      },
+      "audit": {
+        "namespace": "vhost008-baseline-audit",
+        "pids": [
+          26644,
+          26928,
+          9860
+        ],
+        "seeded": {
+          "all": [
+            "seed"
+          ],
+          "filtered": [
+            "seed"
+          ],
+          "subject": [
+            "seed"
+          ]
+        },
+        "firstUncommitted": [
+          {
+            "sql": "INSERT INTO \"vhost003_indexed\".control_audit (namespace,key_digest,key_bytes,payload,subject_digest,subject_key,kind_digest,kind_key) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id",
+            "rows": 1
+          }
+        ],
+        "secondUncommitted": [
+          {
+            "sql": "INSERT INTO \"vhost003_indexed\".control_audit (namespace,key_digest,key_bytes,payload,subject_digest,subject_key,kind_digest,kind_key) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id",
+            "rows": 1
+          }
+        ],
+        "beforeEitherCommit": {
+          "all": [
+            "seed"
+          ],
+          "filtered": [
+            "seed"
+          ],
+          "subject": [
+            "seed"
+          ]
+        },
+        "afterSecondCommit": {
+          "all": [
+            "seed",
+            "second"
+          ],
+          "filtered": [
+            "seed",
+            "second"
+          ],
+          "subject": [
+            "seed",
+            "second"
+          ]
+        },
+        "afterBothCommit": {
+          "all": [
+            "seed",
+            "first",
+            "second"
+          ],
+          "filtered": [
+            "seed",
+            "first",
+            "second"
+          ],
+          "subject": [
+            "seed",
+            "first",
+            "second"
+          ]
+        }
+      },
+      "catalog": {
+        "namespace": "vhost008-baseline-catalog",
+        "pids": [
+          25228,
+          23584,
+          16916
+        ],
+        "seeded": {
+          "activations": [
+            "seed"
+          ],
+          "firstSelection": null,
+          "secondSelection": null
+        },
+        "firstUncommitted": [
+          {
+            "sql": "INSERT INTO \"vhost003_indexed\".catalog_activation (namespace,key_digest,key_bytes,payload) VALUES ($1,$2,$3,$4) RETURNING id",
+            "rows": 1
+          }
+        ],
+        "secondUncommitted": [
+          {
+            "sql": "INSERT INTO \"vhost003_indexed\".catalog_activation (namespace,key_digest,key_bytes,payload) VALUES ($1,$2,$3,$4) RETURNING id",
+            "rows": 1
+          },
+          {
+            "sql": "INSERT INTO \"vhost003_indexed\".catalog_selection (namespace,key_digest,key_bytes,payload,target) VALUES ($1,$2,$3,$4,$5) RETURNING id",
+            "rows": 1
+          }
+        ],
+        "beforeEitherCommit": {
+          "activations": [
+            "seed"
+          ],
+          "firstSelection": null,
+          "secondSelection": null
+        },
+        "secondResult": {
+          "activationVersion": "v1_5955ecd718376fa9d56259a01fa2dcc9275f694e6b11c41f3c6314eaf9840158",
+          "created": true,
+          "selection": {
+            "graphId": "ordering-second",
+            "activationVersion": "v1_5955ecd718376fa9d56259a01fa2dcc9275f694e6b11c41f3c6314eaf9840158",
+            "selectionRevision": 1,
+            "selectedAt": 1795356543688,
+            "operationId": "select-second"
+          }
+        },
+        "afterSecondCommit": {
+          "activations": [
+            "seed",
+            "second"
+          ],
+          "firstSelection": null,
+          "secondSelection": 1
+        },
+        "firstResult": {
+          "activationVersion": "v1_10ec12c71d8f1109e16c81cd9a8a21d2c136bae5c2b00f30450d09edced44dba",
+          "created": true
+        },
+        "afterBothCommit": {
+          "activations": [
+            "seed",
+            "first",
+            "second"
+          ],
+          "firstSelection": null,
+          "secondSelection": 1
+        }
+      }
+    },
+    "legacyApproval": {
+      "namespace": "vhost008-legacy-approval",
+      "pids": [
+        26652,
+        26864,
+        12796
+      ],
+      "seeded": {
+        "approvals": [
+          "seed"
+        ]
+      },
+      "firstUncommitted": [
+        {
+          "sql": "UPDATE \"vhost003_legacy\".operational SET snapshot=$2::jsonb,revision=revision+1 WHERE namespace=$1",
+          "rows": 1
+        }
+      ],
+      "secondBeforeFirstCommit": {
+        "state": "blocked",
+        "blocker": 26652
+      }
+    }
+  },
+  "combinedProbe": {
+    "when": "2026-11-22T14:11:45.573Z",
+    "failure": {
+      "name": "TypeError",
+      "message": "other is not iterable",
+      "stack": "TypeError: other is not iterable\n    at Object.ordered (file:///C:/Users/RZ1/AppData/Local/Temp/vhost008-ordering/docs/architecture/vhost-003-candidate/ordering-checks.mjs:32:24)\n    at expected (file:///C:/Users/RZ1/AppData/Local/Temp/vhost008-ordering/docs/architecture/vhost-003-candidate/ordering-checks.mjs:156:34)\n    at primary (file:///C:/Users/RZ1/AppData/Local/Temp/vhost008-ordering/docs/architecture/vhost-003-candidate/ordering-checks.mjs:173:37)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async checkOrdering (file:///C:/Users/RZ1/AppData/Local/Temp/vhost008-ordering/docs/architecture/vhost-003-candidate/ordering-checks.mjs:349:31)\n    at async file:///C:/Users/RZ1/AppData/Local/Temp/vhost008-ordering/docs/architecture/vhost-003-candidate/run.mjs:82:5"
+    }
+  },
+  "lockDiagnosticsProbe": {
+    "when": "2026-11-22T14:12:42.883Z",
+    "failure": {
+      "name": "error",
+      "code": "42601",
+      "message": "syntax error at or near \"AND\"",
+      "stack": "error: syntax error at or near \"AND\"\n    at C:\\Users\\RZ1\\AppData\\Local\\Temp\\vhost001-quellight-npm11212\\node_modules\\pg\\lib\\client.js:652:17\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async file:///C:/Users/RZ1/AppData/Local/Temp/vhost008-ordering/docs/architecture/vhost-003-candidate/ordering-checks.mjs:129:31\n    at async observeUntil (file:///C:/Users/RZ1/AppData/Local/Temp/vhost008-ordering/docs/architecture/vhost-003-candidate/ordering-checks.mjs:72:18)\n    at async primary (file:///C:/Users/RZ1/AppData/Local/Temp/vhost008-ordering/docs/architecture/vhost-003-candidate/ordering-checks.mjs:193:40)\n    at async checkOrdering (file:///C:/Users/RZ1/AppData/Local/Temp/vhost008-ordering/docs/architecture/vhost-003-candidate/ordering-checks.mjs:349:31)\n    at async file:///C:/Users/RZ1/AppData/Local/Temp/vhost008-ordering/docs/architecture/vhost-003-candidate/run.mjs:82:5"
+    }
+  },
+  "regressionProbe": {
+    "when": "2026-11-22T14:13:35.856Z",
+    "failure": {
+      "name": "HostedCoordinationError",
+      "code": "HOSTED_DATABASE_UNAVAILABLE",
+      "message": "HOSTED_DATABASE_UNAVAILABLE",
+      "stack": "HostedCoordinationError: HOSTED_DATABASE_UNAVAILABLE\n    at IndexedDatabase.transaction (file:///C:/Users/RZ1/AppData/Local/Temp/vhost001-quellight-npm11212/node_modules/@victframework/store-postgres/dist/driver.js:160:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async createIndexedHotPathForTests (file:///C:/Users/RZ1/AppData/Local/Temp/vhost008-ordering/docs/architecture/vhost-003-candidate/indexed-hot-path.mjs:34:5)\n    at async indexedFaults (file:///C:/Users/RZ1/AppData/Local/Temp/vhost008-ordering/docs/architecture/vhost-003-candidate/checks.mjs:249:17)\n    at async checkPorts (file:///C:/Users/RZ1/AppData/Local/Temp/vhost008-ordering/docs/architecture/vhost-003-candidate/checks.mjs:130:3)\n    at async file:///C:/Users/RZ1/AppData/Local/Temp/vhost008-ordering/docs/architecture/vhost-003-candidate/run.mjs:85:5"
+    },
+    "orderingRecords": 3,
+    "rollbackRecords": 3
+  }
+}

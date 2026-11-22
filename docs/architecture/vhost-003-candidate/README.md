@@ -1,5 +1,9 @@
 # Indexed PostgreSQL operational-store test fixture
 
+## VHOST-008 ordered appends
+
+Run the reproduction command with -CheckOnly to compare overlapping writes on the exact VHOST-007 fixture, the pinned legacy package and the repaired fixture. The same invocation runs the full regression suite. [Ordering report](../VHOST-008-ORDERED-APPENDS.md) · [Raw before-and-after run](evidence/vhost008-ordering/result.json)
+
 ## VHOST-007 control, activation and governance
 
 The current fixture uses schema version 4 and exposes 103 of 126 qualified operations. The [VHOST-007 report](../VHOST-007-INDEXED-CONTROL-AND-GOVERNANCE.md), [coverage matrix](PORT-COVERAGE.md) and [raw correctness run](evidence/vhost007-control/result.json) describe the new ports and reproduction. The [receipt behavior matrix](RECEIPT-TEST-MATRIX.md) and [VHOST-005 command fence proof](../VHOST-004-COMMAND-FENCE-REPAIR.md) describe prior work.

@@ -1,0 +1,291 @@
+2026-11-22 22:14:37.006 +08 [6536] LOG:  starting PostgreSQL 18.6 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit
+2026-11-22 22:14:37.008 +08 [6536] LOG:  listening on IPv4 address "127.0.0.1", port 59853
+2026-11-22 22:14:37.139 +08 [21240] LOG:  database system was shut down at 2026-11-22 22:14:32 +08
+2026-11-22 22:14:37.171 +08 [6536] LOG:  database system is ready to accept connections
+2026-11-22 22:14:47.863 +08 [15788] ERROR:  unsupported Unicode escape sequence
+2026-11-22 22:14:47.863 +08 [15788] DETAIL:  \u0000 cannot be converted to text.
+2026-11-22 22:14:47.863 +08 [15788] CONTEXT:  JSON data, line 1: ...:["viewer"],"createdAt":42,"note":"embedded\u0000...
+	unnamed portal parameter $2 = '...'
+2026-11-22 22:14:47.863 +08 [15788] STATEMENT:  UPDATE "vhost003_legacy".operational SET snapshot=$2::jsonb,revision=revision+1 WHERE namespace=$1
+2026-11-22 22:14:47.869 +08 [18788] ERROR:  unsupported Unicode escape sequence
+2026-11-22 22:14:47.869 +08 [18788] DETAIL:  \u0000 cannot be converted to text.
+2026-11-22 22:14:47.869 +08 [18788] CONTEXT:  JSON data, line 1: ...:["viewer"],"createdAt":42,"note":"embedded\u0000...
+	unnamed portal parameter $1 = '...'
+2026-11-22 22:14:47.869 +08 [18788] STATEMENT:  SELECT $1::jsonb AS actor
+2026-11-22 22:14:50.847 +08 [6580] LOG:  process 6580 still waiting for ShareLock on transaction 1221 after 23.973 ms
+2026-11-22 22:14:50.847 +08 [6580] DETAIL:  Process holding the lock: 21016. Wait queue: 6580.
+2026-11-22 22:14:50.847 +08 [6580] CONTEXT:  while locking tuple (0,10) in relation "coordination"
+2026-11-22 22:14:50.847 +08 [6580] STATEMENT:  SELECT actor_id,owner_id,fence,purpose,deleted,(extract(epoch FROM expires_at)*1000)::bigint AS expires_ms FROM "vhost003_indexed".coordination WHERE namespace=$1 AND scope_id=$2 FOR UPDATE
+2026-11-22 22:14:50.950 +08 [6580] ERROR:  canceling statement due to lock timeout
+2026-11-22 22:14:50.950 +08 [6580] CONTEXT:  while locking tuple (0,10) in relation "coordination"
+2026-11-22 22:14:50.950 +08 [6580] STATEMENT:  SELECT actor_id,owner_id,fence,purpose,deleted,(extract(epoch FROM expires_at)*1000)::bigint AS expires_ms FROM "vhost003_indexed".coordination WHERE namespace=$1 AND scope_id=$2 FOR UPDATE
+2026-11-22 22:14:50.982 +08 [21016] LOG:  process 21016 still waiting for ShareLock on transaction 1224 after 21.588 ms
+2026-11-22 22:14:50.982 +08 [21016] DETAIL:  Process holding the lock: 17520. Wait queue: 21016.
+2026-11-22 22:14:50.982 +08 [21016] CONTEXT:  while locking tuple (0,2) in relation "namespaces"
+2026-11-22 22:14:50.982 +08 [21016] STATEMENT:  UPDATE vhost003_indexed.namespaces SET writer_epoch=2 WHERE namespace='faults'
+2026-11-22 22:14:50.999 +08 [21016] LOG:  process 21016 acquired ShareLock on transaction 1224 after 38.299 ms
+2026-11-22 22:14:50.999 +08 [21016] CONTEXT:  while locking tuple (0,2) in relation "namespaces"
+2026-11-22 22:14:50.999 +08 [21016] STATEMENT:  UPDATE vhost003_indexed.namespaces SET writer_epoch=2 WHERE namespace='faults'
+2026-11-22 22:14:54.179 +08 [10392] LOG:  process 10392 still waiting for ExclusiveLock on advisory lock [5,3493994287,3819231184,2] after 34.021 ms
+2026-11-22 22:14:54.179 +08 [10392] DETAIL:  Process holding the lock: 15016. Wait queue: 26696, 10392, 7944, 19644, 19508, 25792.
+2026-11-22 22:14:54.179 +08 [10392] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.179 +08 [26696] LOG:  process 26696 still waiting for ExclusiveLock on advisory lock [5,3493994287,3819231184,2] after 34.183 ms
+2026-11-22 22:14:54.179 +08 [26696] DETAIL:  Process holding the lock: 15016. Wait queue: 26696, 10392, 7944, 19644, 19508, 25792.
+2026-11-22 22:14:54.179 +08 [26696] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.179 +08 [7944] LOG:  process 7944 still waiting for ExclusiveLock on advisory lock [5,3493994287,3819231184,2] after 33.911 ms
+2026-11-22 22:14:54.179 +08 [7944] DETAIL:  Process holding the lock: 15016. Wait queue: 26696, 10392, 7944, 19644, 19508, 25792.
+2026-11-22 22:14:54.179 +08 [7944] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.179 +08 [19644] LOG:  process 19644 still waiting for ExclusiveLock on advisory lock [5,3493994287,3819231184,2] after 22.219 ms
+2026-11-22 22:14:54.179 +08 [19644] DETAIL:  Process holding the lock: 15016. Wait queue: 26696, 10392, 7944, 19644, 19508, 25792.
+2026-11-22 22:14:54.179 +08 [19644] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.186 +08 [19508] LOG:  process 19508 still waiting for ExclusiveLock on advisory lock [5,3493994287,3819231184,2] after 20.364 ms
+2026-11-22 22:14:54.186 +08 [19508] DETAIL:  Process holding the lock: 15016. Wait queue: 26696, 10392, 7944, 19644, 19508, 25792, 22268.
+2026-11-22 22:14:54.186 +08 [19508] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.189 +08 [26696] LOG:  process 26696 acquired ExclusiveLock on advisory lock [5,3493994287,3819231184,2] after 43.537 ms
+2026-11-22 22:14:54.189 +08 [26696] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.198 +08 [10392] LOG:  process 10392 acquired ExclusiveLock on advisory lock [5,3493994287,3819231184,2] after 52.277 ms
+2026-11-22 22:14:54.198 +08 [10392] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.198 +08 [25792] LOG:  process 25792 still waiting for ExclusiveLock on advisory lock [5,3493994287,3819231184,2] after 23.665 ms
+2026-11-22 22:14:54.198 +08 [25792] DETAIL:  Process holding the lock: 10392. Wait queue: 7944, 19644, 19508, 25792, 22268.
+2026-11-22 22:14:54.198 +08 [25792] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.201 +08 [7944] LOG:  process 7944 acquired ExclusiveLock on advisory lock [5,3493994287,3819231184,2] after 55.313 ms
+2026-11-22 22:14:54.201 +08 [7944] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.208 +08 [19644] LOG:  process 19644 acquired ExclusiveLock on advisory lock [5,3493994287,3819231184,2] after 50.579 ms
+2026-11-22 22:14:54.208 +08 [19644] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.210 +08 [19508] LOG:  process 19508 acquired ExclusiveLock on advisory lock [5,3493994287,3819231184,2] after 44.877 ms
+2026-11-22 22:14:54.210 +08 [19508] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.213 +08 [25792] LOG:  process 25792 acquired ExclusiveLock on advisory lock [5,3493994287,3819231184,2] after 38.819 ms
+2026-11-22 22:14:54.213 +08 [25792] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.214 +08 [22268] LOG:  process 22268 still waiting for ExclusiveLock on advisory lock [5,3493994287,3819231184,2] after 31.384 ms
+2026-11-22 22:14:54.214 +08 [22268] DETAIL:  Process holding the lock: 25792. Wait queue: 22268.
+2026-11-22 22:14:54.214 +08 [22268] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.216 +08 [22268] LOG:  process 22268 acquired ExclusiveLock on advisory lock [5,3493994287,3819231184,2] after 33.824 ms
+2026-11-22 22:14:54.216 +08 [22268] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.263 +08 [19508] LOG:  process 19508 still waiting for ExclusiveLock on advisory lock [5,4113773086,2774305560,2] after 21.365 ms
+2026-11-22 22:14:54.263 +08 [19508] DETAIL:  Process holding the lock: 19644. Wait queue: 10392, 7944, 15016, 26696, 19508, 22268, 25792.
+2026-11-22 22:14:54.263 +08 [19508] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.263 +08 [26696] LOG:  process 26696 still waiting for ExclusiveLock on advisory lock [5,4113773086,2774305560,2] after 31.526 ms
+2026-11-22 22:14:54.263 +08 [26696] DETAIL:  Process holding the lock: 19644. Wait queue: 10392, 7944, 15016, 26696, 19508, 22268, 25792.
+2026-11-22 22:14:54.263 +08 [26696] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.263 +08 [15016] LOG:  process 15016 still waiting for ExclusiveLock on advisory lock [5,4113773086,2774305560,2] after 31.649 ms
+2026-11-22 22:14:54.263 +08 [15016] DETAIL:  Process holding the lock: 19644. Wait queue: 10392, 7944, 15016, 26696, 19508, 22268, 25792.
+2026-11-22 22:14:54.263 +08 [15016] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.263 +08 [7944] LOG:  process 7944 still waiting for ExclusiveLock on advisory lock [5,4113773086,2774305560,2] after 31.792 ms
+2026-11-22 22:14:54.263 +08 [7944] DETAIL:  Process holding the lock: 19644. Wait queue: 10392, 7944, 15016, 26696, 19508, 22268, 25792.
+2026-11-22 22:14:54.263 +08 [7944] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.263 +08 [10392] LOG:  process 10392 still waiting for ExclusiveLock on advisory lock [5,4113773086,2774305560,2] after 32.038 ms
+2026-11-22 22:14:54.263 +08 [10392] DETAIL:  Process holding the lock: 19644. Wait queue: 10392, 7944, 15016, 26696, 19508, 22268, 25792.
+2026-11-22 22:14:54.263 +08 [10392] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.263 +08 [10392] LOG:  process 10392 acquired ExclusiveLock on advisory lock [5,4113773086,2774305560,2] after 32.322 ms
+2026-11-22 22:14:54.263 +08 [10392] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.271 +08 [7944] LOG:  process 7944 acquired ExclusiveLock on advisory lock [5,4113773086,2774305560,2] after 40.011 ms
+2026-11-22 22:14:54.271 +08 [7944] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.278 +08 [15016] LOG:  process 15016 acquired ExclusiveLock on advisory lock [5,4113773086,2774305560,2] after 46.715 ms
+2026-11-22 22:14:54.278 +08 [15016] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.279 +08 [22268] LOG:  process 22268 still waiting for ExclusiveLock on advisory lock [5,4113773086,2774305560,2] after 28.794 ms
+2026-11-22 22:14:54.279 +08 [22268] DETAIL:  Process holding the lock: 15016. Wait queue: 26696, 19508, 22268, 25792, 19644.
+2026-11-22 22:14:54.279 +08 [22268] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.279 +08 [25792] LOG:  process 25792 still waiting for ExclusiveLock on advisory lock [5,4113773086,2774305560,2] after 20.772 ms
+2026-11-22 22:14:54.279 +08 [25792] DETAIL:  Process holding the lock: 15016. Wait queue: 26696, 19508, 22268, 25792, 19644.
+2026-11-22 22:14:54.279 +08 [25792] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.287 +08 [26696] LOG:  process 26696 acquired ExclusiveLock on advisory lock [5,4113773086,2774305560,2] after 55.681 ms
+2026-11-22 22:14:54.287 +08 [26696] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.294 +08 [19508] LOG:  process 19508 acquired ExclusiveLock on advisory lock [5,4113773086,2774305560,2] after 52.564 ms
+2026-11-22 22:14:54.294 +08 [19508] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.296 +08 [22268] LOG:  process 22268 acquired ExclusiveLock on advisory lock [5,4113773086,2774305560,2] after 45.473 ms
+2026-11-22 22:14:54.296 +08 [22268] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.297 +08 [19644] LOG:  process 19644 still waiting for ExclusiveLock on advisory lock [5,4113773086,2774305560,2] after 31.223 ms
+2026-11-22 22:14:54.297 +08 [19644] DETAIL:  Process holding the lock: 22268. Wait queue: 25792, 19644.
+2026-11-22 22:14:54.297 +08 [19644] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.298 +08 [25792] LOG:  process 25792 acquired ExclusiveLock on advisory lock [5,4113773086,2774305560,2] after 39.527 ms
+2026-11-22 22:14:54.298 +08 [25792] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.300 +08 [19644] LOG:  process 19644 acquired ExclusiveLock on advisory lock [5,4113773086,2774305560,2] after 34.138 ms
+2026-11-22 22:14:54.300 +08 [19644] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.396 +08 [10392] LOG:  process 10392 still waiting for ExclusiveLock on advisory lock [5,1231298953,857971250,2] after 27.988 ms
+2026-11-22 22:14:54.396 +08 [10392] DETAIL:  Process holding the lock: 7944. Wait queue: 15016, 25792, 10392, 26696, 22268, 19508.
+2026-11-22 22:14:54.396 +08 [10392] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.396 +08 [26696] LOG:  process 26696 still waiting for ExclusiveLock on advisory lock [5,1231298953,857971250,2] after 27.857 ms
+2026-11-22 22:14:54.396 +08 [26696] DETAIL:  Process holding the lock: 7944. Wait queue: 15016, 25792, 10392, 26696, 22268, 19508.
+2026-11-22 22:14:54.396 +08 [26696] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.396 +08 [25792] LOG:  process 25792 still waiting for ExclusiveLock on advisory lock [5,1231298953,857971250,2] after 28.339 ms
+2026-11-22 22:14:54.396 +08 [25792] DETAIL:  Process holding the lock: 7944. Wait queue: 15016, 25792, 10392, 26696, 22268, 19508, 19644.
+2026-11-22 22:14:54.396 +08 [25792] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.396 +08 [15016] LOG:  process 15016 still waiting for ExclusiveLock on advisory lock [5,1231298953,857971250,2] after 28.897 ms
+2026-11-22 22:14:54.396 +08 [15016] DETAIL:  Process holding the lock: 7944. Wait queue: 15016, 25792, 10392, 26696, 22268, 19508, 19644.
+2026-11-22 22:14:54.396 +08 [15016] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.403 +08 [15016] LOG:  process 15016 acquired ExclusiveLock on advisory lock [5,1231298953,857971250,2] after 35.652 ms
+2026-11-22 22:14:54.403 +08 [15016] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.411 +08 [25792] LOG:  process 25792 acquired ExclusiveLock on advisory lock [5,1231298953,857971250,2] after 42.828 ms
+2026-11-22 22:14:54.411 +08 [25792] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.412 +08 [19508] LOG:  process 19508 still waiting for ExclusiveLock on advisory lock [5,1231298953,857971250,2] after 23.173 ms
+2026-11-22 22:14:54.412 +08 [19508] DETAIL:  Process holding the lock: 25792. Wait queue: 10392, 26696, 22268, 19508, 19644.
+2026-11-22 22:14:54.412 +08 [19508] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.412 +08 [22268] LOG:  process 22268 still waiting for ExclusiveLock on advisory lock [5,1231298953,857971250,2] after 33.294 ms
+2026-11-22 22:14:54.412 +08 [22268] DETAIL:  Process holding the lock: 25792. Wait queue: 10392, 26696, 22268, 19508, 19644.
+2026-11-22 22:14:54.412 +08 [22268] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.421 +08 [10392] LOG:  process 10392 acquired ExclusiveLock on advisory lock [5,1231298953,857971250,2] after 52.498 ms
+2026-11-22 22:14:54.421 +08 [10392] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.428 +08 [26696] LOG:  process 26696 acquired ExclusiveLock on advisory lock [5,1231298953,857971250,2] after 59.515 ms
+2026-11-22 22:14:54.428 +08 [26696] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.429 +08 [19644] LOG:  process 19644 still waiting for ExclusiveLock on advisory lock [5,1231298953,857971250,2] after 32.914 ms
+2026-11-22 22:14:54.429 +08 [19644] DETAIL:  Process holding the lock: 26696. Wait queue: 22268, 19508, 19644, 15016.
+2026-11-22 22:14:54.429 +08 [19644] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.436 +08 [22268] LOG:  process 22268 acquired ExclusiveLock on advisory lock [5,1231298953,857971250,2] after 57.874 ms
+2026-11-22 22:14:54.436 +08 [22268] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.439 +08 [19508] LOG:  process 19508 acquired ExclusiveLock on advisory lock [5,1231298953,857971250,2] after 50.271 ms
+2026-11-22 22:14:54.439 +08 [19508] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.441 +08 [19644] LOG:  process 19644 acquired ExclusiveLock on advisory lock [5,1231298953,857971250,2] after 44.943 ms
+2026-11-22 22:14:54.441 +08 [19644] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.514 +08 [10392] LOG:  process 10392 still waiting for ExclusiveLock on advisory lock [5,732089259,1763458166,2] after 24.205 ms
+2026-11-22 22:14:54.514 +08 [10392] DETAIL:  Process holding the lock: 19644. Wait queue: 25792, 7944, 10392, 26696, 19508, 22268.
+2026-11-22 22:14:54.514 +08 [10392] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.514 +08 [26696] LOG:  process 26696 still waiting for ExclusiveLock on advisory lock [5,732089259,1763458166,2] after 24.025 ms
+2026-11-22 22:14:54.514 +08 [26696] DETAIL:  Process holding the lock: 19644. Wait queue: 25792, 7944, 10392, 26696, 19508, 22268.
+2026-11-22 22:14:54.514 +08 [26696] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.514 +08 [7944] LOG:  process 7944 still waiting for ExclusiveLock on advisory lock [5,732089259,1763458166,2] after 24.495 ms
+2026-11-22 22:14:54.514 +08 [7944] DETAIL:  Process holding the lock: 19644. Wait queue: 25792, 7944, 10392, 26696, 19508, 22268.
+2026-11-22 22:14:54.514 +08 [7944] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.514 +08 [25792] LOG:  process 25792 still waiting for ExclusiveLock on advisory lock [5,732089259,1763458166,2] after 24.696 ms
+2026-11-22 22:14:54.514 +08 [25792] DETAIL:  Process holding the lock: 19644. Wait queue: 25792, 7944, 10392, 26696, 19508, 22268.
+2026-11-22 22:14:54.514 +08 [25792] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.520 +08 [25792] LOG:  process 25792 acquired ExclusiveLock on advisory lock [5,732089259,1763458166,2] after 30.655 ms
+2026-11-22 22:14:54.520 +08 [25792] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.526 +08 [7944] LOG:  process 7944 acquired ExclusiveLock on advisory lock [5,732089259,1763458166,2] after 36.682 ms
+2026-11-22 22:14:54.526 +08 [7944] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.530 +08 [22268] LOG:  process 22268 still waiting for ExclusiveLock on advisory lock [5,732089259,1763458166,2] after 22.378 ms
+2026-11-22 22:14:54.530 +08 [22268] DETAIL:  Process holding the lock: 7944. Wait queue: 10392, 26696, 19508, 22268, 15016, 19644.
+2026-11-22 22:14:54.530 +08 [22268] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.531 +08 [19508] LOG:  process 19508 still waiting for ExclusiveLock on advisory lock [5,732089259,1763458166,2] after 28.678 ms
+2026-11-22 22:14:54.531 +08 [19508] DETAIL:  Process holding the lock: 7944. Wait queue: 10392, 26696, 19508, 22268, 15016, 19644.
+2026-11-22 22:14:54.531 +08 [19508] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.532 +08 [10392] LOG:  process 10392 acquired ExclusiveLock on advisory lock [5,732089259,1763458166,2] after 42.615 ms
+2026-11-22 22:14:54.532 +08 [10392] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.538 +08 [26696] LOG:  process 26696 acquired ExclusiveLock on advisory lock [5,732089259,1763458166,2] after 48.599 ms
+2026-11-22 22:14:54.538 +08 [26696] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.544 +08 [19508] LOG:  process 19508 acquired ExclusiveLock on advisory lock [5,732089259,1763458166,2] after 42.514 ms
+2026-11-22 22:14:54.544 +08 [19508] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.546 +08 [19644] LOG:  process 19644 still waiting for ExclusiveLock on advisory lock [5,732089259,1763458166,2] after 23.607 ms
+2026-11-22 22:14:54.546 +08 [19644] DETAIL:  Process holding the lock: 19508. Wait queue: 22268, 15016, 19644.
+2026-11-22 22:14:54.546 +08 [19644] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.546 +08 [15016] LOG:  process 15016 still waiting for ExclusiveLock on advisory lock [5,732089259,1763458166,2] after 31.158 ms
+2026-11-22 22:14:54.546 +08 [15016] DETAIL:  Process holding the lock: 19508. Wait queue: 22268, 15016, 19644.
+2026-11-22 22:14:54.546 +08 [15016] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.546 +08 [22268] LOG:  process 22268 acquired ExclusiveLock on advisory lock [5,732089259,1763458166,2] after 38.329 ms
+2026-11-22 22:14:54.546 +08 [22268] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.549 +08 [15016] LOG:  process 15016 acquired ExclusiveLock on advisory lock [5,732089259,1763458166,2] after 34.124 ms
+2026-11-22 22:14:54.549 +08 [15016] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.551 +08 [19644] LOG:  process 19644 acquired ExclusiveLock on advisory lock [5,732089259,1763458166,2] after 29.010 ms
+2026-11-22 22:14:54.551 +08 [19644] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.630 +08 [10392] LOG:  process 10392 still waiting for ExclusiveLock on advisory lock [5,2662424049,626003018,2] after 30.170 ms
+2026-11-22 22:14:54.630 +08 [10392] DETAIL:  Process holding the lock: 19644. Wait queue: 25792, 7944, 10392, 26696, 22268, 19508, 15016.
+2026-11-22 22:14:54.630 +08 [10392] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.631 +08 [25792] LOG:  process 25792 still waiting for ExclusiveLock on advisory lock [5,2662424049,626003018,2] after 30.578 ms
+2026-11-22 22:14:54.631 +08 [25792] DETAIL:  Process holding the lock: 19644. Wait queue: 25792, 7944, 10392, 26696, 22268, 19508, 15016.
+2026-11-22 22:14:54.631 +08 [25792] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.631 +08 [22268] LOG:  process 22268 still waiting for ExclusiveLock on advisory lock [5,2662424049,626003018,2] after 20.880 ms
+2026-11-22 22:14:54.631 +08 [22268] DETAIL:  Process holding the lock: 19644. Wait queue: 25792, 7944, 10392, 26696, 22268, 19508, 15016.
+2026-11-22 22:14:54.631 +08 [22268] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.631 +08 [7944] LOG:  process 7944 still waiting for ExclusiveLock on advisory lock [5,2662424049,626003018,2] after 30.486 ms
+2026-11-22 22:14:54.631 +08 [7944] DETAIL:  Process holding the lock: 19644. Wait queue: 25792, 7944, 10392, 26696, 22268, 19508, 15016.
+2026-11-22 22:14:54.631 +08 [7944] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.631 +08 [26696] LOG:  process 26696 still waiting for ExclusiveLock on advisory lock [5,2662424049,626003018,2] after 29.996 ms
+2026-11-22 22:14:54.631 +08 [26696] DETAIL:  Process holding the lock: 19644. Wait queue: 25792, 7944, 10392, 26696, 22268, 19508, 15016.
+2026-11-22 22:14:54.631 +08 [26696] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.631 +08 [25792] LOG:  process 25792 acquired ExclusiveLock on advisory lock [5,2662424049,626003018,2] after 31.371 ms
+2026-11-22 22:14:54.631 +08 [25792] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.639 +08 [7944] LOG:  process 7944 acquired ExclusiveLock on advisory lock [5,2662424049,626003018,2] after 38.517 ms
+2026-11-22 22:14:54.639 +08 [7944] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.645 +08 [10392] LOG:  process 10392 acquired ExclusiveLock on advisory lock [5,2662424049,626003018,2] after 44.820 ms
+2026-11-22 22:14:54.645 +08 [10392] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.646 +08 [19508] LOG:  process 19508 still waiting for ExclusiveLock on advisory lock [5,2662424049,626003018,2] after 27.328 ms
+2026-11-22 22:14:54.646 +08 [19508] DETAIL:  Process holding the lock: 10392. Wait queue: 26696, 22268, 19508, 15016, 19644.
+2026-11-22 22:14:54.646 +08 [19508] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.647 +08 [15016] LOG:  process 15016 still waiting for ExclusiveLock on advisory lock [5,2662424049,626003018,2] after 21.077 ms
+2026-11-22 22:14:54.647 +08 [15016] DETAIL:  Process holding the lock: 10392. Wait queue: 26696, 22268, 19508, 15016, 19644.
+2026-11-22 22:14:54.647 +08 [15016] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.653 +08 [26696] LOG:  process 26696 acquired ExclusiveLock on advisory lock [5,2662424049,626003018,2] after 52.800 ms
+2026-11-22 22:14:54.653 +08 [26696] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.661 +08 [22268] LOG:  process 22268 acquired ExclusiveLock on advisory lock [5,2662424049,626003018,2] after 51.113 ms
+2026-11-22 22:14:54.661 +08 [22268] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.663 +08 [19508] LOG:  process 19508 acquired ExclusiveLock on advisory lock [5,2662424049,626003018,2] after 44.629 ms
+2026-11-22 22:14:54.663 +08 [19508] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.664 +08 [19644] LOG:  process 19644 still waiting for ExclusiveLock on advisory lock [5,2662424049,626003018,2] after 30.102 ms
+2026-11-22 22:14:54.664 +08 [19644] DETAIL:  Process holding the lock: 19508. Wait queue: 15016, 19644.
+2026-11-22 22:14:54.664 +08 [19644] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.665 +08 [15016] LOG:  process 15016 acquired ExclusiveLock on advisory lock [5,2662424049,626003018,2] after 38.957 ms
+2026-11-22 22:14:54.665 +08 [15016] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:54.666 +08 [19644] LOG:  process 19644 acquired ExclusiveLock on advisory lock [5,2662424049,626003018,2] after 32.578 ms
+2026-11-22 22:14:54.666 +08 [19644] STATEMENT:  SELECT pg_advisory_xact_lock($1::integer,$2::integer)
+2026-11-22 22:14:55.071 +08 [1588] WARNING:  there is no transaction in progress
+2026-11-22 22:14:55.089 +08 [1588] WARNING:  there is no transaction in progress
+2026-11-22 22:14:55.096 +08 [1588] WARNING:  there is no transaction in progress
+2026-11-22 22:14:55.124 +08 [1588] FATAL:  terminating connection due to administrator command
+2026-11-22 22:15:01.028 +08 [25260] ERROR:  synthetic final write refusal
+2026-11-22 22:15:01.028 +08 [25260] CONTEXT:  PL/pgSQL function vhost003_indexed.refuse_final_write() line 1 at RAISE
+2026-11-22 22:15:01.028 +08 [25260] STATEMENT:  UPDATE "vhost003_indexed".control_operation SET payload=$3,subject_digest=$4,subject_key=$5,operation_index=$6 WHERE namespace=$1 AND id=$2
+2026-11-22 22:15:01.038 +08 [18540] ERROR:  synthetic final write refusal
+2026-11-22 22:15:01.038 +08 [18540] CONTEXT:  PL/pgSQL function vhost003_indexed.refuse_final_write() line 1 at RAISE
+2026-11-22 22:15:01.038 +08 [18540] STATEMENT:  INSERT INTO "vhost003_indexed".catalog_selection (namespace,key_digest,key_bytes,payload,target) VALUES ($1,$2,$3,$4,$5) RETURNING id
+2026-11-22 22:15:05.342 +08 [13068] LOG:  process 13068 still waiting for ShareLock on transaction 3038 after 28.814 ms
+2026-11-22 22:15:05.342 +08 [13068] DETAIL:  Process holding the lock: 22992. Wait queue: 13068.
+2026-11-22 22:15:05.342 +08 [13068] CONTEXT:  while locking tuple (4,1) in relation "operational"
+2026-11-22 22:15:05.342 +08 [13068] STATEMENT:  SELECT snapshot FROM "vhost003_legacy".operational WHERE namespace=$1 FOR UPDATE
+2026-11-22 22:15:05.360 +08 [5884] LOG:  process 5884 still waiting for AccessExclusiveLock on tuple (4,1) of relation 16983 of database 5 after 30.324 ms
+2026-11-22 22:15:05.360 +08 [5884] DETAIL:  Process holding the lock: 13068. Wait queue: 5884.
+2026-11-22 22:15:05.360 +08 [5884] STATEMENT:  SELECT snapshot FROM "vhost003_legacy".operational WHERE namespace=$1 FOR UPDATE
+2026-11-22 22:15:05.362 +08 [13068] LOG:  process 13068 acquired ShareLock on transaction 3038 after 48.433 ms
+2026-11-22 22:15:05.362 +08 [13068] CONTEXT:  while locking tuple (4,1) in relation "operational"
+2026-11-22 22:15:05.362 +08 [13068] STATEMENT:  SELECT snapshot FROM "vhost003_legacy".operational WHERE namespace=$1 FOR UPDATE
+2026-11-22 22:15:05.362 +08 [5884] LOG:  process 5884 acquired AccessExclusiveLock on tuple (4,1) of relation 16983 of database 5 after 32.239 ms
+2026-11-22 22:15:05.362 +08 [5884] STATEMENT:  SELECT snapshot FROM "vhost003_legacy".operational WHERE namespace=$1 FOR UPDATE
+2026-11-22 22:15:05.595 +08 [28372] LOG:  process 28372 still waiting for ShareLock on transaction 3048 after 31.018 ms
+2026-11-22 22:15:05.595 +08 [28372] DETAIL:  Process holding the lock: 12516. Wait queue: 28372.
+2026-11-22 22:15:05.595 +08 [28372] CONTEXT:  while locking tuple (4,5) in relation "operational"
+2026-11-22 22:15:05.595 +08 [28372] STATEMENT:  SELECT snapshot FROM "vhost003_legacy".operational WHERE namespace=$1 FOR UPDATE
+2026-11-22 22:15:05.596 +08 [28372] LOG:  process 28372 acquired ShareLock on transaction 3048 after 32.743 ms
+2026-11-22 22:15:05.596 +08 [28372] CONTEXT:  while locking tuple (4,5) in relation "operational"
+2026-11-22 22:15:05.596 +08 [28372] STATEMENT:  SELECT snapshot FROM "vhost003_legacy".operational WHERE namespace=$1 FOR UPDATE
+2026-11-22 22:15:05.844 +08 [5732] LOG:  process 5732 still waiting for ShareLock on transaction 3062 after 30.091 ms
+2026-11-22 22:15:05.844 +08 [5732] DETAIL:  Process holding the lock: 23212. Wait queue: 5732.
+2026-11-22 22:15:05.844 +08 [5732] CONTEXT:  while locking tuple (5,4) in relation "operational"
+2026-11-22 22:15:05.844 +08 [5732] STATEMENT:  SELECT snapshot FROM "vhost003_legacy".operational WHERE namespace=$1 FOR UPDATE
+2026-11-22 22:15:05.846 +08 [5732] LOG:  process 5732 acquired ShareLock on transaction 3062 after 32.119 ms
+2026-11-22 22:15:05.846 +08 [5732] CONTEXT:  while locking tuple (5,4) in relation "operational"
+2026-11-22 22:15:05.846 +08 [5732] STATEMENT:  SELECT snapshot FROM "vhost003_legacy".operational WHERE namespace=$1 FOR UPDATE
+2026-11-22 22:15:06.109 +08 [25000] LOG:  process 25000 still waiting for ExclusiveLock on advisory lock [5,2226369501,1441425085,1] after 25.362 ms
+2026-11-22 22:15:06.109 +08 [25000] DETAIL:  Process holding the lock: 6816. Wait queue: 25000.
+2026-11-22 22:15:06.109 +08 [25000] STATEMENT:  SELECT pg_advisory_xact_lock($1::bigint)
+2026-11-22 22:15:06.111 +08 [25000] LOG:  process 25000 acquired ExclusiveLock on advisory lock [5,2226369501,1441425085,1] after 27.264 ms
+2026-11-22 22:15:06.111 +08 [25000] STATEMENT:  SELECT pg_advisory_xact_lock($1::bigint)
+2026-11-22 22:15:06.394 +08 [17692] LOG:  process 17692 still waiting for ExclusiveLock on advisory lock [5,1414247003,2921107148,1] after 25.745 ms
+2026-11-22 22:15:06.394 +08 [17692] DETAIL:  Process holding the lock: 13940. Wait queue: 17692.
+2026-11-22 22:15:06.394 +08 [17692] STATEMENT:  SELECT pg_advisory_xact_lock($1::bigint)
+2026-11-22 22:15:06.394 +08 [17692] LOG:  process 17692 acquired ExclusiveLock on advisory lock [5,1414247003,2921107148,1] after 26.247 ms
+2026-11-22 22:15:06.394 +08 [17692] STATEMENT:  SELECT pg_advisory_xact_lock($1::bigint)
+2026-11-22 22:15:06.875 +08 [4240] LOG:  process 4240 still waiting for ExclusiveLock on advisory lock [5,213932259,3745741910,1] after 22.507 ms
+2026-11-22 22:15:06.875 +08 [4240] DETAIL:  Process holding the lock: 27584. Wait queue: 4240.
+2026-11-22 22:15:06.875 +08 [4240] STATEMENT:  SELECT pg_advisory_xact_lock($1::bigint)
+2026-11-22 22:15:06.876 +08 [4240] LOG:  process 4240 acquired ExclusiveLock on advisory lock [5,213932259,3745741910,1] after 23.007 ms
+2026-11-22 22:15:06.876 +08 [4240] STATEMENT:  SELECT pg_advisory_xact_lock($1::bigint)
+2026-11-22 22:15:07.092 +08 [19720] LOG:  process 19720 still waiting for ExclusiveLock on advisory lock [5,2972435018,2698375199,1] after 23.596 ms
+2026-11-22 22:15:07.092 +08 [19720] DETAIL:  Process holding the lock: 18652. Wait queue: 19720.
+2026-11-22 22:15:07.092 +08 [19720] STATEMENT:  SELECT pg_advisory_xact_lock($1::bigint)
+2026-11-22 22:15:07.164 +08 [19720] LOG:  process 19720 acquired ExclusiveLock on advisory lock [5,2972435018,2698375199,1] after 94.999 ms
+2026-11-22 22:15:07.164 +08 [19720] STATEMENT:  SELECT pg_advisory_xact_lock($1::bigint)
+2026-11-22 22:15:07.376 +08 [8868] LOG:  process 8868 still waiting for ExclusiveLock on advisory lock [5,163922510,3398187824,1] after 23.304 ms
+2026-11-22 22:15:07.376 +08 [8868] DETAIL:  Process holding the lock: 23368. Wait queue: 8868.
+2026-11-22 22:15:07.376 +08 [8868] STATEMENT:  SELECT pg_advisory_xact_lock($1::bigint)
+2026-11-22 22:15:07.454 +08 [8868] LOG:  process 8868 acquired ExclusiveLock on advisory lock [5,163922510,3398187824,1] after 101.346 ms
+2026-11-22 22:15:07.454 +08 [8868] STATEMENT:  SELECT pg_advisory_xact_lock($1::bigint)
+2026-11-22 22:15:07.642 +08 [27640] LOG:  process 27640 still waiting for ExclusiveLock on advisory lock [5,1035743230,4247534550,1] after 22.684 ms
+2026-11-22 22:15:07.642 +08 [27640] DETAIL:  Process holding the lock: 27652. Wait queue: 27640.
+2026-11-22 22:15:07.642 +08 [27640] STATEMENT:  SELECT pg_advisory_xact_lock($1::bigint)
+2026-11-22 22:15:07.735 +08 [27640] LOG:  process 27640 acquired ExclusiveLock on advisory lock [5,1035743230,4247534550,1] after 115.221 ms
+2026-11-22 22:15:07.735 +08 [27640] STATEMENT:  SELECT pg_advisory_xact_lock($1::bigint)
+2026-11-22 22:15:07.908 +08 [6536] LOG:  received fast shutdown request
+2026-11-22 22:15:07.915 +08 [6536] LOG:  aborting any active transactions
+2026-11-22 22:15:07.926 +08 [6536] LOG:  background worker "logical replication launcher" (PID 15116) exited with exit code 1
+2026-11-22 22:15:07.926 +08 [15400] LOG:  shutting down
+2026-11-22 22:15:07.929 +08 [15400] LOG:  checkpoint starting: shutdown immediate
+2026-11-22 22:15:09.307 +08 [15400] LOG:  checkpoint complete: wrote 604 buffers (3.7%), wrote 5 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.153 s, sync=1.199 s, total=1.381 s; sync files=321, longest=0.049 s, average=0.004 s; distance=4232 kB, estimate=4232 kB; lsn=0/1C15218, redo lsn=0/1C15218
+2026-11-22 22:15:09.778 +08 [6536] LOG:  database system is shut down

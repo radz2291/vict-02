@@ -20,3 +20,5 @@ This table tracks every qualified operation exposed by the pinned legacy Postgre
 | Orchestration (17) | Deferred, fourth follow-up | `createOrchestrationRun`, `getOrchestrationRun`, `listOrchestrationRuns`, `getOrchestrationSnapshot`, `claimReadyToken`, `completeAttempt`, `signalWait`, `claimDueTimers`, `resolveDueTimer`, `requestCancellation`, `applyCancellation`, `findRecoverableClaims`, `recoverAttempt`, `resolveBlocked`, `listWaits`, `listSignalReceipts`, `listOrchestrationEvents`. Requires aggregate invariants, separate nested and standalone sources, atomic multi-run batches and timer ordering. Test joins, cancellation, recoverable claims and synthetic legacy restore. |
 
 Full conformance is required even where the fixture imports the same domain engine. The D5 guard matches the SQLite rejection and preserves the entire indexed pre-call state on mismatch. The historical PostgreSQL discrepancy remains in the retained evidence.
+
+VHOST-008 preserves concurrent append order for ChangeSet approvals, audit events and catalog publications. The qualified operation count remains 103. [Ordering evidence](../VHOST-008-ORDERED-APPENDS.md)
