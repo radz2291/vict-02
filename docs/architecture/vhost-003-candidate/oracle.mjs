@@ -34,6 +34,7 @@ export async function loadOracle(consumer, source, scratch) {
     'packages/store-postgres/src/adapter.ts', 'packages/store-postgres/src/driver.ts',
     'packages/store-postgres/src/coordination.ts', 'packages/runtime/src/control-in-memory.ts',
     'packages/runtime/src/control-types.ts', 'packages/runtime/src/store-snapshot.ts',
+    'packages/server/src/commands.ts',
     'packages/mastra/src/postgres-storage.ts'
   ];
   for (const path of auditedFiles) {
@@ -84,6 +85,19 @@ export async function loadOracle(consumer, source, scratch) {
     return import(pathToFileURL(path));
   }
 
+  // The consumer has no server package. Compile the exact shared dispatcher
+  // separately against the same pinned Runtime to exercise service policy.
+  const commandSource = sourceFile('packages/server/src/commands.ts');
+  const commandBuild = ts.transpileModule(commandSource.toString(), {
+    compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ES2022 },
+    reportDiagnostics: true,
+    fileName: 'commands.ts'
+  });
+  assert.equal(commandBuild.diagnostics.length, 0);
+  const commandFixture = join(sqliteFixture, 'commands.js');
+  await writeFile(commandFixture, commandBuild.outputText);
+  const { VictCommandService } = await import(pathToFileURL(commandFixture));
+
   const runtime = await installed('@victframework/runtime');
   const snapshot = await installed('@victframework/runtime', 'store-snapshot.js');
   const { createPostgresMastraStore } = await installed('@victframework/mastra', 'postgres-storage.js');
@@ -94,7 +108,7 @@ export async function loadOracle(consumer, source, scratch) {
   const { createSqliteAgentControlStores } = await import(pathToFileURL(join(sqliteFixture, 'agent-control-adapter.js')));
 
   return {
-    runtime, snapshot, Driver, Coordination, Client, createPostgresStores, createSqliteAgentControlStores, createPostgresMastraStore,
+    runtime, snapshot, VictCommandService, Driver, Coordination, Client, createPostgresStores, createSqliteAgentControlStores, createPostgresMastraStore,
     provenance: {
       frameworkCommit, c12Source, consumerCommit, lockSHA256, manifestSHA256, sqliteTree,
       typescriptVersion: ts.version, pgDriver: require('pg/package.json').version, archives, sourceSHA256: records

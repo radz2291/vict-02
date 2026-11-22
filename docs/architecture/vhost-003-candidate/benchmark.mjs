@@ -7,7 +7,7 @@ import { event, turn } from './checks.mjs';
 const measurement = new AsyncLocalStorage();
 const bytes = (value) => Buffer.isBuffer(value) ? value.length : Buffer.byteLength(JSON.stringify(value) ?? '');
 
-function monitorPool(pool) {
+export function monitorPool(pool) {
   const connect = pool.connect.bind(pool);
   const wrapped = new WeakSet();
   pool.connect = async () => {
@@ -61,7 +61,7 @@ function total(row, property) {
   return Object.values(row.statements).reduce((sum, item) => sum + item[property], 0);
 }
 
-async function measure(observer, pool, run, samples, clients) {
+export async function measure(observer, pool, run, samples, clients) {
   const cpu = process.cpuUsage();
   const before = (await observer.query(WAL)).rows[0];
   const begin = performance.now();

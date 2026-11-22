@@ -57,7 +57,7 @@ export function createFoundation({ Driver, Coordination, runtime }, options) {
           [namespace]
         );
         const row = admission.rows[0];
-        if (row?.version !== 1 || row.purpose !== 'VHOST-003 disposable hot-path fixture') {
+        if (row?.version !== 2 || row.purpose !== 'VHOST-004 disposable receipts fixture') {
           throw failure('HOSTED_SCHEMA_MISMATCH');
         }
         if (row.writer_epoch !== String(writerEpoch)) throw failure('HOSTED_FENCED');
@@ -131,7 +131,8 @@ export function createFoundation({ Driver, Coordination, runtime }, options) {
   const verify = () => db.transaction(async (client) => {
     const tables = [
       'actors', 'turn_head', 'cancel_intents', 'stream_clock', 'stream_events',
-      'coordination', 'effects'
+      'coordination', 'effects', 'tool_slot_head', 'tool_slot', 'tool_invocation',
+      'agent_approval', 'command_receipt', 'confirmation_receipt'
     ];
     const { rows } = await client.query(
       'SELECT to_regclass(name) AS present FROM unnest($1::text[]) AS name',

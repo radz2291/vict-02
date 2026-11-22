@@ -52,7 +52,8 @@ export async function checkPorts({ oracle, observer, provision, legacy, candidat
   };
   try {
     assert.deepEqual(Object.keys(indexed).sort(),
-      ['actors','close','coordination','dispose','forLease','streamLedger','turns'].sort());
+      ['actors','close','coordination','dispose','forLease','streamLedger','turns',
+        'approvals','invocations','commandIdempotency','commandConfirmationReceipts'].sort());
     const actor = { actorId: 'actor-z', status: 'active', roles: ['viewer'], createdAt: 42, scopes: undefined };
     await diff('actors', 'get', ['missing']);
     await diff('actors', 'list');
@@ -120,7 +121,7 @@ export async function checkPorts({ oracle, observer, provision, legacy, candidat
       oracle: 'installed PostgreSQL 0.4.0-rc.1', calls: Object.fromEntries(scenarios)
     });
     await coordinationChecks(old, indexed, record);
-    await d5(oracle, old, record);
+    await d5(oracle, old, indexed, record);
   } finally {
     await Promise.all([old.close(), indexed.close()]);
   }
@@ -184,7 +185,7 @@ async function coordinationChecks(legacy, candidate, record) {
   await record('Coordination differential and scope ownership', { outcomes: actual[0] });
 }
 
-async function d5(oracle, legacy, record) {
+async function d5(oracle, legacy, indexed, record) {
   const sqlite = oracle.createSqliteAgentControlStores({ path: ':memory:' });
   const receipt = {
     changesetId: 'd5-change', operationIndex: 0, operationKind: 'publish-release',
@@ -208,11 +209,29 @@ async function d5(oracle, legacy, record) {
     assert.equal(pgReceipts[0].operationDigest, receipt.operationDigest);
     assert.equal(pgReceipts[0].state, 'applied');
     assert.equal((await legacy.control.getSelectedRelease(release.applicationId)).releaseVersion, release.releaseVersion);
-    await assert.rejects(sqlite.control.applyReleaseOperation(input), { code: 'VICT_CONTROL_OPERATION_IDENTITY_CONFLICT' });
-    assert.equal(await sqlite.control.getRelease(release.releaseVersion), undefined);
-    assert.equal(await sqlite.control.getSelectedRelease(release.applicationId), undefined);
-    const sqliteReceipts = await sqlite.control.listOperationReceipts(receipt.changesetId);
-    assert.equal(sqliteReceipts[0].state, 'prepared');
+    const guard = async (control) => {
+      const before = {
+        release: await control.getRelease(release.releaseVersion),
+        selected: await control.getSelectedRelease(release.applicationId),
+        selections: await control.listReleaseSelections(release.applicationId),
+        receipts: await control.listOperationReceipts(receipt.changesetId)
+      };
+      assert.equal(before.receipts[0].state, 'prepared');
+      await assert.rejects(control.applyReleaseOperation(input), { code: 'VICT_CONTROL_OPERATION_IDENTITY_CONFLICT' });
+      assert.deepEqual(await control.getRelease(release.releaseVersion), before.release);
+      assert.deepEqual(await control.getSelectedRelease(release.applicationId), before.selected);
+      assert.deepEqual(await control.listReleaseSelections(release.applicationId), before.selections);
+      assert.deepEqual(await control.listOperationReceipts(receipt.changesetId), before.receipts);
+      return before.receipts;
+    };
+    const sqliteReceipts = await guard(sqlite.control);
+    if (indexed.control === undefined) {
+      await record('D5 strict digest guard pending authorized control slice', { indexed: 'control port absent', oracleGuardPassed: true });
+    } else {
+      await indexed.control.recordOperationIntent(receipt);
+      await guard(indexed.control);
+      await record('D5 strict digest guard executed against indexed control');
+    }
     await record('D5 actual port mismatch', { postgres: { revision: pg.selectionRevision, receipt: pgReceipts[0] },
       sqlite: { code: 'VICT_CONTROL_OPERATION_IDENTITY_CONFLICT', receipt: sqliteReceipts[0], releasePublished: false } });
   } finally {

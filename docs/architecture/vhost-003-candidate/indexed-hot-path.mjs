@@ -1,6 +1,8 @@
 import { createFoundation } from './foundation.mjs';
 import { createValueCodec, fromKey, hash, keyBytes, readKey } from './values.mjs';
 
+import { createReceiptPorts } from './indexed-receipts.mjs';
+
 const PAGE = 128;
 const cursorName = 'vhost003_page';
 
@@ -34,7 +36,8 @@ export async function createIndexedHotPathForTests(oracle, options) {
     throw error;
   }
 
-  const { captureArguments, encode, decode, captureRuntimeStoreSnapshot } = createValueCodec(oracle, db);
+  const codec = createValueCodec(oracle, db);
+  const { captureArguments, encode, decode, captureRuntimeStoreSnapshot } = codec;
   const { InMemoryActorDirectory, InMemoryAgentTurnStore, isDurableStreamKind, validateStreamLedgerAppend } = runtime;
   const namespace = db.namespace;
   const q = (table) => db.schema + '.' + table;
@@ -230,7 +233,8 @@ export async function createIndexedHotPathForTests(oracle, options) {
         `SELECT stream_key FROM ${q('stream_clock')} WHERE namespace=$1 ORDER BY stream_key`,
         [namespace], (row) => fromKey(row.stream_key)))
     });
-    return Object.freeze({ actors, turns, streamLedger });
+    const receipts = createReceiptPorts({ runtime, codec, namespace, q, call, readPages });
+    return Object.freeze({ actors, turns, streamLedger, ...receipts });
   }
 
   return Object.freeze({
