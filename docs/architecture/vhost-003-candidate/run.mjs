@@ -15,7 +15,7 @@ const samples = Number(samplesText);
 assert(Number.isSafeInteger(port) && port >= 1024 && port <= 65535);
 assert(Number.isSafeInteger(samples) && samples >= 4 && samples <= 1000);
 assert(['check', 'all'].includes(phase));
-const evidence = { format: 'vict.vhost004-stage@1', when: new Date().toISOString(),
+const evidence = { format: 'vict.vhost004-fence-repair@1', when: new Date().toISOString(),
   node: process.version, cpu: cpus()[0]?.model, logicalCPUs: cpus().length, osRelease: release(),
   checks: [], cells: [], samples };
 const save = () => writeFile(join(output, 'result.json'), JSON.stringify(evidence, null, 2) + '\n');

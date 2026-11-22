@@ -1,0 +1,3 @@
+(node:25668) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"schema":"vict.mastra-log@1","level":"error","code":"VICT_MASTRA_FAILURE","correlationId":"50c59ee6-6ebe-49e1-9dc8-e10adafedcc5","timestamp":1795351843303}

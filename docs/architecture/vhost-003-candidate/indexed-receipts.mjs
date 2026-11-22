@@ -1,3 +1,4 @@
+import { randomBytes } from 'node:crypto';
 import { hash, keyBytes } from './values.mjs';
 
 // Keep the exact legacy composite Map key for the two ports that use it.
@@ -188,7 +189,7 @@ export function createReceiptPorts({ runtime, codec, namespace, q, call, readPag
 
   const actorRequest = ({ actorId, idempotencyKey }) => groupKey(actorId, idempotencyKey);
 
-  function changeReceipt(table, name, keyFor, readInput, creation) {
+  function changeReceipt(table, name, keyFor, readInput, creation, authorizeChange) {
     return (method) => call(async (client, input) => {
       const key = keyFor(input);
       if (typeof key === 'string') {
@@ -200,17 +201,49 @@ export function createReceiptPorts({ runtime, codec, namespace, q, call, readPag
       }
       const prior = await find(client, table, key, { forUpdate: true });
       const store = engine(name, { receipts: new Map(prior ? [[key, value(prior)]] : []) });
-      const result = await store[method](input);
-      const next = await store.getReceipt(readInput(input));
+      let result = await store[method](input);
+      let next = await store.getReceipt(readInput(input));
+      if (authorizeChange) ({ result, next } = await authorizeChange(client, method, result, next));
       if (prior) await replace(client, table, prior, next);
       else if (next !== undefined) await creation(client, key, next);
       return result;
     });
   }
 
+  async function reserveCommandFence(client, token) {
+    if (typeof token !== 'string' || token.length === 0) return false;
+    const { rowCount } = await client.query(
+      `INSERT INTO ${q('command_claim_fence')} (namespace,fence_digest)
+       VALUES ($1,$2) ON CONFLICT DO NOTHING`, [namespace, hash(keyBytes(token))]
+    );
+    return rowCount === 1;
+  }
+
+  async function authorizeCommandChange(client, method, result, next) {
+    const reject = () => new runtime.VictControlError(
+      'VICT_IDEMPOTENCY_FENCE_CONFLICT',
+      'A new command claim requires a fresh settlement fence.'
+    );
+    if (method === 'claimReceipt' && result === 'claimed' && next.status === 'pending') {
+      // Initial-claim callers hold the token they supplied. A substituted
+      // token cannot be returned through the existing claimed/exists result.
+      if (!await reserveCommandFence(client, next.fenceToken)) throw reject();
+    }
+    if (method === 'takeOverExpiredLease' && result.outcome === 'taken' &&
+        !await reserveCommandFence(client, result.fenceToken)) {
+      // Takeover can return its token. The reference-derived token may
+      // recur after release resets the caller's per-receipt attempt count.
+      const fenceToken = 'vict-fence-' + randomBytes(32).toString('hex');
+      if (!await reserveCommandFence(client, fenceToken)) throw reject();
+      return { result: { ...result, fenceToken }, next: { ...next, fenceToken } };
+    }
+    return { result, next };
+  }
+
   const changeCommand = changeReceipt('command_receipt', 'InMemoryCommandIdempotencyStore', commandKey,
     (input) => input, (client, key, next) => insert(client, 'command_receipt', key,
-      'actor_request_digest,actor_request_key,payload', [...keyParts(actorRequest(next)), encode(next)]));
+      'actor_request_digest,actor_request_key,payload', [...keyParts(actorRequest(next)), encode(next)]),
+    authorizeCommandChange);
 
   const commandIdempotency = Object.freeze({
     claimReceipt: changeCommand('claimReceipt'),

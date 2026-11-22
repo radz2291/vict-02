@@ -158,8 +158,9 @@ async function differential(old, indexed, runtime, evidence, save) {
     'VICT_IDEMPOTENCY_FENCE_CONFLICT');
   await diff('current owner may release retryable failure', CMD, 'releaseReceipt', [{ ...later, at: 11 }]);
   await diff('released receipt missing', CMD, 'getReceipt', [later]);
-  await diff('same tuple can be freshly claimed', CMD, 'claimReceipt', [later]);
-  await diff('deterministic failure persisted as terminal', CMD, 'failReceipt', [{ ...later, at: 11, responseCode: 'denied' }]);
+  const freshLater = { ...later, fenceToken: 'fresh-later-fence' };
+  await diff('same tuple can be freshly claimed with a fresh token', CMD, 'claimReceipt', [freshLater]);
+  await diff('deterministic failure persisted as terminal', CMD, 'failReceipt', [{ ...freshLater, at: 11, responseCode: 'denied' }]);
   await diff('terminal failure survives read', CMD, 'getReceipt', [later]);
   await diff('unrelated actor/key lookup misses', CMD, 'findReceiptByActorKey', [{ ...receipt, actorId: 'other' }]);
   await diff('no takeover of a missing tuple', CMD, 'takeOverExpiredLease', [{ ...receipt, command: 'missing', at: 11 }]);
@@ -453,7 +454,8 @@ export async function checkReceipts(context) {
   await concurrency(context);
   await faults(context);
   await servicePolicy(context);
-  await observeLegacyReleaseFence(context);
+  await checkReleaseFence(context);
+  await qualifyPinnedCaller(context);
 }
 
 async function servicePolicy({ oracle, provision, candidate, legacy, evidence, save }) {
@@ -601,25 +603,136 @@ async function servicePolicy({ oracle, provision, candidate, legacy, evidence, s
   }
 }
 
-async function observeLegacyReleaseFence({ oracle, provision, candidate, legacy, evidence, save }) {
+async function checkReleaseFence({ oracle, observer, provision, candidate, legacy, evidence, save }) {
   const namespace = 'vhost004-release-reclaim';
   await provision(namespace);
   const old = await legacy(namespace, { migrate: true });
   const indexed = await candidate(namespace);
   const receipt = command(oracle.runtime);
-  async function observe(store) {
-    assert.equal(await store.commandIdempotency.claimReceipt(receipt), 'claimed');
-    await store.commandIdempotency.releaseReceipt({ ...receipt, at: 2 });
-    assert.equal(await store.commandIdempotency.claimReceipt(receipt), 'claimed');
-    const fresh = await store.commandIdempotency.getReceipt(receipt);
-    return { legacyReissuedSameFence: fresh.fenceToken === receipt.fenceToken, attempts: fresh.attempts };
+  const conflict = { code: 'VICT_IDEMPOTENCY_FENCE_CONFLICT' };
+  let restarted;
+  try {
+    assert.equal(await old.commandIdempotency.claimReceipt(receipt), 'claimed');
+    await old.commandIdempotency.releaseReceipt({ ...receipt, at: 2 });
+    assert.equal(await old.commandIdempotency.claimReceipt(receipt), 'claimed');
+    assert.equal((await old.commandIdempotency.getReceipt(receipt)).fenceToken, receipt.fenceToken);
+
+    const commandPort = indexed.commandIdempotency;
+    assert.equal(await commandPort.claimReceipt(receipt), 'claimed');
+    assert.equal(await commandPort.claimReceipt(receipt), 'exists');
+    assert.deepEqual(await commandPort.getReceipt(receipt), receipt);
+    const priorTakeover = await commandPort.takeOverExpiredLease({ ...receipt, owner: 'repeat-worker', at: 10, leaseUntil: 20 });
+    assert.equal(priorTakeover.outcome, 'taken');
+    await commandPort.releaseReceipt({ ...receipt, fenceToken: priorTakeover.fenceToken, at: 11 });
+    assert.equal(await commandPort.getReceipt(receipt), undefined);
+    await indexed.close();
+
+    // Keep the same owner, key and attempts but use a different acquisition identity.
+    restarted = await candidate(namespace);
+    const port = restarted.commandIdempotency;
+    await assert.rejects(port.claimReceipt(receipt), conflict);
+    await assert.rejects(port.claimReceipt({ ...receipt, fenceToken: priorTakeover.fenceToken }), conflict);
+    await assert.rejects(port.claimReceipt({ ...receipt, fenceToken: undefined }), conflict);
+    assert.equal(await port.getReceipt(receipt), undefined);
+    const fresh = { ...receipt, fenceToken: 'synthetic-per-acquisition-token' };
+    assert.equal(await port.claimReceipt(fresh), 'claimed');
+    assert.equal(await port.claimReceipt(receipt), 'exists');
+    assert.equal(await port.claimReceipt(fresh), 'exists');
+    const stored = await port.getReceipt(receipt);
+    assert.deepEqual(stored, fresh);
+    const payload = async () => (await observer.query(
+      'SELECT payload FROM vhost003_indexed.command_receipt WHERE namespace=$1', [namespace]
+    )).rows[0].payload;
+    const before = await payload();
+    const rejected = [];
+    for (const token of [receipt.fenceToken, priorTakeover.fenceToken]) {
+      const stale = { ...receipt, fenceToken: token, at: 12, resultJson: '{}', responseCode: 'failed' };
+      for (const operation of ['completeReceipt', 'failReceipt', 'releaseReceipt']) {
+        await assert.rejects(port[operation](stale), conflict);
+        assert.deepEqual(await payload(), before);
+        rejected.push({ operation, code: conflict.code, byteIdentical: true });
+      }
+    }
+    await port.completeReceipt({ ...fresh, resultJson: '{"ok":true}', at: 13 });
+    assert.equal((await port.getReceipt(receipt)).status, 'completed');
+    assert.equal(await port.claimReceipt(fresh), 'exists');
+
+    const repeating = command(oracle.runtime, { idempotencyKey: 'takeover-cycle' });
+    assert.equal(await port.claimReceipt(repeating), 'claimed');
+    const take = { ...repeating, owner: 'same-takeover-owner', at: 10, leaseUntil: 20 };
+    const first = await port.takeOverExpiredLease(take);
+    await port.releaseReceipt({ ...repeating, fenceToken: first.fenceToken, at: 11 });
+    assert.equal(await port.claimReceipt({ ...repeating, fenceToken: 'synthetic-fresh-takeover-cycle' }), 'claimed');
+    const second = await port.takeOverExpiredLease(take);
+    assert.equal(second.outcome, 'taken');
+    assert.notEqual(second.fenceToken, first.fenceToken);
+    await assert.rejects(port.releaseReceipt({ ...repeating, fenceToken: first.fenceToken, at: 12 }), conflict);
+    assert.equal((await port.getReceipt(repeating)).fenceToken, second.fenceToken);
+    await port.completeReceipt({ ...repeating, fenceToken: second.fenceToken, at: 14, resultJson: '{}' });
+
+    const competing = ['cross-key-one', 'cross-key-two'].map((idempotencyKey) => ({
+      ...command(oracle.runtime, { idempotencyKey }), fenceToken: 'synthetic-competing-token'
+    }));
+    const claims = await Promise.all(competing.map((record) => outcome(() => port.claimReceipt(record))));
+    assert.equal(claims.filter(({ result }) => result === 'claimed').length, 1);
+    assert.equal(claims.filter(({ error }) => error?.code === conflict.code).length, 1);
+
+    const interrupted = command(oracle.runtime, { idempotencyKey: 'rollback-reservation' });
+    await interposeCommit(restarted, async () => {
+      // Reject before sending COMMIT, after both SQL writes completed.
+      throw Object.assign(new Error('Synthetic pre-COMMIT failure'), { code: 'ECONNRESET' });
+    }, () => port.claimReceipt(interrupted));
+    assert.equal(await port.getReceipt(interrupted), undefined);
+    assert.equal(await port.claimReceipt(interrupted), 'claimed');
+
+    const { rows: [history] } = await observer.query(
+      'SELECT count(*)::int AS count FROM vhost003_indexed.command_claim_fence WHERE namespace=$1', [namespace]
+    );
+    assert.equal(history.count, 9);
+    evidence.releaseReclaimRepair = { legacyReissuedSameFence: true, reopenedPool: true,
+      staleOrMissingFreshClaimRejected: 3, rejected, currentReplay: 'exists', newTokenSettled: true,
+      repeatedTakeoverGotFreshFence: true, crossKeyClaims: claims, rollbackReservationRetried: true,
+      retainedFenceDigests: history.count };
+    await save();
+  } finally {
+    await Promise.all([old.close(), indexed.close(), restarted?.close()]);
+  }
+}
+
+async function qualifyPinnedCaller({ oracle, provision, candidate, legacy, evidence, save }) {
+  const namespace = 'vhost004-pinned-fence-caller';
+  await provision(namespace);
+  const old = await legacy(namespace, { migrate: true });
+  const indexed = await candidate(namespace);
+  const actor = { actorId: 'fixture-operator', scopes: ['app.data.write'] };
+  const request = { command: 'app.data.mutate', payload: { resourceId: 'fixture-resource', releaseVersion: 'fixture-version' },
+    idempotencyKey: 'retryable-command' };
+  async function use(store, guarded) {
+    let effects = 0;
+    const options = {
+      stores: store, clock: () => 1000, controlPlane: {},
+      appData: { mutate: async () => {
+        if (effects++ === 0) throw new Error('Synthetic retryable pre-effect refusal');
+        return { resourceId: 'fixture-resource' };
+      } }
+    };
+    const service = new oracle.VictCommandService({ ...options, idempotencyOwner: 'same-service' });
+    await assert.rejects(service.dispatch(actor, request), /Synthetic retryable pre-effect refusal/);
+    const key = { actorId: actor.actorId, command: request.command, idempotencyKey: request.idempotencyKey };
+    assert.equal(await store.commandIdempotency.getReceipt(key), undefined);
+    if (guarded) {
+      await assert.rejects(service.dispatch(actor, request), { code: 'VICT_IDEMPOTENCY_FENCE_CONFLICT' });
+      assert.equal(effects, 1);
+    }
+    const retry = guarded ? new oracle.VictCommandService({ ...options, idempotencyOwner: 'fresh-service' }) : service;
+    assert.equal((await retry.dispatch(actor, request)).ok, true);
+    assert.equal((await retry.dispatch(actor, request)).ok, true);
+    assert.equal(effects, 2);
+    return { retryCaller: guarded ? 'fresh-service' : 'same-service', sameServiceReclaimRefused: guarded,
+      durableCompletion: (await store.commandIdempotency.getReceipt(key)).status, callsIncludingRetryableRefusal: effects };
   }
   try {
-    const expected = await observe(old);
-    const observed = await observe(indexed);
-    assert.deepEqual(observed, expected);
-    assert(expected.legacyReissuedSameFence);
-    evidence.releaseReclaimCompatibility = { expected, observed };
+    evidence.pinnedCallerFenceQualification = { legacy: await use(old, false), candidate: await use(indexed, true) };
     await save();
   } finally {
     await Promise.all([old.close(), indexed.close()]);

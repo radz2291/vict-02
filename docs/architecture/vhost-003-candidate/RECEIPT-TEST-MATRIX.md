@@ -25,7 +25,7 @@ The comparator is the installed PostgreSQL adapter from the pinned Quellight clo
 | `commandIdempotency.findReceiptByActorKey` | Earliest surviving insert across command kinds, no other actor, release/reinsert moves a row behind surviving entries. The dispatcher's cross-command policy composes a lookup and a separate claim. |
 | `commandIdempotency.completeReceipt` | Winning fence persists completion. Old or terminal fence fails with `VICT_IDEMPOTENCY_FENCE_CONFLICT`. Replayed results are served from the durable receipt by the service. |
 | `commandIdempotency.failReceipt` | Deterministic failure persists, missing key has its own error, stale owner leaves current row byte-identical. |
-| `commandIdempotency.releaseReceipt` | Current owner deletes a retryable claim and removes it from both lookups. Stale takeover fence refuses. Same-owner recreation can reissue the same legacy token. |
+| `commandIdempotency.releaseReceipt` | Current owner deletes a retryable claim and removes it from both lookups. Stale takeover fence refuses. The repaired fixture refuses reissue of a retired token after same-owner recreation. The legacy comparator reproduces reuse. |
 | `commandIdempotency.takeOverExpiredLease` | Missing, not yet expired, and exact expiration equality. Twelve competing callers yield one takeover and generation 2. |
 | `commandConfirmationReceipts.createReceipt` | One winner by ID. Duplicate returns `exists` and preserves the original payload digest. |
 | `commandConfirmationReceipts.getReceipt` | Missing, exact prepare binding, terminal expired/consumed/spent evidence. |

@@ -70,6 +70,16 @@ CREATE TABLE command_receipt (
 CREATE INDEX command_receipt_key ON command_receipt(namespace, key_digest);
 CREATE INDEX command_receipt_actor_request ON command_receipt(namespace, actor_request_digest, id);
 
+-- Append-only claim history survives release, settlement and writer epoch
+-- changes. Digests enforce namespace-wide token non-reuse. A digest
+-- collision is rejected, never accepted as a new fence.
+CREATE TABLE command_claim_fence (
+    namespace text COLLATE "C" NOT NULL REFERENCES namespaces,
+    fence_digest bytea NOT NULL,
+    PRIMARY KEY (namespace, fence_digest),
+    CHECK (octet_length(fence_digest) = 32)
+);
+
 CREATE TABLE confirmation_receipt (
     namespace text COLLATE "C" NOT NULL REFERENCES namespaces,
     id bigint GENERATED ALWAYS AS IDENTITY,
@@ -90,6 +100,6 @@ CREATE INDEX confirmation_receipt_prepare
 CREATE INDEX confirmation_receipt_actor_command
     ON confirmation_receipt(namespace, actor_command_digest, replacement_no, key_prefix);
 
-UPDATE metadata SET version=2, purpose='VHOST-004 disposable receipts fixture'
+UPDATE metadata SET version=3, purpose='VHOST-004 disposable command fence repair fixture'
  WHERE singleton AND version=1 AND purpose='VHOST-003 disposable hot-path fixture';
 COMMIT;

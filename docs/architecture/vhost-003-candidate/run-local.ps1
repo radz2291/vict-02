@@ -14,7 +14,7 @@ $Consumer = (Resolve-Path -LiteralPath $Consumer).Path
 $Source = (Resolve-Path -LiteralPath $Source).Path
 $Output = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($Output)
 if (Test-Path -LiteralPath $Output) { throw 'Choose a new output directory.' }
-$work = Join-Path ([IO.Path]::GetTempPath()) ('vhost004-pg-' + [guid]::NewGuid().ToString('N'))
+$work = Join-Path ([IO.Path]::GetTempPath()) ('vhost004-fence-pg-' + [guid]::NewGuid().ToString('N'))
 if (($work + $Output + $PgBin + $Consumer + $Source) -match '[\r\n"]') { throw 'Unsupported path.' }
 New-Item -ItemType Directory -Path $Output,$work | Out-Null
 Push-Location -LiteralPath $Consumer

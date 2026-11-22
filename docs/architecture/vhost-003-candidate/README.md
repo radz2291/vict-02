@@ -2,7 +2,7 @@
 
 ## VHOST-004 continuation
 
-The original VHOST-003 evidence below remains historical. The current fixture uses version 2. The harness provisions the base schema and its receipt extension, verifies the same installed consumer closure, then exercises the original slice and the four new port families. The partial factory now exposes 65 of 126 qualified operations. Review coverage and the new report before running the fixture.
+The original VHOST-003 evidence below remains historical. The current fixture uses version 3. See the [command fence repair](../VHOST-004-COMMAND-FENCE-REPAIR.md) and its [raw run](evidence/vhost004-fence-repair/matched.json). The harness provisions the base schema and its receipt extension, verifies the same installed consumer closure, then exercises the original slice and the four new port families. The partial factory now exposes 65 of 126 qualified operations. Review coverage and the new report before running the fixture.
 
 - [VHOST-004 candidate and limitations](../VHOST-004-INDEXED-RECEIPTS-CANDIDATE.md)
 - [Current coverage](PORT-COVERAGE.md)
