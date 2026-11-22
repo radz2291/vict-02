@@ -1,4 +1,4 @@
-import { createHash } from 'node:crypto';
+import { createHash, randomBytes } from 'node:crypto';
 import type {
   ActivationCatalog,
   AgentControlStores,
@@ -19,7 +19,6 @@ import {
   VictControlError,
   VictStoreError,
   VICT_IDEMPOTENCY_FENCE_CONFLICT,
-  commandIdempotencyFenceToken,
   type CommandIdempotencyReceipt,
 } from '@victframework/runtime';
 import type { ServerActorContext } from './auth.js';
@@ -683,6 +682,13 @@ function boundedString(value: unknown, field: string, max: number): string {
   return value;
 }
 
+/** Allocate the token for one prospective claim, including retries after release. */
+function freshCommandClaimFence(): string {
+  // The service owner persists across retries. The fence identifies one
+  // acquisition only. Keep the token's existing opaque string format.
+  return 'vict-fence-' + randomBytes(32).toString('hex');
+}
+
 /** Canonical digest over the EXACT canonical request payload. */
 function requestDigest(canonicalPayload: Record<string, unknown>): string {
   return createHash('sha256')
@@ -1117,13 +1123,7 @@ export class VictCommandService {
       if (reused !== undefined && reused.command !== command) {
         return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_CONFLICT' };
       }
-      const claimFenceToken = commandIdempotencyFenceToken({
-        actorId: actor.actorId,
-        command,
-        idempotencyKey,
-        owner: this.#owner,
-        attempts: 1,
-      });
+      const claimFenceToken = freshCommandClaimFence();
       const claim = await store.claimReceipt({
         idempotencyKey,
         actorId: actor.actorId,
@@ -1322,13 +1322,7 @@ export class VictCommandService {
     // ---- Phase 3: durable claims, fenced on both stores ------------------
     let idempotencyFence: string;
     if (existing === undefined) {
-      const claimFenceToken = commandIdempotencyFenceToken({
-        actorId: actor.actorId,
-        command,
-        idempotencyKey,
-        owner: this.#owner,
-        attempts: 1,
-      });
+      const claimFenceToken = freshCommandClaimFence();
       const claim = await store.claimReceipt({
         idempotencyKey,
         actorId: actor.actorId,
@@ -1773,13 +1767,7 @@ export class VictCommandService {
       if (reused !== undefined && reused.command !== prepareCommand) {
         return { ok: false, code: 'VICT_COMMAND_IDEMPOTENCY_CONFLICT' };
       }
-      const claimFenceToken = commandIdempotencyFenceToken({
-        actorId: actor.actorId,
-        command: prepareCommand,
-        idempotencyKey: request.idempotencyKey,
-        owner: this.#owner,
-        attempts: 1,
-      });
+      const claimFenceToken = freshCommandClaimFence();
       const claim = await prepareStore.claimReceipt({
         idempotencyKey: request.idempotencyKey,
         actorId: actor.actorId,
