@@ -57,7 +57,7 @@ export function createFoundation({ Driver, Coordination, runtime }, options) {
           [namespace]
         );
         const row = admission.rows[0];
-        if (row?.version !== 3 || row.purpose !== 'VHOST-004 disposable command fence repair fixture') {
+        if (row?.version !== 4 || row.purpose !== 'VHOST-007 disposable indexed governance fixture') {
           throw failure('HOSTED_SCHEMA_MISMATCH');
         }
         if (row.writer_epoch !== String(writerEpoch)) throw failure('HOSTED_FENCED');
@@ -132,7 +132,10 @@ export function createFoundation({ Driver, Coordination, runtime }, options) {
     const tables = [
       'actors', 'turn_head', 'cancel_intents', 'stream_clock', 'stream_events',
       'coordination', 'effects', 'tool_slot_head', 'tool_slot', 'tool_invocation',
-      'agent_approval', 'command_receipt', 'command_claim_fence', 'confirmation_receipt'
+      'agent_approval', 'command_receipt', 'command_claim_fence', 'confirmation_receipt',
+      'control_changeset', 'control_approval', 'control_run', 'control_operation', 'control_release',
+      'control_selection', 'control_audit', 'catalog_activation', 'catalog_selection',
+      'governance_activation', 'governance_intent', 'governance_receipt'
     ];
     const { rows } = await client.query(
       'SELECT to_regclass(name) AS present FROM unnest($1::text[]) AS name',

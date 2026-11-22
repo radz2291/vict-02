@@ -14,7 +14,7 @@ $Consumer = (Resolve-Path -LiteralPath $Consumer).Path
 $Source = (Resolve-Path -LiteralPath $Source).Path
 $Output = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($Output)
 if (Test-Path -LiteralPath $Output) { throw 'Choose a new output directory.' }
-$work = Join-Path ([IO.Path]::GetTempPath()) ('vhost006-pg-' + [guid]::NewGuid().ToString('N'))
+$work = Join-Path ([IO.Path]::GetTempPath()) ('vhost007-pg-' + [guid]::NewGuid().ToString('N'))
 if (($work + $Output + $PgBin + $Consumer + $Source) -match '[\r\n"]') { throw 'Unsupported path.' }
 New-Item -ItemType Directory -Path $Output,$work | Out-Null
 Push-Location -LiteralPath $Consumer
@@ -43,7 +43,7 @@ try {
   if ($process.ExitCode -ne 0) { throw "Owned PostgreSQL failed to start. See $log" }
   $phase = if ($CheckOnly) { 'check' } else { 'all' }
   & $Node (Join-Path $PSScriptRoot 'run.mjs') $Consumer $Source $data "$port" "$Samples" $Output $phase *> (Join-Path $Output 'runner.log')
-  if ($LASTEXITCODE -ne 0) { throw "VHOST-006 failed. Review retained evidence in $Output" }
+  if ($LASTEXITCODE -ne 0) { throw "VHOST-007 failed. Review retained evidence in $Output" }
 } finally {
   if (Test-Path -LiteralPath (Join-Path $data 'postmaster.pid')) {
     & $pgCtl stop -D $data -m fast -w -t 30 | Out-Host

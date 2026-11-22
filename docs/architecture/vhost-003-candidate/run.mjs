@@ -9,6 +9,7 @@ import { checkPorts } from './checks.mjs';
 import { checkReceipts, compareReceiptTraffic } from './receipt-checks.mjs';
 import { compareBenchmarks } from './benchmark.mjs';
 import { checkDispatcherClaims } from './dispatcher-claim-checks.mjs';
+import { checkControlPorts } from './control-checks.mjs';
 
 const [consumer, source, dataDir, portText, samplesText, output, phase] = process.argv.slice(2);
 const port = Number(portText);
@@ -16,7 +17,7 @@ const samples = Number(samplesText);
 assert(Number.isSafeInteger(port) && port >= 1024 && port <= 65535);
 assert(Number.isSafeInteger(samples) && samples >= 4 && samples <= 1000);
 assert(['check', 'all'].includes(phase));
-const evidence = { format: 'vict.vhost006-dispatcher-claim@1', when: new Date().toISOString(),
+const evidence = { format: 'vict.vhost007-indexed-control@1', when: new Date().toISOString(),
   node: process.version, cpu: cpus()[0]?.model, logicalCPUs: cpus().length, osRelease: release(),
   checks: [], cells: [], samples };
 const save = () => writeFile(join(output, 'result.json'), JSON.stringify(evidence, null, 2) + '\n');
@@ -25,7 +26,7 @@ try {
   const oracle = await loadOracle(consumer, source, dirname(dataDir), join(here, '../../..'));
   evidence.provenance = oracle.provenance;
   evidence.provenance.candidateSHA256 = {};
-  for (const path of ['dispatcher-claim-checks.mjs', 'schema.sql', 'receipts-schema.sql', 'indexed-receipts.mjs', 'receipt-checks.mjs', 'foundation.mjs', 'indexed-hot-path.mjs', 'values.mjs',
+  for (const path of ['indexed-control.mjs', 'control-checks.mjs', 'control-schema.sql', 'dispatcher-claim-checks.mjs', 'schema.sql', 'receipts-schema.sql', 'indexed-receipts.mjs', 'receipt-checks.mjs', 'foundation.mjs', 'indexed-hot-path.mjs', 'values.mjs',
     'run.mjs', 'oracle.mjs', 'benchmark.mjs', 'checks.mjs', 'run-local.ps1']) {
     const bytes = await readFile(join(here, path));
     evidence.provenance.candidateSHA256[path] = digest(bytes.toString().replaceAll('\r\n', '\n'));
@@ -45,6 +46,7 @@ try {
     evidence.provenance.postgres = server.version;
     await observer.query(await readFile(join(here, 'schema.sql'), 'utf8'));
     await observer.query(await readFile(join(here, 'receipts-schema.sql'), 'utf8'));
+    await observer.query(await readFile(join(here, 'control-schema.sql'), 'utf8'));
     const provision = async (namespace, epoch = 1) => {
       await observer.query('BEGIN');
       try {
@@ -66,6 +68,7 @@ try {
     await checkPorts(context);
     await checkReceipts(context);
     await checkDispatcherClaims(context);
+    await checkControlPorts(context);
     if (phase === 'all') {
       await compareBenchmarks(context);
       await compareReceiptTraffic(context);

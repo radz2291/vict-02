@@ -1,0 +1,87 @@
+[
+  {
+    "attempt": "02",
+    "when": "2026-11-22T13:54:01.665Z",
+    "matchedComparisons": 75,
+    "failure": {
+      "name": "AssertionError",
+      "code": "ERR_ASSERTION",
+      "message": "catalog.publish\n+ actual - expected\n\n+ 'VICT_STORE_ACTIVATION_MISMATCH'\n- 'VICT_STORE_INVALID_MANIFEST'\n              ^\n",
+      "stack": "AssertionError [ERR_ASSERTION]: catalog.publish\n+ actual - expected\n\n+ 'VICT_STORE_ACTIVATION_MISMATCH'\n- 'VICT_STORE_INVALID_MANIFEST'\n              ^\n\n    at compare (file:///C:/Users/RZ1/AppData/Local/Temp/vhost007-control-candidate/docs/architecture/vhost-003-candidate/control-checks.mjs:96:30)\n    at async differential (file:///C:/Users/RZ1/AppData/Local/Temp/vhost007-control-candidate/docs/architecture/vhost-003-candidate/control-checks.mjs:212:3)\n    at async checkControlPorts (file:///C:/Users/RZ1/AppData/Local/Temp/vhost007-control-candidate/docs/architecture/vhost-003-candidate/control-checks.mjs:522:5)\n    at async file:///C:/Users/RZ1/AppData/Local/Temp/vhost007-control-candidate/docs/architecture/vhost-003-candidate/run.mjs:71:5"
+    },
+    "lastReferenceAndCandidate": {
+      "port": "catalog.publish",
+      "expected": {
+        "error": {
+          "name": "VictStoreError",
+          "code": "VICT_STORE_ACTIVATION_MISMATCH",
+          "message": "The supplied canonical manifest is not the canonical representation of the supplied manifest.",
+          "details": {
+            "operation": "catalog.publish",
+            "activationVersion": "v1_fa3217f302689f2b9b06bc81ff38026fa2775460d8239c22c5beac01e9fc9a2a"
+          }
+        }
+      },
+      "observed": {
+        "error": {
+          "name": "VictStoreError",
+          "code": "VICT_STORE_ACTIVATION_MISMATCH",
+          "message": "The supplied canonical manifest is not the canonical representation of the supplied manifest.",
+          "details": {
+            "operation": "catalog.publish",
+            "activationVersion": "v1_fa3217f302689f2b9b06bc81ff38026fa2775460d8239c22c5beac01e9fc9a2a"
+          }
+        }
+      }
+    }
+  },
+  {
+    "attempt": "03",
+    "when": "2026-11-22T13:55:06.412Z",
+    "matchedComparisons": 94,
+    "failure": {
+      "name": "AssertionError",
+      "code": "ERR_ASSERTION",
+      "message": "governance.saveAgentActivation\n+ actual - expected\n\n+ 'HOSTED_DATABASE_UNAVAILABLE'\n- 'VICT_AGENT_ACTIVATION_RECORD_INVALID'\n",
+      "stack": "AssertionError [ERR_ASSERTION]: governance.saveAgentActivation\n+ actual - expected\n\n+ 'HOSTED_DATABASE_UNAVAILABLE'\n- 'VICT_AGENT_ACTIVATION_RECORD_INVALID'\n\n    at compare (file:///C:/Users/RZ1/AppData/Local/Temp/vhost007-control-candidate/docs/architecture/vhost-003-candidate/control-checks.mjs:96:30)\n    at async differential (file:///C:/Users/RZ1/AppData/Local/Temp/vhost007-control-candidate/docs/architecture/vhost-003-candidate/control-checks.mjs:238:3)\n    at async checkControlPorts (file:///C:/Users/RZ1/AppData/Local/Temp/vhost007-control-candidate/docs/architecture/vhost-003-candidate/control-checks.mjs:523:5)\n    at async file:///C:/Users/RZ1/AppData/Local/Temp/vhost007-control-candidate/docs/architecture/vhost-003-candidate/run.mjs:71:5"
+    },
+    "lastReferenceAndCandidate": {
+      "port": "governance.saveAgentActivation",
+      "expected": {
+        "error": {
+          "name": "HostedCoordinationError",
+          "code": "HOSTED_DATABASE_UNAVAILABLE",
+          "message": "HOSTED_DATABASE_UNAVAILABLE"
+        }
+      },
+      "observed": {
+        "error": {
+          "name": "HostedCoordinationError",
+          "code": "HOSTED_DATABASE_UNAVAILABLE",
+          "message": "HOSTED_DATABASE_UNAVAILABLE"
+        }
+      }
+    }
+  },
+  {
+    "attempt": "04",
+    "when": "2026-11-22T13:56:32.692Z",
+    "matchedComparisons": 117,
+    "failure": null,
+    "runnerFailure": [
+      "(node:3704) ExperimentalWarning: SQLite is an experimental feature and might change at any time",
+      "(Use `node --trace-warnings ...` to show where the warning was created)",
+      "{\"schema\":\"vict.mastra-log@1\",\"level\":\"error\",\"code\":\"VICT_MASTRA_FAILURE\",\"correlationId\":\"7f49002e-d573-4529-ab3e-52a307fd2880\",\"timestamp\":1795355804527}",
+      "file:///C:/Users/RZ1/AppData/Local/Temp/vhost007-control-candidate/docs/architecture/vhost-003-candidate/control-checks.mjs:282",
+      "    seen.add(client);",
+      "         ^",
+      "",
+      "TypeError: Invalid value used in weak set",
+      "    at WeakSet.add (<anonymous>)",
+      "    at pool.connect (file:///C:/Users/RZ1/AppData/Local/Temp/vhost007-control-candidate/docs/architecture/vhost-003-candidate/control-checks.mjs:282:10)",
+      "    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)",
+      "",
+      "Node.js v22.23.5"
+    ]
+  }
+]

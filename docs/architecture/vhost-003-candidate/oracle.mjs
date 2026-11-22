@@ -34,6 +34,7 @@ export async function loadOracle(consumer, source, scratch, candidateRepo) {
     'packages/store-postgres/src/adapter.ts', 'packages/store-postgres/src/driver.ts',
     'packages/store-postgres/src/coordination.ts', 'packages/runtime/src/control-in-memory.ts',
     'packages/runtime/src/control-types.ts', 'packages/runtime/src/store-snapshot.ts',
+    'packages/runtime/src/in-memory-stores.ts', 'packages/runtime/src/agent-governance.ts',
     'packages/server/src/commands.ts',
     'packages/mastra/src/postgres-storage.ts'
   ];
@@ -128,6 +129,7 @@ export async function loadOracle(consumer, source, scratch, candidateRepo) {
     diagnostics.map((item) => ts.flattenDiagnosticMessageText(item.messageText, '\n')).join('\n'));
 
   const runtime = await installed('@victframework/runtime');
+  const kernel = await installed('@victframework/kernel');
   const snapshot = await installed('@victframework/runtime', 'store-snapshot.js');
   const { createPostgresMastraStore } = await installed('@victframework/mastra', 'postgres-storage.js');
   const { PostgresDatabase: Driver } = await installed('@victframework/store-postgres', 'driver.js');
@@ -137,7 +139,7 @@ export async function loadOracle(consumer, source, scratch, candidateRepo) {
   const { createSqliteAgentControlStores } = await import(pathToFileURL(join(sqliteFixture, 'agent-control-adapter.js')));
 
   return {
-    runtime, snapshot, VictCommandService, RepairedCommandService, Driver, Coordination, Client, createPostgresStores, createSqliteAgentControlStores, createPostgresMastraStore,
+    runtime, kernel, snapshot, VictCommandService, RepairedCommandService, Driver, Coordination, Client, createPostgresStores, createSqliteAgentControlStores, createPostgresMastraStore,
     provenance: {
       frameworkCommit, c12Source, consumerCommit, lockSHA256, manifestSHA256, sqliteTree,
       dispatcherCommit, reviewedParent, dispatcherSHA256: digest(dispatcherBytes), dispatcherTypecheckDiagnostics: 0,

@@ -53,7 +53,8 @@ export async function checkPorts({ oracle, observer, provision, legacy, candidat
   try {
     assert.deepEqual(Object.keys(indexed).sort(),
       ['actors','close','coordination','dispose','forLease','streamLedger','turns',
-        'approvals','invocations','commandIdempotency','commandConfirmationReceipts'].sort());
+        'approvals','invocations','commandIdempotency','commandConfirmationReceipts',
+        'control','catalog','governance'].sort());
     const actor = { actorId: 'actor-z', status: 'active', roles: ['viewer'], createdAt: 42, scopes: undefined };
     await diff('actors', 'get', ['missing']);
     await diff('actors', 'list');
@@ -94,7 +95,7 @@ export async function checkPorts({ oracle, observer, provision, legacy, candidat
     await diff('turns', 'reconcileTurn', [{ turnId: 'hot-turn', at: 1050, status: 'blocked', reasonCode: 'later' }]);
     await diff('turns', 'reconcileTurn', [{ turnId: 'not-yet', at: 1050, status: 'blocked', reasonCode: 'blocked' }]);
     await diff('turns', 'reconcileTurn', [{ turnId: 'missing', at: 1050, status: 'blocked' }]);
-    for (const id of ['z', 'A', 'z\u0000a', '\ud800', '\ufffd', '𐀀', '\ue000', 'q'.repeat(3500) + 'z', 'q'.repeat(3500) + 'a']) {
+    for (const id of ['z', 'A', 'z\u0000a', '\ud800', '\ufffd', '??', '\ue000', 'q'.repeat(3500) + 'z', 'q'.repeat(3500) + 'a']) {
       await diff('turns', 'createTurnIntent', [turn(id)]);
       await diff('turns', 'getTurn', [id]);
     }

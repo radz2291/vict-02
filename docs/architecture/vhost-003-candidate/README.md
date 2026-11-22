@@ -1,12 +1,8 @@
 # Indexed PostgreSQL operational-store test fixture
 
-## VHOST-004 continuation
+## VHOST-007 control, activation and governance
 
-The original VHOST-003 evidence below remains historical. The current fixture uses version 3. See the [command fence repair](../VHOST-004-COMMAND-FENCE-REPAIR.md) and its [raw run](evidence/vhost004-fence-repair/matched.json). The harness provisions the base schema and its receipt extension, verifies the same installed consumer closure, then exercises the original slice and the four new port families. The partial factory now exposes 65 of 126 qualified operations. Review coverage and the new report before running the fixture.
-
-- [VHOST-004 candidate and limitations](../VHOST-004-INDEXED-RECEIPTS-CANDIDATE.md)
-- [Current coverage](PORT-COVERAGE.md)
-- [Current receipt behavior matrix](RECEIPT-TEST-MATRIX.md)
+The current fixture uses schema version 4 and exposes 103 of 126 qualified operations. The [VHOST-007 report](../VHOST-007-INDEXED-CONTROL-AND-GOVERNANCE.md), [coverage matrix](PORT-COVERAGE.md) and [raw correctness run](evidence/vhost007-control/result.json) describe the new ports and reproduction. The [receipt behavior matrix](RECEIPT-TEST-MATRIX.md) and [VHOST-005 command fence proof](../VHOST-004-COMMAND-FENCE-REPAIR.md) describe prior work.
 
 ## VHOST-006 dispatcher proof
 
@@ -14,7 +10,7 @@ Use the same command below with `-CheckOnly`. The harness verifies and compiles 
 
 ## Reproduce
 
-The candidate is a private test fixture. Its only entry point is `createIndexedHotPathForTests` in [indexed-hot-path.mjs](indexed-hot-path.mjs). It takes the exact installed-package oracle and fixture database options. The schema name, loopback host, fixture role and database name are fixed. It exposes actors, turns, stream ledger, invocations, approvals, both command receipt ports, coordination and the leased facade/lifecycle methods. The runner provisions [the base DDL](schema.sql) and [the receipt extension](receipts-schema.sql) on a separate operator connection before opening the adapter.
+The candidate is a private test fixture. Its only entry point is `createIndexedHotPathForTests` in [indexed-hot-path.mjs](indexed-hot-path.mjs). It takes the exact installed-package oracle and fixture database options. The schema name, loopback host, fixture role and database name are fixed. It exposes actors, turns, stream ledger, invocations, approvals, both command receipt ports, control, the activation catalog, agent governance, coordination and the leased facade/lifecycle methods. The runner provisions [the base DDL](schema.sql), [the receipt extension](receipts-schema.sql) and [the control extension](control-schema.sql) on a separate operator connection before opening the adapter.
 
 Use Windows PowerShell, Node 22.23.5 and PostgreSQL 18.6 client/server binaries. Prepare a scratch Quellight checkout at `8f8ec2d24180e4a9520be0689aa6afb711553fc9`. Use npm 11.21.2 to install the lock with `npm ci --ignore-scripts --no-audit --no-fund`. The runner verifies all installed files against their 14 framework archives. Provide a VICT Git checkout containing the exact source objects `1b11d4a5f4298310c7ab16e0808b8bfbed551ee5`, `0761e1865258b23e2f04652f4301736155be06c5` and `a22615b014aa69f7501dc1504da5f9daad639786`. On the builder workstation they are in the separate `261116-VICT-Vercel` checkout. The runner reads Git objects directly and transpiles three SQLite source files and the pinned shared dispatcher in scratch storage. No new dependency installation is required for the fixture itself.
 
