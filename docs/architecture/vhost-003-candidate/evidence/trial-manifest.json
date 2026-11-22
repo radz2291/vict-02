@@ -1,0 +1,17 @@
+{
+  "format": "vict.vhost003-stage@1",
+  "when": "2026-11-22T09:30:18.533Z",
+  "node": "v22.23.5",
+  "cpu": "Intel(R) Core(TM) i5-8265U CPU @ 1.60GHz",
+  "logicalCPUs": 8,
+  "osRelease": "10.0.26300",
+  "checks": [],
+  "cells": [],
+  "samples": 24,
+  "failure": {
+    "name": "AssertionError",
+    "code": "ERR_ASSERTION",
+    "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '7ace2a2bf7a934779571693ebae4f1d524252ef9a4e3cf298d52796522161718'\n- '33b544b6be657144560fb6a471d5ad756c72406163524af711027a0ce1b8d99f'\n",
+    "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ '7ace2a2bf7a934779571693ebae4f1d524252ef9a4e3cf298d52796522161718'\n- '33b544b6be657144560fb6a471d5ad756c72406163524af711027a0ce1b8d99f'\n\n    at loadOracle (file:///C:/Users/RZ1/AppData/Local/Temp/vhost003-vict-candidate/docs/architecture/vhost-003-candidate/oracle.mjs:29:10)\n    at file:///C:/Users/RZ1/AppData/Local/Temp/vhost003-vict-candidate/docs/architecture/vhost-003-candidate/run.mjs:23:24\n    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)"
+  }
+}
