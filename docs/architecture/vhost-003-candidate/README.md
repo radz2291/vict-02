@@ -8,6 +8,10 @@ The original VHOST-003 evidence below remains historical. The current fixture us
 - [Current coverage](PORT-COVERAGE.md)
 - [Current receipt behavior matrix](RECEIPT-TEST-MATRIX.md)
 
+## VHOST-006 dispatcher proof
+
+Use the same command below with `-CheckOnly`. The harness verifies and compiles the original and repaired dispatcher Git objects, then runs both against the guarded store. See the [candidate report](../VHOST-006-DISPATCHER-CLAIM-IDENTITY.md) and [raw evidence](evidence/vhost006-dispatcher/matched.json).
+
 ## Reproduce
 
 The candidate is a private test fixture. Its only entry point is `createIndexedHotPathForTests` in [indexed-hot-path.mjs](indexed-hot-path.mjs). It takes the exact installed-package oracle and fixture database options. The schema name, loopback host, fixture role and database name are fixed. It exposes actors, turns, stream ledger, invocations, approvals, both command receipt ports, coordination and the leased facade/lifecycle methods. The runner provisions [the base DDL](schema.sql) and [the receipt extension](receipts-schema.sql) on a separate operator connection before opening the adapter.

@@ -463,11 +463,11 @@ async function servicePolicy({ oracle, provision, candidate, legacy, evidence, s
   await provision(namespace);
   const old = await legacy(namespace, { migrate: true });
   const indexed = await candidate(namespace);
-  const { runtime, VictCommandService } = oracle;
+  const { runtime, VictCommandService, RepairedCommandService } = oracle;
   const actor = { actorId: 'operator', scopes: ['run.cancel', 'app.data.write'] };
   const denied = { actorId: 'unprivileged', scopes: [] };
 
-  async function run(store) {
+  async function run(store, Dispatcher) {
     const control = new runtime.InMemoryControlPlaneStore();
     let now = 1000;
     let suppressSettlement = false;
@@ -497,8 +497,8 @@ async function servicePolicy({ oracle, provision, candidate, legacy, evidence, s
         return { runId, status: 'cancelled' };
       } }
     };
-    const service = new VictCommandService({ ...opts, idempotencyOwner: 'one' });
-    const peer = new VictCommandService({ ...opts, idempotencyOwner: 'two' });
+    const service = new Dispatcher({ ...opts, idempotencyOwner: 'one' });
+    const peer = new Dispatcher({ ...opts, idempotencyOwner: 'two' });
     const prepare = {
       command: 'run.cancel', payload: { runId: 'synthetic-run', reasonCode: 'fixture', expectedRevision: 7 },
       idempotencyKey: 'prepare-key'
@@ -593,9 +593,9 @@ async function servicePolicy({ oracle, provision, candidate, legacy, evidence, s
     return { ...transcript, effects };
   }
   try {
-    const expected = await run(old);
-    const observed = await run(indexed);
-    evidence.dispatcherPolicy = { expected, observed };
+    const expected = await run(old, VictCommandService);
+    const observed = await run(indexed, RepairedCommandService);
+    evidence.dispatcherPolicy = { expected, observed, candidate: 'repaired dispatcher' };
     await save();
     assert.deepEqual(observed, expected);
   } finally {

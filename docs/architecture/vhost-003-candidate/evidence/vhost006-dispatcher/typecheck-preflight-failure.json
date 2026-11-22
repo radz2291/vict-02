@@ -1,0 +1,17 @@
+{
+  "format": "vict.vhost006-dispatcher-claim@1",
+  "when": "2026-11-22T13:01:38.531Z",
+  "node": "v22.23.5",
+  "cpu": "Intel(R) Core(TM) i5-8265U CPU @ 1.60GHz",
+  "logicalCPUs": 8,
+  "osRelease": "10.0.26300",
+  "checks": [],
+  "cells": [],
+  "samples": 24,
+  "failure": {
+    "name": "AssertionError",
+    "code": "ERR_ASSERTION",
+    "message": "Cannot find type definition file for 'node'.\n  The file is in the program because:\n    Entry point of type library 'node' specified in compilerOptions\nCannot find module 'node:crypto' or its corresponding type declarations.\nCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.\n\n3 !== 0\n",
+    "stack": "AssertionError [ERR_ASSERTION]: Cannot find type definition file for 'node'.\n  The file is in the program because:\n    Entry point of type library 'node' specified in compilerOptions\nCannot find module 'node:crypto' or its corresponding type declarations.\nCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig.\n\n3 !== 0\n\n    at loadOracle (file:///C:/Users/RZ1/AppData/Local/Temp/vhost006-fixture/docs/architecture/vhost-003-candidate/oracle.mjs:126:10)\n    at async file:///C:/Users/RZ1/AppData/Local/Temp/vhost006-fixture/docs/architecture/vhost-003-candidate/run.mjs:25:18"
+  }
+}

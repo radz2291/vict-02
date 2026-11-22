@@ -18,7 +18,7 @@ const lake = {
 
 export const digest = (value) => createHash('sha256').update(value).digest('hex');
 
-export async function loadOracle(consumer, source, scratch) {
+export async function loadOracle(consumer, source, scratch, candidateRepo) {
   const git = (cwd, ...args) => execFileSync('git', ['-C', cwd, ...args], { windowsHide: true });
   const sourceFile = (path) => git(source, 'show', frameworkCommit + ':' + path);
   const lock = git(consumer, 'show', consumerCommit + ':package-lock.json');
@@ -87,16 +87,45 @@ export async function loadOracle(consumer, source, scratch) {
 
   // The consumer has no server package. Compile the exact shared dispatcher
   // separately against the same pinned Runtime to exercise service policy.
-  const commandSource = sourceFile('packages/server/src/commands.ts');
-  const commandBuild = ts.transpileModule(commandSource.toString(), {
-    compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ES2022 },
-    reportDiagnostics: true,
-    fileName: 'commands.ts'
-  });
-  assert.equal(commandBuild.diagnostics.length, 0);
-  const commandFixture = join(sqliteFixture, 'commands.js');
-  await writeFile(commandFixture, commandBuild.outputText);
-  const { VictCommandService } = await import(pathToFileURL(commandFixture));
+  const dispatcherPath = 'packages/server/src/commands.ts';
+  const commandSource = sourceFile(dispatcherPath);
+  const dispatcherCommit = '8f23c02c4b8a91e3315f4b73bf64a4ca6a89fc2c';
+  const reviewedParent = 'f0f2133c6b57d2b610ace0864a812eb31200ac1c';
+  assert.equal(git(candidateRepo, 'merge-base', 'HEAD', dispatcherCommit).toString().trim(), dispatcherCommit);
+  assert.equal(git(candidateRepo, 'rev-parse', dispatcherCommit + '^').toString().trim(), reviewedParent);
+  assert(git(candidateRepo, 'show', reviewedParent + ':' + dispatcherPath).equals(commandSource));
+  const dispatcherBytes = git(candidateRepo, 'show', dispatcherCommit + ':' + dispatcherPath);
+  assert(git(candidateRepo, 'show', 'HEAD:' + dispatcherPath).equals(dispatcherBytes));
+  assert.equal(git(candidateRepo, 'rev-parse', dispatcherCommit + ':' + dispatcherPath).toString().trim(),
+    '03fd3207ca761fc43b051bbcfccecbcfaf3cf792');
+
+  async function dispatcher(bytes, filename) {
+    const build = ts.transpileModule(bytes.toString(), {
+      compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ES2022 },
+      reportDiagnostics: true,
+      fileName: 'commands.ts'
+    });
+    assert.equal(build.diagnostics.length, 0);
+    const fixture = join(sqliteFixture, filename);
+    await writeFile(fixture, build.outputText);
+    return (await import(pathToFileURL(fixture))).VictCommandService;
+  }
+  const VictCommandService = await dispatcher(commandSource, 'commands-reference.js');
+  const RepairedCommandService = await dispatcher(dispatcherBytes, 'commands-candidate.js');
+  const authPath = 'packages/server/src/auth.ts';
+  const authSource = sourceFile(authPath);
+  assert(git(candidateRepo, 'show', dispatcherCommit + ':' + authPath).equals(authSource));
+  const typecheckPath = join(sqliteFixture, 'commands.ts');
+  await writeFile(typecheckPath, dispatcherBytes);
+  await writeFile(join(sqliteFixture, 'auth.ts'), authSource);
+  const { compilerOptions } = JSON.parse(git(candidateRepo, 'show', dispatcherCommit + ':tsconfig.base.json'));
+  const { options: strictOptions, errors } = ts.convertCompilerOptionsFromJson(compilerOptions, sqliteFixture);
+  assert.equal(errors.length, 0);
+  const program = ts.createProgram([typecheckPath], { ...strictOptions, noEmit: true,
+    typeRoots: [join(installedRoot, '@types')] });
+  const diagnostics = ts.getPreEmitDiagnostics(program);
+  assert.equal(diagnostics.length, 0,
+    diagnostics.map((item) => ts.flattenDiagnosticMessageText(item.messageText, '\n')).join('\n'));
 
   const runtime = await installed('@victframework/runtime');
   const snapshot = await installed('@victframework/runtime', 'store-snapshot.js');
@@ -108,9 +137,10 @@ export async function loadOracle(consumer, source, scratch) {
   const { createSqliteAgentControlStores } = await import(pathToFileURL(join(sqliteFixture, 'agent-control-adapter.js')));
 
   return {
-    runtime, snapshot, VictCommandService, Driver, Coordination, Client, createPostgresStores, createSqliteAgentControlStores, createPostgresMastraStore,
+    runtime, snapshot, VictCommandService, RepairedCommandService, Driver, Coordination, Client, createPostgresStores, createSqliteAgentControlStores, createPostgresMastraStore,
     provenance: {
       frameworkCommit, c12Source, consumerCommit, lockSHA256, manifestSHA256, sqliteTree,
+      dispatcherCommit, reviewedParent, dispatcherSHA256: digest(dispatcherBytes), dispatcherTypecheckDiagnostics: 0,
       typescriptVersion: ts.version, pgDriver: require('pg/package.json').version, archives, sourceSHA256: records
     }
   };
