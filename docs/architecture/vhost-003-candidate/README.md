@@ -1,5 +1,9 @@
 # Indexed PostgreSQL operational-store test fixture
 
+## VHOST-010 read-result immutability
+
+The correctness runner compares catalog and recovery claim freeze boundaries on the exact VHOST-009 fixture, pinned legacy PostgreSQL and the repaired fixture. It also runs every registered pinned store, orchestration and join case. [Report](../VHOST-010-READ-RESULT-IMMUTABILITY.md) · [Raw before-and-after evidence](evidence/vhost010-immutability/result.json)
+
 ## VHOST-009 execution and orchestration
 
 The current fixture exposes all 126 qualified operations. The additional DDL provisions indexed run identities, event streams, orchestration components and timer and recovery projections. The correctness runner executes the exact pinned legacy comparisons, SQL fault and concurrency probes, and the earlier regressions. [Report](../VHOST-009-INDEXED-EXECUTION-AND-ORCHESTRATION.md) · [Coverage](PORT-COVERAGE.md) · [Raw run](evidence/vhost009-runs/result.json)

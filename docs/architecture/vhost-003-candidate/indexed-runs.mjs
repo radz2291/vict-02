@@ -357,7 +357,11 @@ export function createRunPorts({ runtime, snapshot, serialization, codec, namesp
     applyCancellation: updateOrchestration('applyCancellation'),
     findRecoverableClaims: call((client) => readPages(client,
       'SELECT payload FROM ' + q('orchestration_recoverable') + ' WHERE namespace=$1 ORDER BY expires_at,run,ordinal',
-      [namespace], ({ payload }) => immutableSnapshot(decode(payload)))),
+      [namespace], ({ payload }) => {
+        const claim = decode(payload);
+        // The reference freezes the projections, leaving the detached claim mutable.
+        return { ...claim, token: immutableSnapshot(claim.token), attempt: immutableSnapshot(claim.attempt) };
+      })),
     recoverAttempt: updateOrchestration('recoverAttempt'),
     resolveBlocked: updateOrchestration('resolveBlocked'),
     listWaits: readOrchestration('listWaits', 'waits'),

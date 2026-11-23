@@ -5,10 +5,11 @@ const bytesOrder = 'key_prefix,key_bytes';
 const approvalKey = (record) => record.changesetId + '\0' + record.approverActorId;
 const receiptKey = (record) => record.changesetId + '\0' + record.operationIndex;
 
-export function createControlPorts({ runtime, codec, namespace, q, call, readPages }) {
+export function createControlPorts({ runtime, serialization, codec, namespace, q, call, readPages }) {
   const { encode, decode, captureRuntimeStoreSnapshot: snapshot } = codec;
   const { InMemoryControlPlaneStore, InMemoryAgentGovernanceStore, VictControlError } = runtime;
   const value = (row) => row && decode(row.payload);
+  const immutableValue = (row) => row && serialization.immutableSnapshot(value(row));
 
   function keyParts(key) {
     const bytes = keyBytes(key);
@@ -78,16 +79,16 @@ export function createControlPorts({ runtime, codec, namespace, q, call, readPag
     return { [column + '_digest']: digest, [column + '_key']: bytes };
   }
 
-  function point(table) {
-    return call(async (client, key) => value(await find(client, table, key)));
+  function point(table, project = value) {
+    return call(async (client, key) => project(await find(client, table, key)));
   }
 
-  function list(table, order, predicate = '', bindings = () => []) {
+  function list(table, order, { predicate = '', bindings = () => [], project = value } = {}) {
     return call((client, input) => {
       const keys = bindings(input);
       if (keys.some((key) => typeof key !== 'string')) return [];
       return readPages(client, 'SELECT payload FROM ' + q(table) + ' WHERE namespace=$1 ' +
-        predicate + ' ORDER BY ' + order, [namespace, ...keys.flatMap(keyParts)], value);
+        predicate + ' ORDER BY ' + order, [namespace, ...keys.flatMap(keyParts)], project);
     });
   }
 
@@ -195,7 +196,7 @@ export function createControlPorts({ runtime, codec, namespace, q, call, readPag
     return { selectionRevision };
   }
 
-  function selected(headTable, targetTable, lookup, order = '') {
+  function selected(headTable, targetTable, lookup, { order = '', project = value } = {}) {
     return call(async (client, id) => {
       if (typeof id !== 'string') return undefined;
       const { rows: [row] } = await client.query(
@@ -204,7 +205,7 @@ export function createControlPorts({ runtime, codec, namespace, q, call, readPag
           ' AS target ON target.namespace=head.namespace AND target.id=head.target',
         [namespace, ...keyParts(id)]
       );
-      return value(row);
+      return project(row);
     });
   }
 
@@ -218,7 +219,7 @@ export function createControlPorts({ runtime, codec, namespace, q, call, readPag
       table: 'control_approval', collection: 'approvals', method: 'recordChangeSetApproval',
       keyOf: approvalKey, columns: (record) => identityColumns('subject', record.changesetId)
     }),
-    listChangeSetApprovals: list('control_approval', 'id', 'AND ' + subjectPredicate, (id) => [id]),
+    listChangeSetApprovals: list('control_approval', 'id', { predicate: 'AND ' + subjectPredicate, bindings: (id) => [id] }),
     recordControlRun: controlChange({
       table: 'control_run', collection: 'controlRuns', method: 'recordControlRun', keyOf: (record) => record.runId
     }),
@@ -226,7 +227,7 @@ export function createControlPorts({ runtime, codec, namespace, q, call, readPag
     recordOperationIntent: changeOperation('recordOperationIntent'),
     markOperationApplied: changeOperation('markOperationApplied'),
     recordOperationReceipt: changeOperation('recordOperationReceipt'),
-    listOperationReceipts: list('control_operation', 'operation_index,id', 'AND ' + subjectPredicate, (id) => [id]),
+    listOperationReceipts: list('control_operation', 'operation_index,id', { predicate: 'AND ' + subjectPredicate, bindings: (id) => [id] }),
     compareAndSetChangeSetStatus: changeSet('compareAndSetChangeSetStatus', (command) => command.changesetId),
     publishRelease: call(async (client, release) => {
       await lock(client, ['control_release', release.releaseVersion]);
@@ -252,13 +253,13 @@ export function createControlPorts({ runtime, codec, namespace, q, call, readPag
       return result;
     }),
     getRelease: point('control_release'),
-    listReleases: list('control_release', bytesOrder, 'AND ' + subjectPredicate, (id) => [id]),
+    listReleases: list('control_release', bytesOrder, { predicate: 'AND ' + subjectPredicate, bindings: (id) => [id] }),
     selectRelease: call(async (client, command) => {
       await lock(client, ['control_selection', command.applicationId]);
       return selectRelease(client, command);
     }),
-    getSelectedRelease: selected('control_selection', 'control_release', subjectPredicate, 'ORDER BY revision DESC'),
-    listReleaseSelections: list('control_selection', 'revision', 'AND ' + subjectPredicate, (id) => [id]),
+    getSelectedRelease: selected('control_selection', 'control_release', subjectPredicate, { order: 'ORDER BY revision DESC' }),
+    listReleaseSelections: list('control_selection', 'revision', { predicate: 'AND ' + subjectPredicate, bindings: (id) => [id] }),
     appendAuditEvent: call(async (client, event) => {
       await lock(client, ['control_audit', event.auditId]);
       if (await find(client, 'control_audit', event.auditId)) return;
@@ -310,11 +311,12 @@ export function createControlPorts({ runtime, codec, namespace, q, call, readPag
 
   const catalog = Object.freeze({
     publish: changeCatalog('publish', (command) => ({ version: command?.manifest?.activationVersion })),
-    get: point('catalog_activation'),
-    list: list('catalog_activation', 'id'),
+    get: point('catalog_activation', immutableValue),
+    list: list('catalog_activation', 'id', { project: immutableValue }),
     select: changeCatalog('select', (command) => ({ version: command.activationVersion, graph: command.graphId })),
-    getSelection: point('catalog_selection'),
-    getSelected: selected('catalog_selection', 'catalog_activation', 'key_digest=$2 AND key_bytes=$3'),
+    getSelection: point('catalog_selection', immutableValue),
+    getSelected: selected('catalog_selection', 'catalog_activation', 'key_digest=$2 AND key_bytes=$3',
+      { project: immutableValue }),
     publishAndSelect: changeCatalog('publishAndSelect', (command) => ({
       version: command.publish?.manifest?.activationVersion, graph: command.select?.graphId
     }))

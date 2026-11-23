@@ -1,0 +1,760 @@
+{
+  "format": "vict.vhost010-read-immutability@1",
+  "when": "2026-11-23T02:15:29.280Z",
+  "node": "v22.23.5",
+  "cpu": "Intel(R) Core(TM) i5-8265U CPU @ 1.60GHz",
+  "logicalCPUs": 8,
+  "osRelease": "10.0.26300",
+  "checks": [],
+  "cells": [],
+  "samples": 24,
+  "provenance": {
+    "frameworkCommit": "1b11d4a5f4298310c7ab16e0808b8bfbed551ee5",
+    "c12Source": "a22615b014aa69f7501dc1504da5f9daad639786",
+    "consumerCommit": "8f8ec2d24180e4a9520be0689aa6afb711553fc9",
+    "lockSHA256": "8b821ffabf5d8f184f69862deb9cab7495a63a37a51641e6e074ba342de3d4dc",
+    "manifestSHA256": "33b544b6be657144560fb6a471d5ad756c72406163524af711027a0ce1b8d99f",
+    "sqliteTree": "3cd52c2bc0187ce1c03e1f22e26190845bf6b189",
+    "dispatcherCommit": "8f23c02c4b8a91e3315f4b73bf64a4ca6a89fc2c",
+    "reviewedParent": "f0f2133c6b57d2b610ace0864a812eb31200ac1c",
+    "dispatcherSHA256": "9190d83014c020b874beeaaf4b43eb3c2e254af1453eefc1b9c8f3476ea0644d",
+    "dispatcherTypecheckDiagnostics": 0,
+    "typescriptVersion": "5.9.3",
+    "pgDriver": "8.22.0",
+    "archives": {
+      "store-postgres": {
+        "filename": "victframework-store-postgres-0.4.0-rc.1.tgz",
+        "sha256": "74f4681ee0d86d487f7fd304ae88cf181aa6e6dff92a0f3bb01ad6dbe84129cb",
+        "integrity": "sha512-M9HBd4ZjsHqO0zBkDqJvrpzXFCKrMx2wK70BvC/zBdUXKs02kpZ4eN5FXcSPAARzIC5gDl7womAyGaHK6rkaMA=="
+      },
+      "hosted": {
+        "filename": "victframework-hosted-0.4.0-rc.1.tgz",
+        "sha256": "4aa6581aa7d26f067ddb3ec28dc8f7fd67bb34467e08132132972ed25c880de4",
+        "integrity": "sha512-zS6rSPaPn0rHqzgOXoOFJqxnqdcwdfZi5ipIF6R1FVyp33VStUCeZO2e/ykB2J8SgD/VMFgyLRsgolwNHDP1sA=="
+      },
+      "runtime": {
+        "filename": "runtime-0.4.0-rc.1-memory-e94ee682d7f5.tgz",
+        "sha256": "e94ee682d7f57efbbc9722818f2ab6059ad6a9bb3f9c8229e73c24197b0abb3f",
+        "integrity": "sha512-Nc+iJZsbTQZBCJW43ZTfwEz9gTHMlT2CteufuaYTdNF+8YQP0DRj6JU2flv+jnbNHTRmwsDsbi3d/NUgXN23fA=="
+      },
+      "mastra": {
+        "filename": "mastra-0.4.0-rc.1-memory-2d136123705f.tgz",
+        "sha256": "2d136123705f92e88a15e7e2b80e1732218ca00018c9cc55165a69a7774a84d3",
+        "integrity": "sha512-rSw+asqKHYlG8vXIRaAFIopRCOgY2PNa9LefsxQmJpCYD9rTnoBKx4lSPFm5s96UmqWMyq9JeBnrcBESwtsC4Q=="
+      }
+    },
+    "sourceSHA256": {
+      "packages/store-postgres/src/adapter.ts": "c13da2a7bf0c17e8251ae1766ec9e22e8c30ce794ecf6fd39bb42221d6ed27c0",
+      "packages/store-postgres/src/driver.ts": "e313c6a9eb409015f2d30b6980a11353691a85cba98dcc86a53bf8faf615df5b",
+      "packages/store-postgres/src/coordination.ts": "fe22405b9529ae0c85a933a351ee0d3d2bbdd722cd84ac41880d869bfa42d963",
+      "packages/runtime/src/control-in-memory.ts": "08b431985617292ce63d5673d4a5a3dbbb288263144d5118d9b621cbdc2d589f",
+      "packages/runtime/src/control-types.ts": "58d2e5c255d35d23b0d909c15e55f3fdec89704204f898e4ef7c891734b6bf38",
+      "packages/runtime/src/store-snapshot.ts": "241dfb73255ecfd631ced282f6b08427d26b378a2c49945d3dc516d9a35c2381",
+      "packages/runtime/src/in-memory-stores.ts": "1133568c82565c448d30e2e1f7d9998bc3ccd931fe097fcbd1dcd64eede20ab2",
+      "packages/runtime/src/agent-governance.ts": "47bf1b7494612908dedbfb48c2383487c40fe42e2982c5562fb94b08e17f157d",
+      "packages/runtime/src/orchestration-in-memory.ts": "17c4ad79a615b4dcdbcd465306e71740918d6189a431ee9928956cc59afdce3e",
+      "packages/runtime/src/orchestration-store-types.ts": "29d2dbc58e321a3bb514de7bb85e4b52d57dfe97e1ce827a97738c67d47f38a0",
+      "packages/runtime/src/store-validation.ts": "f6765be01eefe344a503cf41ac03c4621313a280b098993d95900cc5f9dcadcb",
+      "packages/runtime/src/serialization.ts": "8af6a32bb7e8e349e1480067ee231a743395cce4509df6604e843847163efa3b",
+      "packages/server/src/commands.ts": "30100572380011f80fd71194c7d4258af98d74736fad580caa59f0c02d7ce58e",
+      "a22615b014aa69f7501dc1504da5f9daad639786:packages/mastra/src/postgres-storage.ts": "4839f8c5f48c4efccd627d7b749c173760bf56b6879b0a336eeefce3636d010a",
+      "packages/mastra/src/postgres-storage.ts": "c2df55885407d2260194fa485afea18867cc579f9f97271c5ee8f644a16b4778",
+      "packages/store-sqlite/src/agent-control-adapter.ts": "f3314410633b816d2b73af8fb149428e3cfb0695761a48bff2a6dd7803b33dc0",
+      "packages/store-sqlite/src/driver.ts": "ed728c829b030ba77235cd03f92cb9fa2892eda6dc89448876d59868c6a975a4",
+      "packages/store-sqlite/src/migrations.ts": "4884492e9e8c25253475c18357a894629aaf2cf18b7dfad2493fe0e2bb54eca9"
+    },
+    "candidateSHA256": {
+      "immutability-checks.mjs": "07eda29e4ceeea47158451d5b37e6ad080dcf5fe648bc9729b9551c50959605c",
+      "indexed-runs.mjs": "b60e18bac3ad5d24a491c8246532b148a145d341f98f55ef14ad5b43d2c54173",
+      "run-checks.mjs": "5081aaa29460878aa0326bc8bfccf8256f9c0bf85bf25a61dc89a42f066c8698",
+      "execution-schema.sql": "3a4163367e7b16478e60b6e92f7d6cd030717367b7bad525d52f55d74e85394f",
+      "ordering-checks.mjs": "07082ebb9a16abf24a1c3a5259bd8d33ba25b909ac7e920f5d720768ab8fe33b",
+      "indexed-control.mjs": "aee822d5039f670b4ad63cd082ee1e4deb03afa2948dfd912e28d37a411ddfa9",
+      "control-checks.mjs": "dd4441323d33b8d9344c50520f8bf50dac85c57a33f8a79b1b4089199792bd4f",
+      "control-schema.sql": "0451d8b1eaff59104f85dbf011c9247177f4a0740e8adf8da8c9339c0ebf6a90",
+      "dispatcher-claim-checks.mjs": "8acb6c91cfae070c8829d375b953c7e1d3a7ce18bec54f847e66dc9a25813c8e",
+      "schema.sql": "f5fb57bc74576b685820b5d18d8fe1f79c28254689bd2db213ad0d9dd8be9098",
+      "receipts-schema.sql": "66b6a1758677a26a37cd1af94bffa15bd227ce43f0f48305fcbe92b5af78e601",
+      "indexed-receipts.mjs": "bc7d9a28cbf13f56760e3f5e4a88bd89d9a1e836aeb2d26ee8182a209bb0bece",
+      "receipt-checks.mjs": "a48320c2234404b6196d29dd90c2e86a8fdd88e545ed440ed3140c3f5e5d5834",
+      "foundation.mjs": "3f50f6d222a812ca61b7069ed38f7becdb0f920d5c5e7f08a1fa17cfae16be43",
+      "indexed-hot-path.mjs": "c2f15ece6dde0f514c1c1f63e9cf335a24947d097a8bb68dde22024ae6cf4bb4",
+      "values.mjs": "62038421d82ca0d532cf9b5040eba2347f7ff58b0713ea418db1ccbbacbe7ec9",
+      "run.mjs": "d5e73227d2a840553e918db7fa0514728c60b5aff8683ecd7ff1b3d1ccae9c1d",
+      "oracle.mjs": "7eeec3536c90429f5248f3ef8c8b4402b33e52ca726ea0e18cb4f01401d3fcca",
+      "benchmark.mjs": "0b9d13a37e5f2b11b3e1b6b8e800e1b09aca8fb34a4b9727f162ef3dd88c694f",
+      "checks.mjs": "06ca2f8c6cf9ba7d0fbc4e38b5cade08af7b781d84620aadc3ca576197dde3e2",
+      "run-local.ps1": "3fd3bb29dc32dccc0483b8644ed08573ea9bb58170d64fdd96e495fbe834fe86"
+    },
+    "postgres": "18.6",
+    "immutabilityBaselineSHA256": {
+      "indexed-hot-path.mjs": "c2f15ece6dde0f514c1c1f63e9cf335a24947d097a8bb68dde22024ae6cf4bb4",
+      "indexed-receipts.mjs": "bc7d9a28cbf13f56760e3f5e4a88bd89d9a1e836aeb2d26ee8182a209bb0bece",
+      "indexed-control.mjs": "aee822d5039f670b4ad63cd082ee1e4deb03afa2948dfd912e28d37a411ddfa9",
+      "foundation.mjs": "3f50f6d222a812ca61b7069ed38f7becdb0f920d5c5e7f08a1fa17cfae16be43",
+      "values.mjs": "62038421d82ca0d532cf9b5040eba2347f7ff58b0713ea418db1ccbbacbe7ec9",
+      "indexed-runs.mjs": "b60e18bac3ad5d24a491c8246532b148a145d341f98f55ef14ad5b43d2c54173"
+    }
+  },
+  "readImmutability": {
+    "baselineCommit": "e6714c20a8628b7dfe2f1b5a65b255da2187412d",
+    "observations": {
+      "legacy": {
+        "values": {
+          "missing": {
+            "activation": true,
+            "selection": true,
+            "selected": true,
+            "catalogList": 0,
+            "recoveryList": 0
+          },
+          "catalog": {
+            "get": {
+              "activationVersion": "v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7",
+              "manifestSchema": "vict.activation-manifest@1",
+              "graphId": "immutability-z",
+              "graphVersion": "v1_3968be9fa81afd08d77028fd093d1a22f18e6917f9d362c3f8787ea7a4a2d85a",
+              "capabilitySetVersion": "v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20",
+              "canonicalManifest": "{\"activationVersion\":\"v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7\",\"bindings\":[{\"capability\":\"cap.a\",\"effect\":\"pure\",\"input\":null,\"output\":null,\"revision\":\"1\"}],\"capabilitySetVersion\":\"v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20\",\"contracts\":[],\"graph\":{\"edges\":[],\"entry\":\"n1\",\"id\":\"immutability-z\",\"nodes\":[{\"capability\":\"cap.a\",\"id\":\"n1\",\"input\":null,\"output\":null}],\"schema\":\"vict.graph@1\"},\"graphId\":\"immutability-z\",\"graphVersion\":\"v1_3968be9fa81afd08d77028fd093d1a22f18e6917f9d362c3f8787ea7a4a2d85a\",\"manifestSchema\":\"vict.activation-manifest@1\"}",
+              "createdAt": 1795400139888
+            },
+            "list": [
+              {
+                "activationVersion": "v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7",
+                "manifestSchema": "vict.activation-manifest@1",
+                "graphId": "immutability-z",
+                "graphVersion": "v1_3968be9fa81afd08d77028fd093d1a22f18e6917f9d362c3f8787ea7a4a2d85a",
+                "capabilitySetVersion": "v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20",
+                "canonicalManifest": "{\"activationVersion\":\"v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7\",\"bindings\":[{\"capability\":\"cap.a\",\"effect\":\"pure\",\"input\":null,\"output\":null,\"revision\":\"1\"}],\"capabilitySetVersion\":\"v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20\",\"contracts\":[],\"graph\":{\"edges\":[],\"entry\":\"n1\",\"id\":\"immutability-z\",\"nodes\":[{\"capability\":\"cap.a\",\"id\":\"n1\",\"input\":null,\"output\":null}],\"schema\":\"vict.graph@1\"},\"graphId\":\"immutability-z\",\"graphVersion\":\"v1_3968be9fa81afd08d77028fd093d1a22f18e6917f9d362c3f8787ea7a4a2d85a\",\"manifestSchema\":\"vict.activation-manifest@1\"}",
+                "createdAt": 1795400139888
+              },
+              {
+                "activationVersion": "v1_b6b6dd874703c62d4516ec6dbacd1390c788c88d27c6ae0993fdeec27f718145",
+                "manifestSchema": "vict.activation-manifest@1",
+                "graphId": "immutability-a",
+                "graphVersion": "v1_c2f02f0c2a8ac4aea632ab575f8fc73f1c701cfe87bb808e511d702bdc90b23f",
+                "capabilitySetVersion": "v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20",
+                "canonicalManifest": "{\"activationVersion\":\"v1_b6b6dd874703c62d4516ec6dbacd1390c788c88d27c6ae0993fdeec27f718145\",\"bindings\":[{\"capability\":\"cap.a\",\"effect\":\"pure\",\"input\":null,\"output\":null,\"revision\":\"1\"}],\"capabilitySetVersion\":\"v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20\",\"contracts\":[],\"graph\":{\"edges\":[],\"entry\":\"n1\",\"id\":\"immutability-a\",\"nodes\":[{\"capability\":\"cap.a\",\"id\":\"n1\",\"input\":null,\"output\":null}],\"schema\":\"vict.graph@1\"},\"graphId\":\"immutability-a\",\"graphVersion\":\"v1_c2f02f0c2a8ac4aea632ab575f8fc73f1c701cfe87bb808e511d702bdc90b23f\",\"manifestSchema\":\"vict.activation-manifest@1\"}",
+                "createdAt": 1795400139898
+              }
+            ],
+            "getSelection": {
+              "graphId": "immutability-z",
+              "activationVersion": "v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7",
+              "selectionRevision": 1,
+              "selectedAt": 1795400139904,
+              "operationId": "choose"
+            },
+            "getSelected": {
+              "activationVersion": "v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7",
+              "manifestSchema": "vict.activation-manifest@1",
+              "graphId": "immutability-z",
+              "graphVersion": "v1_3968be9fa81afd08d77028fd093d1a22f18e6917f9d362c3f8787ea7a4a2d85a",
+              "capabilitySetVersion": "v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20",
+              "canonicalManifest": "{\"activationVersion\":\"v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7\",\"bindings\":[{\"capability\":\"cap.a\",\"effect\":\"pure\",\"input\":null,\"output\":null,\"revision\":\"1\"}],\"capabilitySetVersion\":\"v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20\",\"contracts\":[],\"graph\":{\"edges\":[],\"entry\":\"n1\",\"id\":\"immutability-z\",\"nodes\":[{\"capability\":\"cap.a\",\"id\":\"n1\",\"input\":null,\"output\":null}],\"schema\":\"vict.graph@1\"},\"graphId\":\"immutability-z\",\"graphVersion\":\"v1_3968be9fa81afd08d77028fd093d1a22f18e6917f9d362c3f8787ea7a4a2d85a\",\"manifestSchema\":\"vict.activation-manifest@1\"}",
+              "createdAt": 1795400139888
+            }
+          },
+          "recovery": [
+            {
+              "runId": "recover-second",
+              "token": {
+                "tokenId": "token-recover-second",
+                "runId": "recover-second",
+                "activationVersion": "v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7",
+                "nodeId": "n1",
+                "status": "claimed",
+                "parentTokenId": null,
+                "lineage": "",
+                "forkId": null,
+                "branchKey": null,
+                "revision": 2,
+                "createdAt": 20,
+                "updatedAt": 30
+              },
+              "attempt": {
+                "attemptId": "att-token-recover-second-1",
+                "invocationId": "inv-token-recover-second",
+                "runId": "recover-second",
+                "tokenId": "token-recover-second",
+                "nodeId": "n1",
+                "capabilityId": "cap.a",
+                "attemptNumber": 1,
+                "effectClass": "pure",
+                "idempotencyKey": null,
+                "state": "started",
+                "ownerId": "owner",
+                "leaseExpiresAt": 70,
+                "deadlineAt": null,
+                "fence": 1,
+                "retryDueAt": null,
+                "createdAt": 30,
+                "updatedAt": 30
+              },
+              "leaseExpiresAt": 70
+            },
+            {
+              "runId": "recover-first",
+              "token": {
+                "tokenId": "token-recover-first",
+                "runId": "recover-first",
+                "activationVersion": "v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7",
+                "nodeId": "n1",
+                "status": "claimed",
+                "parentTokenId": null,
+                "lineage": "",
+                "forkId": null,
+                "branchKey": null,
+                "revision": 2,
+                "createdAt": 20,
+                "updatedAt": 30
+              },
+              "attempt": {
+                "attemptId": "att-token-recover-first-1",
+                "invocationId": "inv-token-recover-first",
+                "runId": "recover-first",
+                "tokenId": "token-recover-first",
+                "nodeId": "n1",
+                "capabilityId": "cap.a",
+                "attemptNumber": 1,
+                "effectClass": "pure",
+                "idempotencyKey": null,
+                "state": "started",
+                "ownerId": "owner",
+                "leaseExpiresAt": 80,
+                "deadlineAt": null,
+                "fence": 1,
+                "retryDueAt": null,
+                "createdAt": 30,
+                "updatedAt": 30
+              },
+              "leaseExpiresAt": 80
+            }
+          ]
+        },
+        "observations": {
+          "catalog": {
+            "get": {
+              "frozen": true,
+              "children": {},
+              "allowsWrite": false
+            },
+            "getSelection": {
+              "frozen": true,
+              "children": {},
+              "allowsWrite": false
+            },
+            "getSelected": {
+              "frozen": true,
+              "children": {},
+              "allowsWrite": false
+            },
+            "listFrozen": false,
+            "listEntries": [
+              {
+                "frozen": true,
+                "children": {}
+              },
+              {
+                "frozen": true,
+                "children": {}
+              }
+            ],
+            "listEntryAllowsWrite": false,
+            "listAllowsAppend": true
+          },
+          "recovery": {
+            "listFrozen": false,
+            "claims": [
+              {
+                "shape": {
+                  "frozen": false,
+                  "children": {
+                    "token": {
+                      "frozen": true,
+                      "children": {}
+                    },
+                    "attempt": {
+                      "frozen": true,
+                      "children": {}
+                    }
+                  }
+                },
+                "tokenAllowsWrite": false,
+                "attemptAllowsWrite": false,
+                "outerAllowsWrite": true,
+                "checkpointExposed": false
+              },
+              {
+                "shape": {
+                  "frozen": false,
+                  "children": {
+                    "token": {
+                      "frozen": true,
+                      "children": {}
+                    },
+                    "attempt": {
+                      "frozen": true,
+                      "children": {}
+                    }
+                  }
+                },
+                "tokenAllowsWrite": false,
+                "attemptAllowsWrite": false,
+                "outerAllowsWrite": true,
+                "checkpointExposed": false
+              }
+            ],
+            "listAllowsAppend": true
+          }
+        }
+      },
+      "baseline": {
+        "values": {
+          "missing": {
+            "activation": true,
+            "selection": true,
+            "selected": true,
+            "catalogList": 0,
+            "recoveryList": 0
+          },
+          "catalog": {
+            "get": {
+              "activationVersion": "v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7",
+              "manifestSchema": "vict.activation-manifest@1",
+              "graphId": "immutability-z",
+              "graphVersion": "v1_3968be9fa81afd08d77028fd093d1a22f18e6917f9d362c3f8787ea7a4a2d85a",
+              "capabilitySetVersion": "v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20",
+              "canonicalManifest": "{\"activationVersion\":\"v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7\",\"bindings\":[{\"capability\":\"cap.a\",\"effect\":\"pure\",\"input\":null,\"output\":null,\"revision\":\"1\"}],\"capabilitySetVersion\":\"v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20\",\"contracts\":[],\"graph\":{\"edges\":[],\"entry\":\"n1\",\"id\":\"immutability-z\",\"nodes\":[{\"capability\":\"cap.a\",\"id\":\"n1\",\"input\":null,\"output\":null}],\"schema\":\"vict.graph@1\"},\"graphId\":\"immutability-z\",\"graphVersion\":\"v1_3968be9fa81afd08d77028fd093d1a22f18e6917f9d362c3f8787ea7a4a2d85a\",\"manifestSchema\":\"vict.activation-manifest@1\"}",
+              "createdAt": 1795400140076
+            },
+            "list": [
+              {
+                "activationVersion": "v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7",
+                "manifestSchema": "vict.activation-manifest@1",
+                "graphId": "immutability-z",
+                "graphVersion": "v1_3968be9fa81afd08d77028fd093d1a22f18e6917f9d362c3f8787ea7a4a2d85a",
+                "capabilitySetVersion": "v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20",
+                "canonicalManifest": "{\"activationVersion\":\"v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7\",\"bindings\":[{\"capability\":\"cap.a\",\"effect\":\"pure\",\"input\":null,\"output\":null,\"revision\":\"1\"}],\"capabilitySetVersion\":\"v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20\",\"contracts\":[],\"graph\":{\"edges\":[],\"entry\":\"n1\",\"id\":\"immutability-z\",\"nodes\":[{\"capability\":\"cap.a\",\"id\":\"n1\",\"input\":null,\"output\":null}],\"schema\":\"vict.graph@1\"},\"graphId\":\"immutability-z\",\"graphVersion\":\"v1_3968be9fa81afd08d77028fd093d1a22f18e6917f9d362c3f8787ea7a4a2d85a\",\"manifestSchema\":\"vict.activation-manifest@1\"}",
+                "createdAt": 1795400140076
+              },
+              {
+                "activationVersion": "v1_b6b6dd874703c62d4516ec6dbacd1390c788c88d27c6ae0993fdeec27f718145",
+                "manifestSchema": "vict.activation-manifest@1",
+                "graphId": "immutability-a",
+                "graphVersion": "v1_c2f02f0c2a8ac4aea632ab575f8fc73f1c701cfe87bb808e511d702bdc90b23f",
+                "capabilitySetVersion": "v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20",
+                "canonicalManifest": "{\"activationVersion\":\"v1_b6b6dd874703c62d4516ec6dbacd1390c788c88d27c6ae0993fdeec27f718145\",\"bindings\":[{\"capability\":\"cap.a\",\"effect\":\"pure\",\"input\":null,\"output\":null,\"revision\":\"1\"}],\"capabilitySetVersion\":\"v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20\",\"contracts\":[],\"graph\":{\"edges\":[],\"entry\":\"n1\",\"id\":\"immutability-a\",\"nodes\":[{\"capability\":\"cap.a\",\"id\":\"n1\",\"input\":null,\"output\":null}],\"schema\":\"vict.graph@1\"},\"graphId\":\"immutability-a\",\"graphVersion\":\"v1_c2f02f0c2a8ac4aea632ab575f8fc73f1c701cfe87bb808e511d702bdc90b23f\",\"manifestSchema\":\"vict.activation-manifest@1\"}",
+                "createdAt": 1795400140084
+              }
+            ],
+            "getSelection": {
+              "graphId": "immutability-z",
+              "activationVersion": "v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7",
+              "selectionRevision": 1,
+              "selectedAt": 1795400140090,
+              "operationId": "choose"
+            },
+            "getSelected": {
+              "activationVersion": "v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7",
+              "manifestSchema": "vict.activation-manifest@1",
+              "graphId": "immutability-z",
+              "graphVersion": "v1_3968be9fa81afd08d77028fd093d1a22f18e6917f9d362c3f8787ea7a4a2d85a",
+              "capabilitySetVersion": "v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20",
+              "canonicalManifest": "{\"activationVersion\":\"v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7\",\"bindings\":[{\"capability\":\"cap.a\",\"effect\":\"pure\",\"input\":null,\"output\":null,\"revision\":\"1\"}],\"capabilitySetVersion\":\"v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20\",\"contracts\":[],\"graph\":{\"edges\":[],\"entry\":\"n1\",\"id\":\"immutability-z\",\"nodes\":[{\"capability\":\"cap.a\",\"id\":\"n1\",\"input\":null,\"output\":null}],\"schema\":\"vict.graph@1\"},\"graphId\":\"immutability-z\",\"graphVersion\":\"v1_3968be9fa81afd08d77028fd093d1a22f18e6917f9d362c3f8787ea7a4a2d85a\",\"manifestSchema\":\"vict.activation-manifest@1\"}",
+              "createdAt": 1795400140076
+            }
+          },
+          "recovery": [
+            {
+              "runId": "recover-second",
+              "token": {
+                "tokenId": "token-recover-second",
+                "runId": "recover-second",
+                "activationVersion": "v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7",
+                "nodeId": "n1",
+                "status": "claimed",
+                "parentTokenId": null,
+                "lineage": "",
+                "forkId": null,
+                "branchKey": null,
+                "revision": 2,
+                "createdAt": 20,
+                "updatedAt": 30
+              },
+              "attempt": {
+                "attemptId": "att-token-recover-second-1",
+                "invocationId": "inv-token-recover-second",
+                "runId": "recover-second",
+                "tokenId": "token-recover-second",
+                "nodeId": "n1",
+                "capabilityId": "cap.a",
+                "attemptNumber": 1,
+                "effectClass": "pure",
+                "idempotencyKey": null,
+                "state": "started",
+                "ownerId": "owner",
+                "leaseExpiresAt": 70,
+                "deadlineAt": null,
+                "fence": 1,
+                "retryDueAt": null,
+                "createdAt": 30,
+                "updatedAt": 30
+              },
+              "leaseExpiresAt": 70
+            },
+            {
+              "runId": "recover-first",
+              "token": {
+                "tokenId": "token-recover-first",
+                "runId": "recover-first",
+                "activationVersion": "v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7",
+                "nodeId": "n1",
+                "status": "claimed",
+                "parentTokenId": null,
+                "lineage": "",
+                "forkId": null,
+                "branchKey": null,
+                "revision": 2,
+                "createdAt": 20,
+                "updatedAt": 30
+              },
+              "attempt": {
+                "attemptId": "att-token-recover-first-1",
+                "invocationId": "inv-token-recover-first",
+                "runId": "recover-first",
+                "tokenId": "token-recover-first",
+                "nodeId": "n1",
+                "capabilityId": "cap.a",
+                "attemptNumber": 1,
+                "effectClass": "pure",
+                "idempotencyKey": null,
+                "state": "started",
+                "ownerId": "owner",
+                "leaseExpiresAt": 80,
+                "deadlineAt": null,
+                "fence": 1,
+                "retryDueAt": null,
+                "createdAt": 30,
+                "updatedAt": 30
+              },
+              "leaseExpiresAt": 80
+            }
+          ]
+        },
+        "observations": {
+          "catalog": {
+            "get": {
+              "frozen": false,
+              "children": {},
+              "allowsWrite": true
+            },
+            "getSelection": {
+              "frozen": false,
+              "children": {},
+              "allowsWrite": true
+            },
+            "getSelected": {
+              "frozen": false,
+              "children": {},
+              "allowsWrite": true
+            },
+            "listFrozen": false,
+            "listEntries": [
+              {
+                "frozen": false,
+                "children": {}
+              },
+              {
+                "frozen": false,
+                "children": {}
+              }
+            ],
+            "listEntryAllowsWrite": true,
+            "listAllowsAppend": true
+          },
+          "recovery": {
+            "listFrozen": false,
+            "claims": [
+              {
+                "shape": {
+                  "frozen": true,
+                  "children": {
+                    "token": {
+                      "frozen": true,
+                      "children": {}
+                    },
+                    "attempt": {
+                      "frozen": true,
+                      "children": {}
+                    }
+                  }
+                },
+                "tokenAllowsWrite": false,
+                "attemptAllowsWrite": false,
+                "outerAllowsWrite": false,
+                "checkpointExposed": false
+              },
+              {
+                "shape": {
+                  "frozen": true,
+                  "children": {
+                    "token": {
+                      "frozen": true,
+                      "children": {}
+                    },
+                    "attempt": {
+                      "frozen": true,
+                      "children": {}
+                    }
+                  }
+                },
+                "tokenAllowsWrite": false,
+                "attemptAllowsWrite": false,
+                "outerAllowsWrite": false,
+                "checkpointExposed": false
+              }
+            ],
+            "listAllowsAppend": true
+          }
+        }
+      },
+      "repaired": {
+        "values": {
+          "missing": {
+            "activation": true,
+            "selection": true,
+            "selected": true,
+            "catalogList": 0,
+            "recoveryList": 0
+          },
+          "catalog": {
+            "get": {
+              "activationVersion": "v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7",
+              "manifestSchema": "vict.activation-manifest@1",
+              "graphId": "immutability-z",
+              "graphVersion": "v1_3968be9fa81afd08d77028fd093d1a22f18e6917f9d362c3f8787ea7a4a2d85a",
+              "capabilitySetVersion": "v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20",
+              "canonicalManifest": "{\"activationVersion\":\"v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7\",\"bindings\":[{\"capability\":\"cap.a\",\"effect\":\"pure\",\"input\":null,\"output\":null,\"revision\":\"1\"}],\"capabilitySetVersion\":\"v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20\",\"contracts\":[],\"graph\":{\"edges\":[],\"entry\":\"n1\",\"id\":\"immutability-z\",\"nodes\":[{\"capability\":\"cap.a\",\"id\":\"n1\",\"input\":null,\"output\":null}],\"schema\":\"vict.graph@1\"},\"graphId\":\"immutability-z\",\"graphVersion\":\"v1_3968be9fa81afd08d77028fd093d1a22f18e6917f9d362c3f8787ea7a4a2d85a\",\"manifestSchema\":\"vict.activation-manifest@1\"}",
+              "createdAt": 1795400140299
+            },
+            "list": [
+              {
+                "activationVersion": "v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7",
+                "manifestSchema": "vict.activation-manifest@1",
+                "graphId": "immutability-z",
+                "graphVersion": "v1_3968be9fa81afd08d77028fd093d1a22f18e6917f9d362c3f8787ea7a4a2d85a",
+                "capabilitySetVersion": "v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20",
+                "canonicalManifest": "{\"activationVersion\":\"v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7\",\"bindings\":[{\"capability\":\"cap.a\",\"effect\":\"pure\",\"input\":null,\"output\":null,\"revision\":\"1\"}],\"capabilitySetVersion\":\"v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20\",\"contracts\":[],\"graph\":{\"edges\":[],\"entry\":\"n1\",\"id\":\"immutability-z\",\"nodes\":[{\"capability\":\"cap.a\",\"id\":\"n1\",\"input\":null,\"output\":null}],\"schema\":\"vict.graph@1\"},\"graphId\":\"immutability-z\",\"graphVersion\":\"v1_3968be9fa81afd08d77028fd093d1a22f18e6917f9d362c3f8787ea7a4a2d85a\",\"manifestSchema\":\"vict.activation-manifest@1\"}",
+                "createdAt": 1795400140299
+              },
+              {
+                "activationVersion": "v1_b6b6dd874703c62d4516ec6dbacd1390c788c88d27c6ae0993fdeec27f718145",
+                "manifestSchema": "vict.activation-manifest@1",
+                "graphId": "immutability-a",
+                "graphVersion": "v1_c2f02f0c2a8ac4aea632ab575f8fc73f1c701cfe87bb808e511d702bdc90b23f",
+                "capabilitySetVersion": "v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20",
+                "canonicalManifest": "{\"activationVersion\":\"v1_b6b6dd874703c62d4516ec6dbacd1390c788c88d27c6ae0993fdeec27f718145\",\"bindings\":[{\"capability\":\"cap.a\",\"effect\":\"pure\",\"input\":null,\"output\":null,\"revision\":\"1\"}],\"capabilitySetVersion\":\"v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20\",\"contracts\":[],\"graph\":{\"edges\":[],\"entry\":\"n1\",\"id\":\"immutability-a\",\"nodes\":[{\"capability\":\"cap.a\",\"id\":\"n1\",\"input\":null,\"output\":null}],\"schema\":\"vict.graph@1\"},\"graphId\":\"immutability-a\",\"graphVersion\":\"v1_c2f02f0c2a8ac4aea632ab575f8fc73f1c701cfe87bb808e511d702bdc90b23f\",\"manifestSchema\":\"vict.activation-manifest@1\"}",
+                "createdAt": 1795400140306
+              }
+            ],
+            "getSelection": {
+              "graphId": "immutability-z",
+              "activationVersion": "v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7",
+              "selectionRevision": 1,
+              "selectedAt": 1795400140313,
+              "operationId": "choose"
+            },
+            "getSelected": {
+              "activationVersion": "v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7",
+              "manifestSchema": "vict.activation-manifest@1",
+              "graphId": "immutability-z",
+              "graphVersion": "v1_3968be9fa81afd08d77028fd093d1a22f18e6917f9d362c3f8787ea7a4a2d85a",
+              "capabilitySetVersion": "v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20",
+              "canonicalManifest": "{\"activationVersion\":\"v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7\",\"bindings\":[{\"capability\":\"cap.a\",\"effect\":\"pure\",\"input\":null,\"output\":null,\"revision\":\"1\"}],\"capabilitySetVersion\":\"v1_331cbdec73ba589edce20d4798396551b926e0cac246aae922a987b9c2acea20\",\"contracts\":[],\"graph\":{\"edges\":[],\"entry\":\"n1\",\"id\":\"immutability-z\",\"nodes\":[{\"capability\":\"cap.a\",\"id\":\"n1\",\"input\":null,\"output\":null}],\"schema\":\"vict.graph@1\"},\"graphId\":\"immutability-z\",\"graphVersion\":\"v1_3968be9fa81afd08d77028fd093d1a22f18e6917f9d362c3f8787ea7a4a2d85a\",\"manifestSchema\":\"vict.activation-manifest@1\"}",
+              "createdAt": 1795400140299
+            }
+          },
+          "recovery": [
+            {
+              "runId": "recover-second",
+              "token": {
+                "tokenId": "token-recover-second",
+                "runId": "recover-second",
+                "activationVersion": "v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7",
+                "nodeId": "n1",
+                "status": "claimed",
+                "parentTokenId": null,
+                "lineage": "",
+                "forkId": null,
+                "branchKey": null,
+                "revision": 2,
+                "createdAt": 20,
+                "updatedAt": 30
+              },
+              "attempt": {
+                "attemptId": "att-token-recover-second-1",
+                "invocationId": "inv-token-recover-second",
+                "runId": "recover-second",
+                "tokenId": "token-recover-second",
+                "nodeId": "n1",
+                "capabilityId": "cap.a",
+                "attemptNumber": 1,
+                "effectClass": "pure",
+                "idempotencyKey": null,
+                "state": "started",
+                "ownerId": "owner",
+                "leaseExpiresAt": 70,
+                "deadlineAt": null,
+                "fence": 1,
+                "retryDueAt": null,
+                "createdAt": 30,
+                "updatedAt": 30
+              },
+              "leaseExpiresAt": 70
+            },
+            {
+              "runId": "recover-first",
+              "token": {
+                "tokenId": "token-recover-first",
+                "runId": "recover-first",
+                "activationVersion": "v1_efae5b4a6689586d5f6fcf8723b67cb262f763dd535052ad95277abcd51a2aa7",
+                "nodeId": "n1",
+                "status": "claimed",
+                "parentTokenId": null,
+                "lineage": "",
+                "forkId": null,
+                "branchKey": null,
+                "revision": 2,
+                "createdAt": 20,
+                "updatedAt": 30
+              },
+              "attempt": {
+                "attemptId": "att-token-recover-first-1",
+                "invocationId": "inv-token-recover-first",
+                "runId": "recover-first",
+                "tokenId": "token-recover-first",
+                "nodeId": "n1",
+                "capabilityId": "cap.a",
+                "attemptNumber": 1,
+                "effectClass": "pure",
+                "idempotencyKey": null,
+                "state": "started",
+                "ownerId": "owner",
+                "leaseExpiresAt": 80,
+                "deadlineAt": null,
+                "fence": 1,
+                "retryDueAt": null,
+                "createdAt": 30,
+                "updatedAt": 30
+              },
+              "leaseExpiresAt": 80
+            }
+          ]
+        },
+        "observations": {
+          "catalog": {
+            "get": {
+              "frozen": false,
+              "children": {},
+              "allowsWrite": true
+            },
+            "getSelection": {
+              "frozen": false,
+              "children": {},
+              "allowsWrite": true
+            },
+            "getSelected": {
+              "frozen": false,
+              "children": {},
+              "allowsWrite": true
+            },
+            "listFrozen": false,
+            "listEntries": [
+              {
+                "frozen": false,
+                "children": {}
+              },
+              {
+                "frozen": false,
+                "children": {}
+              }
+            ],
+            "listEntryAllowsWrite": true,
+            "listAllowsAppend": true
+          },
+          "recovery": {
+            "listFrozen": false,
+            "claims": [
+              {
+                "shape": {
+                  "frozen": true,
+                  "children": {
+                    "token": {
+                      "frozen": true,
+                      "children": {}
+                    },
+                    "attempt": {
+                      "frozen": true,
+                      "children": {}
+                    }
+                  }
+                },
+                "tokenAllowsWrite": false,
+                "attemptAllowsWrite": false,
+                "outerAllowsWrite": false,
+                "checkpointExposed": false
+              },
+              {
+                "shape": {
+                  "frozen": true,
+                  "children": {
+                    "token": {
+                      "frozen": true,
+                      "children": {}
+                    },
+                    "attempt": {
+                      "frozen": true,
+                      "children": {}
+                    }
+                  }
+                },
+                "tokenAllowsWrite": false,
+                "attemptAllowsWrite": false,
+                "outerAllowsWrite": false,
+                "checkpointExposed": false
+              }
+            ],
+            "listAllowsAppend": true
+          }
+        }
+      }
+    },
+    "traces": {
+      "baseline": {
+        "statements": 174,
+        "legacySnapshotReads": 0,
+        "legacySnapshotWrites": 0,
+        "operationTables": {
+          "catalog_activation": 14,
+          "catalog_selection": 8
+        }
+      },
+      "repaired": {
+        "statements": 174,
+        "legacySnapshotReads": 0,
+        "legacySnapshotWrites": 0,
+        "operationTables": {
+          "catalog_activation": 14,
+          "catalog_selection": 8
+        }
+      }
+    }
+  },
+  "failure": {
+    "name": "AssertionError",
+    "code": "ERR_ASSERTION",
+    "message": "repaired read-result freeze and mutation behavior\n+ actual - expected\n... Skipped lines\n\n  {\n    catalog: {\n      get: {\n+       allowsWrite: true,\n-       allowsWrite: false,\n        children: {},\n+       frozen: false\n-       frozen: true\n      },\n      getSelected: {\n+       allowsWrite: true,\n-       allowsWrite: false,\n        children: {},\n+       frozen: false\n-       frozen: true\n      },\n      getSelection: {\n+       allowsWrite: true,\n-       allowsWrite: false,\n        children: {},\n+       frozen: false\n-       frozen: true\n      },\n      listAllowsAppend: true,\n      listEntries: [\n        {\n          children: {},\n+         frozen: false\n-         frozen: true\n        },\n        {\n          children: {},\n+         frozen: false\n-         frozen: true\n        }\n      ],\n+     listEntryAllowsWrite: true,\n-     listEntryAllowsWrite: false,\n      listFrozen: false\n    },\n    recovery: {\n      claims: [\n        {\n          attemptAllowsWrite: false,\n          checkpointExposed: false,\n+         outerAllowsWrite: false,\n-         outerAllowsWrite: true,\n          shape: {\n            children: {\n              attempt: {\n                children: {},\n                frozen: true\n...\n            },\n+           frozen: true\n-           frozen: false\n          },\n          tokenAllowsWrite: false\n        },\n        {\n          attemptAllowsWrite: false,\n          checkpointExposed: false,\n+         outerAllowsWrite: false,\n-         outerAllowsWrite: true,\n          shape: {\n            children: {\n              attempt: {\n                children: {},\n                frozen: true\n...\n            },\n+           frozen: true\n-           frozen: false\n          },\n          tokenAllowsWrite: false\n        }\n      ],\n      listAllowsAppend: true,\n",
+    "stack": "AssertionError [ERR_ASSERTION]: repaired read-result freeze and mutation behavior\n+ actual - expected\n... Skipped lines\n\n  {\n    catalog: {\n      get: {\n+       allowsWrite: true,\n-       allowsWrite: false,\n        children: {},\n+       frozen: false\n-       frozen: true\n      },\n      getSelected: {\n+       allowsWrite: true,\n-       allowsWrite: false,\n        children: {},\n+       frozen: false\n-       frozen: true\n      },\n      getSelection: {\n+       allowsWrite: true,\n-       allowsWrite: false,\n        children: {},\n+       frozen: false\n-       frozen: true\n      },\n      listAllowsAppend: true,\n      listEntries: [\n        {\n          children: {},\n+         frozen: false\n-         frozen: true\n        },\n        {\n          children: {},\n+         frozen: false\n-         frozen: true\n        }\n      ],\n+     listEntryAllowsWrite: true,\n-     listEntryAllowsWrite: false,\n      listFrozen: false\n    },\n    recovery: {\n      claims: [\n        {\n          attemptAllowsWrite: false,\n          checkpointExposed: false,\n+         outerAllowsWrite: false,\n-         outerAllowsWrite: true,\n          shape: {\n            children: {\n              attempt: {\n                children: {},\n                frozen: true\n...\n            },\n+           frozen: true\n-           frozen: false\n          },\n          tokenAllowsWrite: false\n        },\n        {\n          attemptAllowsWrite: false,\n          checkpointExposed: false,\n+         outerAllowsWrite: false,\n-         outerAllowsWrite: true,\n          shape: {\n            children: {\n              attempt: {\n                children: {},\n                frozen: true\n...\n            },\n+           frozen: true\n-           frozen: false\n          },\n          tokenAllowsWrite: false\n        }\n      ],\n      listAllowsAppend: true,\n\n    at checkReadImmutability (file:///C:/Users/RZ1/AppData/Local/Temp/vhost010-immutability/docs/architecture/vhost-003-candidate/immutability-checks.mjs:142:10)\n    at async file:///C:/Users/RZ1/AppData/Local/Temp/vhost010-immutability/docs/architecture/vhost-003-candidate/run.mjs:91:5"
+  }
+}

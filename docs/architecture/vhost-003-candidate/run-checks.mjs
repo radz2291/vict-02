@@ -229,7 +229,7 @@ function expect(actual) {
 async function pinnedSuites(context, counts) {
   const { oracle, provision, candidate, evidence, save } = context;
   const tests = [];
-  const runner = { expect, test: (name, body) => tests.push({ name, body }) };
+  const runner = (suite) => ({ expect, test: (name, body) => tests.push({ suite, name, body }) });
   let ordinal = 0;
   const factory = {
     name: 'indexed PostgreSQL',
@@ -243,21 +243,18 @@ async function pinnedSuites(context, counts) {
       return { ...store, faults, runtime, createOperatorRuntime: () => oracle.runtime.createRuntime(options) };
     }
   };
-  const scopedStoreRunner = { ...runner, test(name, body) {
-    if (!/activation publish\/read|equivalent republish|same version with different content|selection uses|publishAndSelect|publish rejects|selection requires/.test(name)) {
-      runner.test(name, body);
-    }
-  } };
-  oracle.testing.runStoreConformanceSuite(scopedStoreRunner, factory);
-  oracle.testing.runOrchestrationConformanceSuite(runner, expect, factory);
-  oracle.testing.runOrchestrationJoinSuite(runner, expect, factory);
+  oracle.testing.runStoreConformanceSuite(runner('store'), factory);
+  oracle.testing.runOrchestrationConformanceSuite(runner('orchestration'), expect, factory);
+  oracle.testing.runOrchestrationJoinSuite(runner('join'), expect, factory);
+  evidence.pinnedSuiteCounts = Object.fromEntries(['store', 'orchestration', 'join'].map((suite) =>
+    [suite, tests.filter((test) => test.suite === suite).length]));
   evidence.pinnedRunSuites = [];
-  for (const { name, body } of tests) {
+  for (const { suite, name, body } of tests) {
     try {
       await body();
-      evidence.pinnedRunSuites.push({ name, passed: true });
+      evidence.pinnedRunSuites.push({ suite, name, passed: true });
     } catch (error) {
-      evidence.pinnedRunSuites.push({ name, error: shape(error), stack: error.stack });
+      evidence.pinnedRunSuites.push({ suite, name, error: shape(error), stack: error.stack });
       await save();
       throw error;
     }

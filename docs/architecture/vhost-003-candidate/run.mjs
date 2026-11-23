@@ -12,6 +12,7 @@ import { compareBenchmarks } from './benchmark.mjs';
 import { checkDispatcherClaims } from './dispatcher-claim-checks.mjs';
 import { checkControlPorts } from './control-checks.mjs';
 import { checkRuns } from './run-checks.mjs';
+import { checkReadImmutability, immutabilityBaselineCommit } from './immutability-checks.mjs';
 import { checkOrdering, orderingBaselineCommit } from './ordering-checks.mjs';
 
 const [consumer, source, dataDir, portText, samplesText, output, phase] = process.argv.slice(2);
@@ -20,7 +21,7 @@ const samples = Number(samplesText);
 assert(Number.isSafeInteger(port) && port >= 1024 && port <= 65535);
 assert(Number.isSafeInteger(samples) && samples >= 4 && samples <= 1000);
 assert(['check', 'all'].includes(phase));
-const evidence = { format: 'vict.vhost009-execution@1', when: new Date().toISOString(),
+const evidence = { format: 'vict.vhost010-read-immutability@1', when: new Date().toISOString(),
   node: process.version, cpu: cpus()[0]?.model, logicalCPUs: cpus().length, osRelease: release(),
   checks: [], cells: [], samples };
 const save = () => writeFile(join(output, 'result.json'), JSON.stringify(evidence, null, 2) + '\n');
@@ -29,7 +30,7 @@ try {
   const oracle = await loadOracle(consumer, source, dirname(dataDir), join(here, '../../..'));
   evidence.provenance = oracle.provenance;
   evidence.provenance.candidateSHA256 = {};
-  for (const path of ['indexed-runs.mjs', 'run-checks.mjs', 'execution-schema.sql', 'ordering-checks.mjs', 'indexed-control.mjs', 'control-checks.mjs', 'control-schema.sql', 'dispatcher-claim-checks.mjs', 'schema.sql', 'receipts-schema.sql', 'indexed-receipts.mjs', 'receipt-checks.mjs', 'foundation.mjs', 'indexed-hot-path.mjs', 'values.mjs',
+  for (const path of ['immutability-checks.mjs', 'indexed-runs.mjs', 'run-checks.mjs', 'execution-schema.sql', 'ordering-checks.mjs', 'indexed-control.mjs', 'control-checks.mjs', 'control-schema.sql', 'dispatcher-claim-checks.mjs', 'schema.sql', 'receipts-schema.sql', 'indexed-receipts.mjs', 'receipt-checks.mjs', 'foundation.mjs', 'indexed-hot-path.mjs', 'values.mjs',
     'run.mjs', 'oracle.mjs', 'benchmark.mjs', 'checks.mjs', 'run-local.ps1']) {
     const bytes = await readFile(join(here, path));
     evidence.provenance.candidateSHA256[path] = digest(bytes.toString().replaceAll('\r\n', '\n'));
@@ -70,25 +71,32 @@ try {
     });
     const context = { oracle, observer, provision, legacy, candidate, evidence, samples, save };
 
+    const git = (...args) => execFileSync('git', ['-C', join(here, '../../..'), ...args], { windowsHide: true });
+    async function loadBaseline(commit, files, pin) {
+      assert.equal(git('merge-base', 'HEAD', commit).toString().trim(), commit);
+      const scratch = await mkdtemp(join(dirname(dataDir), pin + '-'));
+      const hashes = {};
+      for (const file of files) {
+        const bytes = git('show', commit + ':docs/architecture/vhost-003-candidate/' + file);
+        hashes[file] = digest(bytes);
+        await writeFile(join(scratch, file), bytes);
+      }
+      evidence.provenance[pin + 'SHA256'] = hashes;
+      const { createIndexedHotPathForTests: open } = await import(pathToFileURL(join(scratch, 'indexed-hot-path.mjs')));
+      return (namespace, options) => open(oracle, { connectionString, namespace, writerEpoch: 1, ...options });
+    }
+    const baselineFiles = ['indexed-hot-path.mjs', 'indexed-receipts.mjs', 'indexed-control.mjs', 'foundation.mjs', 'values.mjs'];
+    const immutabilityBaseline = await loadBaseline(immutabilityBaselineCommit, [...baselineFiles, 'indexed-runs.mjs'],
+      'immutabilityBaseline');
+    await checkReadImmutability(context, immutabilityBaseline);
+
     await checkRuns(context);
     await checkPorts(context);
     await checkReceipts(context);
     await checkDispatcherClaims(context);
     await checkControlPorts(context);
-    const git = (...args) => execFileSync('git', ['-C', join(here, '../../..'), ...args], { windowsHide: true });
-    assert.equal(git('merge-base', 'HEAD', orderingBaselineCommit).toString().trim(), orderingBaselineCommit);
-    const scratch = await mkdtemp(join(dirname(dataDir), 'vhost007-baseline-'));
-    const baselineHashes = {};
-    for (const file of ['indexed-hot-path.mjs', 'indexed-receipts.mjs', 'indexed-control.mjs', 'foundation.mjs', 'values.mjs']) {
-      const bytes = git('show', orderingBaselineCommit + ':docs/architecture/vhost-003-candidate/' + file);
-      baselineHashes[file] = digest(bytes);
-      await writeFile(join(scratch, file), bytes);
-    }
-    evidence.provenance.orderingBaselineSHA256 = baselineHashes;
-    const baseline = (await import(pathToFileURL(join(scratch, 'indexed-hot-path.mjs')))).createIndexedHotPathForTests;
-    await checkOrdering(context, (namespace, options) => baseline(oracle, {
-      connectionString, namespace, writerEpoch: 1, ...options
-    }), candidate);
+    const orderingBaseline = await loadBaseline(orderingBaselineCommit, baselineFiles, 'orderingBaseline');
+    await checkOrdering(context, orderingBaseline, candidate);
     if (phase === 'all') {
       await compareBenchmarks(context);
       await compareReceiptTraffic(context);

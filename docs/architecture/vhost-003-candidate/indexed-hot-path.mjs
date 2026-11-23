@@ -236,7 +236,7 @@ export async function createIndexedHotPathForTests(oracle, options) {
         [namespace], (row) => fromKey(row.stream_key)))
     });
     const receipts = createReceiptPorts({ runtime, codec, namespace, q, call, readPages });
-    const control = createControlPorts({ runtime, codec, namespace, q, call, readPages });
+    const control = createControlPorts({ runtime, serialization: oracle.serialization, codec, namespace, q, call, readPages });
     const runs = createRunPorts({ ...oracle, codec, namespace, q, call, readPages, options });
     return Object.freeze({ actors, turns, streamLedger, ...receipts, ...control, ...runs });
   }
