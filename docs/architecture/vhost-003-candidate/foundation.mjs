@@ -27,13 +27,14 @@ export function createFoundation({ Driver, Coordination, runtime }, options) {
 
   const requestFields = ['scopeId', 'actorId', 'ownerId', 'leaseMs'];
   const leaseFields = ['scopeId', 'actorId', 'ownerId', 'fence', 'expiresAt', 'purpose'];
-  const { writerEpoch, ...poolOptions } = options;
+  const { writerEpoch, stageInspection = false, ...poolOptions } = options;
   const { connectionString, namespace } = poolOptions;
 
   if (
     typeof connectionString !== 'string' ||
     !/^postgresql:\/\/vhostbench@127\.0\.0\.1:[1-9]\d{0,4}\/postgres$/u.test(connectionString) ||
     typeof namespace !== 'string' || !namespace.isWellFormed() ||
+    typeof stageInspection !== 'boolean' || (stageInspection && !/^vhost011-[a-z0-9-]+$/u.test(namespace)) ||
     !Number.isSafeInteger(writerEpoch) || writerEpoch < 1 ||
     'migrate' in poolOptions || 'schema' in poolOptions || 'tls' in poolOptions
   ) {
@@ -46,6 +47,7 @@ export function createFoundation({ Driver, Coordination, runtime }, options) {
         return Promise.reject(failure('HOSTED_INVALID_INPUT'));
       }
       return super.transaction(async (client) => {
+        if (stageInspection) await client.query('SET TRANSACTION READ ONLY');
         await client.query(
           "SELECT set_config('transaction_timeout', $1, true), set_config('search_path', 'pg_catalog', true)",
           [String(poolOptions.statementTimeoutMs ?? 10_000)]
@@ -53,7 +55,7 @@ export function createFoundation({ Driver, Coordination, runtime }, options) {
         const admission = await client.query(
           `SELECT version, purpose, writer_epoch FROM ${this.schema}.metadata
             CROSS JOIN ${this.schema}.namespaces WHERE singleton AND namespace=$1
-            FOR SHARE OF namespaces`,
+            ${stageInspection ? '' : 'FOR SHARE OF namespaces'}`,
           [namespace]
         );
         const row = admission.rows[0];
@@ -147,7 +149,13 @@ export function createFoundation({ Driver, Coordination, runtime }, options) {
     const mutex = await client.query(
       `SELECT 1 FROM ${db.schema}.callback_admission WHERE namespace=$1`, [namespace]
     );
-    if (mutex.rowCount !== 1) throw failure('HOSTED_SCHEMA_MISMATCH');
+    if (mutex.rowCount !== (stageInspection ? 0 : 1)) throw failure('HOSTED_SCHEMA_MISMATCH');
+    if (stageInspection) {
+      const { rowCount } = await client.query(
+        `SELECT 1 FROM ${db.schema}.migration_import WHERE namespace=$1`, [namespace]
+      );
+      if (rowCount !== 1) throw failure('HOSTED_SCHEMA_MISMATCH');
+    }
   });
   const execute = (lease, work) => db.transaction(async (client) => {
     if (lease) await coordination.assertInTransaction(client, lease);

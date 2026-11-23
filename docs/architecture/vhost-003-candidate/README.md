@@ -1,5 +1,47 @@
 # Indexed PostgreSQL operational-store test fixture
 
+## VHOST-011 offline import rehearsal
+
+The local runner provisions the migration tables, seeds synthetic data into vhost011_source, and rehearses with the indexed fixture in postgres and a logical restore into vhost011_restore. Run the reproduction command with -CheckOnly. The [report](../VHOST-011-OFFLINE-IMPORT-AND-RECOVERY.md) links the exact Operator artefacts and raw timings.
+
+The offline commands below can also run against a still-running owned disposable cluster prepared by the rehearsal. The source database exposes vhost011_identity.source and grants SELECT and schema usage to vhost011_reader. The target uses the fixture DDL and a separate privileged staging connection. Command output files must be new for capture and plan.
+
+~~~powershell
+& $Node ./migrate-local.mjs capture $Config
+& $Node ./migrate-local.mjs plan $Config
+# Record the independently reviewed plan digest in approvedManifestSHA256.
+& $Node ./migrate-local.mjs stage $Config
+& $Node ./migrate-local.mjs verify $Config
+~~~
+
+Config fields and example shape
+
+~~~json
+{
+  "connectionPort": 54321,
+  "dataDirectory": "C:/scratch/owned-pg/data",
+  "namespace": "vhost011-full",
+  "identity": {
+    "cluster": "<system identifier from the source record>",
+    "database": "vhost011_source",
+    "epoch": "7",
+    "marker": "synthetic-backup-boundary-v1",
+    "serverVersion": "18.6",
+    "sourceId": "owned-synthetic-vhost011"
+  },
+  "paths": {
+    "consumer": "C:/scratch/frozen-quellight",
+    "sourceRepo": "C:/scratch/exact-vict-source",
+    "capture": "C:/scratch/capture.json",
+    "manifest": "C:/scratch/manifest.json"
+  },
+  "approvedManifestSHA256": "<verified digest emitted by plan>",
+  "targetDatabase": "postgres"
+}
+~~~
+
+The restore target name vhost011_restore is available for verify. Stage and verify require the same capture and approved canonical manifest. A matching retry checks every table. Staged namespaces have no callback admission row and the installed candidate’s ordinary entry point refuses them. The CLI handles capture, staging and verification. The rehearsal alone exercises synthetic writer admission and logical restore.
+
 ## VHOST-010 read-result immutability
 
 The correctness runner compares catalog and recovery claim freeze boundaries on the exact VHOST-009 fixture, pinned legacy PostgreSQL and the repaired fixture. It also runs every registered pinned store, orchestration and join case. [Report](../VHOST-010-READ-RESULT-IMMUTABILITY.md) · [Raw before-and-after evidence](evidence/vhost010-immutability/result.json)

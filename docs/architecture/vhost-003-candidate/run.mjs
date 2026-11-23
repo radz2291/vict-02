@@ -12,16 +12,17 @@ import { compareBenchmarks } from './benchmark.mjs';
 import { checkDispatcherClaims } from './dispatcher-claim-checks.mjs';
 import { checkControlPorts } from './control-checks.mjs';
 import { checkRuns } from './run-checks.mjs';
+import { checkMigration } from './migration-checks.mjs';
 import { checkReadImmutability, immutabilityBaselineCommit } from './immutability-checks.mjs';
 import { checkOrdering, orderingBaselineCommit } from './ordering-checks.mjs';
 
-const [consumer, source, dataDir, portText, samplesText, output, phase] = process.argv.slice(2);
+const [consumer, source, dataDir, portText, samplesText, output, phase, pgBin] = process.argv.slice(2);
 const port = Number(portText);
 const samples = Number(samplesText);
 assert(Number.isSafeInteger(port) && port >= 1024 && port <= 65535);
 assert(Number.isSafeInteger(samples) && samples >= 4 && samples <= 1000);
 assert(['check', 'all'].includes(phase));
-const evidence = { format: 'vict.vhost010-read-immutability@1', when: new Date().toISOString(),
+const evidence = { format: 'vict.vhost011-import-recovery@1', when: new Date().toISOString(),
   node: process.version, cpu: cpus()[0]?.model, logicalCPUs: cpus().length, osRelease: release(),
   checks: [], cells: [], samples };
 const save = () => writeFile(join(output, 'result.json'), JSON.stringify(evidence, null, 2) + '\n');
@@ -30,7 +31,8 @@ try {
   const oracle = await loadOracle(consumer, source, dirname(dataDir), join(here, '../../..'));
   evidence.provenance = oracle.provenance;
   evidence.provenance.candidateSHA256 = {};
-  for (const path of ['immutability-checks.mjs', 'indexed-runs.mjs', 'run-checks.mjs', 'execution-schema.sql', 'ordering-checks.mjs', 'indexed-control.mjs', 'control-checks.mjs', 'control-schema.sql', 'dispatcher-claim-checks.mjs', 'schema.sql', 'receipts-schema.sql', 'indexed-receipts.mjs', 'receipt-checks.mjs', 'foundation.mjs', 'indexed-hot-path.mjs', 'values.mjs',
+  for (const path of ['execution-migration-schema.sql', 'migration-map.mjs', 'operator-migration.mjs', 'migration-fixture.mjs',
+    'migration-checks.mjs', 'migrate-local.mjs', 'immutability-checks.mjs', 'indexed-runs.mjs', 'run-checks.mjs', 'execution-schema.sql', 'ordering-checks.mjs', 'indexed-control.mjs', 'control-checks.mjs', 'control-schema.sql', 'dispatcher-claim-checks.mjs', 'schema.sql', 'receipts-schema.sql', 'indexed-receipts.mjs', 'receipt-checks.mjs', 'foundation.mjs', 'indexed-hot-path.mjs', 'values.mjs',
     'run.mjs', 'oracle.mjs', 'benchmark.mjs', 'checks.mjs', 'run-local.ps1']) {
     const bytes = await readFile(join(here, path));
     evidence.provenance.candidateSHA256[path] = digest(bytes.toString().replaceAll('\r\n', '\n'));
@@ -52,6 +54,7 @@ try {
     await observer.query(await readFile(join(here, 'receipts-schema.sql'), 'utf8'));
     await observer.query(await readFile(join(here, 'control-schema.sql'), 'utf8'));
     await observer.query(await readFile(join(here, 'execution-schema.sql'), 'utf8'));
+    await observer.query(await readFile(join(here, 'execution-migration-schema.sql'), 'utf8'));
     const provision = async (namespace, epoch = 1) => {
       await observer.query('BEGIN');
       try {
@@ -69,7 +72,7 @@ try {
     const candidate = (namespace, options = {}) => createIndexedHotPathForTests(oracle, {
       connectionString, namespace, writerEpoch: 1, ...options
     });
-    const context = { oracle, observer, provision, legacy, candidate, evidence, samples, save };
+    const context = { oracle, observer, provision, legacy, candidate, evidence, samples, save, port, pgBin, output, consumer, sourceRepo: source, dataDir };
 
     const git = (...args) => execFileSync('git', ['-C', join(here, '../../..'), ...args], { windowsHide: true });
     async function loadBaseline(commit, files, pin) {
@@ -97,6 +100,7 @@ try {
     await checkControlPorts(context);
     const orderingBaseline = await loadBaseline(orderingBaselineCommit, baselineFiles, 'orderingBaseline');
     await checkOrdering(context, orderingBaseline, candidate);
+    await checkMigration(context);
     if (phase === 'all') {
       await compareBenchmarks(context);
       await compareReceiptTraffic(context);

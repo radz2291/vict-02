@@ -40,7 +40,7 @@ export function manifest({ kernel, runtime }, graphId, revision = '1') {
   return { manifest: record, canonicalManifest: runtime.toCanonicalJson(record) };
 }
 
-function agentActivation(runtime) {
+export function agentActivation(runtime) {
   const registry = new runtime.AgentProfileRegistry();
   registry.registerArtifact({ kind: 'instructions', id: 'instructions.governance', revision: '1', text: 'Synthetic instructions.' });
   registry.registerArtifact({ kind: 'memory-policy', id: 'memory-policy.governance', revision: '1',

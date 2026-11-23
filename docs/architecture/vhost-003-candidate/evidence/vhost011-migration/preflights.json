@@ -1,0 +1,135 @@
+[
+  {
+    "attempt": "test-01",
+    "when": "2026-11-23T02:42:04.5Z",
+    "checkpoints": [],
+    "failure": {
+      "name": "VictControlError",
+      "code": "VICT_STREAM_EVENT_INVALID",
+      "message": "The event is not a valid vict.agent-stream@1 event (AGENT_STREAM_INVALID_ID).",
+      "stack": "VictControlError: The event is not a valid vict.agent-stream@1 event (AGENT_STREAM_INVALID_ID).\n    at validateStreamLedgerAppend (file:///C:/Users/RZ1/AppData/Local/Temp/vhost001-quellight-npm11212/node_modules/@victframework/runtime/dist/control-types.js:836:15)\n    at InMemoryAgentStreamLedgerStore.appendEvent (file:///C:/Users/RZ1/AppData/Local/Temp/vhost001-quellight-npm11212/node_modules/@victframework/runtime/dist/control-in-memory.js:742:9)\n    at file:///C:/Users/RZ1/AppData/Local/Temp/vhost001-quellight-npm11212/node_modules/@victframework/store-postgres/dist/adapter.js:459:62\n    at operation (file:///C:/Users/RZ1/AppData/Local/Temp/vhost001-quellight-npm11212/node_modules/@victframework/store-postgres/dist/adapter.js:208:38)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async PostgresDatabase.transaction (file:///C:/Users/RZ1/AppData/Local/Temp/vhost001-quellight-npm11212/node_modules/@victframework/store-postgres/dist/driver.js:168:27)\n    at async seedLegacy (file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/migration-fixture.mjs:57:5)\n    at async checkMigration (file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/migration-checks.mjs:148:21)\n    at async file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/run.mjs:77:5"
+    },
+    "restore": null,
+    "pinnedCases": 0
+  },
+  {
+    "attempt": "test-02",
+    "when": "2026-11-23T02:42:54.633Z",
+    "checkpoints": [],
+    "failure": {
+      "name": "HostedCoordinationError",
+      "code": "HOSTED_INVALID_INPUT",
+      "message": "HOSTED_INVALID_INPUT",
+      "stack": "HostedCoordinationError: HOSTED_INVALID_INPUT\n    at captureRequest (file:///C:/Users/RZ1/AppData/Local/Temp/vhost001-quellight-npm11212/node_modules/@victframework/store-postgres/dist/coordination.js:55:15)\n    at PostgresCoordinationStore.tombstone (file:///C:/Users/RZ1/AppData/Local/Temp/vhost001-quellight-npm11212/node_modules/@victframework/store-postgres/dist/coordination.js:140:19)\n    at seedLegacy (file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/migration-fixture.mjs:118:45)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async checkMigration (file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/migration-checks.mjs:148:21)\n    at async file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/run.mjs:77:5"
+    },
+    "restore": null,
+    "pinnedCases": 0
+  },
+  {
+    "attempt": "test-03",
+    "when": "2026-11-23T02:44:00.776Z",
+    "checkpoints": [
+      "identity",
+      "consistentCapture",
+      "manifests",
+      "refusals",
+      "sourceBackup"
+    ],
+    "failure": {
+      "name": "HostedCoordinationError",
+      "code": "HOSTED_DATABASE_UNAVAILABLE",
+      "message": "HOSTED_DATABASE_UNAVAILABLE",
+      "stack": "HostedCoordinationError: HOSTED_DATABASE_UNAVAILABLE\n    at safeError (file:///C:/Users/RZ1/AppData/Local/Temp/vhost001-quellight-npm11212/node_modules/@victframework/store-postgres/dist/driver.js:39:12)\n    at IndexedDatabase.transaction (file:///C:/Users/RZ1/AppData/Local/Temp/vhost001-quellight-npm11212/node_modules/@victframework/store-postgres/dist/driver.js:183:26)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async Promise.all (index 28)\n    at async operationalProof (file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/migration-checks.mjs:89:22)\n    at async checkMigration (file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/migration-checks.mjs:271:5)\n    at async file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/run.mjs:77:5"
+    },
+    "restore": null,
+    "pinnedCases": 0
+  },
+  {
+    "attempt": "test-04",
+    "when": "2026-11-23T02:45:32.142Z",
+    "checkpoints": [
+      "identity",
+      "consistentCapture",
+      "manifests",
+      "refusals",
+      "cli",
+      "sourceBackup",
+      "externalParity",
+      "publicComparisons"
+    ],
+    "failure": {
+      "name": "AssertionError",
+      "code": "ERR_ASSERTION",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    argumentDigest: 'argument-digest',\n    effectId: 'uncertain-op',\n    fence: 1,\n+   scopeId: 'held',\n    status: 'uncertain',\n    updatedAt: 1795401943990\n  }\n",
+      "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    argumentDigest: 'argument-digest',\n    effectId: 'uncertain-op',\n    fence: 1,\n+   scopeId: 'held',\n    status: 'uncertain',\n    updatedAt: 1795401943990\n  }\n\n    at operationalProof (file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/migration-checks.mjs:102:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async checkMigration (file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/migration-checks.mjs:314:5)\n    at async file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/run.mjs:77:5"
+    },
+    "restore": null,
+    "pinnedCases": 0
+  },
+  {
+    "attempt": "test-05",
+    "when": "2026-11-23T02:46:55.846Z",
+    "checkpoints": [
+      "identity",
+      "consistentCapture",
+      "manifests",
+      "refusals"
+    ],
+    "failure": {
+      "name": "Error",
+      "message": "Command failed: C:\\Users\\RZ1\\Desktop\\RZ\\261116-Quellight-VICT\\.tools\\node-v22.23.5-win-x64\\node.exe C:\\Users\\RZ1\\AppData\\Local\\Temp\\vhost011-migration\\docs\\architecture\\vhost-003-candidate\\migrate-local.mjs verify C:\\Users\\RZ1\\AppData\\Local\\Temp\\vhost011-test-05\\cli.config.json\nnode:internal/modules/run_main:123\r\n    triggerUncaughtException(\r\n    ^\r\n\r\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\r\n+ actual - expected\r\n\r\n+ 'e88195234d1f81782f9db2d0766a6b5fbb745dae09c445bce533bb13f766f000'\r\n- '61ed18a0f5785027b302a6b6c9c8e0821c6b539e32e0676527403f12c2489ff6'\r\n\r\n    at file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/migrate-local.mjs:48:12 {\r\n  generatedMessage: true,\r\n  code: 'ERR_ASSERTION',\r\n  actual: 'e88195234d1f81782f9db2d0766a6b5fbb745dae09c445bce533bb13f766f000',\r\n  expected: '61ed18a0f5785027b302a6b6c9c8e0821c6b539e32e0676527403f12c2489ff6',\r\n  operator: 'strictEqual',\r\n  diff: 'simple'\r\n}\r\n\r\nNode.js v22.23.5\r\n",
+      "stack": "Error: Command failed: C:\\Users\\RZ1\\Desktop\\RZ\\261116-Quellight-VICT\\.tools\\node-v22.23.5-win-x64\\node.exe C:\\Users\\RZ1\\AppData\\Local\\Temp\\vhost011-migration\\docs\\architecture\\vhost-003-candidate\\migrate-local.mjs verify C:\\Users\\RZ1\\AppData\\Local\\Temp\\vhost011-test-05\\cli.config.json\nnode:internal/modules/run_main:123\r\n    triggerUncaughtException(\r\n    ^\r\n\r\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\r\n+ actual - expected\r\n\r\n+ 'e88195234d1f81782f9db2d0766a6b5fbb745dae09c445bce533bb13f766f000'\r\n- '61ed18a0f5785027b302a6b6c9c8e0821c6b539e32e0676527403f12c2489ff6'\r\n\r\n    at file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/migrate-local.mjs:48:12 {\r\n  generatedMessage: true,\r\n  code: 'ERR_ASSERTION',\r\n  actual: 'e88195234d1f81782f9db2d0766a6b5fbb745dae09c445bce533bb13f766f000',\r\n  expected: '61ed18a0f5785027b302a6b6c9c8e0821c6b539e32e0676527403f12c2489ff6',\r\n  operator: 'strictEqual',\r\n  diff: 'simple'\r\n}\r\n\r\nNode.js v22.23.5\r\n\n    at genericNodeError (node:internal/errors:983:15)\n    at wrappedFn (node:internal/errors:537:14)\n    at checkExecSyncError (node:child_process:916:11)\n    at execFileSync (node:child_process:952:15)\n    at invoke (file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/migration-checks.mjs:156:30)\n    at runOperatorCLI (file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/migration-checks.mjs:161:31)\n    at async checkMigration (file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/migration-checks.mjs:309:21)\n    at async file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/run.mjs:77:5"
+    },
+    "restore": null,
+    "pinnedCases": 0
+  },
+  {
+    "attempt": "verified",
+    "when": "2026-11-23T02:48:51.635Z",
+    "checkpoints": [
+      "identity",
+      "consistentCapture",
+      "manifests",
+      "refusals",
+      "cli",
+      "sourceBackup",
+      "externalParity",
+      "publicComparisons",
+      "uncertainEffect",
+      "commandFenceEvidence",
+      "hold",
+      "c12Binding",
+      "preWriteRollback",
+      "authority",
+      "postWriteRecovery"
+    ],
+    "failure": {
+      "name": "HostedCoordinationError",
+      "code": "HOSTED_DATABASE_UNAVAILABLE",
+      "message": "HOSTED_DATABASE_UNAVAILABLE",
+      "stack": "HostedCoordinationError: HOSTED_DATABASE_UNAVAILABLE\n    at IndexedDatabase.transaction (file:///C:/Users/RZ1/AppData/Local/Temp/vhost001-quellight-npm11212/node_modules/@victframework/store-postgres/dist/driver.js:160:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async createIndexedHotPathForTests (file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/indexed-hot-path.mjs:35:5)\n    at async indexedFaults (file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/checks.mjs:249:17)\n    at async checkPorts (file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/checks.mjs:130:3)\n    at async file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/run.mjs:98:5"
+    },
+    "restore": {
+      "ms": 1075.5,
+      "diagnostics": ""
+    },
+    "pinnedCases": 43
+  },
+  {
+    "attempt": "final",
+    "when": "2026-11-23T02:50:35.535Z",
+    "checkpoints": [
+      "identity",
+      "consistentCapture",
+      "manifests",
+      "refusals"
+    ],
+    "failure": {
+      "name": "Error",
+      "message": "Command failed: C:\\Users\\RZ1\\Desktop\\RZ\\261116-Quellight-VICT\\.tools\\node-v22.23.5-win-x64\\node.exe C:\\Users\\RZ1\\AppData\\Local\\Temp\\vhost011-migration\\docs\\architecture\\vhost-003-candidate\\migrate-local.mjs verify C:\\Users\\RZ1\\AppData\\Local\\Temp\\vhost011-final\\cli.config.json\nnode:internal/modules/run_main:123\r\n    triggerUncaughtException(\r\n    ^\r\n\r\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\r\n+ actual - expected\r\n\r\n+ '000cdc9d6bad672afac0856933addc325748f30e8dc88c27507fe7e95455ed9f'\r\n- 'a32c8a6ac796359d2e760d7da9d28e55a8ca5ef362bde14c3a29a3b213460420'\r\n\r\n    at file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/migrate-local.mjs:48:12 {\r\n  generatedMessage: true,\r\n  code: 'ERR_ASSERTION',\r\n  actual: '000cdc9d6bad672afac0856933addc325748f30e8dc88c27507fe7e95455ed9f',\r\n  expected: 'a32c8a6ac796359d2e760d7da9d28e55a8ca5ef362bde14c3a29a3b213460420',\r\n  operator: 'strictEqual',\r\n  diff: 'simple'\r\n}\r\n\r\nNode.js v22.23.5\r\n",
+      "stack": "Error: Command failed: C:\\Users\\RZ1\\Desktop\\RZ\\261116-Quellight-VICT\\.tools\\node-v22.23.5-win-x64\\node.exe C:\\Users\\RZ1\\AppData\\Local\\Temp\\vhost011-migration\\docs\\architecture\\vhost-003-candidate\\migrate-local.mjs verify C:\\Users\\RZ1\\AppData\\Local\\Temp\\vhost011-final\\cli.config.json\nnode:internal/modules/run_main:123\r\n    triggerUncaughtException(\r\n    ^\r\n\r\nAssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\r\n+ actual - expected\r\n\r\n+ '000cdc9d6bad672afac0856933addc325748f30e8dc88c27507fe7e95455ed9f'\r\n- 'a32c8a6ac796359d2e760d7da9d28e55a8ca5ef362bde14c3a29a3b213460420'\r\n\r\n    at file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/migrate-local.mjs:48:12 {\r\n  generatedMessage: true,\r\n  code: 'ERR_ASSERTION',\r\n  actual: '000cdc9d6bad672afac0856933addc325748f30e8dc88c27507fe7e95455ed9f',\r\n  expected: 'a32c8a6ac796359d2e760d7da9d28e55a8ca5ef362bde14c3a29a3b213460420',\r\n  operator: 'strictEqual',\r\n  diff: 'simple'\r\n}\r\n\r\nNode.js v22.23.5\r\n\n    at genericNodeError (node:internal/errors:983:15)\n    at wrappedFn (node:internal/errors:537:14)\n    at checkExecSyncError (node:child_process:916:11)\n    at execFileSync (node:child_process:952:15)\n    at invoke (file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/migration-checks.mjs:156:30)\n    at runOperatorCLI (file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/migration-checks.mjs:161:31)\n    at async checkMigration (file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/migration-checks.mjs:309:21)\n    at async file:///C:/Users/RZ1/AppData/Local/Temp/vhost011-migration/docs/architecture/vhost-003-candidate/run.mjs:77:5"
+    },
+    "restore": null,
+    "pinnedCases": 0
+  }
+]

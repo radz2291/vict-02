@@ -14,7 +14,7 @@ $Consumer = (Resolve-Path -LiteralPath $Consumer).Path
 $Source = (Resolve-Path -LiteralPath $Source).Path
 $Output = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($Output)
 if (Test-Path -LiteralPath $Output) { throw 'Choose a new output directory.' }
-$work = Join-Path ([IO.Path]::GetTempPath()) ('vhost010-pg-' + [guid]::NewGuid().ToString('N'))
+$work = Join-Path ([IO.Path]::GetTempPath()) ('vhost011-pg-' + [guid]::NewGuid().ToString('N'))
 if (($work + $Output + $PgBin + $Consumer + $Source) -match '[\r\n"]') { throw 'Unsupported path.' }
 New-Item -ItemType Directory -Path $Output,$work | Out-Null
 Push-Location -LiteralPath $Consumer
@@ -28,7 +28,7 @@ $data = Join-Path $work 'data'
 $log = Join-Path $Output 'postgres.log'
 $pgCtl = Join-Path $PgBin 'pg_ctl.exe'
 $provenance = [ordered]@{}
-foreach ($binary in @('postgres.exe','initdb.exe','pg_ctl.exe')) {
+foreach ($binary in @('postgres.exe','initdb.exe','pg_ctl.exe','pg_dump.exe','pg_restore.exe')) {
   $provenance[$binary] = (Get-FileHash -LiteralPath (Join-Path $PgBin $binary)).Hash.ToLowerInvariant()
 }
 $provenance | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $Output 'binaries.json') -Encoding utf8
@@ -42,8 +42,8 @@ try {
   $process.WaitForExit()
   if ($process.ExitCode -ne 0) { throw "Owned PostgreSQL failed to start. See $log" }
   $phase = if ($CheckOnly) { 'check' } else { 'all' }
-  & $Node (Join-Path $PSScriptRoot 'run.mjs') $Consumer $Source $data "$port" "$Samples" $Output $phase *> (Join-Path $Output 'runner.log')
-  if ($LASTEXITCODE -ne 0) { throw "VHOST-010 failed. Review retained evidence in $Output" }
+  & $Node (Join-Path $PSScriptRoot 'run.mjs') $Consumer $Source $data "$port" "$Samples" $Output $phase $PgBin *> (Join-Path $Output 'runner.log')
+  if ($LASTEXITCODE -ne 0) { throw "VHOST-011 failed. Review retained evidence in $Output" }
 } finally {
   if (Test-Path -LiteralPath (Join-Path $data 'postmaster.pid')) {
     & $pgCtl stop -D $data -m fast -w -t 30 | Out-Host
