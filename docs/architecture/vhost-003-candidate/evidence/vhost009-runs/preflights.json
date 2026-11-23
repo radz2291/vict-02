@@ -1,0 +1,39 @@
+[
+  {
+    "attempt": "01",
+    "when": "2026-11-22T14:38:13.475Z",
+    "matchedComparisons": 66,
+    "conformanceObservation": {
+      "name": "[expect] activation publish/read round-trips immutably",
+      "error": {
+        "name": "TypeError",
+        "message": "factory.create is not a function"
+      }
+    },
+    "failure": {
+      "name": "AssertionError",
+      "code": "ERR_ASSERTION",
+      "message": "{\"name\":\"[expect] activation publish/read round-trips immutably\",\"error\":{\"name\":\"TypeError\",\"message\":\"factory.create is not a function\"}}",
+      "stack": "AssertionError [ERR_ASSERTION]: {\"name\":\"[expect] activation publish/read round-trips immutably\",\"error\":{\"name\":\"TypeError\",\"message\":\"factory.create is not a function\"}}\n    at pinnedSuites (file:///C:/Users/RZ1/AppData/Local/Temp/vhost009-execution/docs/architecture/vhost-003-candidate/run-checks.mjs:240:5)\n    at async checkRuns (file:///C:/Users/RZ1/AppData/Local/Temp/vhost009-execution/docs/architecture/vhost-003-candidate/run-checks.mjs:438:3)\n    at async file:///C:/Users/RZ1/AppData/Local/Temp/vhost009-execution/docs/architecture/vhost-003-candidate/run.mjs:73:5"
+    }
+  },
+  {
+    "attempt": "02",
+    "when": "2026-11-22T14:39:32.335Z",
+    "matchedComparisons": 66,
+    "conformanceObservation": {
+      "name": "[indexed PostgreSQL] activation publish/read round-trips immutably",
+      "error": {
+        "name": "AssertionError",
+        "code": "ERR_ASSERTION",
+        "message": "Expected values to be strictly equal:\n\nfalse !== true\n"
+      }
+    },
+    "failure": {
+      "name": "AssertionError",
+      "code": "ERR_ASSERTION",
+      "message": "{\"name\":\"[indexed PostgreSQL] activation publish/read round-trips immutably\",\"error\":{\"name\":\"AssertionError\",\"code\":\"ERR_ASSERTION\",\"message\":\"Expected values to be strictly equal:\\n\\nfalse !== true\\n\"}}",
+      "stack": "AssertionError [ERR_ASSERTION]: {\"name\":\"[indexed PostgreSQL] activation publish/read round-trips immutably\",\"error\":{\"name\":\"AssertionError\",\"code\":\"ERR_ASSERTION\",\"message\":\"Expected values to be strictly equal:\\n\\nfalse !== true\\n\"}}\n    at pinnedSuites (file:///C:/Users/RZ1/AppData/Local/Temp/vhost009-execution/docs/architecture/vhost-003-candidate/run-checks.mjs:240:5)\n    at async checkRuns (file:///C:/Users/RZ1/AppData/Local/Temp/vhost009-execution/docs/architecture/vhost-003-candidate/run-checks.mjs:476:3)\n    at async file:///C:/Users/RZ1/AppData/Local/Temp/vhost009-execution/docs/architecture/vhost-003-candidate/run.mjs:73:5"
+    }
+  }
+]

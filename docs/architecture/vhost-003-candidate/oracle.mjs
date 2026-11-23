@@ -35,6 +35,8 @@ export async function loadOracle(consumer, source, scratch, candidateRepo) {
     'packages/store-postgres/src/coordination.ts', 'packages/runtime/src/control-in-memory.ts',
     'packages/runtime/src/control-types.ts', 'packages/runtime/src/store-snapshot.ts',
     'packages/runtime/src/in-memory-stores.ts', 'packages/runtime/src/agent-governance.ts',
+    'packages/runtime/src/orchestration-in-memory.ts', 'packages/runtime/src/orchestration-store-types.ts',
+    'packages/runtime/src/store-validation.ts', 'packages/runtime/src/serialization.ts',
     'packages/server/src/commands.ts',
     'packages/mastra/src/postgres-storage.ts'
   ];
@@ -130,6 +132,8 @@ export async function loadOracle(consumer, source, scratch, candidateRepo) {
 
   const runtime = await installed('@victframework/runtime');
   const kernel = await installed('@victframework/kernel');
+  const serialization = await installed('@victframework/runtime', 'serialization.js');
+  const testing = await installed('@victframework/runtime', 'testing.js');
   const snapshot = await installed('@victframework/runtime', 'store-snapshot.js');
   const { createPostgresMastraStore } = await installed('@victframework/mastra', 'postgres-storage.js');
   const { PostgresDatabase: Driver } = await installed('@victframework/store-postgres', 'driver.js');
@@ -139,7 +143,7 @@ export async function loadOracle(consumer, source, scratch, candidateRepo) {
   const { createSqliteAgentControlStores } = await import(pathToFileURL(join(sqliteFixture, 'agent-control-adapter.js')));
 
   return {
-    runtime, kernel, snapshot, VictCommandService, RepairedCommandService, Driver, Coordination, Client, createPostgresStores, createSqliteAgentControlStores, createPostgresMastraStore,
+    runtime, kernel, serialization, testing, snapshot, VictCommandService, RepairedCommandService, Driver, Coordination, Client, createPostgresStores, createSqliteAgentControlStores, createPostgresMastraStore,
     provenance: {
       frameworkCommit, c12Source, consumerCommit, lockSHA256, manifestSHA256, sqliteTree,
       dispatcherCommit, reviewedParent, dispatcherSHA256: digest(dispatcherBytes), dispatcherTypecheckDiagnostics: 0,

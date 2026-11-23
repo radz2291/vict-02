@@ -54,7 +54,7 @@ export async function checkPorts({ oracle, observer, provision, legacy, candidat
     assert.deepEqual(Object.keys(indexed).sort(),
       ['actors','close','coordination','dispose','forLease','streamLedger','turns',
         'approvals','invocations','commandIdempotency','commandConfirmationReceipts',
-        'control','catalog','governance'].sort());
+        'control','catalog','governance','execution','orchestration'].sort());
     const actor = { actorId: 'actor-z', status: 'active', roles: ['viewer'], createdAt: 42, scopes: undefined };
     await diff('actors', 'get', ['missing']);
     await diff('actors', 'list');

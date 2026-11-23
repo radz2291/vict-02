@@ -3,6 +3,7 @@ import { createValueCodec, fromKey, hash, keyBytes, readKey } from './values.mjs
 
 import { createReceiptPorts } from './indexed-receipts.mjs';
 import { createControlPorts } from './indexed-control.mjs';
+import { createRunPorts } from './indexed-runs.mjs';
 
 const PAGE = 128;
 const cursorName = 'vhost003_page';
@@ -236,7 +237,8 @@ export async function createIndexedHotPathForTests(oracle, options) {
     });
     const receipts = createReceiptPorts({ runtime, codec, namespace, q, call, readPages });
     const control = createControlPorts({ runtime, codec, namespace, q, call, readPages });
-    return Object.freeze({ actors, turns, streamLedger, ...receipts, ...control });
+    const runs = createRunPorts({ ...oracle, codec, namespace, q, call, readPages, options });
+    return Object.freeze({ actors, turns, streamLedger, ...receipts, ...control, ...runs });
   }
 
   return Object.freeze({

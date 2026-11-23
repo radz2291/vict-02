@@ -135,7 +135,9 @@ export function createFoundation({ Driver, Coordination, runtime }, options) {
       'agent_approval', 'command_receipt', 'command_claim_fence', 'confirmation_receipt',
       'control_changeset', 'control_approval', 'control_run', 'control_operation', 'control_release',
       'control_selection', 'control_audit', 'catalog_activation', 'catalog_selection',
-      'governance_activation', 'governance_intent', 'governance_receipt'
+      'governance_activation', 'governance_intent', 'governance_receipt',
+      'execution_run', 'execution_event', 'orchestration_run', 'orchestration_event',
+      'orchestration_component', 'orchestration_timer', 'orchestration_recoverable'
     ];
     const { rows } = await client.query(
       'SELECT to_regclass(name) AS present FROM unnest($1::text[]) AS name',

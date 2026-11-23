@@ -1,5 +1,9 @@
 # Indexed PostgreSQL operational-store test fixture
 
+## VHOST-009 execution and orchestration
+
+The current fixture exposes all 126 qualified operations. The additional DDL provisions indexed run identities, event streams, orchestration components and timer and recovery projections. The correctness runner executes the exact pinned legacy comparisons, SQL fault and concurrency probes, and the earlier regressions. [Report](../VHOST-009-INDEXED-EXECUTION-AND-ORCHESTRATION.md) · [Coverage](PORT-COVERAGE.md) · [Raw run](evidence/vhost009-runs/result.json)
+
 ## VHOST-008 ordered appends
 
 Run the reproduction command with -CheckOnly to compare overlapping writes on the exact VHOST-007 fixture, the pinned legacy package and the repaired fixture. The same invocation runs the full regression suite. [Ordering report](../VHOST-008-ORDERED-APPENDS.md) · [Raw before-and-after run](evidence/vhost008-ordering/result.json)
@@ -14,7 +18,7 @@ Use the same command below with `-CheckOnly`. The harness verifies and compiles 
 
 ## Reproduce
 
-The candidate is a private test fixture. Its only entry point is `createIndexedHotPathForTests` in [indexed-hot-path.mjs](indexed-hot-path.mjs). It takes the exact installed-package oracle and fixture database options. The schema name, loopback host, fixture role and database name are fixed. It exposes actors, turns, stream ledger, invocations, approvals, both command receipt ports, control, the activation catalog, agent governance, coordination and the leased facade/lifecycle methods. The runner provisions [the base DDL](schema.sql), [the receipt extension](receipts-schema.sql) and [the control extension](control-schema.sql) on a separate operator connection before opening the adapter.
+The candidate is a private test fixture. Its only entry point is `createIndexedHotPathForTests` in [indexed-hot-path.mjs](indexed-hot-path.mjs). It takes the exact installed-package oracle and fixture database options. The schema name, loopback host, fixture role and database name are fixed. It exposes actors, turns, stream ledger, invocations, approvals, both command receipt ports, control, the activation catalog, agent governance, execution, orchestration, coordination and the leased facade/lifecycle methods. The runner provisions [the base DDL](schema.sql), [the receipt extension](receipts-schema.sql) [the control extension](control-schema.sql) and [the execution extension](execution-schema.sql) on a separate operator connection before opening the adapter.
 
 Use Windows PowerShell, Node 22.23.5 and PostgreSQL 18.6 client/server binaries. Prepare a scratch Quellight checkout at `8f8ec2d24180e4a9520be0689aa6afb711553fc9`. Use npm 11.21.2 to install the lock with `npm ci --ignore-scripts --no-audit --no-fund`. The runner verifies all installed files against their 14 framework archives. Provide a VICT Git checkout containing the exact source objects `1b11d4a5f4298310c7ab16e0808b8bfbed551ee5`, `0761e1865258b23e2f04652f4301736155be06c5` and `a22615b014aa69f7501dc1504da5f9daad639786`. On the builder workstation they are in the separate `261116-VICT-Vercel` checkout. The runner reads Git objects directly and transpiles three SQLite source files and the pinned shared dispatcher in scratch storage. No new dependency installation is required for the fixture itself.
 
